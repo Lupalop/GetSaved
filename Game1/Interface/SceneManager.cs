@@ -9,14 +9,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Arkabound.Interface
 {
-//    public enum Scenes { Startup, MainMenu, Options, WorldSelection, LevelEditor, HighScores, PlayerSelection, GameWorld };
     public class SceneManager
     {
-        public SceneManager(Game game, SpriteBatch spriteBatch)
+        /// <summary>
+        /// Associates the scene manager to a game instance
+        /// </summary>
+        /// <param name="game">The game instance to attach.</param>
+        /// <param name="spriteBatch">The sprite batch present in the game instance</param>
+        public SceneManager(Game game, SpriteBatch spriteBatch, Dictionary<string, SpriteFont> fonts)
         {
-            //this.currentScene = currentScene;
             this.game = game;
             this.spriteBatch = spriteBatch;
+            this.fonts = fonts;
         }
 
         private SceneBase _currentState;
@@ -28,28 +32,43 @@ namespace Arkabound.Interface
             }
             set
             {
-                if (Program.OutputToConsole)
+                if (Program.UseConsole)
                     Console.WriteLine("Switching to scene: " + value.sceneName);
                 // Set current state to given scene
                 _currentState = value;
-                // Call the scene's load content
-                value.LoadContent();
             }
         }
         public Game game;
         public SpriteBatch spriteBatch;
+        public Dictionary<string, SpriteFont> fonts;
 
-        public void LoadContent()
+        // List of scenes that are loaded above the current scene
+        public List<SceneBase> overlays = new List<SceneBase>();
+
+        public void Draw(GameTime gameTime)
         {
-            currentScene.LoadContent();
+            currentScene.Draw(gameTime);
+            // If there are overlays, call their draw method
+            if (overlays.Count != 0)
+            {
+                foreach (SceneBase scb in overlays)
+                {
+                    scb.Draw(gameTime);
+                }
+            }
         }
-        public void Draw()
+
+        public void Update(GameTime gameTime)
         {
-            currentScene.Draw();
-        }
-        public void Update()
-        {
-            currentScene.Update();
+            currentScene.Update(gameTime);
+            // If there are overlays, call their update method
+            if (overlays.Count != 0)
+            {
+                foreach (SceneBase scb in overlays)
+                {
+                    scb.Update(gameTime);
+                }
+            }
         }
     }
 }

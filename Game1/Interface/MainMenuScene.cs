@@ -13,23 +13,29 @@ namespace Arkabound.Interface
     {
         public MainMenuScene(SceneManager sceneManager) : base(sceneManager)
         {
-            base.sceneName = "Main Menu";
+            sceneName = "Main Menu";
         }
+
+        private Texture2D Logo;
 
         public override void LoadContent()
         {
+            Logo = game.Content.Load<Texture2D>("gameLogo");
             base.LoadContent();
         }
 
-        public override void Draw()
+        public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.Red);
-            base.Draw();
+            game.GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin();
+            spriteBatch.Draw(Logo, new Vector2(200, 200), null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
+            spriteBatch.End();
+            base.Draw(gameTime);
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
-            base.Update();
+            base.Update(gameTime);
         }
     }
 }

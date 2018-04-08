@@ -13,31 +13,36 @@ namespace Arkabound.Interface
     {
         public SceneBase(SceneManager sceneManager)
         {
+            // Assign values to important variables
             this.sceneManager = sceneManager;
             game = sceneManager.game;
             spriteBatch = sceneManager.spriteBatch;
+            fonts = sceneManager.fonts;
+            // Load the scene's content
+            LoadContent();
         }
 
         public SceneManager sceneManager;
         public Game game;
         public SpriteBatch spriteBatch;
-        public string sceneName;
+        public Dictionary<string, SpriteFont> fonts;
+        public string sceneName = "Unnamed Scene";
 
         public virtual void LoadContent()
         {
-            if (Program.OutputToConsole)
+            if (Program.UseConsole)
                 Console.WriteLine("Loading content in: " + sceneName);
         }
 
-        public virtual void Draw()
+        public virtual void Draw(GameTime gameTime)
         {
-            if (Program.OutputToConsole)
+            if (Program.UseConsole && Program.VerboseMessages)
                 Console.WriteLine("Drawing from scene: " + sceneName);
         }
 
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
-            if (Program.OutputToConsole)
+            if (Program.UseConsole && Program.VerboseMessages)
                 Console.WriteLine("Updating from scene: "  + sceneName);
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Arkabound.Interface;
@@ -13,12 +14,16 @@ namespace Arkabound
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SceneManager sceneManager;
+        Dictionary<string, SpriteFont> fonts;
 
         public MainGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = 800;
+            Window.AllowUserResizing = true;
         }
 
         /// <summary>
@@ -29,7 +34,11 @@ namespace Arkabound
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Setup any components
+            Components.Add(new Arkabound.Components.TimerManager(this));
+            // Initialize the Fonts dictionary
+            fonts = new Dictionary<string, SpriteFont>();
+            // Base init
             base.Initialize();
         }
 
@@ -41,12 +50,16 @@ namespace Arkabound
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            sceneManager = new SceneManager(this, spriteBatch);
+            // Load all fonts into the Fonts dictionary
+            fonts["default"] = Content.Load<SpriteFont>("ZillaSlab");
+            fonts["symbol"] = Content.Load<SpriteFont>("ZillaSlabSymbols");
+            // Setup FPS counter
+            Components.Add(new Arkabound.Components.FPSCounter(this, spriteBatch, fonts["default"]));
+            // Setup the Scene Manager
+            sceneManager = new SceneManager(this, spriteBatch, fonts);
             sceneManager.currentScene = new StartupScene(sceneManager);
-
-            // TODO: use this.Content to load your game content here
-            sceneManager.LoadContent();
+            // Initialize the mouse as an overlay
+            sceneManager.overlays.Add(new MouseScene(sceneManager));
         }
 
         /// <summary>
@@ -65,10 +78,16 @@ namespace Arkabound
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            KeyboardState KeybdState = Keyboard.GetState();
+            GamePadState GamePdState = GamePad.GetState(PlayerIndex.One);
+            MouseState MsState = Mouse.GetState();
 
-            sceneManager.Update();
+            if (GamePdState.Buttons.Back == ButtonState.Pressed || KeybdState.IsKeyDown(Keys.Escape))
+                Exit();
+            if ((KeybdState.IsKeyDown(Keys.RightAlt) || KeybdState.IsKeyDown(Keys.LeftAlt)) && KeybdState.IsKeyDown(Keys.Enter))
+                graphics.ToggleFullScreen();
+
+            sceneManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -79,9 +98,7 @@ namespace Arkabound
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.Blue);
-
-            sceneManager.Draw();
+            sceneManager.Draw(gameTime);
             
             base.Draw(gameTime);
         }

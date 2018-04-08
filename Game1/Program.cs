@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace Arkabound
 {
@@ -14,11 +15,23 @@ namespace Arkabound
         [STAThread]
         static void Main()
         {
+            if (UseConsole)
+            {
+                Console.Title = "Arkabound Debug Console";
+                Console.WriteLine("/*");
+                Console.WriteLine(" * Arkabound v" + AssemblyName.GetAssemblyName(Assembly.GetExecutingAssembly().Location).Version.ToString());
+                Console.WriteLine(" * Debug Console");
+                Console.WriteLine(" */");
+                Console.WriteLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey(true);
+            }
             using (var game = new MainGame())
                 game.Run();
         }
 
-        public static bool OutputToConsole = true;
+        public static bool UseConsole = false;
+        public static bool VerboseMessages = false;
     }
 #endif
 }

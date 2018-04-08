@@ -59,7 +59,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components\FPSCounter.cs" />
+    <Compile Include="Components\Timers.cs" />
     <Compile Include="Interface\MainMenuScene.cs" />
+    <Compile Include="Interface\MenuButton.cs" />
+    <Compile Include="Interface\Mouse.cs" />
     <Compile Include="Interface\SceneBase.cs" />
     <Compile Include="Interface\StartupScene.cs" />
     <Compile Include="MainGame.cs" />
