@@ -21,6 +21,7 @@ namespace Arkabound.Interface
             this.game = game;
             this.spriteBatch = spriteBatch;
             this.fonts = fonts;
+            this.overlays = new Dictionary<string, SceneBase>();
         }
 
         private SceneBase _currentState;
@@ -40,10 +41,10 @@ namespace Arkabound.Interface
         }
         public Game game;
         public SpriteBatch spriteBatch;
+        // List of fonts that are loaded in game
         public Dictionary<string, SpriteFont> fonts;
-
         // List of scenes that are loaded above the current scene
-        public List<SceneBase> overlays = new List<SceneBase>();
+        public Dictionary<string, SceneBase> overlays;
 
         public void Draw(GameTime gameTime)
         {
@@ -51,7 +52,7 @@ namespace Arkabound.Interface
             // If there are overlays, call their draw method
             if (overlays.Count != 0)
             {
-                foreach (SceneBase scb in overlays)
+                foreach (SceneBase scb in overlays.Values)
                 {
                     scb.Draw(gameTime);
                 }
@@ -64,7 +65,7 @@ namespace Arkabound.Interface
             // If there are overlays, call their update method
             if (overlays.Count != 0)
             {
-                foreach (SceneBase scb in overlays)
+                foreach (SceneBase scb in overlays.Values)
                 {
                     scb.Update(gameTime);
                 }

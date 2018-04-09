@@ -59,7 +59,7 @@ namespace Arkabound
             sceneManager = new SceneManager(this, spriteBatch, fonts);
             sceneManager.currentScene = new StartupScene(sceneManager);
             // Initialize the mouse as an overlay
-            sceneManager.overlays.Add(new MouseScene(sceneManager));
+            sceneManager.overlays.Add("mouse", new MouseScene(sceneManager));
         }
 
         /// <summary>
