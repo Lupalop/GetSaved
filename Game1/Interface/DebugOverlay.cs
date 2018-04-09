@@ -24,9 +24,9 @@ namespace Arkabound.Interface
 
         KeyboardState KeybdState;
 
-        public DebugOverlay(SceneManager sceneManager) : base(sceneManager)
+        public DebugOverlay(SceneManager sceneManager)
+            : base(sceneManager, "Debug Overlay")
         {
-            sceneName = "Debug Overlay";
         }
 
         public override void Update(GameTime gameTime)

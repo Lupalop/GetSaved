@@ -11,10 +11,12 @@ namespace Arkabound.Interface
 {
     public abstract class SceneBase
     {
-        public SceneBase(SceneManager sceneManager)
+        public SceneBase(SceneManager sceneManager, string sceneName)
         {
             // Assign values to important variables
             this.sceneManager = sceneManager;
+            if (sceneName != null || sceneName.Trim() != "")
+                this.sceneName = sceneName;
             game = sceneManager.game;
             spriteBatch = sceneManager.spriteBatch;
             fonts = sceneManager.fonts;

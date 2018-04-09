@@ -11,9 +11,9 @@ namespace Arkabound.Interface
 {
     public class MainMenuScene : SceneBase
     {
-        public MainMenuScene(SceneManager sceneManager) : base(sceneManager)
+        public MainMenuScene(SceneManager sceneManager)
+            : base(sceneManager, "Main Menu")
         {
-            sceneName = "Main Menu";
         }
 
         private Texture2D Logo;

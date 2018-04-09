@@ -12,9 +12,9 @@ namespace Arkabound.Interface
 {
     public class MouseOverlay : SceneBase
     {
-        public MouseOverlay(SceneManager sceneManager) : base(sceneManager)
+        public MouseOverlay(SceneManager sceneManager)
+            : base(sceneManager, "Mouse Overlay")
         {
-            sceneName = "Mouse Overlay";
         }
 
         private Texture2D cursor;

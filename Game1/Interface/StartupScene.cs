@@ -12,9 +12,9 @@ namespace Arkabound.Interface
 {
     public class StartupScene : SceneBase
     {
-        public StartupScene(SceneManager sceneManager) : base(sceneManager)
+        public StartupScene(SceneManager sceneManager)
+            : base(sceneManager, "Startup")
         {
-            sceneName = "Startup";
         }
 
         public override void LoadContent()
