@@ -10,9 +10,9 @@ using Arkabound.Components;
 
 namespace Arkabound.Interface
 {
-    public class MouseScene : SceneBase
+    public class MouseOverlay : SceneBase
     {
-        public MouseScene(SceneManager sceneManager) : base(sceneManager)
+        public MouseOverlay(SceneManager sceneManager) : base(sceneManager)
         {
             sceneName = "Mouse Overlay";
         }

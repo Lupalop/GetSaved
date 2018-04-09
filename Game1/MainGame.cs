@@ -18,12 +18,19 @@ namespace Arkabound
 
         public MainGame()
         {
+            // Initialize graphics manager
             graphics = new GraphicsDeviceManager(this);
+            // Set root directory where content files will be loaded
             Content.RootDirectory = "Content";
+            // Make the mouse inivisible (perhaps, this should be placed somewhere else)
             IsMouseVisible = false;
+            // Set the default window size to (800x600)
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
+            // Allow the window to be resized by the user
             Window.AllowUserResizing = true;
+            // Initialize the Fonts dictionary
+            fonts = new Dictionary<string, SpriteFont>();
         }
 
         /// <summary>
@@ -36,8 +43,6 @@ namespace Arkabound
         {
             // Setup any components
             Components.Add(new Arkabound.Components.TimerManager(this));
-            // Initialize the Fonts dictionary
-            fonts = new Dictionary<string, SpriteFont>();
             // Base init
             base.Initialize();
         }
@@ -53,13 +58,13 @@ namespace Arkabound
             // Load all fonts into the Fonts dictionary
             fonts["default"] = Content.Load<SpriteFont>("ZillaSlab");
             fonts["symbol"] = Content.Load<SpriteFont>("ZillaSlabSymbols");
-            // Setup FPS counter
-            Components.Add(new Arkabound.Components.FPSCounter(this, spriteBatch, fonts["default"]));
             // Setup the Scene Manager
             sceneManager = new SceneManager(this, spriteBatch, fonts);
             sceneManager.currentScene = new StartupScene(sceneManager);
-            // Initialize the mouse as an overlay
-            sceneManager.overlays.Add("mouse", new MouseScene(sceneManager));
+            // Register mouse overlay in the scene manager
+            sceneManager.overlays.Add("mouse", new MouseOverlay(sceneManager));
+            // Register debug overlay in the scene manager
+            sceneManager.overlays.Add("debug", new DebugOverlay(sceneManager));
         }
 
         /// <summary>
