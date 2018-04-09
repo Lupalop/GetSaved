@@ -24,21 +24,22 @@ namespace Arkabound.Interface
             this.overlays = new Dictionary<string, SceneBase>();
         }
 
-        private SceneBase _currentState;
+        private SceneBase _currentScene;
         public SceneBase currentScene
         {
             get
             {
-                return _currentState;
+                return _currentScene;
             }
             set
             {
                 if (Program.UseConsole)
                     Console.WriteLine("Switching to scene: " + value.sceneName);
                 // Set current state to given scene
-                _currentState = value;
+                _currentScene = value;
             }
         }
+
         public Game game;
         public SpriteBatch spriteBatch;
         // List of fonts that are loaded in game
