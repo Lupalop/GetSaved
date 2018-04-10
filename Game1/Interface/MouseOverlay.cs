@@ -19,7 +19,6 @@ namespace Arkabound.Interface
 
         private Texture2D cursor;
         private Vector2 mousePos;
-        private MouseState msState;
         private Color mouseTint = Color.White;
         private bool isTimerFired;
 
@@ -40,13 +39,11 @@ namespace Arkabound.Interface
 
         public override void Update(GameTime gameTime)
         {
-            // Get mouse state on every update
-            msState = Mouse.GetState();
             // Make cursor follow mouse position
-            mousePos = msState.Position.ToVector2();
+            mousePos = MsState.Position.ToVector2();
 
             // Selected effect - when left button is pressed, cursor turns to green
-            if ((msState.LeftButton == ButtonState.Pressed || msState.RightButton == ButtonState.Pressed) && !isTimerFired)
+            if ((MsState.LeftButton == ButtonState.Pressed || MsState.RightButton == ButtonState.Pressed) && !isTimerFired)
             {
                 Timer.Create(.1f, () => mouseTint = Color.Green);
                 Timer.Create(.3f, () => mouseTint = Color.White);

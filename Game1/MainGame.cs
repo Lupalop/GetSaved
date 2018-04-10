@@ -87,6 +87,10 @@ namespace Arkabound
             GamePadState GamePdState = GamePad.GetState(PlayerIndex.One);
             MouseState MsState = Mouse.GetState();
 
+            sceneManager.GamePdState = GamePdState;
+            sceneManager.KeybdState = KeybdState;
+            sceneManager.MsState = MsState;
+
             if (GamePdState.Buttons.Back == ButtonState.Pressed || KeybdState.IsKeyDown(Keys.Escape))
                 Exit();
             if ((KeybdState.IsKeyDown(Keys.RightAlt) || KeybdState.IsKeyDown(Keys.LeftAlt)) && KeybdState.IsKeyDown(Keys.Enter))

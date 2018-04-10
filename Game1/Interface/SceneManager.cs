@@ -47,6 +47,10 @@ namespace Arkabound.Interface
         // List of scenes that are loaded above the current scene
         public Dictionary<string, SceneBase> overlays;
 
+        public KeyboardState KeybdState;
+        public GamePadState GamePdState;
+        public MouseState MsState;
+
         public void Draw(GameTime gameTime)
         {
             currentScene.Draw(gameTime);
@@ -63,14 +67,24 @@ namespace Arkabound.Interface
         public void Update(GameTime gameTime)
         {
             currentScene.Update(gameTime);
+            UpdateKeys(currentScene);
             // If there are overlays, call their update method
             if (overlays.Count != 0)
             {
                 for (int i = 0; i < overlays.Count; i++)
                 {
-                    overlays[overlays.Keys.ToList()[i]].Update(gameTime);
+                    SceneBase scb = overlays[overlays.Keys.ToList()[i]];
+                    scb.Update(gameTime);
+                    UpdateKeys(scb);
                 }
             }
+        }
+
+        public void UpdateKeys(SceneBase scb)
+        {
+            scb.KeybdState = KeybdState;
+            scb.GamePdState = GamePdState;
+            scb.MsState = MsState;
         }
     }
 }

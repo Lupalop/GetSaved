@@ -13,10 +13,11 @@ namespace Arkabound.Interface
     {
         public SceneBase(SceneManager sceneManager, string sceneName)
         {
-            // Assign values to important variables
-            this.sceneManager = sceneManager;
+            // Scene name assignment
             if (sceneName != null || sceneName.Trim() != "")
                 this.sceneName = sceneName;
+            // Assign values to important variables
+            this.sceneManager = sceneManager;
             game = sceneManager.game;
             spriteBatch = sceneManager.spriteBatch;
             fonts = sceneManager.fonts;
@@ -29,6 +30,10 @@ namespace Arkabound.Interface
         public SpriteBatch spriteBatch;
         public Dictionary<string, SpriteFont> fonts;
         public string sceneName = "Unnamed Scene";
+
+        public KeyboardState KeybdState;
+        public GamePadState GamePdState;
+        public MouseState MsState;
 
         public virtual void LoadContent()
         {

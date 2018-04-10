@@ -22,8 +22,6 @@ namespace Arkabound.Interface
         string sceneOverlayHeader = "\nOverlay Scenes ({0}):\n";
         string sceneOverlayList = "";
 
-        KeyboardState KeybdState;
-
         public DebugOverlay(SceneManager sceneManager)
             : base(sceneManager, "Debug Overlay")
         {
@@ -31,9 +29,6 @@ namespace Arkabound.Interface
 
         public override void Update(GameTime gameTime)
         {
-            // Keyboard State
-            KeybdState = Keyboard.GetState();
-
             // FPS Counter
             if (KeybdState.IsKeyDown(Keys.F2))
                 isCounterVisible = true;
