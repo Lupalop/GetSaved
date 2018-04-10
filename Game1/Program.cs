@@ -22,7 +22,7 @@ namespace Arkabound
 
             if (UseConsole)
             {
-                while (true)
+                while (PromptForRestart)
                 {
                     Console.WriteLine("Game execution has ended, would you like to restart? Y = Yes, Other keys = No");
                     if (Console.ReadKey(true).Key == ConsoleKey.Y)
@@ -55,6 +55,7 @@ namespace Arkabound
 
         public static bool UseConsole = true;
         public static bool VerboseMessages = false;
+        public static bool PromptForRestart = false;
     }
 #endif
 }
