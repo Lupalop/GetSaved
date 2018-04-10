@@ -19,51 +19,17 @@ namespace Arkabound.Interface
 
         public override void LoadContent()
         {
+            sceneManager.overlays.Add("load", new LoadOverlay(sceneManager, 5f, "load", () => sceneManager.currentScene = new MainMenuScene(sceneManager)));
             base.LoadContent();
         }
 
-        private float Rotation = 0f;
-        private float opacity = 1f;
         public override void Draw(GameTime gameTime)
         {
-           game.GraphicsDevice.Clear(Color.Black);
-
-           spriteBatch.Begin();
-           Vector2 ScreenCenter = new Vector2(game.GraphicsDevice.Viewport.Bounds.Width / 2, game.GraphicsDevice.Viewport.Bounds.Height / 2);
-           for (int i = 0; i < 6; i++)
-               spriteBatch.DrawString(fonts["default"], "*", ScreenCenter, Color.DarkGoldenrod * opacity, Rotation+i, new Vector2(0,0), 2.5f, SpriteEffects.None, 1f);
-           spriteBatch.DrawString(fonts["default"], "Loading", new Vector2(ScreenCenter.X - 27, ScreenCenter.Y + 50), Color.DarkGoldenrod * opacity, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
-           spriteBatch.End();
-
            base.Draw(gameTime);
         }
-        private bool[] isTimerCreated = new bool[4];
-        private bool fadeNow;
+
         public override void Update(GameTime gameTime)
         {
-            MouseState mState = Mouse.GetState();
-
-            if (!isTimerCreated[3])
-            {
-                for (int i = 0; i < 150 * 2; i++) Timer.Create(i * .05f, () => Rotation += 0.25f);
-                isTimerCreated[3] = true;
-            }
-            if (opacity <= 0f && !isTimerCreated[2])
-            {
-                Timer.Create(.5f, () => sceneManager.currentScene = new MainMenuScene(sceneManager));
-                isTimerCreated[2] = true;
-            }
-            if (!isTimerCreated[0])
-            {
-                Timer.Create(5, () => fadeNow = true);
-                isTimerCreated[0] = true;
-            }
-            if (!isTimerCreated[1] && fadeNow)
-            {
-                for (int i = 0; i < 25; i++) Timer.Create(i * .1f, () => opacity -= 0.1f);
-                isTimerCreated[1] = true;
-            }
-
             base.Update(gameTime);
         }
     }

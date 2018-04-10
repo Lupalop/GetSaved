@@ -7,7 +7,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{10113C2A-3986-4838-894E-36B3550B155E}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Arkabound</RootNamespace>
     <AssemblyName>arkabound</AssemblyName>
@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Interface\DebugOverlay.cs" />
     <Compile Include="Components\Timers.cs" />
+    <Compile Include="Interface\LoadOverlay.cs" />
     <Compile Include="Interface\MainMenuScene.cs" />
     <Compile Include="Interface\MenuButton.cs" />
     <Compile Include="Interface\MouseOverlay.cs" />
