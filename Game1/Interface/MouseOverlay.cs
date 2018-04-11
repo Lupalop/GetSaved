@@ -21,6 +21,7 @@ namespace Arkabound.Interface
         private Vector2 mousePos;
         private Color mouseTint = Color.White;
         private bool isTimerFired;
+        public Rectangle mouseBox;
 
         public override void LoadContent()
         {
@@ -41,6 +42,8 @@ namespace Arkabound.Interface
         {
             // Make cursor follow mouse position
             mousePos = MsState.Position.ToVector2();
+
+            mouseBox = new Rectangle(mousePos.ToPoint(), new Point(cursor.Width, cursor.Height));
 
             // Selected effect - when left button is pressed, cursor turns to green
             if ((MsState.LeftButton == ButtonState.Pressed || MsState.RightButton == ButtonState.Pressed) && !isTimerFired)
