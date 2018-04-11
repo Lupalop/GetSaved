@@ -19,7 +19,7 @@ namespace Arkabound.Interface
 
         public override void LoadContent()
         {
-            sceneManager.overlays.Add("load", new LoadOverlay(sceneManager, 5f, "load", () => sceneManager.currentScene = new MainMenuScene(sceneManager)));
+            sceneManager.overlays.Add("load", new LoadOverlay(sceneManager, 1f, "load", () => sceneManager.currentScene = new MainMenuScene(sceneManager)));
             base.LoadContent();
         }
 
