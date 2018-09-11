@@ -25,20 +25,6 @@
 /processorParam:TextureFormat=Color
 /build:mouseCur.png
 
-#begin ZillaSlab.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:ZillaSlab.spritefont
-
-#begin ZillaSlabSymbols.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:ZillaSlabSymbols.spritefont
-
 #begin gameLogo.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -50,4 +36,37 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:gameLogo.png
+
+#begin menuBG.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:menuBG.png
+
+#begin ZillaSlab_small.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:ZillaSlab_small.spritefont
+
+#begin ZillaSlab_large.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:ZillaSlab_large.spritefont
+
+#begin ZillaSlab_medium.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:ZillaSlab_medium.spritefont
 

@@ -55,7 +55,7 @@ namespace Arkabound
 
         public static bool UseConsole = true;
         public static bool VerboseMessages = false;
-        public static bool PromptForRestart = false;
+        public static bool PromptForRestart = true;
     }
 #endif
 }

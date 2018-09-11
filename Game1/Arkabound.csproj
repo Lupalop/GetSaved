@@ -59,14 +59,15 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Interface\DebugOverlay.cs" />
+    <Compile Include="Interface.Scenes\DebugOverlay.cs" />
     <Compile Include="Components\Timers.cs" />
-    <Compile Include="Interface\LoadOverlay.cs" />
-    <Compile Include="Interface\MainMenuScene.cs" />
-    <Compile Include="Interface\MenuButton.cs" />
-    <Compile Include="Interface\MouseOverlay.cs" />
+    <Compile Include="Interface.Scenes\LoadOverlay.cs" />
+    <Compile Include="Interface.Scenes\MainMenuScene.cs" />
+    <Compile Include="Interface.Controls\MenuButton.cs" />
+    <Compile Include="Interface.Scenes\MouseOverlay.cs" />
+    <Compile Include="Interface.Scenes\WorldSelectionScene.cs" />
     <Compile Include="Interface\SceneBase.cs" />
-    <Compile Include="Interface\StartupScene.cs" />
+    <Compile Include="Interface.Scenes\StartupScene.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="Objects\DefaultObjects.cs" />
     <Compile Include="Objects\ObjectBase.cs" />

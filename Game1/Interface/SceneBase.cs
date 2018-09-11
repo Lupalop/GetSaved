@@ -31,6 +31,8 @@ namespace Arkabound.Interface
         public Dictionary<string, SpriteFont> fonts;
         public string sceneName = "Unnamed Scene";
 
+        public Vector2 ScreenCenter;
+
         public KeyboardState KeybdState;
         public GamePadState GamePdState;
         public MouseState MsState;
@@ -51,6 +53,7 @@ namespace Arkabound.Interface
         {
             if (Program.UseConsole && Program.VerboseMessages)
                 Console.WriteLine("Updating from scene: "  + sceneName);
+            ScreenCenter = new Vector2(game.GraphicsDevice.Viewport.Bounds.Width / 2, game.GraphicsDevice.Viewport.Bounds.Height / 2);
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Arkabound.Interface;
+using Arkabound.Interface.Scenes;
 
 namespace Arkabound
 {
@@ -56,8 +57,9 @@ namespace Arkabound
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // Load all fonts into the Fonts dictionary
-            fonts["default"] = Content.Load<SpriteFont>("ZillaSlab");
-            fonts["symbol"] = Content.Load<SpriteFont>("ZillaSlabSymbols");
+            fonts["default"] = Content.Load<SpriteFont>("ZillaSlab_small");
+            fonts["default_m"] = Content.Load<SpriteFont>("ZillaSlab_medium");
+            fonts["default_l"] = Content.Load<SpriteFont>("ZillaSlab_large");
             // Setup the Scene Manager
             sceneManager = new SceneManager(this, spriteBatch, fonts);
             sceneManager.currentScene = new StartupScene(sceneManager);

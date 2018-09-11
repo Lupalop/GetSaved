@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Arkabound.Components;
 
-namespace Arkabound.Interface
+namespace Arkabound.Interface.Scenes
 {
     public class MouseOverlay : SceneBase
     {
@@ -49,8 +49,11 @@ namespace Arkabound.Interface
             if ((MsState.LeftButton == ButtonState.Pressed || MsState.RightButton == ButtonState.Pressed) && !isTimerFired)
             {
                 Timer.Create(.1f, () => mouseTint = Color.Green);
-                Timer.Create(.3f, () => mouseTint = Color.White);
-                Timer.Create(.3f, () => isTimerFired = false);
+                Timer.Create(.3f, () =>
+                { 
+                    mouseTint = Color.White;
+                    isTimerFired = false;
+                });
                 isTimerFired = true;
             }
 

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Arkabound.Components;
 
-namespace Arkabound.Interface
+namespace Arkabound.Interface.Scenes
 {
     public class StartupScene : SceneBase
     {
