@@ -21,6 +21,8 @@ namespace Arkabound.Objects
             AnimationType = AnimationTypes.Static;
             Tint = Color.White;
             Scale = 1f;
+            AlignToCenter = true;
+            MessageHolder = new List<object>();
         }
 
         // Basic Properties
@@ -28,6 +30,7 @@ namespace Arkabound.Objects
         public bool EditorVisibility { get; set; }
         public bool CampaignOnlyObject { get; set; }
         public AnimationTypes AnimationType { get; set; }
+        public List<object> MessageHolder { get; set; }
 
         // Graphics
         public virtual Texture2D Graphic { get; set; }
@@ -37,6 +40,7 @@ namespace Arkabound.Objects
         public float Rotation { get; set; }
         public float Scale { get; set; }
         public bool UseCustomDimensions { get; set; }
+        public bool AlignToCenter { get; set; }
 
         public Rectangle Bounds { get; set; }
         public SpriteBatch spriteBatch { get; set; }
@@ -64,20 +68,26 @@ namespace Arkabound.Objects
         public virtual void Remove() { Console.Write("Unimplemented"); }
         public virtual void Draw(GameTime gameTime)
         {
-            if (Rotation != 0 || Scale != 0)
-                spriteBatch.Draw(Graphic, Location, null, Tint, Rotation, new Vector2(0, 0), Scale, SpriteEffects.None, 1f);
-            else
-                spriteBatch.Draw(Graphic, Bounds, Tint);
+            if (Graphic != null)
+            {
+                if (Rotation != 0 || Scale != 0)
+                    spriteBatch.Draw(Graphic, Location, null, Tint, Rotation, new Vector2(0, 0), Scale, SpriteEffects.None, 1f);
+                else
+                    spriteBatch.Draw(Graphic, Bounds, Tint);
+            }
         }
         public virtual void Update(GameTime gameTime)
         {
-            Point dimens = new Point(0, 0);
-            if (UseCustomDimensions)
-                dimens = Dimensions;
-            else if (Graphic != null)
-                dimens = new Point(Graphic.Width, Graphic.Height);
+            if (Graphic != null)
+            {
+                Point dimens = new Point(0, 0);
+                if (UseCustomDimensions)
+                    dimens = Dimensions;
+                else if (Graphic != null)
+                    dimens = new Point(Graphic.Width, Graphic.Height);
 
-            Bounds = new Rectangle(Location.ToPoint(), dimens);
+                Bounds = new Rectangle(Location.ToPoint(), dimens);
+            }
         }
     }
 

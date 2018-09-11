@@ -59,8 +59,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Interface.Controls\Image.cs" />
     <Compile Include="Interface.Scenes\DebugOverlay.cs" />
     <Compile Include="Components\Timers.cs" />
+    <Compile Include="Interface.Scenes\GameOneScene.cs" />
     <Compile Include="Interface.Scenes\LoadOverlay.cs" />
     <Compile Include="Interface.Scenes\MainMenuScene.cs" />
     <Compile Include="Interface.Controls\MenuButton.cs" />

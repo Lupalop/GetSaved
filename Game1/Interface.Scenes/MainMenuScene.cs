@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Arkabound.Interface.Controls;
 using Arkabound.Components;
+using Arkabound.Objects;
 
 namespace Arkabound.Interface.Scenes
 {
@@ -16,54 +17,73 @@ namespace Arkabound.Interface.Scenes
         public MainMenuScene(SceneManager sceneManager)
             : base(sceneManager, "Main Menu")
         {
-            mb = new MenuButton("mb", sceneManager)
-            { 
-                Text = "Play", 
-                Graphic = game.Content.Load<Texture2D>("menuBG"), 
-                Location = ScreenCenter,
-                spriteBatch = this.spriteBatch, 
-                Font = fonts["default_m"],
-                ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
-            };
-            mb2 = new MenuButton("mb", sceneManager)
-            {
-                Text = "Exit",
-                Graphic = game.Content.Load<Texture2D>("menuBG"),
-                Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
-                Font = fonts["default_m"],
-                ClickAction = () => game.Exit()
+            Objects = new ObjectBase[] {
+                new Image("logo") {
+                    Graphic = game.Content.Load<Texture2D>("gameLogo"),
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch
+                },
+                new MenuButton("mb", sceneManager) {
+                    Text = "Play", 
+                    Graphic = game.Content.Load<Texture2D>("menuBG"), 
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch, 
+                    Font = fonts["default_m"],
+                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                },
+                new MenuButton("mb2", sceneManager) {
+                    Text = "Help", 
+                    Graphic = game.Content.Load<Texture2D>("menuBG"), 
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch, 
+                    Font = fonts["default_m"],
+                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                },
+                new MenuButton("mb4", sceneManager) {
+                    Text = "Settings", 
+                    Graphic = game.Content.Load<Texture2D>("menuBG"), 
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch, 
+                    Font = fonts["default_m"],
+                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                },
+                new MenuButton("mb5", sceneManager) {
+                    Text = "High Scores", 
+                    Graphic = game.Content.Load<Texture2D>("menuBG"), 
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch, 
+                    Font = fonts["default_m"],
+                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                },
+                new MenuButton("mb3", sceneManager) {
+                    Text = "Exit",
+                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch,
+                    Font = fonts["default_m"],
+                    ClickAction = () => game.Exit()
+                }
             };
         }
 
-        private Texture2D Logo;
-        private MenuButton mb;
-        private MenuButton mb2;
+        private ObjectBase[] Objects;
 
         public override void LoadContent()
         {
-            Logo = game.Content.Load<Texture2D>("gameLogo");
             base.LoadContent();
         }
 
         public override void Draw(GameTime gameTime)
         {
             game.GraphicsDevice.Clear(Color.Blue);
-            spriteBatch.Begin();
-            spriteBatch.Draw(Logo, new Vector2(200, 200), null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
-            spriteBatch.End();
-            mb.Draw(gameTime);
-            mb2.Draw(gameTime);
             base.Draw(gameTime);
+            base.DrawObjectsFromBase(gameTime, Objects);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            mb.Location = new Vector2(ScreenCenter.X - (mb.Graphic.Width / 2), (int)ScreenCenter.Y - (mb.Graphic.Height / 2));
-            mb2.Location = new Vector2(ScreenCenter.X - (mb.Graphic.Width / 2), (int)ScreenCenter.Y - (mb.Graphic.Height / 2) + 70);
-            mb.Update(gameTime);
-            mb2.Update(gameTime);
+            base.AlignObjectsToCenterUsingBase(gameTime, Objects);
         }
     }
 }

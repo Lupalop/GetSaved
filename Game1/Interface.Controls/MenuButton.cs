@@ -34,7 +34,7 @@ namespace Arkabound.Interface.Controls
         {
             spriteBatch.Begin();
             base.Draw(gameTime);
-            spriteBatch.DrawString(Font, Text, GraphicCenter, Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.None, 1f);
+            spriteBatch.DrawString(Font, Text, GraphicCenter, Color.White, 0f, new Vector2(0, 0), Scale, SpriteEffects.None, 1f);
             spriteBatch.End();
         }
 
@@ -46,14 +46,6 @@ namespace Arkabound.Interface.Controls
             GraphicCenter = new Vector2(Location.X + Graphic.Bounds.Width / 2.7f, Location.Y + Graphic.Bounds.Height / 4);
             if ((MsState.LeftButton == ButtonState.Pressed) && (Bounds.Intersects(MsOverlay.mouseBox)))
             {
-                //Scale += .5f;
-                //if (Scale < 2)
-                    //Scale += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //if (Scale == 2)
-                    //Scale -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                a += gameTime.ElapsedGameTime.TotalSeconds;
-                Text = a.ToString();
-                    
                 clickFired = true;
             }
             if ((MsState.LeftButton == ButtonState.Pressed) && (!Bounds.Intersects(MsOverlay.mouseBox)))
