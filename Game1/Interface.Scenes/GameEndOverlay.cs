@@ -24,16 +24,23 @@ namespace Arkabound.Interface.Scenes
                 {
                     Graphic = game.Content.Load<Texture2D>("overlayBG"),
                     CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
+                    AlignToCenter = false,
                     spriteBatch = this.spriteBatch
                 }},
-                { "TimesUp", new MenuButton("TimesUp", sceneManager)
+                { "TimesUp", new Image("TimesUp")
                 {
                     Graphic = game.Content.Load<Texture2D>("timesUp"),
                     Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch
+                }},
+                { "NextRoundBtn", new MenuButton("NextRoundBtn", sceneManager)
+                {
+                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
-                    Text = "",
+                    Text = "Next Round",
                     Font = fonts["default_m"],
-                    ClickAction = () => game.Exit()
+                    ClickAction = () => { sceneManager.currentScene = new WorldSelectionScene(sceneManager); sceneManager.overlays.Remove("gameEnd"); }
                 }}
             };
 

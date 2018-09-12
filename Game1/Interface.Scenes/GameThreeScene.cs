@@ -13,10 +13,10 @@ using Arkabound.Objects;
 
 namespace Arkabound.Interface.Scenes
 {
-    public class GameOneScene : SceneBase
+    public class GameThreeScene : SceneBase
     {
-        public GameOneScene(SceneManager sceneManager, Difficulty difficulty)
-            : base(sceneManager, "Game 1 Scene: Falling Objects")
+        public GameThreeScene(SceneManager sceneManager, Difficulty difficulty)
+            : base(sceneManager, "Game 3 Scene: Dino-like Game")
         {
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")

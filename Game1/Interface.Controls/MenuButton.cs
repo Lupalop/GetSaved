@@ -44,9 +44,18 @@ namespace Arkabound.Interface.Controls
             Vector2 TextLength = Font.MeasureString(Text);
             GraphicCenter = new Vector2(Location.X + (Graphic.Bounds.Width / 2) - TextLength.X / 2, Location.Y + Graphic.Bounds.Height / 4);
 
+            Tint = Color.White;
+            if (Bounds.Intersects(MsOverlay.mouseBox))
+            {
+                Tint = Color.Wheat;
+            }
+
             MsState = sceneManager.MsState;
             if ((MsState.LeftButton == ButtonState.Pressed) && (Bounds.Intersects(MsOverlay.mouseBox)))
+            {
+                Tint = Color.Violet;
                 clickFired = true;
+            }
             if ((MsState.LeftButton == ButtonState.Pressed) && (!Bounds.Intersects(MsOverlay.mouseBox)))
                 clickFired = false;
             if (MsState.LeftButton == ButtonState.Released && clickFired)

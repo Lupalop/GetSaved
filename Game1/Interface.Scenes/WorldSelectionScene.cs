@@ -32,7 +32,7 @@ namespace Arkabound.Interface.Scenes
                 {
                     Text = String.Format("Difficulty: {0}", difficulty),
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
-                    Location = new Vector2(505,5),
+                    Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
@@ -54,7 +54,7 @@ namespace Arkabound.Interface.Scenes
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
-                    ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
+                    ClickAction = () => sceneManager.currentScene = new GameTwoScene(sceneManager, difficulty)
                 }},
                 { "mb5", new MenuButton("mb", sceneManager)
                 {
@@ -63,7 +63,7 @@ namespace Arkabound.Interface.Scenes
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
-                    ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
+                    ClickAction = () => sceneManager.currentScene = new GameTwoScene(sceneManager, difficulty)
                 }},
                 { "mb6", new MenuButton("mb", sceneManager)
                 {
@@ -72,7 +72,7 @@ namespace Arkabound.Interface.Scenes
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
-                    ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
+                    ClickAction = () => sceneManager.currentScene = new GameThreeScene(sceneManager, difficulty)
                 }},
                 { "mb7", new MenuButton("mb", sceneManager)
                 {
@@ -81,9 +81,11 @@ namespace Arkabound.Interface.Scenes
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
-                    ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
+                    ClickAction = () => sceneManager.currentScene = new GameFourScene(sceneManager, difficulty)
                 }}
             };
+
+            distanceFromTop = 100;
         }
 
         private Difficulty difficulty = Difficulty.Easy;
@@ -109,7 +111,7 @@ namespace Arkabound.Interface.Scenes
         }
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.Red);
+            game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
         }

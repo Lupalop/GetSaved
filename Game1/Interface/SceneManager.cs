@@ -35,6 +35,9 @@ namespace Arkabound.Interface
             {
                 if (Program.UseConsole)
                     Console.WriteLine("Switching to scene: " + value.sceneName);
+                // Unload previous scene
+                if (_currentScene != null)
+                    _currentScene.Unload();
                 // Set current state to given scene
                 _currentScene = value;
             }

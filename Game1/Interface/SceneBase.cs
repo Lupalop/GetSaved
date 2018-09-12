@@ -24,6 +24,9 @@ namespace Arkabound.Interface
             fonts = sceneManager.fonts;
             // Load the scene's content
             LoadContent();
+            // Layout stuff
+            distanceFromTop = 50;
+            spacing = 5;
         }
 
         public SceneManager sceneManager;
@@ -33,7 +36,7 @@ namespace Arkabound.Interface
         public Dictionary<string, ObjectBase> Objects;
         public string sceneName = "Unnamed Scene";
 
-        public Vector2 ScreenCenter = new Vector2(-100, -100);
+        public Vector2 ScreenCenter = new Vector2(0, 0);
 
         public KeyboardState KeybdState;
         public GamePadState GamePdState;
@@ -56,6 +59,12 @@ namespace Arkabound.Interface
             if (Program.UseConsole && Program.VerboseMessages)
                 Console.WriteLine("Updating from scene: "  + sceneName);
             ScreenCenter = new Vector2(game.GraphicsDevice.Viewport.Bounds.Width / 2, game.GraphicsDevice.Viewport.Bounds.Height / 2);
+        }
+
+        public virtual void Unload()
+        {
+            if (Program.UseConsole)
+                Console.WriteLine("Unloading from scene: " + sceneName);
         }
 
         public virtual void DrawObjects(GameTime gameTime, Dictionary<string, ObjectBase> objects)
@@ -92,25 +101,23 @@ namespace Arkabound.Interface
         {
             UpdateObjectsFromArray(gameTime, objects);
         }
+        public int distanceFromTop;
+        public int spacing;
         private void UpdateObjectsFromArray(GameTime gameTime, ObjectBase[] objs)
         {
+            int originalDFT = distanceFromTop;
             // Dynamically compute for spacing between *centered* objects
-            int distanceFromTop = 50;
             for (int i = 0; i < objs.Length; i++)
             {
                 ObjectBase Object = objs[i];
 
                 if (Object.AlignToCenter)
                 {
-                    if (Object.Graphic != null)
-                    {
-                        Object.Location = new Vector2(ScreenCenter.X - (Object.Graphic.Width / 2), distanceFromTop);
-                        distanceFromTop += Object.Graphic.Height;
-                    }
-                    else if (Object.DimensionsOverride != null)
+                    if (Object.Graphic != null || Object.DimensionsOverride != null)
                     {
                         Object.Location = new Vector2(ScreenCenter.X - (Object.Bounds.Width / 2), distanceFromTop);
                         distanceFromTop += Object.Bounds.Height;
+                        distanceFromTop += spacing;
                     }
                     else
                     {
@@ -120,6 +127,7 @@ namespace Arkabound.Interface
 
                 Object.Update(gameTime);
             }
+            distanceFromTop = originalDFT;
         }
     }
 }

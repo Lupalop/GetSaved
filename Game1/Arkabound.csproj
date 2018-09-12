@@ -62,6 +62,9 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Interface.Controls\Label.cs" />
     <Compile Include="Interface.Controls\Image.cs" />
+    <Compile Include="Interface.Scenes\GameTwoScene.cs" />
+    <Compile Include="Interface.Scenes\GameFourScene.cs" />
+    <Compile Include="Interface.Scenes\GameThreeScene.cs" />
     <Compile Include="Interface.Scenes\DebugOverlay.cs" />
     <Compile Include="Components\Timers.cs" />
     <Compile Include="Interface.Scenes\GameEndOverlay.cs" />

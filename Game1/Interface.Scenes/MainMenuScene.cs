@@ -23,31 +23,51 @@ namespace Arkabound.Interface.Scenes
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch
                 }},
-                { "mb1", new MenuButton("mb", sceneManager) {
-                    Text = "Play", 
-                    Graphic = game.Content.Load<Texture2D>("menuBG"), 
+                { "tagline", new Label("tagline")
+                {
+                    Text = "Disaster Preparedness for Everyone!",
+                    spriteBatch = this.spriteBatch, 
+                    Font = fonts["default_m"]
+                }},
+                { "mb1", new MenuButton("mb", sceneManager)
+                {
+                    Text = "", 
+                    Graphic = game.Content.Load<Texture2D>("playBtn"), 
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"],
                     ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
-                { "mb2", new MenuButton("mb", sceneManager) {
+                /*{ "mb2", new MenuButton("mb", sceneManager)
+                {
                     Text = "High Scores",
                     Graphic = game.Content.Load<Texture2D>("menuBG"), 
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"],
+                    Tint = Color.Transparent,
                     ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
-                { "mb3", new MenuButton("mb", sceneManager) {
+                { "mb3", new MenuButton("mb", sceneManager)
+                {
                     Text = "Exit",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default_m"],
                     ClickAction = () => game.Exit()
+                }}*/
+                { "lb1", new Label("lb")
+                {
+                    Text = "Prototype Version (v1)",
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch,
+                    Font = fonts["default"]
                 }}
             };
+            // Layout stuff
+            distanceFromTop = 100;
+            spacing = 20;
         }
 
         public override void LoadContent()
