@@ -28,6 +28,16 @@ namespace Arkabound.Interface.Scenes
                     Font = fonts["default"],
                     ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
                 },
+                new MenuButton("chDiff", sceneManager)
+                {
+                    Text = String.Format("Difficulty: {0}", difficulty),
+                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Location = new Vector2(505,5),
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch,
+                    Font = fonts["default"],
+                    ClickAction = () => ModifyDifficulty()
+                },
                 new MenuButton("mb2", sceneManager)
                 {
                     Text = "Falling Objects",
@@ -35,7 +45,7 @@ namespace Arkabound.Interface.Scenes
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
-                    ClickAction = () => sceneManager.currentScene = new GameOneScene(sceneManager)
+                    ClickAction = () => sceneManager.currentScene = new GameOneScene(sceneManager, difficulty)
                 },
                 new MenuButton("mb3", sceneManager)
                 {
@@ -77,7 +87,27 @@ namespace Arkabound.Interface.Scenes
         }
 
         private ObjectBase[] Objects;
+        private Difficulty difficulty = Difficulty.Easy;
 
+        private void ModifyDifficulty()
+        {
+            switch (difficulty)
+            {
+                case Difficulty.Easy:
+                    difficulty = Difficulty.Medium;
+                    break;
+                case Difficulty.Medium:
+                    difficulty = Difficulty.Hard;
+                    break;
+                case Difficulty.Hard:
+                    difficulty = Difficulty.EpicFail;
+                    break;
+                case Difficulty.EpicFail:
+                    difficulty = Difficulty.Easy;
+                    break;
+            }
+            Console.WriteLine(String.Format("Difficulty changed to: {0}", difficulty));
+        }
         public override void Draw(GameTime gameTime)
         {
             game.GraphicsDevice.Clear(Color.Red);
@@ -88,7 +118,10 @@ namespace Arkabound.Interface.Scenes
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            MenuButton dfBtn = (MenuButton)Objects[1];
+            dfBtn.Text = String.Format("Difficulty: {0}", difficulty);
             base.AlignObjectsToCenterUsingBase(gameTime, Objects);
+
         }
     }
 }

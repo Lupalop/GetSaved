@@ -15,11 +15,11 @@ namespace Arkabound.Interface.Scenes
 {
     public class GameOneScene : SceneBase
     {
-        public GameOneScene(SceneManager sceneManager)
-            : base(sceneManager, "Game 1 Scene")
+        public GameOneScene(SceneManager sceneManager, Difficulty difficulty)
+            : base(sceneManager, "Game 1 Scene: Falling Objects")
         {
-            Objects = new ObjectBase[] {
-                new MenuButton("mb", sceneManager)
+            Objects = new Dictionary<string, ObjectBase> {
+                { "BackButton", new MenuButton("mb", sceneManager)
                 {
                     Text = "Back",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -28,15 +28,15 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
                     ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
-                },
-                new Image("ObjectCatcher")
+                }},
+                { "ObjectCatcher", new Image("ObjectCatcher")
                 {
                     Graphic = game.Content.Load<Texture2D>("Briefcase"),
                     Location = new Vector2(5, 500),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
-                },
-                new MenuButton("timer", sceneManager)
+                }},
+                { "Timer", new MenuButton("timer", sceneManager)
                 {
                     Text = "Time Left: " + timeLeft,
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -44,57 +44,92 @@ namespace Arkabound.Interface.Scenes
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"]
-                }
-            }.ToList();
-            MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
-            InitializeTimer();
+                }}
+            };
 
+            MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
+            switch (difficulty)
+            {
+                case Difficulty.Easy:
+                    timeLeft = 15.0;
+                    projectileInterval = 500;
+                    FallingSpeed = 3;
+                    break;
+                case Difficulty.Medium:
+                    timeLeft = 10.0;
+                    projectileInterval = 300;
+                    FallingSpeed = 3;
+                    break;
+                case Difficulty.Hard:
+                    timeLeft = 5.0;
+                    projectileInterval = 200;
+                    FallingSpeed = 5;
+                    break;
+                case Difficulty.EpicFail:
+                    timeLeft = 3;
+                    projectileInterval = 100;
+                    FallingSpeed = 10;
+                    break;
+            }
+
+            InitializeTimer();
         }
 
-        private List<string> FallingObjects = new List<string> { 
+        private List<string> FallingObjects = new List<string> {
 			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
 			"!Donut", "!Heels", "!Makeup", "!Ball", "!Wall Clock", "!Chair"
 			};
         private MouseOverlay MsOverlay;
-        private List<ObjectBase> Objects;
+        private Dictionary<string, ObjectBase> Objects;
+        private List<ObjectBase> GameObjects = new List<ObjectBase>();
 
         private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
 
-        Timer SomeTimer = new Timer(300);
-        Timer GameTimer = new Timer(10000);
-        Timer InGameTimer = new Timer(1000);
+        private double timeLeft;
+        private int projectileInterval;
+        private float FallingSpeed;
+
+        Timer ProjectileGenerator;
+        Timer TimeLeftController;
+        Timer GameTimer;
+
         private void InitializeTimer()
         {
+            // Initiailize timers
+            ProjectileGenerator = new Timer(projectileInterval);
+            TimeLeftController = new Timer(1000);
+            GameTimer = new Timer(timeLeft * 1000);
             // Add the event handler to the timer object
-            SomeTimer.Elapsed += OnTimerEnd;
-            SomeTimer.AutoReset = true;
-            SomeTimer.Enabled = true;
+            ProjectileGenerator.Elapsed += OnProjectileGeneratorEnd;
+            ProjectileGenerator.AutoReset = true;
+            ProjectileGenerator.Enabled = true;
 
-            InGameTimer.Elapsed += UpdateInGameTimer;
-            InGameTimer.AutoReset = true;
-            InGameTimer.Enabled = true;
+            TimeLeftController.Elapsed += OnTimeLeftEnd;
+            TimeLeftController.AutoReset = true;
+            TimeLeftController.Enabled = true;
 
             GameTimer.Elapsed += OnGameTimerEnd;
             GameTimer.Enabled = true;
         }
 
-        private void OnTimerEnd(Object source, ElapsedEventArgs e)
+        private void OnProjectileGeneratorEnd(Object source, ElapsedEventArgs e)
         {
             GenerateFallingCrap();
         }
 
-        private void UpdateInGameTimer(Object source, ElapsedEventArgs e)
+        private void OnTimeLeftEnd(Object source, ElapsedEventArgs e)
         {
             if (timeLeft >= 1)
                 timeLeft -= 1;
         }
 
         private bool stopCreatingCrap = false;
-        private double timeLeft = 10.0;
+
         private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
         {
             stopCreatingCrap = true;
-            Objects.Add(new MenuButton("TimesUp", sceneManager)
+            // TODO: convert times up to overlay
+            Objects.Add("TimesUp", new MenuButton("TimesUp", sceneManager)
             {
                 Graphic = game.Content.Load<Texture2D>("timesUp"),
                 Location = ScreenCenter,
@@ -113,14 +148,14 @@ namespace Arkabound.Interface.Scenes
                 else
                     correctCrap++;
             }
-            Objects.Add(new MenuButton("CorrectCrap", sceneManager) {
+            Objects.Add("CorrectCrap", new MenuButton("CorrectCrap", sceneManager) {
                 Graphic = game.Content.Load<Texture2D>("holder"),
                 Location = ScreenCenter,
                 spriteBatch = this.spriteBatch,
                 Text = "Correct items: " + correctCrap,
                 Font = fonts["default_m"]
             });
-            Objects.Add(new MenuButton("CorrectCrap", sceneManager)
+            Objects.Add("IncorrectCrap", new MenuButton("InCorrectCrap", sceneManager)
             {
                 Graphic = game.Content.Load<Texture2D>("holder"),
                 Location = ScreenCenter,
@@ -150,44 +185,49 @@ namespace Arkabound.Interface.Scenes
                 if (tex.Contains('!'))
                     tex = tex.Remove(0, 1);
                 nwBtn.Text = tex;
-                Objects.Add(nwBtn);
+                GameObjects.Add(nwBtn);
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
             game.GraphicsDevice.Clear(Color.LightGreen);
-            base.Draw(gameTime);
-            base.DrawObjectsFromBase(gameTime, Objects.ToArray());
-            MenuButton a = (MenuButton)Objects[2];
+            MenuButton a = (MenuButton)Objects["Timer"];
             a.Text = "Time Left: " + timeLeft;
+            base.Draw(gameTime);
+            base.DrawObjectsFromBase(gameTime, GameObjects.ToArray());
+            base.DrawObjectsFromBase(gameTime, Objects.Values.ToArray<ObjectBase>());
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            base.AlignObjectsToCenterUsingBase(gameTime, Objects.ToArray());
-            Objects[1].Location = new Vector2(MsOverlay.mouseBox.X - (Objects[1].Graphic.Width / 2), 500);
-            for (int i = 0; i < Objects.Count; i++)
+            base.AlignObjectsToCenterUsingBase(gameTime, GameObjects.ToArray());
+            base.AlignObjectsToCenterUsingBase(gameTime, Objects.Values.ToArray<ObjectBase>());
+            for (int i = 0; i < GameObjects.Count; i++)
             {
-                if (Objects[i].Name == "crap")
+                // Move crap by 3
+                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X, GameObjects[i].Location.Y + FallingSpeed);
+
+                // Check if game object collides/intersects with catcher
+                if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
                 {
-                    // Move crap by 3
-                    Objects[i].Location = new Vector2(Objects[i].Location.X, Objects[i].Location.Y + 3);
-
-                    // Check for collisions/intersections
-                    if (Objects[1].Bounds.Intersects(Objects[i].Bounds))
-                    {
-                        CollectedObjects.Add(Objects[i]);
-                        Objects.Remove(Objects[i]);
-                    }
-
-                    // cleanup crapped shit
-                    // (normal human speak: remove objects once it exceeds the object catcher)
-                    // also remove all crap once time is up
-                    if ((Objects[i].Location.Y > Objects[1].Location.Y + 10) || stopCreatingCrap)
-                        Objects.Remove(Objects[i]);
+                    CollectedObjects.Add(GameObjects[i]);
+                    GameObjects.Remove(GameObjects[i]);
                 }
+
+                // cleanup crapped shit
+                // (normal human speak: remove objects once it exceeds the object catcher)
+                // also remove all crap once time is up
+                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || stopCreatingCrap)
+                    GameObjects.Remove(GameObjects[i]);
+            }
+            if (Objects.ContainsKey("ObjectCatcher"))
+            {
+                if (stopCreatingCrap)
+                    Objects.Remove("ObjectCatcher");
+                else
+                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.mouseBox.X - (Objects["ObjectCatcher"].Graphic.Width / 2), 500);
             }
         }
     }

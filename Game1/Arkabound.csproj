@@ -59,6 +59,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums.cs" />
     <Compile Include="Interface.Controls\Image.cs" />
     <Compile Include="Interface.Scenes\DebugOverlay.cs" />
     <Compile Include="Components\Timers.cs" />

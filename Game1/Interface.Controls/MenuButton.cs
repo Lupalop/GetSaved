@@ -39,7 +39,6 @@ namespace Arkabound.Interface.Controls
         }
 
         bool clickFired;
-        double a;
         public override void Update(GameTime gameTime)
         {
             MsState = sceneManager.MsState;
@@ -55,7 +54,8 @@ namespace Arkabound.Interface.Controls
                 if (ClickAction != null)
                 {
                     ClickAction.Invoke();
-                    clickFired = true;
+                    // In order to prevent the action from being fired again
+                    clickFired = false;
                     Timer.Create(1f, () => clickFired = false);
                 }
             }
