@@ -66,7 +66,7 @@ namespace Arkabound.Interface.Scenes
                     FallingSpeed = 5;
                     break;
                 case Difficulty.EpicFail:
-                    timeLeft = 3;
+                    timeLeft = 15.0;
                     projectileInterval = 100;
                     FallingSpeed = 10;
                     break;
@@ -80,9 +80,7 @@ namespace Arkabound.Interface.Scenes
 			"!Donut", "!Heels", "!Makeup", "!Ball", "!Wall Clock", "!Chair"
 			};
         private MouseOverlay MsOverlay;
-        private Dictionary<string, ObjectBase> Objects;
         private List<ObjectBase> GameObjects = new List<ObjectBase>();
-
         private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
 
         private double timeLeft;
@@ -109,6 +107,7 @@ namespace Arkabound.Interface.Scenes
             TimeLeftController.Enabled = true;
 
             GameTimer.Elapsed += OnGameTimerEnd;
+            GameTimer.AutoReset = false;
             GameTimer.Enabled = true;
         }
 
@@ -128,41 +127,7 @@ namespace Arkabound.Interface.Scenes
         private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
         {
             stopCreatingCrap = true;
-            // TODO: convert times up to overlay
-            Objects.Add("TimesUp", new MenuButton("TimesUp", sceneManager)
-            {
-                Graphic = game.Content.Load<Texture2D>("timesUp"),
-                Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
-                Text = "",
-                Font = fonts["default_m"],
-                ClickAction = () => game.Exit()
-            });
-            int correctCrap = 0;
-            int wrongCrap = 0;
-            // Count correct crap
-            foreach (var crap in CollectedObjects)
-            {
-                if (crap.MessageHolder[0].ToString().Contains('!'))
-                    wrongCrap++;
-                else
-                    correctCrap++;
-            }
-            Objects.Add("CorrectCrap", new MenuButton("CorrectCrap", sceneManager) {
-                Graphic = game.Content.Load<Texture2D>("holder"),
-                Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
-                Text = "Correct items: " + correctCrap,
-                Font = fonts["default_m"]
-            });
-            Objects.Add("IncorrectCrap", new MenuButton("InCorrectCrap", sceneManager)
-            {
-                Graphic = game.Content.Load<Texture2D>("holder"),
-                Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
-                Text = "Incorrect items: " + wrongCrap,
-                Font = fonts["default_m"]
-            });
+            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects));
             GameTimer.Enabled = false;
         }
 
@@ -191,19 +156,19 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.LightGreen);
+            game.GraphicsDevice.Clear(Color.LightSalmon);
             MenuButton a = (MenuButton)Objects["Timer"];
             a.Text = "Time Left: " + timeLeft;
             base.Draw(gameTime);
-            base.DrawObjectsFromBase(gameTime, GameObjects.ToArray());
-            base.DrawObjectsFromBase(gameTime, Objects.Values.ToArray<ObjectBase>());
+            base.DrawObjects(gameTime, GameObjects);
+            base.DrawObjects(gameTime, Objects);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            base.AlignObjectsToCenterUsingBase(gameTime, GameObjects.ToArray());
-            base.AlignObjectsToCenterUsingBase(gameTime, Objects.Values.ToArray<ObjectBase>());
+            base.UpdateObjects(gameTime, GameObjects);
+            base.UpdateObjects(gameTime, Objects);
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 // Move crap by 3

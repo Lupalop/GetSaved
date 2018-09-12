@@ -65,7 +65,6 @@ namespace Arkabound.Objects
         }
 
         // O
-        public virtual void Remove() { Console.Write("Unimplemented"); }
         public virtual void Draw(GameTime gameTime)
         {
             if (Graphic != null)

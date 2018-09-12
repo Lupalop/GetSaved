@@ -17,56 +17,38 @@ namespace Arkabound.Interface.Scenes
         public MainMenuScene(SceneManager sceneManager)
             : base(sceneManager, "Main Menu")
         {
-            Objects = new ObjectBase[] {
-                new Image("logo") {
+            Objects = new Dictionary<string, ObjectBase> {
+                { "logo", new Image("logo") {
                     Graphic = game.Content.Load<Texture2D>("gameLogo"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch
-                },
-                new MenuButton("mb", sceneManager) {
+                }},
+                { "mb1", new MenuButton("mb", sceneManager) {
                     Text = "Play", 
                     Graphic = game.Content.Load<Texture2D>("menuBG"), 
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"],
                     ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
-                },
-                new MenuButton("mb2", sceneManager) {
-                    Text = "Help", 
+                }},
+                { "mb2", new MenuButton("mb", sceneManager) {
+                    Text = "High Scores",
                     Graphic = game.Content.Load<Texture2D>("menuBG"), 
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"],
                     ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
-                },
-                new MenuButton("mb4", sceneManager) {
-                    Text = "Settings", 
-                    Graphic = game.Content.Load<Texture2D>("menuBG"), 
-                    Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch, 
-                    Font = fonts["default_m"],
-                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
-                },
-                new MenuButton("mb5", sceneManager) {
-                    Text = "High Scores", 
-                    Graphic = game.Content.Load<Texture2D>("menuBG"), 
-                    Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch, 
-                    Font = fonts["default_m"],
-                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
-                },
-                new MenuButton("mb3", sceneManager) {
+                }},
+                { "mb3", new MenuButton("mb", sceneManager) {
                     Text = "Exit",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default_m"],
                     ClickAction = () => game.Exit()
-                }
+                }}
             };
         }
-
-        private ObjectBase[] Objects;
 
         public override void LoadContent()
         {
@@ -75,15 +57,15 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.Blue);
+            game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             base.Draw(gameTime);
-            base.DrawObjectsFromBase(gameTime, Objects);
+            base.DrawObjects(gameTime, Objects);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            base.AlignObjectsToCenterUsingBase(gameTime, Objects);
+            base.UpdateObjects(gameTime, Objects);
         }
     }
 }

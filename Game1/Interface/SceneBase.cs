@@ -30,6 +30,7 @@ namespace Arkabound.Interface
         public Game game;
         public SpriteBatch spriteBatch;
         public Dictionary<string, SpriteFont> fonts;
+        public Dictionary<string, ObjectBase> Objects;
         public string sceneName = "Unnamed Scene";
 
         public Vector2 ScreenCenter = new Vector2(-100, -100);
@@ -57,32 +58,60 @@ namespace Arkabound.Interface
             ScreenCenter = new Vector2(game.GraphicsDevice.Viewport.Bounds.Width / 2, game.GraphicsDevice.Viewport.Bounds.Height / 2);
         }
 
-        public virtual void DrawObjectsFromBase(GameTime gameTime, ObjectBase[] Objects)
+        public virtual void DrawObjects(GameTime gameTime, Dictionary<string, ObjectBase> objects)
+        {
+            DrawObjectsFromArray(gameTime, objects.Values.ToArray<ObjectBase>());
+        }
+        public virtual void DrawObjects(GameTime gameTime, List<ObjectBase> objects)
+        {
+            DrawObjectsFromArray(gameTime, objects.ToArray<ObjectBase>());
+        }
+        public virtual void DrawObjects(GameTime gameTime, ObjectBase[] objects)
+        {
+            DrawObjectsFromArray(gameTime, objects);
+        }
+        private void DrawObjectsFromArray(GameTime gameTime, ObjectBase[] objs)
         {
             // Draw objects in the Object array
-            foreach (ObjectBase Object in Objects)
+            for (int i = 0; i < objs.Length; i++)
             {
-                Object.Draw(gameTime);
+                objs[i].Draw(gameTime);
             }
         }
 
-        public virtual void AlignObjectsToCenterUsingBase(GameTime gameTime, ObjectBase[] Objects)
+        public virtual void UpdateObjects(GameTime gameTime, Dictionary<string, ObjectBase> objects)
+        {
+            UpdateObjectsFromArray(gameTime, objects.Values.ToArray<ObjectBase>());
+        }
+        public virtual void UpdateObjects(GameTime gameTime, List<ObjectBase> objects)
+        {
+            UpdateObjectsFromArray(gameTime, objects.ToArray<ObjectBase>());
+        }
+        public virtual void UpdateObjects(GameTime gameTime, ObjectBase[] objects)
+        {
+            UpdateObjectsFromArray(gameTime, objects);
+        }
+        private void UpdateObjectsFromArray(GameTime gameTime, ObjectBase[] objs)
         {
             // Dynamically compute for spacing between *centered* objects
-            int distanceFromTop = 10;
-            for (int i = 0; i < Objects.Length; i++)
+            int distanceFromTop = 50;
+            for (int i = 0; i < objs.Length; i++)
             {
-                ObjectBase Object = Objects[i];
-                if (Object.Graphic != null && Object.AlignToCenter)
+                ObjectBase Object = objs[i];
+
+                if (Object.AlignToCenter)
                 {
-                    Object.Location = new Vector2(ScreenCenter.X - (Object.Graphic.Width / 2),
-                        distanceFromTop + Object.Graphic.Height);
-                    distanceFromTop += Object.Graphic.Height;
+                    if (Object.Graphic != null)
+                    {
+                        Object.Location = new Vector2(ScreenCenter.X - (Object.Graphic.Width / 2), distanceFromTop);
+                        distanceFromTop += Object.Graphic.Height;
+                    }
+                    else
+                    {
+                        Object.Location = new Vector2(ScreenCenter.X, distanceFromTop);
+                    }
                 }
-                else if (Object.AlignToCenter)
-                {
-                    Object.Location = new Vector2(ScreenCenter.X, distanceFromTop * i);
-                }
+
                 Object.Update(gameTime);
             }
         }

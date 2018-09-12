@@ -41,12 +41,11 @@ namespace Arkabound.Interface.Controls
         bool clickFired;
         public override void Update(GameTime gameTime)
         {
+            GraphicCenter = new Vector2(Location.X + (Graphic.Bounds.Width / 2.7f) - Text.Length * 2, Location.Y + Graphic.Bounds.Height / 4);
+
             MsState = sceneManager.MsState;
-            GraphicCenter = new Vector2(Location.X + Graphic.Bounds.Width / 2.7f, Location.Y + Graphic.Bounds.Height / 4);
             if ((MsState.LeftButton == ButtonState.Pressed) && (Bounds.Intersects(MsOverlay.mouseBox)))
-            {
                 clickFired = true;
-            }
             if ((MsState.LeftButton == ButtonState.Pressed) && (!Bounds.Intersects(MsOverlay.mouseBox)))
                 clickFired = false;
             if (MsState.LeftButton == ButtonState.Released && clickFired)
@@ -56,7 +55,6 @@ namespace Arkabound.Interface.Controls
                     ClickAction.Invoke();
                     // In order to prevent the action from being fired again
                     clickFired = false;
-                    Timer.Create(1f, () => clickFired = false);
                 }
             }
 

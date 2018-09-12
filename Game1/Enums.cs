@@ -13,4 +13,12 @@ namespace Arkabound
         Hard,
         EpicFail
     }
+    public enum Games
+    {
+        FallingObjects,
+        EscapeEarthquake,
+        EscapeFire,
+        RunningForTheirLives,
+        HelpOthersNow
+    }
 }

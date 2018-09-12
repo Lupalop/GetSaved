@@ -17,8 +17,8 @@ namespace Arkabound.Interface.Scenes
         public WorldSelectionScene(SceneManager sceneManager)
             : base(sceneManager, "Game Selection")
         {
-            Objects = new ObjectBase[] {
-                new MenuButton("mb", sceneManager)
+            Objects = new Dictionary<string, ObjectBase> {
+                { "mb1", new MenuButton("mb", sceneManager)
                 {
                     Text = "Back",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -27,8 +27,8 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
                     ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
-                },
-                new MenuButton("chDiff", sceneManager)
+                }},
+                { "mb2", new MenuButton("mb", sceneManager)
                 {
                     Text = String.Format("Difficulty: {0}", difficulty),
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -37,8 +37,8 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
                     ClickAction = () => ModifyDifficulty()
-                },
-                new MenuButton("mb2", sceneManager)
+                }},
+                { "mb3", new MenuButton("mb", sceneManager)
                 {
                     Text = "Falling Objects",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -46,8 +46,8 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
                     ClickAction = () => sceneManager.currentScene = new GameOneScene(sceneManager, difficulty)
-                },
-                new MenuButton("mb3", sceneManager)
+                }},
+                { "mb4", new MenuButton("mb", sceneManager)
                 {
                     Text = "Escape - Earthquake",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -55,8 +55,8 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
                     ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
-                },
-                new MenuButton("mb3", sceneManager)
+                }},
+                { "mb5", new MenuButton("mb", sceneManager)
                 {
                     Text = "Escape - Fire",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -64,8 +64,8 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
                     ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
-                },
-                new MenuButton("mb3", sceneManager)
+                }},
+                { "mb6", new MenuButton("mb", sceneManager)
                 {
                     Text = "Helix - Fire",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -73,8 +73,8 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
                     ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
-                },
-                new MenuButton("mb3", sceneManager)
+                }},
+                { "mb7", new MenuButton("mb", sceneManager)
                 {
                     Text = "Heal/Help Others - Earthquake",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
@@ -82,11 +82,10 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
                     ClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
-                }
+                }}
             };
         }
 
-        private ObjectBase[] Objects;
         private Difficulty difficulty = Difficulty.Easy;
 
         private void ModifyDifficulty()
@@ -112,15 +111,15 @@ namespace Arkabound.Interface.Scenes
         {
             game.GraphicsDevice.Clear(Color.Red);
             base.Draw(gameTime);
-            base.DrawObjectsFromBase(gameTime, Objects);
+            base.DrawObjects(gameTime, Objects);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            MenuButton dfBtn = (MenuButton)Objects[1];
+            MenuButton dfBtn = (MenuButton)Objects["mb2"];
             dfBtn.Text = String.Format("Difficulty: {0}", difficulty);
-            base.AlignObjectsToCenterUsingBase(gameTime, Objects);
+            base.UpdateObjects(gameTime, Objects);
 
         }
     }
