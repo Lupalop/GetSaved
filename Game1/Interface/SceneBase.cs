@@ -75,7 +75,8 @@ namespace Arkabound.Interface
             // Draw objects in the Object array
             for (int i = 0; i < objs.Length; i++)
             {
-                objs[i].Draw(gameTime);
+                try { objs[i].Draw(gameTime); }
+                catch (Exception) { }
             }
         }
 
@@ -105,6 +106,11 @@ namespace Arkabound.Interface
                     {
                         Object.Location = new Vector2(ScreenCenter.X - (Object.Graphic.Width / 2), distanceFromTop);
                         distanceFromTop += Object.Graphic.Height;
+                    }
+                    else if (Object.DimensionsOverride != null)
+                    {
+                        Object.Location = new Vector2(ScreenCenter.X - (Object.Bounds.Width / 2), distanceFromTop);
+                        distanceFromTop += Object.Bounds.Height;
                     }
                     else
                     {

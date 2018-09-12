@@ -19,6 +19,13 @@ namespace Arkabound.Interface.Scenes
             : base(sceneManager, "Game 1 Scene: Falling Objects")
         {
             Objects = new Dictionary<string, ObjectBase> {
+                { "GameBG", new Image("GameBG")
+                {
+                    Graphic = game.Content.Load<Texture2D>("GAMEBG"),
+                    CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch
+                }},
                 { "BackButton", new MenuButton("mb", sceneManager)
                 {
                     Text = "Back",
@@ -31,7 +38,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
-                    Graphic = game.Content.Load<Texture2D>("Briefcase"),
+                    Graphic = game.Content.Load<Texture2D>("falling-object/briefcase"),
                     Location = new Vector2(5, 500),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
@@ -67,7 +74,7 @@ namespace Arkabound.Interface.Scenes
                     break;
                 case Difficulty.EpicFail:
                     timeLeft = 15.0;
-                    projectileInterval = 100;
+                    projectileInterval = 50;
                     FallingSpeed = 10;
                     break;
             }
@@ -77,7 +84,7 @@ namespace Arkabound.Interface.Scenes
 
         private List<string> FallingObjects = new List<string> {
 			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
-			"!Donut", "!Heels", "!Makeup", "!Ball", "!Wall Clock", "!Chair"
+			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
 			};
         private MouseOverlay MsOverlay;
         private List<ObjectBase> GameObjects = new List<ObjectBase>();
@@ -138,18 +145,17 @@ namespace Arkabound.Interface.Scenes
             if (!stopCreatingCrap)
             {
                 // create new button object
-                MenuButton nwBtn = new MenuButton("crap", sceneManager) {
+                Image nwBtn = new Image("crap") {
                     Graphic = game.Content.Load<Texture2D>("holder"),
-                    Location = new Vector2((float)randNum.Next(5, (int)500 - 5), 30),
-                    Font = fonts["default"],
+                    Location = new Vector2((float)randNum.Next(5, (int)game.GraphicsDevice.Viewport.Width - 5), 30),
+                    //Font = fonts["default"],
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch
                 };
                 string tex = FallingObjects[randNum.Next(0, FallingObjects.Count)];
                 nwBtn.MessageHolder.Add(tex);
-                if (tex.Contains('!'))
-                    tex = tex.Remove(0, 1);
-                nwBtn.Text = tex;
+                if (tex.Contains('!') || tex.Contains('~')) tex = tex.Remove(0, 1);
+                nwBtn.Graphic = game.Content.Load<Texture2D>("falling-object/" + tex.ToLower());
                 GameObjects.Add(nwBtn);
             }
         }
@@ -160,15 +166,16 @@ namespace Arkabound.Interface.Scenes
             MenuButton a = (MenuButton)Objects["Timer"];
             a.Text = "Time Left: " + timeLeft;
             base.Draw(gameTime);
-            base.DrawObjects(gameTime, GameObjects);
             base.DrawObjects(gameTime, Objects);
+            base.DrawObjects(gameTime, GameObjects);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            base.UpdateObjects(gameTime, GameObjects);
+            Objects["GameBG"].CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             base.UpdateObjects(gameTime, Objects);
+            base.UpdateObjects(gameTime, GameObjects);
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 // Move crap by 3

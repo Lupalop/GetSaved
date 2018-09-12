@@ -41,7 +41,8 @@ namespace Arkabound.Interface.Controls
         bool clickFired;
         public override void Update(GameTime gameTime)
         {
-            GraphicCenter = new Vector2(Location.X + (Graphic.Bounds.Width / 2.7f) - Text.Length * 2, Location.Y + Graphic.Bounds.Height / 4);
+            Vector2 TextLength = Font.MeasureString(Text);
+            GraphicCenter = new Vector2(Location.X + (Graphic.Bounds.Width / 2) - TextLength.X / 2, Location.Y + Graphic.Bounds.Height / 4);
 
             MsState = sceneManager.MsState;
             if ((MsState.LeftButton == ButtonState.Pressed) && (Bounds.Intersects(MsOverlay.mouseBox)))

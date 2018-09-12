@@ -36,10 +36,12 @@ namespace Arkabound.Objects
         public virtual Texture2D Graphic { get; set; }
         public Vector2 Location { get; set; }
         public Point Dimensions { get; set; }
+        public Point DimensionsOverride { get; set; }
         public Color Tint { get; set; }
         public float Rotation { get; set; }
         public float Scale { get; set; }
         public bool UseCustomDimensions { get; set; }
+        public Rectangle CustomRectangle { get; set; }
         public bool AlignToCenter { get; set; }
 
         public Rectangle Bounds { get; set; }
@@ -69,6 +71,8 @@ namespace Arkabound.Objects
         {
             if (Graphic != null)
             {
+                if (CustomRectangle != null)
+                    spriteBatch.Draw(Graphic, CustomRectangle, null, Tint, Rotation, new Vector2(0, 0), SpriteEffects.None, 1f);
                 if (Rotation != 0 || Scale != 0)
                     spriteBatch.Draw(Graphic, Location, null, Tint, Rotation, new Vector2(0, 0), Scale, SpriteEffects.None, 1f);
                 else
@@ -77,16 +81,15 @@ namespace Arkabound.Objects
         }
         public virtual void Update(GameTime gameTime)
         {
-            if (Graphic != null)
-            {
-                Point dimens = new Point(0, 0);
-                if (UseCustomDimensions)
-                    dimens = Dimensions;
-                else if (Graphic != null)
-                    dimens = new Point(Graphic.Width, Graphic.Height);
+            Point dimens = new Point(0, 0);
+            if (UseCustomDimensions)
+                dimens = Dimensions;
+            else if (Graphic != null)
+                dimens = new Point(Graphic.Width, Graphic.Height);
+            else
+                dimens = DimensionsOverride;
 
-                Bounds = new Rectangle(Location.ToPoint(), dimens);
-            }
+            Bounds = new Rectangle(Location.ToPoint(), dimens);
         }
     }
 

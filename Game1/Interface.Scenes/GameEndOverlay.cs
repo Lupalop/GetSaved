@@ -15,11 +15,27 @@ namespace Arkabound.Interface.Scenes
 {
     public class GameEndOverlay : SceneBase
     {
-        public GameEndOverlay(SceneManager sceneManager, Games game, List<ObjectBase> passedMessage)
+        public GameEndOverlay(SceneManager sceneManager, Games cgame, List<ObjectBase> passedMessage)
             : base(sceneManager, "Game End Overlay")
         {
-            currentGame = game;
-            Objects = new Dictionary<string, ObjectBase>();
+            currentGame = cgame;
+            Objects = new Dictionary<string, ObjectBase> {
+                { "Background", new Image("Background")
+                {
+                    Graphic = game.Content.Load<Texture2D>("overlayBG"),
+                    CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
+                    spriteBatch = this.spriteBatch
+                }},
+                { "TimesUp", new MenuButton("TimesUp", sceneManager)
+                {
+                    Graphic = game.Content.Load<Texture2D>("timesUp"),
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch,
+                    Text = "",
+                    Font = fonts["default_m"],
+                    ClickAction = () => game.Exit()
+                }}
+            };
 
             switch (currentGame)
             {
@@ -45,21 +61,13 @@ namespace Arkabound.Interface.Scenes
         }
         public override void Update(GameTime gameTime)
         {
+            Objects["Background"].CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
         }
 
         public void Game1End(List<ObjectBase> CollectedObjects)
         {
-            Objects.Add("TimesUp", new MenuButton("TimesUp", sceneManager)
-            {
-                Graphic = game.Content.Load<Texture2D>("timesUp"),
-                Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
-                Text = "",
-                Font = fonts["default_m"],
-                ClickAction = () => game.Exit()
-            });
             int correctCrap = 0;
             int wrongCrap = 0;
             // Count correct crap
@@ -70,17 +78,16 @@ namespace Arkabound.Interface.Scenes
                 else
                     correctCrap++;
             }
-            Objects.Add("CorrectCrap", new MenuButton("CorrectCrap", sceneManager)
+
+            Objects.Add("CorrectCrap", new Label("CorrectCrap")
             {
-                Graphic = game.Content.Load<Texture2D>("holder"),
                 Location = ScreenCenter,
                 spriteBatch = this.spriteBatch,
                 Text = "Correct items: " + correctCrap,
                 Font = fonts["default_m"]
             });
-            Objects.Add("IncorrectCrap", new MenuButton("InCorrectCrap", sceneManager)
+            Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
             {
-                Graphic = game.Content.Load<Texture2D>("holder"),
                 Location = ScreenCenter,
                 spriteBatch = this.spriteBatch,
                 Text = "Incorrect items: " + wrongCrap,
