@@ -21,6 +21,8 @@ namespace Arkabound.Interface.Scenes
         string sceneCurrentHeader = "\nCurrent Scene: {0}";
         string sceneOverlayHeader = "\nOverlay Scenes ({0}):\n";
         string sceneOverlayList = "";
+        string sceneObjectHeader = "\nObjects in Current Scene ({0}):\n";
+        string sceneObjectList;
 
         public DebugOverlay(SceneManager sceneManager)
             : base(sceneManager, "Debug Overlay")
@@ -69,6 +71,18 @@ namespace Arkabound.Interface.Scenes
                     }
                 }
             }
+            if (KeybdState.IsKeyDown(Keys.F10))
+            {
+                sceneObjectList = "";
+                if (sceneManager.currentScene.Objects.Count != 0)
+                {
+                    for (int i = 0; i < sceneManager.currentScene.Objects.Count; i++)
+                    {
+                        List<string> keyList = sceneManager.currentScene.Objects.Keys.ToList();
+                        sceneObjectList += i + 1 + ". " + sceneManager.currentScene.Objects[keyList[i]].Name + " : " + keyList[i] + "\n";
+                    }
+                }
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -85,6 +99,13 @@ namespace Arkabound.Interface.Scenes
                     sceneOverlayList;
                 spriteBatch.DrawString(fonts["default"], sceneManagerInfo, new Vector2(0, 0), Color.Black);
                 spriteBatch.DrawString(fonts["default"], sceneManagerInfo, new Vector2(1, 1), Color.White);
+            }
+            if (KeybdState.IsKeyDown(Keys.F10))
+            {
+                string objectInfo = string.Format(sceneObjectHeader, sceneManager.currentScene.Objects.Count) +
+                                    sceneObjectList;
+                spriteBatch.DrawString(fonts["default"], objectInfo, new Vector2(0, 0), Color.Black);
+                spriteBatch.DrawString(fonts["default"], objectInfo, new Vector2(1, 1), Color.White);
             }
 
             if (isCounterVisible)

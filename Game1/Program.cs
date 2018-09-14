@@ -13,49 +13,64 @@ namespace Arkabound
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main(string[] args)
         {
-            if (UseConsole)
-                writeHeader();
-
-            runGame();
-
-            if (UseConsole)
+            if (args.Length != 0)
             {
-                while (PromptForRestart)
+                foreach (string arg in args)
                 {
-                    Console.WriteLine("Game execution has ended, would you like to restart? Y = Yes, Other keys = No");
-                    if (Console.ReadKey(true).Key == ConsoleKey.Y)
+                    switch (arg)
                     {
-                        writeHeader();
-                        runGame();
+                        case "--v":
+                            VerboseMessages = true;
+                            break;
+                        case "--restartOnExit":
+                            PromptForRestart = true;
+                            break;
+                        default:
+                            // Ignore other arguments passed
+                            break;
                     }
-                    else
-                        return;
                 }
+            }
+
+            WriteHeader();
+            RunGame();
+
+            while (PromptForRestart)
+            {
+                Console.WriteLine("Game execution has ended, would you like to restart? Y = Yes, Other keys = No");
+                if (Console.ReadKey(true).Key == ConsoleKey.Y)
+                {
+                    WriteHeader();
+                    RunGame();
+                }
+                else
+                    return;
             }
         }
 
-        static void writeHeader()
+        private static void WriteHeader()
         {
             Console.Clear();
-            Console.Title = "Arkabound Debug Console";
+            Console.Title = String.Format("{0} Debug Console", GameName);
             Console.WriteLine("/*");
-            Console.WriteLine(" * Arkabound v" + AssemblyName.GetAssemblyName(Assembly.GetExecutingAssembly().Location).Version.ToString());
+            Console.WriteLine(" * {0} v{1}", GameName, AssemblyName.GetAssemblyName(Assembly.GetExecutingAssembly().Location).Version.ToString());
             Console.WriteLine(" * Debug Console");
             Console.WriteLine(" */");
             Console.WriteLine();
         }
 
-        static void runGame()
+        private static void RunGame()
         {
             using (var game = new MainGame())
                 game.Run();
         }
 
-        public static bool UseConsole = true;
+        public static bool OutputMessages = true;
         public static bool VerboseMessages = false;
-        public static bool PromptForRestart = true;
+        public static bool PromptForRestart = false;
+        public static string GameName = "Get Saved";
     }
 #endif
 }

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using Arkabound.Interface;
 using Arkabound.Interface.Scenes;
 
@@ -17,6 +18,9 @@ namespace Arkabound
         SceneManager sceneManager;
         Dictionary<string, SpriteFont> fonts;
 
+        int LastWindowWidth = 800;
+        int LastWindowHeight = 600;
+
         public MainGame()
         {
             // Initialize graphics manager
@@ -26,10 +30,11 @@ namespace Arkabound
             // Make the mouse inivisible (perhaps, this should be placed somewhere else)
             IsMouseVisible = false;
             // Set the default window size to (800x600)
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferWidth = LastWindowWidth;
+            graphics.PreferredBackBufferHeight = LastWindowHeight;
             // Allow the window to be resized by the user
-            //Window.AllowUserResizing = true;
+            Window.AllowUserResizing = true;
+            Window.Title = Program.GameName;
             // Initialize the Fonts dictionary
             fonts = new Dictionary<string, SpriteFont>();
         }
@@ -88,16 +93,30 @@ namespace Arkabound
             KeyboardState KeybdState = Keyboard.GetState();
             GamePadState GamePdState = GamePad.GetState(PlayerIndex.One);
             MouseState MsState = Mouse.GetState();
+            TouchCollection TouchState = TouchPanel.GetState();
 
             sceneManager.GamePdState = GamePdState;
             sceneManager.KeybdState = KeybdState;
             sceneManager.MsState = MsState;
+            sceneManager.TouchState = TouchState;
 
-            if (GamePdState.Buttons.Back == ButtonState.Pressed || KeybdState.IsKeyDown(Keys.Escape))
+            if (GamePdState.Buttons.Back == ButtonState.Pressed || (KeybdState.IsKeyDown(Keys.Escape)))
                 Exit();
             if ((KeybdState.IsKeyDown(Keys.RightAlt) || KeybdState.IsKeyDown(Keys.LeftAlt)) && KeybdState.IsKeyDown(Keys.Enter))
+            {
+                if (graphics.IsFullScreen)
+                {
+                    graphics.PreferredBackBufferHeight = LastWindowHeight;
+                    graphics.PreferredBackBufferWidth = LastWindowWidth;
+                }
+                else
+                {
+                    graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+                    graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+                }
                 graphics.ToggleFullScreen();
-
+            }
+            
             sceneManager.Update(gameTime);
 
             base.Update(gameTime);
@@ -109,6 +128,9 @@ namespace Arkabound
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            // Stretch images using nearest neighbor
+            GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
             sceneManager.Draw(gameTime);
             
             base.Draw(gameTime);

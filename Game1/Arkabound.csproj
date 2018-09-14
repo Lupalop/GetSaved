@@ -60,6 +60,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
+    <Compile Include="Interface.Controls\AnimatedImage.cs" />
     <Compile Include="Interface.Controls\Label.cs" />
     <Compile Include="Interface.Controls\Image.cs" />
     <Compile Include="Interface.Scenes\GameTwoScene.cs" />
@@ -73,11 +74,13 @@
     <Compile Include="Interface.Scenes\MainMenuScene.cs" />
     <Compile Include="Interface.Controls\MenuButton.cs" />
     <Compile Include="Interface.Scenes\MouseOverlay.cs" />
+    <Compile Include="Interface.Scenes\NextGameScene.cs" />
     <Compile Include="Interface.Scenes\WorldSelectionScene.cs" />
     <Compile Include="Interface\SceneBase.cs" />
     <Compile Include="Interface.Scenes\StartupScene.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="Objects\DefaultObjects.cs" />
+    <Compile Include="Objects\GameObjectBase.cs" />
     <Compile Include="Objects\ObjectBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

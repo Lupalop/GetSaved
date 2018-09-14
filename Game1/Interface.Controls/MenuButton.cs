@@ -28,7 +28,8 @@ namespace Arkabound.Interface.Controls
         public string Text { get; set; }
         public MouseState MsState { get; set; }
         public MouseOverlay MsOverlay { get; set; }
-        public Action ClickAction { get; set; }
+        public Action LeftClickAction { get; set; }
+        public Action RightClickAction { get; set; }
 
         public override void Draw(GameTime gameTime)
         {
@@ -38,33 +39,59 @@ namespace Arkabound.Interface.Controls
             spriteBatch.End();
         }
 
-        bool clickFired;
+        bool LeftClickFired;
+        bool RightClickFired;
         public override void Update(GameTime gameTime)
         {
+            // TODO: Support touch events (I don't have a real touch device unfortunately)
             Vector2 TextLength = Font.MeasureString(Text);
-            GraphicCenter = new Vector2(Location.X + (Graphic.Bounds.Width / 2) - TextLength.X / 2, Location.Y + Graphic.Bounds.Height / 4);
+            GraphicCenter = new Vector2(Location.X + (Bounds.Width / 2) - TextLength.X / 2, Location.Y + Bounds.Height / 4);
+            MsState = sceneManager.MsState;
 
+            // Revert to white tint
             Tint = Color.White;
+
+            // If mouse is on top of the button
             if (Bounds.Intersects(MsOverlay.mouseBox))
             {
                 Tint = Color.Wheat;
             }
 
-            MsState = sceneManager.MsState;
-            if ((MsState.LeftButton == ButtonState.Pressed) && (Bounds.Intersects(MsOverlay.mouseBox)))
+            // If the button was clicked
+            if ((MsState.LeftButton == ButtonState.Pressed ||
+                 MsState.RightButton == ButtonState.Pressed ||
+                 MsState.MiddleButton == ButtonState.Pressed) && Bounds.Intersects(MsOverlay.mouseBox))
             {
                 Tint = Color.Violet;
-                clickFired = true;
             }
-            if ((MsState.LeftButton == ButtonState.Pressed) && (!Bounds.Intersects(MsOverlay.mouseBox)))
-                clickFired = false;
-            if (MsState.LeftButton == ButtonState.Released && clickFired)
+
+            // Left Mouse Button Click Action
+            if (LeftClickAction != null)
             {
-                if (ClickAction != null)
+                if (MsState.LeftButton == ButtonState.Pressed && Bounds.Intersects(MsOverlay.mouseBox))
+                    LeftClickFired = true;
+                if (MsState.LeftButton == ButtonState.Pressed && !Bounds.Intersects(MsOverlay.mouseBox))
+                    LeftClickFired = false;
+                if (MsState.LeftButton == ButtonState.Released && LeftClickFired)
                 {
-                    ClickAction.Invoke();
+                    LeftClickAction.Invoke();
                     // In order to prevent the action from being fired again
-                    clickFired = false;
+                    LeftClickFired = false;
+                }
+            }
+
+            // Right Mouse Button Click Action
+            if (RightClickAction != null)
+            {
+                if (MsState.RightButton == ButtonState.Pressed && Bounds.Intersects(MsOverlay.mouseBox))
+                    RightClickFired = true;
+                if (MsState.RightButton == ButtonState.Pressed && !Bounds.Intersects(MsOverlay.mouseBox))
+                    RightClickFired = false;
+                if (MsState.RightButton == ButtonState.Released && RightClickFired)
+                {
+                    RightClickAction.Invoke();
+                    // In order to prevent the action from being fired again
+                    RightClickFired = false;
                 }
             }
 

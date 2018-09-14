@@ -36,27 +36,9 @@ namespace Arkabound.Interface.Scenes
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"],
-                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                    LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager),
+                    RightClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
-                /*{ "mb2", new MenuButton("mb", sceneManager)
-                {
-                    Text = "High Scores",
-                    Graphic = game.Content.Load<Texture2D>("menuBG"), 
-                    Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch, 
-                    Font = fonts["default_m"],
-                    Tint = Color.Transparent,
-                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
-                }},
-                { "mb3", new MenuButton("mb", sceneManager)
-                {
-                    Text = "Exit",
-                    Graphic = game.Content.Load<Texture2D>("menuBG"),
-                    Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch,
-                    Font = fonts["default_m"],
-                    ClickAction = () => game.Exit()
-                }}*/
                 { "lb1", new Label("lb")
                 {
                     Text = "Prototype Version (v1)",
@@ -66,13 +48,7 @@ namespace Arkabound.Interface.Scenes
                 }}
             };
             // Layout stuff
-            distanceFromTop = 100;
             spacing = 20;
-        }
-
-        public override void LoadContent()
-        {
-            base.LoadContent();
         }
 
         public override void Draw(GameTime gameTime)

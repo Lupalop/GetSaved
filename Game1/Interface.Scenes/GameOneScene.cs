@@ -21,8 +21,8 @@ namespace Arkabound.Interface.Scenes
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = game.Content.Load<Texture2D>("GAMEBG"),
-                    CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
+                    Graphic = game.Content.Load<Texture2D>("gameBG1"),
+                    DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch
                 }},
@@ -34,19 +34,18 @@ namespace Arkabound.Interface.Scenes
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
-                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                    LeftClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
                     Graphic = game.Content.Load<Texture2D>("falling-object/briefcase"),
-                    Location = new Vector2(5, 500),
+                    Location = new Vector2(5, game.GraphicsDevice.Viewport.Height - 70),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                 }},
                 { "Timer", new Label("timer")
                 {
                     Text = String.Format("{0} second(s) left", timeLeft),
-                    //Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5), //new Vector2(300, 5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
@@ -103,53 +102,37 @@ namespace Arkabound.Interface.Scenes
         private void InitializeTimer()
         {
             // Initiailize timers
-            ProjectileGenerator = new Timer(projectileInterval);
-            TimeLeftController = new Timer(1000);
-            GameTimer = new Timer(timeLeft * 1000);
+            ProjectileGenerator = new Timer(projectileInterval) { AutoReset = true, Enabled = true };
+            TimeLeftController = new Timer(1000)                { AutoReset = true, Enabled = true };
+            GameTimer = new Timer(timeLeft * 1000)              { AutoReset = false, Enabled = true };
             // Add the event handler to the timer object
-            ProjectileGenerator.Elapsed += OnProjectileGeneratorEnd;
-            ProjectileGenerator.AutoReset = true;
-            ProjectileGenerator.Enabled = true;
-
-            TimeLeftController.Elapsed += OnTimeLeftEnd;
-            TimeLeftController.AutoReset = true;
-            TimeLeftController.Enabled = true;
-
-            GameTimer.Elapsed += OnGameTimerEnd;
-            GameTimer.AutoReset = false;
-            GameTimer.Enabled = true;
+            ProjectileGenerator.Elapsed += delegate
+            { 
+                GenerateFallingCrap();
+            };
+            TimeLeftController.Elapsed += delegate
+            {
+                if (timeLeft >= 1)
+                    timeLeft -= 1;
+            };
+            GameTimer.Elapsed += delegate
+            {
+                stopCreatingCrap = true;
+                sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects));
+            };
         }
 
         public override void Unload()
         {
-            //
+            // Close all timers
             ProjectileGenerator.Close();
             TimeLeftController.Close();
             GameTimer.Close();
 
-            
             base.Unload();
         }
 
-        private void OnProjectileGeneratorEnd(Object source, ElapsedEventArgs e)
-        {
-            GenerateFallingCrap();
-        }
-
-        private void OnTimeLeftEnd(Object source, ElapsedEventArgs e)
-        {
-            if (timeLeft >= 1)
-                timeLeft -= 1;
-        }
-
         private bool stopCreatingCrap = false;
-
-        private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
-        {
-            stopCreatingCrap = true;
-            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects));
-            GameTimer.Enabled = false;
-        }
 
         Random randNum = new Random();
 
@@ -175,17 +158,18 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.LightSalmon);
+            base.Draw(gameTime);
+
             Label a = (Label)Objects["Timer"];
             a.Text = String.Format("{0} second(s) left", timeLeft);
-            base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Objects["GameBG"].CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+
+            Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width,game.GraphicsDevice.Viewport.Height);
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
             if (Objects.ContainsKey("ObjectCatcher"))
@@ -193,7 +177,7 @@ namespace Arkabound.Interface.Scenes
                 if (stopCreatingCrap)
                     Objects.Remove("ObjectCatcher");
                 else
-                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.mouseBox.X - (Objects["ObjectCatcher"].Graphic.Width / 2), Objects["ObjectCatcher"].Location.Y);
+                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.mouseBox.X - (Objects["ObjectCatcher"].Graphic.Width / 2), game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height);
             }
             for (int i = 0; i < GameObjects.Count; i++)
             {

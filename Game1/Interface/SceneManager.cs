@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Arkabound.Interface
 {
@@ -33,7 +34,7 @@ namespace Arkabound.Interface
             }
             set
             {
-                if (Program.UseConsole)
+                if (Program.OutputMessages)
                     Console.WriteLine("Switching to scene: " + value.sceneName);
                 // Unload previous scene
                 if (_currentScene != null)
@@ -53,6 +54,7 @@ namespace Arkabound.Interface
         public KeyboardState KeybdState;
         public GamePadState GamePdState;
         public MouseState MsState;
+        public TouchCollection TouchState;
 
         public void Draw(GameTime gameTime)
         {
@@ -88,6 +90,7 @@ namespace Arkabound.Interface
             scb.KeybdState = KeybdState;
             scb.GamePdState = GamePdState;
             scb.MsState = MsState;
+            scb.TouchState = TouchState;
         }
     }
 }

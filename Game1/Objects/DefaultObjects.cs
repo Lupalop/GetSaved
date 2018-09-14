@@ -8,7 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Arkabound.Objects
 {
     public enum BallTypes { Standard, Passthrough };
-    public class Ball : ObjectBase
+
+    public class Ball : GameObjectBase
     {
         public Ball(string name)
             : base(name)
@@ -22,13 +23,13 @@ namespace Arkabound.Objects
     }
 
     public enum BrickTypes { Standard, OneHit, Passthrough, Unbreakable };
-    public class Brick : ObjectBase
+    public class Brick : GameObjectBase
     {
         public Brick(string name, BrickTypes ballType) : base(name) { }
     }
 
     public enum PlayerTypes { Human, AI, Dummy };
-    public class Player : ObjectBase
+    public class Player : GameObjectBase
     {
         public Player(string name, PlayerTypes plrType) : base(name) { }
     }

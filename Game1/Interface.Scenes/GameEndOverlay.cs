@@ -23,7 +23,7 @@ namespace Arkabound.Interface.Scenes
                 { "Background", new Image("Background")
                 {
                     Graphic = game.Content.Load<Texture2D>("overlayBG"),
-                    CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
+                    DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch
                 }},
@@ -40,7 +40,16 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Text = "Next Round",
                     Font = fonts["default_m"],
-                    ClickAction = () => { sceneManager.currentScene = new WorldSelectionScene(sceneManager); sceneManager.overlays.Remove("gameEnd"); }
+                    LeftClickAction = () => { sceneManager.currentScene = new NextGameScene(sceneManager); sceneManager.overlays.Remove("gameEnd"); }
+                }},
+                { "TryAgainBtn", new MenuButton("TryAgainBtn", sceneManager)
+                {
+                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch,
+                    Text = "Try Again",
+                    Font = fonts["default_m"],
+                    LeftClickAction = () => { sceneManager.currentScene = new NextGameScene(sceneManager, currentGame); sceneManager.overlays.Remove("gameEnd"); }
                 }}
             };
 
@@ -68,7 +77,7 @@ namespace Arkabound.Interface.Scenes
         }
         public override void Update(GameTime gameTime)
         {
-            Objects["Background"].CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            Objects["Background"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
         }

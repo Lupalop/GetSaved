@@ -10,6 +10,7 @@ using Arkabound.Components;
 
 namespace Arkabound.Interface.Scenes
 {
+    // TODO: rewrite
     public class LoadOverlay : SceneBase
     {
         public LoadOverlay(SceneManager sceneManager, float Interval, string overlayKey)

@@ -21,8 +21,8 @@ namespace Arkabound.Interface.Scenes
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = game.Content.Load<Texture2D>("GAMEBG"),
-                    CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
+                    Graphic = game.Content.Load<Texture2D>("gameBG1"),
+                    DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch
                 }},
@@ -34,7 +34,7 @@ namespace Arkabound.Interface.Scenes
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"],
-                    ClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                    LeftClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
@@ -185,7 +185,7 @@ namespace Arkabound.Interface.Scenes
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Objects["GameBG"].CustomRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
             if (Objects.ContainsKey("ObjectCatcher"))

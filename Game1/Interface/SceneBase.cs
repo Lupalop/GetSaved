@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using Arkabound.Objects;
 
 namespace Arkabound.Interface
@@ -22,10 +23,11 @@ namespace Arkabound.Interface
             game = sceneManager.game;
             spriteBatch = sceneManager.spriteBatch;
             fonts = sceneManager.fonts;
+            Objects = new Dictionary<string, ObjectBase> {};
             // Load the scene's content
             LoadContent();
             // Layout stuff
-            distanceFromTop = 50;
+            //distanceFromTop = 50;
             spacing = 5;
         }
 
@@ -41,30 +43,55 @@ namespace Arkabound.Interface
         public KeyboardState KeybdState;
         public GamePadState GamePdState;
         public MouseState MsState;
+        public TouchCollection TouchState;
 
         public virtual void LoadContent()
         {
-            if (Program.UseConsole)
+            if (Program.OutputMessages)
                 Console.WriteLine("Loading content in: " + sceneName);
         }
 
         public virtual void Draw(GameTime gameTime)
         {
-            if (Program.UseConsole && Program.VerboseMessages)
+            if (Program.OutputMessages && Program.VerboseMessages)
                 Console.WriteLine("Drawing from scene: " + sceneName);
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            if (Program.UseConsole && Program.VerboseMessages)
+            if (Program.OutputMessages && Program.VerboseMessages)
                 Console.WriteLine("Updating from scene: "  + sceneName);
             ScreenCenter = new Vector2(game.GraphicsDevice.Viewport.Bounds.Width / 2, game.GraphicsDevice.Viewport.Bounds.Height / 2);
+            distanceFromTop = (int)ScreenCenter.Y - ((int)GetAllObjectsHeight(Objects) / 2);
         }
 
         public virtual void Unload()
         {
-            if (Program.UseConsole)
+            if (Program.OutputMessages)
                 Console.WriteLine("Unloading from scene: " + sceneName);
+        }
+
+        public virtual int GetAllObjectsHeight(Dictionary<string, ObjectBase> objects)
+        {
+            return GetAllObjectsHeightFromArray(objects.Values.ToArray<ObjectBase>());
+        }
+        public virtual int GetAllObjectsHeight(List<ObjectBase> objects)
+        {
+            return GetAllObjectsHeightFromArray(objects.ToArray<ObjectBase>());
+        }
+        public virtual int GetAllObjectsHeight(ObjectBase[] objects)
+        {
+            return GetAllObjectsHeightFromArray(objects);
+        }
+        private int GetAllObjectsHeightFromArray(ObjectBase[] objs)
+        {
+            int ObjectsHeight = 0;
+            // Draw objects in the Object array
+            for (int i = 0; i < objs.Length; i++)
+            {
+                ObjectsHeight += objs[i].Bounds.Height;
+            }
+            return ObjectsHeight;
         }
 
         public virtual void DrawObjects(GameTime gameTime, Dictionary<string, ObjectBase> objects)
@@ -101,6 +128,7 @@ namespace Arkabound.Interface
         {
             UpdateObjectsFromArray(gameTime, objects);
         }
+
         public int distanceFromTop;
         public int spacing;
         private void UpdateObjectsFromArray(GameTime gameTime, ObjectBase[] objs)
