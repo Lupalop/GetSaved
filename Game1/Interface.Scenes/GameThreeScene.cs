@@ -66,21 +66,25 @@ namespace Arkabound.Interface.Scenes
                     timeLeft = 15.0;
                     projectileInterval = 1500;
                     FallingSpeed = 3;
+                    JumpHeight = -15;
                     break;
                 case Difficulty.Medium:
                     timeLeft = 10.0;
                     projectileInterval = 1000;
                     FallingSpeed = 3;
+                    JumpHeight = -15;
                     break;
                 case Difficulty.Hard:
                     timeLeft = 5.0;
                     projectileInterval = 800;
                     FallingSpeed = 5;
+                    JumpHeight = -10;
                     break;
                 case Difficulty.EpicFail:
                     timeLeft = 60000 * 5;
                     projectileInterval = 700;
                     FallingSpeed = 10;
+                    JumpHeight = -20;
                     break;
             }
             DistanceFromBottom = -30;
@@ -99,6 +103,7 @@ namespace Arkabound.Interface.Scenes
         private int projectileInterval;
         private float FallingSpeed;
         private int DistanceFromBottom;
+        private float JumpHeight;
 
         private Difficulty difficulty;
 
@@ -111,7 +116,7 @@ namespace Arkabound.Interface.Scenes
             // Initiailize timers
             ProjectileGenerator = new Timer(projectileInterval) { AutoReset = true, Enabled = true };
             TimeLeftController = new Timer(1000) { AutoReset = true, Enabled = true };
-            GameTimer = new Timer(timeLeft * 1000) { AutoReset = false, Enabled = false };
+            GameTimer = new Timer(timeLeft * 1000) { AutoReset = false, Enabled = true };
             // Add the event handler to the timer object
             ProjectileGenerator.Elapsed += delegate
             {
@@ -186,6 +191,8 @@ namespace Arkabound.Interface.Scenes
         int MinYPos;
         int MaxYPos;
         int StartingXPos;
+        float JumpSpeed = 0;
+        bool IsJumping = false;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -198,15 +205,25 @@ namespace Arkabound.Interface.Scenes
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
             UpdateMinMaxY();
-            // Keys
-            if (KeybdState.IsKeyDown(Keys.Space) && PlayerPosition.Y >= MinYPos)
+            if (IsJumping)
             {
-                PlayerPosition.Y -= 6.0f;
+                PlayerPosition.Y += JumpSpeed;//Making it go up
+                JumpSpeed += 0.5f;//Some math (explained later)
+                if (PlayerPosition.Y >= MaxYPos)
+                //If it's farther than ground
+                {
+                    PlayerPosition.Y = MaxYPos;//Then set it on
+                    IsJumping = false;
+                }
             }
-
-            if (KeybdState.IsKeyUp(Keys.Space) && PlayerPosition.Y <= MaxYPos)
+            else
             {
-                PlayerPosition.Y += 6.0f;
+                if (KeybdState.IsKeyDown(Keys.Space) || MsState.LeftButton == ButtonState.Pressed ||
+                    MsState.RightButton == ButtonState.Pressed || MsState.MiddleButton == ButtonState.Pressed)
+                {
+                    IsJumping = true;
+                    JumpSpeed = JumpHeight;//Give it upward thrust
+                }
             }
             if (Objects.ContainsKey("ObjectCatcher"))
             {
@@ -215,13 +232,14 @@ namespace Arkabound.Interface.Scenes
                 else
                     Objects["ObjectCatcher"].Location = PlayerPosition;
             }
+
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 // Move crap by 3
                 GameObjects[i].Location = new Vector2(GameObjects[i].Location.X - FallingSpeed, GameObjects[i].Location.Y);
 
                 // Check if game object collides/intersects with catcher
-                if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
+                if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Contains(GameObjects[i].Bounds.Center))
                 {
                     GameOverReason = -1;
                     GameTimer_Elapsed(null, null);
