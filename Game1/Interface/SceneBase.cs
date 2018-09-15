@@ -71,25 +71,28 @@ namespace Arkabound.Interface
                 Console.WriteLine("Unloading from scene: " + sceneName);
         }
 
-        public virtual int GetAllObjectsHeight(Dictionary<string, ObjectBase> objects)
+        public virtual int GetAllObjectsHeight(Dictionary<string, ObjectBase> objects, bool onlyAutoAlignedObjects = true)
         {
-            return GetAllObjectsHeightFromArray(objects.Values.ToArray<ObjectBase>());
+            return GetAllObjectsHeightFromArray(objects.Values.ToArray<ObjectBase>(), onlyAutoAlignedObjects);
         }
-        public virtual int GetAllObjectsHeight(List<ObjectBase> objects)
+        public virtual int GetAllObjectsHeight(List<ObjectBase> objects, bool onlyAutoAlignedObjects = true)
         {
-            return GetAllObjectsHeightFromArray(objects.ToArray<ObjectBase>());
+            return GetAllObjectsHeightFromArray(objects.ToArray<ObjectBase>(), onlyAutoAlignedObjects);
         }
-        public virtual int GetAllObjectsHeight(ObjectBase[] objects)
+        public virtual int GetAllObjectsHeight(ObjectBase[] objects, bool onlyAutoAlignedObjects = true)
         {
-            return GetAllObjectsHeightFromArray(objects);
+            return GetAllObjectsHeightFromArray(objects, onlyAutoAlignedObjects);
         }
-        private int GetAllObjectsHeightFromArray(ObjectBase[] objs)
+        private int GetAllObjectsHeightFromArray(ObjectBase[] objs, bool onlyAutoAlignedObjects)
         {
             int ObjectsHeight = 0;
             // Draw objects in the Object array
             for (int i = 0; i < objs.Length; i++)
             {
-                ObjectsHeight += objs[i].Bounds.Height;
+                if ((objs[i].AlignToCenter && onlyAutoAlignedObjects) || !onlyAutoAlignedObjects)
+                {
+                    ObjectsHeight += objs[i].Bounds.Height;
+                }
             }
             return ObjectsHeight;
         }
