@@ -28,6 +28,16 @@ namespace Arkabound.Interface.Scenes
             Initialize();
         }
 
+        public NextGameScene(SceneManager sceneManager, Games passedGame, Difficulty passedDifficulty)
+            : base(sceneManager, "Next Game Scene")
+        {
+            ForcePassedGame = passedGame;
+            ForcePassedDifficulty = passedDifficulty;
+            RandomizeGame = false;
+            RandomizeDifficulty = false;
+            Initialize();
+        }
+
         public void Initialize()
         {
             NextGame = DetermineNextGame();
@@ -62,7 +72,9 @@ namespace Arkabound.Interface.Scenes
         private Timer SceneChanger = new Timer(1000) { AutoReset = false, Enabled = true };
 
         public bool RandomizeGame = true;
+        public bool RandomizeDifficulty = true;
         public Games ForcePassedGame { get; set; }
+        public Difficulty ForcePassedDifficulty { get; set; }
         public SceneBase NextGame { get; set; }
         public Difficulty GameDifficulty { get; set; }
 
@@ -70,7 +82,10 @@ namespace Arkabound.Interface.Scenes
         {
             // Difficulty would remain random
             Random rand = new Random();
-            GameDifficulty = (Difficulty)rand.Next(0, 3);
+            if (RandomizeDifficulty)
+                GameDifficulty = (Difficulty)rand.Next(0, 3);
+            else
+                GameDifficulty = ForcePassedDifficulty;
 
             // Choose whether to randomize game or use the passed game
             Games NxGame;

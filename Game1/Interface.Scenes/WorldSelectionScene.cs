@@ -54,7 +54,7 @@ namespace Arkabound.Interface.Scenes
                     Rows = 1,
                     Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new GameOneScene(sceneManager, difficulty)
+                    LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager, Games.FallingObjects, difficulty)
                 }},
                 { "mb4", new MenuButton("mb", sceneManager)
                 {
@@ -66,7 +66,7 @@ namespace Arkabound.Interface.Scenes
                     Rows = 1,
                     Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new GameTwoScene(sceneManager, difficulty)
+                    LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager, Games.EscapeEarthquake, difficulty)
                 }},
                 { "mb5", new MenuButton("mb", sceneManager)
                 {
@@ -78,7 +78,7 @@ namespace Arkabound.Interface.Scenes
                     Rows = 1,
                     Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new GameTwoScene(sceneManager, difficulty)
+                    LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager, Games.EscapeFire, difficulty)
                 }},
                 { "mb6", new MenuButton("mb", sceneManager)
                 {
@@ -90,11 +90,11 @@ namespace Arkabound.Interface.Scenes
                     Rows = 1,
                     Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new GameThreeScene(sceneManager, difficulty)
+                    LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager, Games.RunningForTheirLives, difficulty)
                 }},
                 { "mb7", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Heal/Help Others - Earthquake",
+                    Text = "Help Others - Earthquake",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
@@ -102,7 +102,7 @@ namespace Arkabound.Interface.Scenes
                     Rows = 1,
                     Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new GameFourScene(sceneManager, difficulty)
+                    LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager, Games.HelpOthersNow, difficulty)
                 }},
                 { "mb8", new MenuButton("mb", sceneManager)
                 {
