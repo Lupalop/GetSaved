@@ -65,7 +65,8 @@ namespace Arkabound.Interface.Scenes
                 for (int i = 0; i < sceneManager.overlays.Count; i++)
                 {
                     List<string> keyList = sceneManager.overlays.Keys.ToList();
-                    sceneOverlayList += String.Format("Key {0}: {2}, Scene Name: {1} \n", i, sceneManager.overlays[keyList[i]].sceneName, keyList[i]);
+                    sceneOverlayList += String.Format("Key {0}: {2}, Scene Name: {1} \n",
+                        new object[] { i, sceneManager.overlays[keyList[i]].sceneName, keyList[i] });
                 }
             }
             if (KeybdState.IsKeyDown(Keys.F10))
@@ -74,7 +75,8 @@ namespace Arkabound.Interface.Scenes
                 for (int i = 0; i < sceneManager.currentScene.Objects.Count; i++)
                 {
                     List<string> keyList = sceneManager.currentScene.Objects.Keys.ToList();
-                    sceneObjectList += String.Format("Key {0}: {2}, Object Name: {1} \n", i, sceneManager.currentScene.Objects[keyList[i]].Name, keyList[i]);
+                    sceneObjectList += String.Format("Key {0}: {2}, Object Name: {1}, Location: {3} \n",
+                        new object[] { i, sceneManager.currentScene.Objects[keyList[i]].Name, keyList[i], sceneManager.currentScene.Objects[keyList[i]].Location.ToString() });
                 }
             }
         }
