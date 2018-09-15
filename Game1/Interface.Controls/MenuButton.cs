@@ -34,7 +34,8 @@ namespace Arkabound.Interface.Controls
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            spriteBatch.DrawString(Font, Text, GraphicCenter, Color.White, 0f, new Vector2(0, 0), Scale, SpriteEffects.None, 1f);
+            if (Text != null)
+                spriteBatch.DrawString(Font, Text, GraphicCenter, Tint, 0f, new Vector2(0, 0), Scale, SpriteEffects.None, 1f);
         }
 
         bool LeftClickFired;
@@ -42,8 +43,11 @@ namespace Arkabound.Interface.Controls
         public override void Update(GameTime gameTime)
         {
             // TODO: Support touch events (I don't have a real touch device unfortunately)
-            Vector2 TextLength = Font.MeasureString(Text);
-            GraphicCenter = new Vector2(Location.X + (Bounds.Width / 2) - TextLength.X / 2, Location.Y + Bounds.Height / 4);
+            if (Text != null)
+            {
+                Vector2 TextLength = Font.MeasureString(Text);
+                GraphicCenter = new Vector2(Location.X + (Bounds.Width / 2) - TextLength.X / 2, Location.Y + Bounds.Height / 4);
+            }
             MsState = sceneManager.MsState;
             CurrentFrame = 0;
 
