@@ -21,7 +21,7 @@ namespace Arkabound.Interface.Scenes
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = game.Content.Load<Texture2D>("gameBG1"),
+                    Graphic = game.Content.Load<Texture2D>("gameBG4"),
                     DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch
@@ -42,7 +42,7 @@ namespace Arkabound.Interface.Scenes
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
                     Graphic = game.Content.Load<Texture2D>("falling-object/briefcase"),
-                    Location = new Vector2(5, 500),
+                    Location = PosA,
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                 }},
@@ -51,9 +51,35 @@ namespace Arkabound.Interface.Scenes
                     Text = String.Format("{0} second(s) left", timeLeft),
                     Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5),
                     AlignToCenter = false,
+                    Tint = Color.Black,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default_l"]
                 }}
+            };
+
+            GameObjects = new Dictionary<string, ObjectBase>() {
+                { "PointB", new Image("PointB")
+                {
+                    Graphic = game.Content.Load<Texture2D>("point"),
+                    Location = PosB,
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch,
+                }},
+                { "PointC", new Image("PointC")
+                {
+                    Graphic = game.Content.Load<Texture2D>("point"),
+                    Location = PosC,
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch,
+                }},
+                { "PointD", new Image("PointD")
+                {
+                    Graphic = game.Content.Load<Texture2D>("point"),
+                    Location = PosD,
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch,
+                }}
+
             };
 
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
@@ -61,22 +87,18 @@ namespace Arkabound.Interface.Scenes
             {
                 case Difficulty.Easy:
                     timeLeft = 15.0;
-                    projectileInterval = 500;
                     FallingSpeed = 3;
                     break;
                 case Difficulty.Medium:
                     timeLeft = 10.0;
-                    projectileInterval = 300;
                     FallingSpeed = 3;
                     break;
                 case Difficulty.Hard:
                     timeLeft = 5.0;
-                    projectileInterval = 200;
                     FallingSpeed = 5;
                     break;
                 case Difficulty.EpicFail:
                     timeLeft = 15.0;
-                    projectileInterval = 50;
                     FallingSpeed = 10;
                     break;
             }
@@ -84,34 +106,28 @@ namespace Arkabound.Interface.Scenes
             InitializeTimer();
         }
 
-        private List<string> FallingObjects = new List<string> {
-			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
-			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
-			};
         private MouseOverlay MsOverlay;
-        private List<ObjectBase> GameObjects = new List<ObjectBase>();
-        private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
+        private Dictionary<string, ObjectBase> GameObjects = new Dictionary<string, ObjectBase>();
 
         private double timeLeft;
-        private int projectileInterval;
         private float FallingSpeed;
+
+        // Points
+        Vector2 PosA = new Vector2(630, 165);
+        Vector2 PosB = new Vector2(665, 485);
+        Vector2 PosC = new Vector2(100, 530);
+        Vector2 PosD = new Vector2(80, 90);
 
         private Difficulty difficulty;
 
-        Timer ProjectileGenerator;
         Timer TimeLeftController;
         Timer GameTimer;
 
         private void InitializeTimer()
         {
             // Initiailize timers
-            ProjectileGenerator = new Timer(projectileInterval);
             TimeLeftController = new Timer(1000);
             GameTimer = new Timer(timeLeft * 1000);
-            // Add the event handler to the timer object
-            ProjectileGenerator.Elapsed += OnProjectileGeneratorEnd;
-            ProjectileGenerator.AutoReset = true;
-            ProjectileGenerator.Enabled = true;
 
             TimeLeftController.Elapsed += OnTimeLeftEnd;
             TimeLeftController.AutoReset = true;
@@ -124,18 +140,11 @@ namespace Arkabound.Interface.Scenes
 
         public override void Unload()
         {
-            //
-            ProjectileGenerator.Close();
+            // Stop timers
             TimeLeftController.Close();
             GameTimer.Close();
 
-            
             base.Unload();
-        }
-
-        private void OnProjectileGeneratorEnd(Object source, ElapsedEventArgs e)
-        {
-            GenerateFallingCrap();
         }
 
         private void OnTimeLeftEnd(Object source, ElapsedEventArgs e)
@@ -143,41 +152,16 @@ namespace Arkabound.Interface.Scenes
             if (timeLeft >= 1)
                 timeLeft -= 1;
         }
-
-        private bool stopCreatingCrap = false;
-
+        bool removeObjectCatcher = false;
         private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
         {
-            stopCreatingCrap = true;
-            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.EscapeEarthquake, CollectedObjects,this));
+            removeObjectCatcher = true;
+            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.EscapeEarthquake, null, this));
             GameTimer.Enabled = false;
-        }
-
-        Random randNum = new Random();
-
-        private void GenerateFallingCrap()
-        {
-            if (!stopCreatingCrap)
-            {
-                // create new button object
-                Image nwBtn = new Image("crap") {
-                    Graphic = game.Content.Load<Texture2D>("holder"),
-                    Location = new Vector2((float)randNum.Next(5, (int)game.GraphicsDevice.Viewport.Width - 5), 30),
-                    //Font = fonts["default"],
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch
-                };
-                string tex = FallingObjects[randNum.Next(0, FallingObjects.Count)];
-                nwBtn.MessageHolder.Add(tex);
-                if (tex.Contains('!') || tex.Contains('~')) tex = tex.Remove(0, 1);
-                nwBtn.Graphic = game.Content.Load<Texture2D>("falling-object/" + tex.ToLower());
-                GameObjects.Add(nwBtn);
-            }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.LightSalmon);
             Label a = (Label)Objects["Timer"];
             a.Text = String.Format("{0} second(s) left", timeLeft);
             spriteBatch.Begin();
@@ -186,6 +170,9 @@ namespace Arkabound.Interface.Scenes
             base.DrawObjects(gameTime, GameObjects);
             spriteBatch.End();
         }
+        Vector2 PosWhich = Vector2.Zero;
+        bool isMsPressed = false;
+        bool isKeyPressed = false;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -194,29 +181,38 @@ namespace Arkabound.Interface.Scenes
             base.UpdateObjects(gameTime, GameObjects);
             if (Objects.ContainsKey("ObjectCatcher"))
             {
-                if (stopCreatingCrap)
-                    Objects.Remove("ObjectCatcher");
-                else
-                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.Bounds.X - (Objects["ObjectCatcher"].Graphic.Width / 2), Objects["ObjectCatcher"].Location.Y);
-            }
-            for (int i = 0; i < GameObjects.Count; i++)
-            {
-                // Move crap by 3
-                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X, GameObjects[i].Location.Y + FallingSpeed);
-
-                // Check if game object collides/intersects with catcher
-                if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
+                ObjectBase Catchr = Objects["ObjectCatcher"];
+                if ((MsState.LeftButton == ButtonState.Pressed && !isMsPressed) || (KeybdState.IsKeyDown(Keys.Space) && !isKeyPressed))
                 {
-                    CollectedObjects.Add(GameObjects[i]);
-                    GameObjects.Remove(GameObjects[i]);
-                    return;
-                }
+                    if (PosWhich == Vector2.Zero)
+                        PosWhich = PosB;
+                    if (Catchr.Bounds.Contains(PosB))
+                        PosWhich = PosC;
+                    if (Catchr.Bounds.Contains(PosC))
+                        PosWhich = PosD;
 
-                // cleanup crapped shit
-                // (normal human speak: remove objects once it exceeds the object catcher)
-                // also remove all crap once time is up
-                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || stopCreatingCrap)
-                    GameObjects.Remove(GameObjects[i]);
+                    //get the difference from pos to player
+                    Vector2 differenceToPlayer = PosWhich - Catchr.Location;
+
+                    //first get direction only by normalizing the difference vector
+                    //getting only the direction, with a length of one
+                    differenceToPlayer.Normalize();
+
+                    //then move in that direction
+                    //based on how much time has passed
+                    Catchr.Location += differenceToPlayer * (float)gameTime.ElapsedGameTime.TotalMilliseconds * .2f;
+                    if (MsState.LeftButton == ButtonState.Pressed)
+                        isMsPressed = true;
+                    else
+                        isKeyPressed = true;
+                }
+                if (MsState.LeftButton == ButtonState.Released)
+                    isMsPressed = false;
+                if (KeybdState.IsKeyUp(Keys.Space))
+                    isKeyPressed = false;
+
+                if (removeObjectCatcher)
+                    Objects.Remove("ObjectCatcher");
             }
         }
     }
