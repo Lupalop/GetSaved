@@ -71,6 +71,7 @@ namespace Arkabound.Interface.Scenes
                 case Games.RunningForTheirLives:
                     break;
                 case Games.HelpOthersNow:
+                    Game4End(passedMessage);
                     break;
             }
         }
@@ -115,6 +116,35 @@ namespace Arkabound.Interface.Scenes
                 Location = ScreenCenter,
                 spriteBatch = this.spriteBatch,
                 Text = "Incorrect items: " + wrongCrap,
+                Font = fonts["default_m"]
+            });
+        }
+
+        public void Game4End(List<ObjectBase> CollectedObjects)
+        {
+            int correctCrap = 0;
+            int wrongCrap = 0;
+            // Count correct crap
+            foreach (var crap in CollectedObjects)
+            {
+                if (crap.MessageHolder[0].ToString().Contains('!'))
+                    wrongCrap++;
+                else
+                    correctCrap++;
+            }
+
+            Objects.Add("CorrectCrap", new Label("CorrectCrap")
+            {
+                Location = ScreenCenter,
+                spriteBatch = this.spriteBatch,
+                Text = "People Saved: " + correctCrap,
+                Font = fonts["default_m"]
+            });
+            Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
+            {
+                Location = ScreenCenter,
+                spriteBatch = this.spriteBatch,
+                Text = "People Died: " + wrongCrap,
                 Font = fonts["default_m"]
             });
         }

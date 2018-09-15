@@ -79,6 +79,7 @@
     <Compile Include="MainGame.cs" />
     <Compile Include="Objects\DefaultObjects.cs" />
     <Compile Include="Objects\GameObjectBase.cs" />
+    <Compile Include="Objects\Helpman.cs" />
     <Compile Include="Objects\ObjectBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
