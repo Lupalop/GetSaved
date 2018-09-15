@@ -21,7 +21,7 @@ namespace Arkabound.Interface.Scenes
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = game.Content.Load<Texture2D>("gameBG1"),
+                    Graphic = game.Content.Load<Texture2D>("dino/gameBG3"),
                     DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch
@@ -41,15 +41,18 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
-                    Graphic = game.Content.Load<Texture2D>("falling-object/briefcase"),
-                    Location = new Vector2(5, 500),
+                    Graphic = game.Content.Load<Texture2D>("dino/character"),
+                    Location = new Vector2(5, game.GraphicsDevice.Viewport.Height - 70),
                     AlignToCenter = false,
+                    SpriteType = SpriteTypes.Animated,
+                    Rows = 2,
+                    Columns = 8,
                     spriteBatch = this.spriteBatch,
                 }},
                 { "Timer", new Label("timer")
                 {
                     Text = String.Format("{0} second(s) left", timeLeft),
-                    Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5),
+                    Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5), //new Vector2(300, 5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default_l"]
@@ -61,33 +64,33 @@ namespace Arkabound.Interface.Scenes
             {
                 case Difficulty.Easy:
                     timeLeft = 15.0;
-                    projectileInterval = 500;
+                    projectileInterval = 1500;
                     FallingSpeed = 3;
                     break;
                 case Difficulty.Medium:
                     timeLeft = 10.0;
-                    projectileInterval = 300;
+                    projectileInterval = 1000;
                     FallingSpeed = 3;
                     break;
                 case Difficulty.Hard:
                     timeLeft = 5.0;
-                    projectileInterval = 200;
+                    projectileInterval = 800;
                     FallingSpeed = 5;
                     break;
                 case Difficulty.EpicFail:
-                    timeLeft = 15.0;
-                    projectileInterval = 50;
+                    timeLeft = 60000 * 5;
+                    projectileInterval = 700;
                     FallingSpeed = 10;
                     break;
             }
+            DistanceFromBottom = -30;
             this.difficulty = difficulty;
             InitializeTimer();
+            UpdateMinMaxY();
+            GenerateFallingCrap();
+            PlayerPosition = new Vector2(100, MaxYPos);
         }
 
-        private List<string> FallingObjects = new List<string> {
-			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
-			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
-			};
         private MouseOverlay MsOverlay;
         private List<ObjectBase> GameObjects = new List<ObjectBase>();
         private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
@@ -95,6 +98,7 @@ namespace Arkabound.Interface.Scenes
         private double timeLeft;
         private int projectileInterval;
         private float FallingSpeed;
+        private int DistanceFromBottom;
 
         private Difficulty difficulty;
 
@@ -105,109 +109,122 @@ namespace Arkabound.Interface.Scenes
         private void InitializeTimer()
         {
             // Initiailize timers
-            ProjectileGenerator = new Timer(projectileInterval);
-            TimeLeftController = new Timer(1000);
-            GameTimer = new Timer(timeLeft * 1000);
+            ProjectileGenerator = new Timer(projectileInterval) { AutoReset = true, Enabled = true };
+            TimeLeftController = new Timer(1000) { AutoReset = true, Enabled = true };
+            GameTimer = new Timer(timeLeft * 1000) { AutoReset = false, Enabled = false };
             // Add the event handler to the timer object
-            ProjectileGenerator.Elapsed += OnProjectileGeneratorEnd;
-            ProjectileGenerator.AutoReset = true;
-            ProjectileGenerator.Enabled = true;
+            ProjectileGenerator.Elapsed += delegate
+            {
+                GenerateFallingCrap();
+            };
+            TimeLeftController.Elapsed += delegate
+            {
+                if (timeLeft >= 1)
+                    timeLeft -= 1;
+            };
+            GameTimer.Elapsed += GameTimer_Elapsed;
+        }
 
-            TimeLeftController.Elapsed += OnTimeLeftEnd;
-            TimeLeftController.AutoReset = true;
-            TimeLeftController.Enabled = true;
-
-            GameTimer.Elapsed += OnGameTimerEnd;
-            GameTimer.AutoReset = false;
-            GameTimer.Enabled = true;
+        void GameTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            stopCreatingCrap = true;
+            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.RunningForTheirLives, null, this));
         }
 
         public override void Unload()
         {
-            //
+            // Close all timers
             ProjectileGenerator.Close();
             TimeLeftController.Close();
             GameTimer.Close();
 
-            
             base.Unload();
         }
 
-        private void OnProjectileGeneratorEnd(Object source, ElapsedEventArgs e)
-        {
-            GenerateFallingCrap();
-        }
-
-        private void OnTimeLeftEnd(Object source, ElapsedEventArgs e)
-        {
-            if (timeLeft >= 1)
-                timeLeft -= 1;
-        }
-
+        public int GameOverReason = 0;
         private bool stopCreatingCrap = false;
-
-        private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
-        {
-            stopCreatingCrap = true;
-            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.RunningForTheirLives, CollectedObjects, this));
-            GameTimer.Enabled = false;
-        }
-
         Random randNum = new Random();
-
         private void GenerateFallingCrap()
         {
             if (!stopCreatingCrap)
             {
                 // create new button object
-                Image nwBtn = new Image("crap") {
-                    Graphic = game.Content.Load<Texture2D>("holder"),
-                    Location = new Vector2((float)randNum.Next(5, (int)game.GraphicsDevice.Viewport.Width - 5), 30),
-                    //Font = fonts["default"],
+                Image nwBtn = new Image("crap")
+                {
+                    Graphic = game.Content.Load<Texture2D>("dino/fire"),
+                    //Location = new Vector2((float)randNum.Next(5, (int)game.GraphicsDevice.Viewport.Width - 5), 30),
+                    Location = new Vector2((float)randNum.Next(StartingXPos - 100, StartingXPos), MaxYPos),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch
                 };
-                string tex = FallingObjects[randNum.Next(0, FallingObjects.Count)];
-                nwBtn.MessageHolder.Add(tex);
-                if (tex.Contains('!') || tex.Contains('~')) tex = tex.Remove(0, 1);
-                nwBtn.Graphic = game.Content.Load<Texture2D>("falling-object/" + tex.ToLower());
                 GameObjects.Add(nwBtn);
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            game.GraphicsDevice.Clear(Color.LightSalmon);
-            Label a = (Label)Objects["Timer"];
-            a.Text = String.Format("{0} second(s) left", timeLeft);
             spriteBatch.Begin();
             base.Draw(gameTime);
+
+            Label a = (Label)Objects["Timer"];
+            a.Text = String.Format("{0} second(s) left", timeLeft);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
             spriteBatch.End();
         }
+
+        void UpdateMinMaxY()
+        {
+            if (Objects.ContainsKey("ObjectCatcher"))
+            {
+                MinYPos = game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height - DistanceFromBottom - 300;
+                MaxYPos = game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height - DistanceFromBottom - 100;
+                StartingXPos = game.GraphicsDevice.Viewport.Width - Objects["ObjectCatcher"].Bounds.Width - 10;
+            }
+        }
+        Vector2 PlayerPosition;
+        int MinYPos;
+        int MaxYPos;
+        int StartingXPos;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            // Timer
+            Label Timer = (Label)Objects["Timer"];
+            Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
+            // Backrgound Resize
             Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            // base updates
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
+            UpdateMinMaxY();
+            // Keys
+            if (KeybdState.IsKeyDown(Keys.Space) && PlayerPosition.Y >= MinYPos)
+            {
+                PlayerPosition.Y -= 6.0f;
+            }
+
+            if (KeybdState.IsKeyUp(Keys.Space) && PlayerPosition.Y <= MaxYPos)
+            {
+                PlayerPosition.Y += 6.0f;
+            }
             if (Objects.ContainsKey("ObjectCatcher"))
             {
                 if (stopCreatingCrap)
                     Objects.Remove("ObjectCatcher");
                 else
-                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.Bounds.X - (Objects["ObjectCatcher"].Graphic.Width / 2), Objects["ObjectCatcher"].Location.Y);
+                    Objects["ObjectCatcher"].Location = PlayerPosition;
             }
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 // Move crap by 3
-                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X, GameObjects[i].Location.Y + FallingSpeed);
+                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X - FallingSpeed, GameObjects[i].Location.Y);
 
                 // Check if game object collides/intersects with catcher
                 if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
                 {
-                    CollectedObjects.Add(GameObjects[i]);
+                    GameOverReason = -1;
+                    GameTimer_Elapsed(null, null);
                     GameObjects.Remove(GameObjects[i]);
                     return;
                 }
@@ -215,7 +232,7 @@ namespace Arkabound.Interface.Scenes
                 // cleanup crapped shit
                 // (normal human speak: remove objects once it exceeds the object catcher)
                 // also remove all crap once time is up
-                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || stopCreatingCrap)
+                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.X < Objects["ObjectCatcher"].Location.X - 50)) || stopCreatingCrap)
                     GameObjects.Remove(GameObjects[i]);
             }
         }
