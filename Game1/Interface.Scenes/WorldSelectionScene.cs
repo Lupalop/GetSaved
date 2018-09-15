@@ -106,11 +106,10 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "mb8", new MenuButton("mb", sceneManager)
                 {
-                    Text = "",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
+                    Tint = Color.Transparent,
                     Font = fonts["default"]
                 }},
                 { "mb9", new MenuButton("mb", sceneManager)
@@ -162,7 +161,6 @@ namespace Arkabound.Interface.Scenes
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            distanceFromTop = (int)ScreenCenter.Y - (GetAllObjectsHeight(Objects) / 2);
             MenuButton dfBtn = (MenuButton)Objects["mb2"];
             dfBtn.Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5);
             dfBtn.Text = String.Format("Difficulty: {0}", difficulty);
