@@ -11,7 +11,7 @@ namespace Arkabound.Interface.Scenes
     public class DebugOverlay : OverlayBase
     {
         // FPS+O Counter
-        bool isCounterVisible;
+        bool[] isCounterVisible = new bool[4];
         int frameRate = 0;
         int frameCounter = 0;
         TimeSpan elapsedTime = TimeSpan.Zero;
@@ -24,6 +24,9 @@ namespace Arkabound.Interface.Scenes
         string sceneObjectHeader = "\nObjects in Current Scene ({0}):\n";
         string sceneObjectList;
 
+        // Mouse Coords
+        string mouseCoordinates;
+
         public DebugOverlay(SceneManager sceneManager)
             : base(sceneManager, "Debug Overlay")
         {
@@ -33,9 +36,14 @@ namespace Arkabound.Interface.Scenes
         {
             // FPS Counter
             if (KeybdState.IsKeyDown(Keys.F2))
-                isCounterVisible = true;
-            if (KeybdState.IsKeyUp(Keys.F2))
-                isCounterVisible = false;
+                isCounterVisible[0] = !isCounterVisible[0];
+            if (KeybdState.IsKeyDown(Keys.F10))
+                isCounterVisible[1] = !isCounterVisible[1];
+            if (KeybdState.IsKeyDown(Keys.F11))
+                isCounterVisible[2] = !isCounterVisible[2];
+            if (KeybdState.IsKeyDown(Keys.F12))
+                isCounterVisible[3] = !isCounterVisible[3];
+
 
             elapsedTime += gameTime.ElapsedGameTime;
 
@@ -46,20 +54,14 @@ namespace Arkabound.Interface.Scenes
                 frameCounter = 0;
             }
 
-            // Temporary mouse hiding
-            if (KeybdState.IsKeyDown(Keys.F12))
+            // List mouse coordinates
+            if (isCounterVisible[3])
             {
-                if (sceneManager.overlays.ContainsKey("mouse"))
-                    sceneManager.overlays.Remove("mouse");
-            }
-            if (KeybdState.IsKeyUp(Keys.F12))
-            {
-                if (!sceneManager.overlays.ContainsKey("mouse"))
-                    sceneManager.overlays.Add("mouse", new MouseOverlay(sceneManager));
+                mouseCoordinates = sceneManager.overlays["mouse"].Objects["Mouse"].Bounds.ToString();
             }
 
             // List overlays currently loaded
-            if (KeybdState.IsKeyDown(Keys.F11))
+            if (isCounterVisible[2])
             {
                 sceneOverlayList = "";
                 for (int i = 0; i < sceneManager.overlays.Count; i++)
@@ -69,7 +71,8 @@ namespace Arkabound.Interface.Scenes
                         new object[] { i, sceneManager.overlays[keyList[i]].sceneName, keyList[i] });
                 }
             }
-            if (KeybdState.IsKeyDown(Keys.F10))
+            // List objects loaded
+            if (isCounterVisible[1])
             {
                 sceneObjectList = "";
                 for (int i = 0; i < sceneManager.currentScene.Objects.Count; i++)
@@ -87,7 +90,7 @@ namespace Arkabound.Interface.Scenes
             frameCounter++;
 
             spriteBatch.Begin();
-            if (KeybdState.IsKeyDown(Keys.F11))
+            if (isCounterVisible[2])
             {
                 string sceneManagerInfo = sceneInfoHeader + 
                     string.Format(sceneCurrentHeader, sceneManager.currentScene.sceneName) + 
@@ -96,7 +99,7 @@ namespace Arkabound.Interface.Scenes
                 spriteBatch.DrawString(fonts["default"], sceneManagerInfo, new Vector2(0, 0), Color.Black);
                 spriteBatch.DrawString(fonts["default"], sceneManagerInfo, new Vector2(1, 1), Color.White);
             }
-            if (KeybdState.IsKeyDown(Keys.F10))
+            if (isCounterVisible[1])
             {
                 string objectInfo = string.Format(sceneObjectHeader, sceneManager.currentScene.Objects.Count) +
                                     sceneObjectList;
@@ -104,11 +107,16 @@ namespace Arkabound.Interface.Scenes
                 spriteBatch.DrawString(fonts["default"], objectInfo, new Vector2(1, 1), Color.White);
             }
 
-            if (isCounterVisible)
+            if (isCounterVisible[0])
             {
                 string dbCounter = string.Format("FPS: {0}, Memory: {1}, Overlay scenes: {2}", frameRate, GC.GetTotalMemory(false), sceneManager.overlays.Count);
                 spriteBatch.DrawString(fonts["default"], dbCounter, new Vector2(0, 0), Color.Black);
                 spriteBatch.DrawString(fonts["default"], dbCounter, new Vector2(1, 1), Color.White);
+            }
+            if (isCounterVisible[3])
+            {
+                spriteBatch.DrawString(fonts["default"], mouseCoordinates, new Vector2(0, 0), Color.Black);
+                spriteBatch.DrawString(fonts["default"], mouseCoordinates, new Vector2(1, 1), Color.White);
             }
             spriteBatch.End();
         }
