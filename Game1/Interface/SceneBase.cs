@@ -27,7 +27,6 @@ namespace Arkabound.Interface
             // Load the scene's content
             LoadContent();
             // Layout stuff
-            //distanceFromTop = 50;
             spacing = 5;
         }
 
@@ -62,7 +61,6 @@ namespace Arkabound.Interface
             if (Program.OutputMessages && Program.VerboseMessages)
                 Console.WriteLine("Updating from scene: "  + sceneName);
             ScreenCenter = new Vector2(game.GraphicsDevice.Viewport.Bounds.Width / 2, game.GraphicsDevice.Viewport.Bounds.Height / 2);
-            distanceFromTop = (int)ScreenCenter.Y - ((int)GetAllObjectsHeight(Objects) / 2);
         }
 
         public virtual void Unload()
@@ -132,11 +130,10 @@ namespace Arkabound.Interface
             UpdateObjectsFromArray(gameTime, objects);
         }
 
-        public int distanceFromTop;
         public int spacing;
         private void UpdateObjectsFromArray(GameTime gameTime, ObjectBase[] objs)
         {
-            int originalDFT = distanceFromTop;
+            int distanceFromTop = (int)ScreenCenter.Y - ((int)GetAllObjectsHeight(objs) / 2);
             // Dynamically compute for spacing between *centered* objects
             for (int i = 0; i < objs.Length; i++)
             {
@@ -158,7 +155,6 @@ namespace Arkabound.Interface
 
                 Object.Update(gameTime);
             }
-            distanceFromTop = originalDFT;
         }
     }
 }
