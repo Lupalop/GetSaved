@@ -115,8 +115,9 @@ namespace Arkabound.Interface.Scenes
             }
             if (isCounterVisible[3])
             {
-                spriteBatch.DrawString(fonts["default"], mouseCoordinates, new Vector2(0, 0), Color.Black);
-                spriteBatch.DrawString(fonts["default"], mouseCoordinates, new Vector2(1, 1), Color.White);
+                Vector2 msLoc = sceneManager.overlays["mouse"].Objects["Mouse"].Location;
+                spriteBatch.DrawString(fonts["default"], mouseCoordinates, new Vector2(msLoc.X, msLoc.Y + 15), Color.Black);
+                spriteBatch.DrawString(fonts["default"], mouseCoordinates, new Vector2(msLoc.X + 1, msLoc.Y + 16), Color.White);
             }
             spriteBatch.End();
         }
