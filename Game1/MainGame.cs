@@ -67,11 +67,12 @@ namespace Arkabound
             fonts["default_l"] = Content.Load<SpriteFont>("ZillaSlab_large");
             // Setup the Scene Manager
             sceneManager = new SceneManager(this, spriteBatch, fonts);
-            sceneManager.currentScene = new StartupScene(sceneManager);
             // Register mouse overlay in the scene manager
             sceneManager.overlays.Add("mouse", new MouseOverlay(sceneManager));
             // Register debug overlay in the scene manager
             sceneManager.overlays.Add("debug", new DebugOverlay(sceneManager));
+            // Setup first scene (Main Menu)
+            sceneManager.currentScene = new MainMenuScene(sceneManager);
         }
 
         /// <summary>

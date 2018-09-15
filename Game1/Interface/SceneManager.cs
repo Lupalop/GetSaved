@@ -41,6 +41,9 @@ namespace Arkabound.Interface
                     _currentScene.Unload();
                 // Set current state to given scene
                 _currentScene = value;
+                string overlayKey = String.Format("fade-{0}", value);
+                if (!overlays.ContainsKey(overlayKey))
+                    overlays.Add(overlayKey, new Scenes.FadeOverlay(this, overlayKey));
             }
         }
 
