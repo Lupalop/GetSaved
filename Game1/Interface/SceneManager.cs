@@ -64,7 +64,7 @@ namespace Arkabound.Interface
         {
             currentScene.Draw(gameTime);
             // If there are overlays, call their draw method
-            for (int i = 0; i < overlays.Count; i++)
+            for (int i = overlays.Count - 1; i >= 0; i--)
             {
                 overlays[overlays.Keys.ToList()[i]].Draw(gameTime);
             }
@@ -75,14 +75,11 @@ namespace Arkabound.Interface
             currentScene.Update(gameTime);
             UpdateKeys(currentScene);
             // If there are overlays, call their update method
-            if (overlays.Count != 0)
+            for (int i = overlays.Count - 1; i >= 0; i--)
             {
-                for (int i = 0; i < overlays.Count; i++)
-                {
-                    SceneBase scb = overlays[overlays.Keys.ToList()[i]];
-                    scb.Update(gameTime);
-                    UpdateKeys(scb);
-                }
+                SceneBase scb = overlays[overlays.Keys.ToList()[i]];
+                scb.Update(gameTime);
+                UpdateKeys(scb);
             }
         }
 
