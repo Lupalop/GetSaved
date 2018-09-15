@@ -31,7 +31,7 @@ namespace Arkabound.Interface.Scenes
             };
         }
 
-        public Rectangle mouseBox;
+        public Rectangle Bounds;
 
         public override void Draw(GameTime gameTime)
         {
@@ -45,7 +45,7 @@ namespace Arkabound.Interface.Scenes
         {
             Image Mouse = (Image)Objects["Mouse"];
             Mouse.Location = MsState.Position.ToVector2();
-            mouseBox = Mouse.Bounds;
+            Bounds = Mouse.Bounds;
 
             Mouse.CurrentFrame = 0;
             // Selected effect - when left button is pressed, cursor turns to green

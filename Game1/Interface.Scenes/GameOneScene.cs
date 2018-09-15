@@ -186,7 +186,7 @@ namespace Arkabound.Interface.Scenes
                 if (stopCreatingCrap)
                     Objects.Remove("ObjectCatcher");
                 else
-                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.mouseBox.X - (Objects["ObjectCatcher"].Graphic.Width / 2), game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
+                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.Bounds.X - (Objects["ObjectCatcher"].Graphic.Width / 2), game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
             }
             for (int i = 0; i < GameObjects.Count; i++)
             {
