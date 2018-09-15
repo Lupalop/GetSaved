@@ -36,6 +36,9 @@ namespace Arkabound.Interface.Scenes
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"],
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager),
                     RightClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
@@ -53,9 +56,11 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
+            spriteBatch.Begin();
             game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
+            spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)

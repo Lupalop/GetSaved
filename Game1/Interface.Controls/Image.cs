@@ -22,9 +22,7 @@ namespace Arkabound.Interface.Controls
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
             base.Draw(gameTime);
-            spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)

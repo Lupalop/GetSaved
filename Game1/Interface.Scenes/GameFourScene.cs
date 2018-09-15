@@ -32,6 +32,9 @@ namespace Arkabound.Interface.Scenes
                     Location = new Vector2(5,5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
@@ -43,7 +46,7 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default_l"]
                 }},
-                { "Hand1", new AnimatedImage("hand1")
+                { "Hand1", new Image("hand1")
                 {
                     Graphic = game.Content.Load<Texture2D>("Hand"),
                     AlignToCenter = false,
@@ -52,7 +55,7 @@ namespace Arkabound.Interface.Scenes
                     Columns = 2,
                     Rows = 1
                 }},
-                { "Hand2", new AnimatedImage("hand2")
+                { "Hand2", new Image("hand2")
                 {
                     Graphic = game.Content.Load<Texture2D>("Hand"),
                     AlignToCenter = false,                    
@@ -149,19 +152,21 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
+            spriteBatch.Begin();
             base.Draw(gameTime);
 
             Label a = (Label)Objects["Timer"];
             a.Text = String.Format("{0} second(s) left", timeLeft);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
+            spriteBatch.End();
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            Objects["Hand1"].Location = new Vector2(0, game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height);
-            Objects["Hand2"].Location = new Vector2(0, game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height);
+            Objects["Hand1"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - (Objects["Hand1"].Bounds.Width / 2) + 100, game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height + 100);
+            Objects["Hand2"].Location = new Vector2(-100, game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height + 100);
             Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);

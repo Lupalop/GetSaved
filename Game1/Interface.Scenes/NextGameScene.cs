@@ -105,8 +105,10 @@ namespace Arkabound.Interface.Scenes
         public override void Draw(GameTime gameTime)
         {
             game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
+            spriteBatch.Begin();
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
+            spriteBatch.End();
         }
         
         public override void Update(GameTime gameTime)

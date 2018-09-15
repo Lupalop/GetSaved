@@ -33,10 +33,8 @@ namespace Arkabound.Interface.Controls
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
             base.Draw(gameTime);
             spriteBatch.DrawString(Font, Text, GraphicCenter, Color.White, 0f, new Vector2(0, 0), Scale, SpriteEffects.None, 1f);
-            spriteBatch.End();
         }
 
         bool LeftClickFired;
@@ -47,22 +45,19 @@ namespace Arkabound.Interface.Controls
             Vector2 TextLength = Font.MeasureString(Text);
             GraphicCenter = new Vector2(Location.X + (Bounds.Width / 2) - TextLength.X / 2, Location.Y + Bounds.Height / 4);
             MsState = sceneManager.MsState;
-
-            // Revert to white tint
-            Tint = Color.White;
-
+            CurrentFrame = 0;
             // If mouse is on top of the button
-            if (Bounds.Intersects(MsOverlay.mouseBox))
+            if (Bounds.Intersects(MsOverlay.mouseBox) && SpriteType != SpriteTypes.None)
             {
-                Tint = Color.Wheat;
+                CurrentFrame = 1;
             }
 
             // If the button was clicked
             if ((MsState.LeftButton == ButtonState.Pressed ||
                  MsState.RightButton == ButtonState.Pressed ||
-                 MsState.MiddleButton == ButtonState.Pressed) && Bounds.Intersects(MsOverlay.mouseBox))
+                 MsState.MiddleButton == ButtonState.Pressed) && Bounds.Intersects(MsOverlay.mouseBox) && SpriteType != SpriteTypes.None)
             {
-                Tint = Color.Violet;
+                CurrentFrame = 2;
             }
 
             // Left Mouse Button Click Action

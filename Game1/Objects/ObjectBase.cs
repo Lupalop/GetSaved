@@ -21,6 +21,9 @@ namespace Arkabound.Objects
             Scale = 1f;
             AlignToCenter = true;
             MessageHolder = new List<object>();
+            CurrentFrame = 0;
+            TotalFrames = 0;
+            SpriteType = SpriteTypes.None;
         }
 
         // Basic Properties
@@ -42,6 +45,39 @@ namespace Arkabound.Objects
         public Rectangle DestinationRectangle { get; set; }
         public Rectangle SourceRectangle { get; set; }
 
+        // For Animated Sprites
+        public SpriteTypes SpriteType { get; set; }
+
+        private int rows;
+        public int Rows
+        {
+            get
+            {
+                return rows;
+            }
+            set
+            {
+                TotalFrames = value * Columns;
+                rows = value;
+            }
+        }
+        private int columns;
+        public int Columns
+        {
+            get
+            {
+                return columns;
+            }
+            set
+            {
+                TotalFrames = Rows * value;
+                columns = value;
+            }
+        }
+
+        public int CurrentFrame;
+        private int TotalFrames;
+
         // UI (should not be here and should have its own object, i.e. UIObjectBase)
         public bool AlignToCenter { get; set; }
 
@@ -53,12 +89,23 @@ namespace Arkabound.Objects
         {
             if (Graphic != null)
             {
+                if (SpriteType != SpriteTypes.None)
+                {
+                    int width = Graphic.Width / Columns;
+                    int height = Graphic.Height / Rows;
+                    int row = (int)((float)CurrentFrame / (float)Columns);
+                    int column = CurrentFrame % Columns;
+
+                    DestinationRectangle = new Rectangle((int)Location.X, (int)Location.Y, width, height);
+                    SourceRectangle = new Rectangle(width * column, height * row, width, height);
+                }
                 if (DestinationRectangle != Rectangle.Empty)
                 {
                     if (SourceRectangle != Rectangle.Empty)
                         spriteBatch.Draw(Graphic, DestinationRectangle, SourceRectangle, Tint, Rotation, RotationOrigin, SpriteEffects.None, 1f);
                     else
                         spriteBatch.Draw(Graphic, DestinationRectangle, null, Tint, Rotation, RotationOrigin, SpriteEffects.None, 1f);
+                    return;
                 }
                 else if (Rotation != 0 || Scale != 0)
                 {
@@ -66,6 +113,7 @@ namespace Arkabound.Objects
                         spriteBatch.Draw(Graphic, Location, SourceRectangle, Tint, Rotation, RotationOrigin, Scale, SpriteEffects.None, 1f);
                     else
                         spriteBatch.Draw(Graphic, Location, null, Tint, Rotation, RotationOrigin, Scale, SpriteEffects.None, 1f);
+                    return;
                 }
                 else
                 {
@@ -75,15 +123,33 @@ namespace Arkabound.Objects
         }
         public virtual void Update(GameTime gameTime)
         {
+            if (SpriteType != SpriteTypes.None)
+            {
+                if (SpriteType == SpriteTypes.Animated)
+                    CurrentFrame++;
+                if (CurrentFrame == TotalFrames)
+                    CurrentFrame = 0;
+            }
+
             Point dimens = new Point(0, 0);
             if (UseCustomDimensions)
+            {
                 dimens = Dimensions;
+            }
             else if (Graphic != null)
-                dimens = new Point(Graphic.Width, Graphic.Height);
+            {
+                if (SourceRectangle != Rectangle.Empty)
+                    dimens = new Point(SourceRectangle.Width, SourceRectangle.Height);
+                else
+                    dimens = new Point(Graphic.Width, Graphic.Height);
+            }
             else
+            {
                 dimens = DimensionsOverride;
+            }
 
             Bounds = new Rectangle(Location.ToPoint(), dimens);
         }
     }
+    public enum SpriteTypes { Static, Animated, None };
 }

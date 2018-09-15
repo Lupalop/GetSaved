@@ -25,6 +25,9 @@ namespace Arkabound.Interface.Scenes
                     Location = new Vector2(5,5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
                 }},
@@ -35,6 +38,9 @@ namespace Arkabound.Interface.Scenes
                     Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => ModifyDifficulty()
                 }},
@@ -44,6 +50,9 @@ namespace Arkabound.Interface.Scenes
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new GameOneScene(sceneManager, difficulty)
                 }},
@@ -53,6 +62,9 @@ namespace Arkabound.Interface.Scenes
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new GameTwoScene(sceneManager, difficulty)
                 }},
@@ -62,6 +74,9 @@ namespace Arkabound.Interface.Scenes
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new GameTwoScene(sceneManager, difficulty)
                 }},
@@ -71,6 +86,9 @@ namespace Arkabound.Interface.Scenes
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new GameThreeScene(sceneManager, difficulty)
                 }},
@@ -80,6 +98,9 @@ namespace Arkabound.Interface.Scenes
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new GameFourScene(sceneManager, difficulty)
                 }},
@@ -88,8 +109,8 @@ namespace Arkabound.Interface.Scenes
                     Text = "",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
-                    OriginalTint = Color.Pink,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
                     Font = fonts["default"]
                 }},
                 { "mb9", new MenuButton("mb", sceneManager)
@@ -98,6 +119,9 @@ namespace Arkabound.Interface.Scenes
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager)
                 }},
@@ -129,8 +153,10 @@ namespace Arkabound.Interface.Scenes
         public override void Draw(GameTime gameTime)
         {
             game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
+            spriteBatch.Begin();
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
+            spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)

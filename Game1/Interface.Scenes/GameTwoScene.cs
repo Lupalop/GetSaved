@@ -33,6 +33,9 @@ namespace Arkabound.Interface.Scenes
                     Location = new Vector2(5,5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
@@ -46,8 +49,7 @@ namespace Arkabound.Interface.Scenes
                 { "Timer", new Label("timer")
                 {
                     Text = String.Format("{0} second(s) left", timeLeft),
-                    //Graphic = game.Content.Load<Texture2D>("menuBG"),
-                    Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5), //new Vector2(300, 5),
+                    Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default_l"]
@@ -178,9 +180,11 @@ namespace Arkabound.Interface.Scenes
             game.GraphicsDevice.Clear(Color.LightSalmon);
             Label a = (Label)Objects["Timer"];
             a.Text = String.Format("{0} second(s) left", timeLeft);
+            spriteBatch.Begin();
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
+            spriteBatch.End();
         }
         public override void Update(GameTime gameTime)
         {

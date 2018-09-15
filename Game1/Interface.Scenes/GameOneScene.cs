@@ -33,6 +33,9 @@ namespace Arkabound.Interface.Scenes
                     Location = new Vector2(5,5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
@@ -77,6 +80,7 @@ namespace Arkabound.Interface.Scenes
                     FallingSpeed = 10;
                     break;
             }
+            DistanceFromBottom = -30;
             this.difficulty = difficulty;
             InitializeTimer();
         }
@@ -92,6 +96,7 @@ namespace Arkabound.Interface.Scenes
         private double timeLeft;
         private int projectileInterval;
         private float FallingSpeed;
+        private int DistanceFromBottom;
 
         private Difficulty difficulty;
 
@@ -158,17 +163,21 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
+            spriteBatch.Begin();
             base.Draw(gameTime);
 
             Label a = (Label)Objects["Timer"];
             a.Text = String.Format("{0} second(s) left", timeLeft);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
+            spriteBatch.End();
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
+            Label Timer = (Label)Objects["Timer"];
+            Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
             Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width,game.GraphicsDevice.Viewport.Height);
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
@@ -177,7 +186,7 @@ namespace Arkabound.Interface.Scenes
                 if (stopCreatingCrap)
                     Objects.Remove("ObjectCatcher");
                 else
-                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.mouseBox.X - (Objects["ObjectCatcher"].Graphic.Width / 2), game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height);
+                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.mouseBox.X - (Objects["ObjectCatcher"].Graphic.Width / 2), game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
             }
             for (int i = 0; i < GameObjects.Count; i++)
             {
