@@ -146,7 +146,7 @@ namespace Arkabound.Interface.Scenes
 
         private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
         {
-            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.HelpOthersNow, null));
+            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.HelpOthersNow, null, this));
             GameTimer.Enabled = false;
         }
 

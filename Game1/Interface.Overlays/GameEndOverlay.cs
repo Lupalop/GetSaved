@@ -13,10 +13,10 @@ using Arkabound.Objects;
 
 namespace Arkabound.Interface.Scenes
 {
-    public class GameEndOverlay : SceneBase
+    public class GameEndOverlay : OverlayBase
     {
-        public GameEndOverlay(SceneManager sceneManager, Games cgame, List<ObjectBase> passedMessage)
-            : base(sceneManager, "Game End Overlay")
+        public GameEndOverlay(SceneManager sceneManager, Games cgame, List<ObjectBase> passedMessage, SceneBase parentScene)
+            : base(sceneManager, "Game End Overlay", parentScene)
         {
             currentGame = cgame;
             Objects = new Dictionary<string, ObjectBase> {

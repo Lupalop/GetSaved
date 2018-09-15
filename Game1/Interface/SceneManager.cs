@@ -41,6 +41,7 @@ namespace Arkabound.Interface
                     _currentScene.Unload();
                 // Set current state to given scene
                 _currentScene = value;
+                // Show a fade effect to hide first frame misposition
                 string overlayKey = String.Format("fade-{0}", value);
                 if (!overlays.ContainsKey(overlayKey))
                     overlays.Add(overlayKey, new Scenes.FadeOverlay(this, overlayKey));
@@ -63,12 +64,9 @@ namespace Arkabound.Interface
         {
             currentScene.Draw(gameTime);
             // If there are overlays, call their draw method
-            if (overlays.Count != 0)
+            for (int i = 0; i < overlays.Count; i++)
             {
-                for (int i = 0; i < overlays.Count; i++)
-                {
-                    overlays[overlays.Keys.ToList()[i]].Draw(gameTime);
-                }
+                overlays[overlays.Keys.ToList()[i]].Draw(gameTime);
             }
         }
 

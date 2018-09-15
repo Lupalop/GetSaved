@@ -149,7 +149,7 @@ namespace Arkabound.Interface.Scenes
         private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
         {
             stopCreatingCrap = true;
-            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects));
+            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.EscapeEarthquake, CollectedObjects,this));
             GameTimer.Enabled = false;
         }
 

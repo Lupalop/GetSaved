@@ -11,7 +11,7 @@ using Arkabound.Interface.Controls;
 
 namespace Arkabound.Interface.Scenes
 {
-    public class FadeOverlay : SceneBase
+    public class FadeOverlay : OverlayBase
     {
         public FadeOverlay(SceneManager sceneManager, string overlayKey)
             : base(sceneManager, "Fade Overlay")

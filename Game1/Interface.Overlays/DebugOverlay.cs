@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Arkabound.Interface.Scenes
 {
-    public class DebugOverlay : SceneBase
+    public class DebugOverlay : OverlayBase
     {
         // FPS+O Counter
         bool isCounterVisible;
@@ -62,25 +62,19 @@ namespace Arkabound.Interface.Scenes
             if (KeybdState.IsKeyDown(Keys.F11))
             {
                 sceneOverlayList = "";
-                if (sceneManager.overlays.Count != 0)
+                for (int i = 0; i < sceneManager.overlays.Count; i++)
                 {
-                    for (int i = 0; i < sceneManager.overlays.Count; i++)
-                    {
-                        List<string> keyList = sceneManager.overlays.Keys.ToList();
-                        sceneOverlayList += i+1 + ". " + sceneManager.overlays[keyList[i]].sceneName + " : " + keyList[i] + "\n";
-                    }
+                    List<string> keyList = sceneManager.overlays.Keys.ToList();
+                    sceneOverlayList += String.Format("Key {0}: {2}, Scene Name: {1} \n", i, sceneManager.overlays[keyList[i]].sceneName, keyList[i]);
                 }
             }
             if (KeybdState.IsKeyDown(Keys.F10))
             {
                 sceneObjectList = "";
-                if (sceneManager.currentScene.Objects.Count != 0)
+                for (int i = 0; i < sceneManager.currentScene.Objects.Count; i++)
                 {
-                    for (int i = 0; i < sceneManager.currentScene.Objects.Count; i++)
-                    {
-                        List<string> keyList = sceneManager.currentScene.Objects.Keys.ToList();
-                        sceneObjectList += i + 1 + ". " + sceneManager.currentScene.Objects[keyList[i]].Name + " : " + keyList[i] + "\n";
-                    }
+                    List<string> keyList = sceneManager.currentScene.Objects.Keys.ToList();
+                    sceneObjectList += String.Format("Key {0}: {2}, Object Name: {1} \n", i, sceneManager.currentScene.Objects[keyList[i]].Name, keyList[i]);
                 }
             }
         }

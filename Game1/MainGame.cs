@@ -131,9 +131,8 @@ namespace Arkabound
         {
             // Stretch images using nearest neighbor
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-            GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
             sceneManager.Draw(gameTime);
-            
             base.Draw(gameTime);
         }
     }

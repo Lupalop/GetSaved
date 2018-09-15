@@ -30,6 +30,7 @@ namespace Arkabound.Interface.Controls
         public MouseOverlay MsOverlay { get; set; }
         public Action LeftClickAction { get; set; }
         public Action RightClickAction { get; set; }
+        public bool Disabled { get; set; }
 
         public override void Draw(GameTime gameTime)
         {
@@ -46,47 +47,52 @@ namespace Arkabound.Interface.Controls
             GraphicCenter = new Vector2(Location.X + (Bounds.Width / 2) - TextLength.X / 2, Location.Y + Bounds.Height / 4);
             MsState = sceneManager.MsState;
             CurrentFrame = 0;
-            // If mouse is on top of the button
-            if (Bounds.Intersects(MsOverlay.mouseBox) && SpriteType != SpriteTypes.None)
-            {
-                CurrentFrame = 1;
-            }
 
-            // If the button was clicked
-            if ((MsState.LeftButton == ButtonState.Pressed ||
-                 MsState.RightButton == ButtonState.Pressed ||
-                 MsState.MiddleButton == ButtonState.Pressed) && Bounds.Intersects(MsOverlay.mouseBox) && SpriteType != SpriteTypes.None)
+            // Don't respond to any event if button is disabled
+            if (!Disabled)
             {
-                CurrentFrame = 2;
-            }
-
-            // Left Mouse Button Click Action
-            if (LeftClickAction != null)
-            {
-                if (MsState.LeftButton == ButtonState.Pressed && Bounds.Intersects(MsOverlay.mouseBox))
-                    LeftClickFired = true;
-                if (MsState.LeftButton == ButtonState.Pressed && !Bounds.Intersects(MsOverlay.mouseBox))
-                    LeftClickFired = false;
-                if (MsState.LeftButton == ButtonState.Released && LeftClickFired)
+                // If mouse is on top of the button
+                if (Bounds.Intersects(MsOverlay.mouseBox) && SpriteType != SpriteTypes.None)
                 {
-                    LeftClickAction.Invoke();
-                    // In order to prevent the action from being fired again
-                    LeftClickFired = false;
+                    CurrentFrame = 1;
                 }
-            }
 
-            // Right Mouse Button Click Action
-            if (RightClickAction != null)
-            {
-                if (MsState.RightButton == ButtonState.Pressed && Bounds.Intersects(MsOverlay.mouseBox))
-                    RightClickFired = true;
-                if (MsState.RightButton == ButtonState.Pressed && !Bounds.Intersects(MsOverlay.mouseBox))
-                    RightClickFired = false;
-                if (MsState.RightButton == ButtonState.Released && RightClickFired)
+                // If the button was clicked
+                if ((MsState.LeftButton == ButtonState.Pressed ||
+                     MsState.RightButton == ButtonState.Pressed ||
+                     MsState.MiddleButton == ButtonState.Pressed) && Bounds.Intersects(MsOverlay.mouseBox) && SpriteType != SpriteTypes.None)
                 {
-                    RightClickAction.Invoke();
-                    // In order to prevent the action from being fired again
-                    RightClickFired = false;
+                    CurrentFrame = 2;
+                }
+
+                // Left Mouse Button Click Action
+                if (LeftClickAction != null)
+                {
+                    if (MsState.LeftButton == ButtonState.Pressed && Bounds.Intersects(MsOverlay.mouseBox))
+                        LeftClickFired = true;
+                    if (MsState.LeftButton == ButtonState.Pressed && !Bounds.Intersects(MsOverlay.mouseBox))
+                        LeftClickFired = false;
+                    if (MsState.LeftButton == ButtonState.Released && LeftClickFired)
+                    {
+                        LeftClickAction.Invoke();
+                        // In order to prevent the action from being fired again
+                        LeftClickFired = false;
+                    }
+                }
+
+                // Right Mouse Button Click Action
+                if (RightClickAction != null)
+                {
+                    if (MsState.RightButton == ButtonState.Pressed && Bounds.Intersects(MsOverlay.mouseBox))
+                        RightClickFired = true;
+                    if (MsState.RightButton == ButtonState.Pressed && !Bounds.Intersects(MsOverlay.mouseBox))
+                        RightClickFired = false;
+                    if (MsState.RightButton == ButtonState.Released && RightClickFired)
+                    {
+                        RightClickAction.Invoke();
+                        // In order to prevent the action from being fired again
+                        RightClickFired = false;
+                    }
                 }
             }
 

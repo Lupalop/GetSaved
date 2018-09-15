@@ -123,7 +123,7 @@ namespace Arkabound.Interface.Scenes
             GameTimer.Elapsed += delegate
             {
                 stopCreatingCrap = true;
-                sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects));
+                sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects, this));
             };
         }
 
