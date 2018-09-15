@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Arkabound.Interface.Controls;
-using Arkabound.Components;
 using Arkabound.Objects;
 
 namespace Arkabound.Interface.Scenes

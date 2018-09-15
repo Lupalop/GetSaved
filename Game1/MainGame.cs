@@ -47,9 +47,6 @@ namespace Arkabound
         /// </summary>
         protected override void Initialize()
         {
-            // Setup any components
-            Components.Add(new Arkabound.Components.TimerManager(this));
-            // Base init
             base.Initialize();
         }
 

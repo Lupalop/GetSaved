@@ -66,7 +66,6 @@
     <Compile Include="Interface.Scenes\GameFourScene.cs" />
     <Compile Include="Interface.Scenes\GameThreeScene.cs" />
     <Compile Include="Interface.Overlays\DebugOverlay.cs" />
-    <Compile Include="Components\Timers.cs" />
     <Compile Include="Interface.Overlays\GameEndOverlay.cs" />
     <Compile Include="Interface.Scenes\GameOneScene.cs" />
     <Compile Include="Interface.Overlays\FadeOverlay.cs" />
@@ -115,9 +114,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

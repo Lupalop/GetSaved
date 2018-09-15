@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Arkabound.Objects;
 using Arkabound.Interface.Scenes;
-using Arkabound.Components;
 
 namespace Arkabound.Interface.Controls
 {
