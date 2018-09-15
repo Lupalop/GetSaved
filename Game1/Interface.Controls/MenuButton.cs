@@ -51,7 +51,7 @@ namespace Arkabound.Interface.Controls
             if (!Disabled)
             {
                 // If mouse is on top of the button
-                if (Bounds.Intersects(MsOverlay.Bounds) && SpriteType != SpriteTypes.None)
+                if (Bounds.Contains(MsOverlay.Bounds.Location) && SpriteType != SpriteTypes.None)
                 {
                     CurrentFrame = 1;
                 }
@@ -59,7 +59,7 @@ namespace Arkabound.Interface.Controls
                 // If the button was clicked
                 if ((MsState.LeftButton == ButtonState.Pressed ||
                      MsState.RightButton == ButtonState.Pressed ||
-                     MsState.MiddleButton == ButtonState.Pressed) && Bounds.Intersects(MsOverlay.Bounds) && SpriteType != SpriteTypes.None)
+                     MsState.MiddleButton == ButtonState.Pressed) && Bounds.Contains(MsOverlay.Bounds.Location) && SpriteType != SpriteTypes.None)
                 {
                     CurrentFrame = 2;
                 }
@@ -67,9 +67,9 @@ namespace Arkabound.Interface.Controls
                 // Left Mouse Button Click Action
                 if (LeftClickAction != null)
                 {
-                    if (MsState.LeftButton == ButtonState.Pressed && Bounds.Intersects(MsOverlay.Bounds))
+                    if (MsState.LeftButton == ButtonState.Pressed && Bounds.Contains(MsOverlay.Bounds.Location))
                         LeftClickFired = true;
-                    if (MsState.LeftButton == ButtonState.Pressed && !Bounds.Intersects(MsOverlay.Bounds))
+                    if (MsState.LeftButton == ButtonState.Pressed && !Bounds.Contains(MsOverlay.Bounds.Location))
                         LeftClickFired = false;
                     if (MsState.LeftButton == ButtonState.Released && LeftClickFired)
                     {
@@ -82,9 +82,9 @@ namespace Arkabound.Interface.Controls
                 // Right Mouse Button Click Action
                 if (RightClickAction != null)
                 {
-                    if (MsState.RightButton == ButtonState.Pressed && Bounds.Intersects(MsOverlay.Bounds))
+                    if (MsState.RightButton == ButtonState.Pressed && Bounds.Contains(MsOverlay.Bounds.Location))
                         RightClickFired = true;
-                    if (MsState.RightButton == ButtonState.Pressed && !Bounds.Intersects(MsOverlay.Bounds))
+                    if (MsState.RightButton == ButtonState.Pressed && !Bounds.Contains(MsOverlay.Bounds.Location))
                         RightClickFired = false;
                     if (MsState.RightButton == ButtonState.Released && RightClickFired)
                     {
