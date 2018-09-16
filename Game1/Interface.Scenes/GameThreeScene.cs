@@ -92,7 +92,7 @@ namespace Arkabound.Interface.Scenes
             InitializeTimer();
             UpdateMinMaxY();
             GenerateFallingCrap();
-            PlayerPosition = new Vector2(100, MaxYPos);
+            PlayerPosition = new Vector2(100, MaxYPos - 100);
         }
 
         private MouseOverlay MsOverlay;
@@ -182,13 +182,11 @@ namespace Arkabound.Interface.Scenes
         {
             if (Objects.ContainsKey("ObjectCatcher"))
             {
-                MinYPos = game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height - DistanceFromBottom - 300;
                 MaxYPos = game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height - DistanceFromBottom - 100;
                 StartingXPos = game.GraphicsDevice.Viewport.Width - Objects["ObjectCatcher"].Bounds.Width - 10;
             }
         }
         Vector2 PlayerPosition;
-        int MinYPos;
         int MaxYPos;
         int StartingXPos;
         float JumpSpeed = 0;

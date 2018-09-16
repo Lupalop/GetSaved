@@ -33,7 +33,7 @@ namespace Arkabound
             graphics.PreferredBackBufferWidth = LastWindowWidth;
             graphics.PreferredBackBufferHeight = LastWindowHeight;
             // Allow the window to be resized by the user
-            Window.AllowUserResizing = true;
+            //Window.AllowUserResizing = true;
             Window.Title = Program.GameName;
             // Initialize the Fonts dictionary
             fonts = new Dictionary<string, SpriteFont>();
