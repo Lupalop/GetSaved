@@ -56,6 +56,19 @@ namespace Arkabound.Interface.Scenes
                     Text = "Try Again",
                     Font = fonts["default_m"],
                     LeftClickAction = () => { sceneManager.currentScene = new NextGameScene(sceneManager, currentGame); sceneManager.overlays.Remove("gameEnd"); }
+                }},
+                { "MainMenuBtn", new MenuButton("MainMenuBtn", sceneManager)
+                {
+                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Location = new Vector2(5,5),
+                    spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
+                    AlignToCenter = false,
+                    Text = "Go Home",
+                    Font = fonts["default_m"],
+                    LeftClickAction = () => { sceneManager.currentScene = new MainMenuScene(sceneManager); sceneManager.overlays.Remove("gameEnd"); }
                 }}
             };
 
