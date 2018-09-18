@@ -37,21 +37,22 @@ namespace Arkabound.Interface.Scenes
                     Rows = 1,
                     Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                    LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
-                    Graphic = game.Content.Load<Texture2D>("dino/character"),
+                    Graphic = game.Content.Load<Texture2D>("human"),
                     Location = new Vector2(5, game.GraphicsDevice.Viewport.Height - 70),
                     AlignToCenter = false,
-                    SpriteType = SpriteTypes.Animated,
-                    Rows = 2,
-                    Columns = 8,
+                    GraphicEffects = SpriteEffects.FlipHorizontally,
+                    //SpriteType = SpriteTypes.Animated,
+                    //Rows = 2,
+                    //Columns = 8,
                     spriteBatch = this.spriteBatch,
                 }},
                 { "Timer", new Label("timer")
                 {
-                    Text = String.Format("{0} second(s) left", timeLeft),
+                    Text = String.Format("Score: {0}", timeLeft),
                     Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5), //new Vector2(300, 5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
@@ -67,24 +68,28 @@ namespace Arkabound.Interface.Scenes
                     projectileInterval = 1500;
                     FallingSpeed = 3;
                     JumpHeight = -15;
+                    ScoreMultiplier = 1;
                     break;
                 case Difficulty.Medium:
                     timeLeft = 10.0;
                     projectileInterval = 1000;
                     FallingSpeed = 3;
                     JumpHeight = -15;
+                    ScoreMultiplier = 2;
                     break;
                 case Difficulty.Hard:
                     timeLeft = 5.0;
                     projectileInterval = 800;
                     FallingSpeed = 5;
                     JumpHeight = -10;
+                    ScoreMultiplier = 3;
                     break;
                 case Difficulty.EpicFail:
                     timeLeft = 60000 * 5;
                     projectileInterval = 700;
                     FallingSpeed = 10;
                     JumpHeight = -20;
+                    ScoreMultiplier = 5;    
                     break;
             }
             DistanceFromBottom = -30;
@@ -104,6 +109,7 @@ namespace Arkabound.Interface.Scenes
         private float FallingSpeed;
         private int DistanceFromBottom;
         private float JumpHeight;
+        private int ScoreMultiplier;
 
         private Difficulty difficulty;
 
@@ -115,8 +121,8 @@ namespace Arkabound.Interface.Scenes
         {
             // Initiailize timers
             ProjectileGenerator = new Timer(projectileInterval) { AutoReset = true, Enabled = true };
-            TimeLeftController = new Timer(1000) { AutoReset = true, Enabled = true };
-            GameTimer = new Timer(timeLeft * 1000) { AutoReset = false, Enabled = true };
+            TimeLeftController = new Timer(100) { AutoReset = true, Enabled = true };
+            GameTimer = new Timer(timeLeft * 1000) { AutoReset = false, Enabled = false };
             // Add the event handler to the timer object
             ProjectileGenerator.Elapsed += delegate
             {
@@ -124,10 +130,10 @@ namespace Arkabound.Interface.Scenes
             };
             TimeLeftController.Elapsed += delegate
             {
-                if (timeLeft >= 1)
-                    timeLeft -= 1;
+                if (GameOverReason >= 0)
+                    timeLeft += 1 * ScoreMultiplier;
             };
-            GameTimer.Elapsed += GameTimer_Elapsed;
+            //GameTimer.Elapsed += GameTimer_Elapsed;
         }
 
         void GameTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -172,7 +178,7 @@ namespace Arkabound.Interface.Scenes
             base.Draw(gameTime);
 
             Label a = (Label)Objects["Timer"];
-            a.Text = String.Format("{0} second(s) left", timeLeft);
+            a.Text = String.Format("Score: {0}", timeLeft);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
             spriteBatch.End();

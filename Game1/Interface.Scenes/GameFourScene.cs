@@ -36,7 +36,7 @@ namespace Arkabound.Interface.Scenes
                     Rows = 1,
                     Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                    LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
                 }},
                 { "Timer", new Label("timer")
                 {

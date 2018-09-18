@@ -37,7 +37,7 @@ namespace Arkabound.Interface.Scenes
                     Rows = 1,
                     Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
+                    LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
@@ -156,6 +156,8 @@ namespace Arkabound.Interface.Scenes
                 string tex = FallingObjects[randNum.Next(0, FallingObjects.Count)];
                 nwBtn.MessageHolder.Add(tex);
                 if (tex.Contains('!') || tex.Contains('~')) tex = tex.Remove(0, 1);
+                // TODO: image shouldn't be loaded on demand, move to content loader/load content method..
+                //          time constraintszzzz
                 nwBtn.Graphic = game.Content.Load<Texture2D>("falling-object/" + tex.ToLower());
                 GameObjects.Add(nwBtn);
             }

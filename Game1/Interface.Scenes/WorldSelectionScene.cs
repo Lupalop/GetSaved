@@ -82,7 +82,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "mb6", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Helix - Fire",
+                    Text = "Dino-Like - Fire",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,

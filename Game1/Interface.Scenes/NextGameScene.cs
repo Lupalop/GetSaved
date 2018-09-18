@@ -98,9 +98,9 @@ namespace Arkabound.Interface.Scenes
                 case Games.FallingObjects:
                     return new GameOneScene(sceneManager, GameDifficulty);
                 case Games.EscapeEarthquake:
-                    return new GameTwoScene(sceneManager, GameDifficulty);
+                    return new GameTwoScene(sceneManager, GameDifficulty, Games.EscapeEarthquake);
                 case Games.EscapeFire:
-                    return new GameTwoScene(sceneManager, GameDifficulty);
+                    return new GameTwoScene(sceneManager, GameDifficulty, Games.EscapeFire);
                 case Games.RunningForTheirLives:
                     return new GameThreeScene(sceneManager, GameDifficulty);
                 case Games.HelpOthersNow:
