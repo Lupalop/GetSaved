@@ -24,6 +24,7 @@ namespace Arkabound.Objects
             CurrentFrame = 0;
             TotalFrames = 0;
             SpriteType = SpriteTypes.None;
+            GraphicEffects = SpriteEffects.None;
         }
 
         // Basic Properties
@@ -44,6 +45,7 @@ namespace Arkabound.Objects
         public bool UseCustomDimensions { get; set; }
         public Rectangle DestinationRectangle { get; set; }
         public Rectangle SourceRectangle { get; set; }
+        public SpriteEffects GraphicEffects { get; set; }
 
         // For Animated Sprites
         public SpriteTypes SpriteType { get; set; }
@@ -102,17 +104,17 @@ namespace Arkabound.Objects
                 if (DestinationRectangle != Rectangle.Empty)
                 {
                     if (SourceRectangle != Rectangle.Empty)
-                        spriteBatch.Draw(Graphic, DestinationRectangle, SourceRectangle, Tint, Rotation, RotationOrigin, SpriteEffects.None, 1f);
+                        spriteBatch.Draw(Graphic, DestinationRectangle, SourceRectangle, Tint, Rotation, RotationOrigin, GraphicEffects, 1f);
                     else
-                        spriteBatch.Draw(Graphic, DestinationRectangle, null, Tint, Rotation, RotationOrigin, SpriteEffects.None, 1f);
+                        spriteBatch.Draw(Graphic, DestinationRectangle, null, Tint, Rotation, RotationOrigin, GraphicEffects, 1f);
                     return;
                 }
                 else if (Rotation != 0 || Scale != 0)
                 {
                     if (SourceRectangle != Rectangle.Empty)
-                        spriteBatch.Draw(Graphic, Location, SourceRectangle, Tint, Rotation, RotationOrigin, Scale, SpriteEffects.None, 1f);
+                        spriteBatch.Draw(Graphic, Location, SourceRectangle, Tint, Rotation, RotationOrigin, Scale, GraphicEffects, 1f);
                     else
-                        spriteBatch.Draw(Graphic, Location, null, Tint, Rotation, RotationOrigin, Scale, SpriteEffects.None, 1f);
+                        spriteBatch.Draw(Graphic, Location, null, Tint, Rotation, RotationOrigin, Scale, GraphicEffects, 1f);
                     return;
                 }
                 else
