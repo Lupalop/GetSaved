@@ -85,6 +85,7 @@ namespace Arkabound.Interface.Scenes
             InitializeTimer();
         }
 
+        
         private List<string> FallingObjects = new List<string> {
 			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
 			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
@@ -92,6 +93,7 @@ namespace Arkabound.Interface.Scenes
         private MouseOverlay MsOverlay;
         private List<ObjectBase> GameObjects = new List<ObjectBase>();
         private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
+        private Dictionary<string, Texture2D> Images = new Dictionary<string, Texture2D>();
 
         private double timeLeft;
         private int projectileInterval;
@@ -127,6 +129,18 @@ namespace Arkabound.Interface.Scenes
             };
         }
 
+        public override void LoadContent()
+        {
+            foreach (var item in FallingObjects)
+            {
+                string it = item;
+                if (it.Contains('!') || it.Contains('~'))
+                    it = it.Remove(0, 1);
+                Images.Add(it.ToLower(), game.Content.Load<Texture2D>("falling-object/" + it));
+            }
+            base.LoadContent();
+        }
+
         public override void Unload()
         {
             // Close all timers
@@ -156,9 +170,7 @@ namespace Arkabound.Interface.Scenes
                 string tex = FallingObjects[randNum.Next(0, FallingObjects.Count)];
                 nwBtn.MessageHolder.Add(tex);
                 if (tex.Contains('!') || tex.Contains('~')) tex = tex.Remove(0, 1);
-                // TODO: image shouldn't be loaded on demand, move to content loader/load content method..
-                //          time constraintszzzz
-                nwBtn.Graphic = game.Content.Load<Texture2D>("falling-object/" + tex.ToLower());
+                nwBtn.Graphic = Images[tex.ToLower()];
                 GameObjects.Add(nwBtn);
             }
         }
