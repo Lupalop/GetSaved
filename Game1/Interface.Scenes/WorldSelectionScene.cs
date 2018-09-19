@@ -94,7 +94,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "mb7", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Help Others - Earthquake",
+                    Text = "Aid 'Em - Earthquake",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,

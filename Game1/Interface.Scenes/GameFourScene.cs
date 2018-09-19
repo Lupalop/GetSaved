@@ -16,7 +16,7 @@ namespace Arkabound.Interface.Scenes
     public class GameFourScene : SceneBase
     {
         public GameFourScene(SceneManager sceneManager, Difficulty difficulty)
-            : base(sceneManager, "Game 4 Scene: Heal 'em")
+            : base(sceneManager, "Game 4 Scene: Aid 'em")
         {
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
@@ -65,9 +65,9 @@ namespace Arkabound.Interface.Scenes
                     Columns = 2,
                     Rows = 1
                 }},
-                { "Controller-X", new MenuButton("controller-x", sceneManager)
+                { "Controller-Bandage", new MenuButton("controller-x", sceneManager)
                 {
-                    Text = "X",
+                    Text = "Bandage",
                     Graphic = game.Content.Load<Texture2D>("controllerBtn"),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -76,11 +76,11 @@ namespace Arkabound.Interface.Scenes
                     Font = fonts["default_l"],
                     Columns = 3,
                     Rows = 1,
-                    LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.X)
+                    LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Bandage)
                 }},
-                { "Controller-A", new MenuButton("controller-a", sceneManager)
+                { "Controller-Stitch", new MenuButton("controller-a", sceneManager)
                 {
-                    Text = "A",
+                    Text = "Stitch",
                     Graphic = game.Content.Load<Texture2D>("controllerBtn"),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -89,11 +89,11 @@ namespace Arkabound.Interface.Scenes
                     Font = fonts["default_l"],
                     Columns = 3,
                     Rows = 1,
-                    LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.A)
+                    LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Stitch)
                 }},
-                { "Controller-S", new MenuButton("controller-s", sceneManager)
+                { "Controller-Medicine", new MenuButton("controller-s", sceneManager)
                 {
-                    Text = "S",
+                    Text = "Medicine",
                     Graphic = game.Content.Load<Texture2D>("controllerBtn"),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -102,11 +102,11 @@ namespace Arkabound.Interface.Scenes
                     Font = fonts["default_l"],
                     Columns = 3,
                     Rows = 1,
-                    LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.S)
+                    LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Medicine)
                 }},
-                { "Controller-O", new MenuButton("controller-o", sceneManager)
+                { "Controller-CPR", new MenuButton("controller-o", sceneManager)
                 {
-                    Text = "O",
+                    Text = "CPR",
                     Graphic = game.Content.Load<Texture2D>("controllerBtn"),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -115,7 +115,7 @@ namespace Arkabound.Interface.Scenes
                     Font = fonts["default_l"],
                     Columns = 3,
                     Rows = 1,
-                    LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.O)
+                    LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.CPR)
                 }},
                 { "PressLabel", new Label("press-label")
                 {
@@ -221,7 +221,7 @@ namespace Arkabound.Interface.Scenes
             }
         }
         bool ChangeControllerKeyNow = true;
-        enum ControllerKeys { X, A, S, O }
+        enum ControllerKeys { Bandage, Stitch, Medicine, CPR }
         void AddSubtractBrickHit(ControllerKeys cKey)
         {
             if (GameObjects.ContainsKey("helpman"))
@@ -274,22 +274,22 @@ namespace Arkabound.Interface.Scenes
             // Allow keyboard hits
             if (KeybdState.IsKeyDown(Keys.X) && PreviousKey != Keys.X)
             {
-                AddSubtractBrickHit(ControllerKeys.X);
+                AddSubtractBrickHit(ControllerKeys.Bandage);
                 PreviousKey = Keys.X;
             }
             if (KeybdState.IsKeyDown(Keys.A) && PreviousKey != Keys.A)
             {
-                AddSubtractBrickHit(ControllerKeys.A);
+                AddSubtractBrickHit(ControllerKeys.Stitch);
                 PreviousKey = Keys.A;
             }
             if (KeybdState.IsKeyDown(Keys.S) && PreviousKey != Keys.S)
             {
-                AddSubtractBrickHit(ControllerKeys.S);
+                AddSubtractBrickHit(ControllerKeys.Medicine);
                 PreviousKey = Keys.S;
             }
             if (KeybdState.IsKeyDown(Keys.O) && PreviousKey != Keys.O)
             {
-                AddSubtractBrickHit(ControllerKeys.O);
+                AddSubtractBrickHit(ControllerKeys.CPR);
                 PreviousKey = Keys.O;
             }
             Keys[] pressedKeys = KeybdState.GetPressedKeys();
@@ -301,14 +301,14 @@ namespace Arkabound.Interface.Scenes
             Objects["Hand1"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - (Objects["Hand1"].Bounds.Width / 2) - 100, game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height + 100);
             Objects["Hand2"].Location = new Vector2(-100, game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height + 100);
             // Align controllers
-            Objects["Controller-X"].Location = new Vector2(60, 
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-X"].Bounds.Height - 100);
-            Objects["Controller-A"].Location = new Vector2(100,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-X"].Bounds.Height - 30);
-            Objects["Controller-S"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-X"].Bounds.Width - 60,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-X"].Bounds.Height - 100);
-            Objects["Controller-O"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-X"].Bounds.Width - 100,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-X"].Bounds.Height - 30);
+            Objects["Controller-Bandage"].Location = new Vector2(60, 
+                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
+            Objects["Controller-Stitch"].Location = new Vector2(100,
+                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
+            Objects["Controller-Medicine"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 60,
+                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
+            Objects["Controller-CPR"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 100,
+                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
             // Resize game background if necessary
             Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             // Current Controller
