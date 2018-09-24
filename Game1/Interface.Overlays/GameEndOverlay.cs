@@ -82,6 +82,7 @@ namespace Arkabound.Interface.Scenes
                     Game2End(passedMessage);
                     break;
                 case Games.RunningForTheirLives:
+                    Game3End();
                     break;
                 case Games.HelpOthersNow:
                     Game4End(passedMessage);
@@ -138,6 +139,12 @@ namespace Arkabound.Interface.Scenes
                 SetGameEndGraphic(GameEndStates.TimesUp);
             }
 
+        }
+
+        public void Game3End()
+        {
+            // Hardcoded to show game over, no timer, no finish line crap
+            SetGameEndGraphic(GameEndStates.GameOver);
         }
 
         public void Game1End(List<ObjectBase> CollectedObjects)
