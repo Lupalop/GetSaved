@@ -16,6 +16,7 @@ namespace Arkabound.Interface.Controls
         public Label(string ObjectName)
             : base (ObjectName)
         {
+            Text = "";
         }
 
         public Vector2 GraphicCenter;
