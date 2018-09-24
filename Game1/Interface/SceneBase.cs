@@ -11,6 +11,7 @@ using Arkabound.Objects;
 
 namespace Arkabound.Interface
 {
+    // TODO: Implement basic layout engine (allowing object groups inside object groups and more...)
     public abstract class SceneBase
     {
         public SceneBase(SceneManager sceneManager, string sceneName)

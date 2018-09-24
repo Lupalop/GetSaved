@@ -46,7 +46,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "mb3", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Falling Objects",
+                    Text = "The Safety Kit",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
@@ -58,7 +58,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "mb4", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Escape - Earthquake",
+                    Text = "Earthquake Escape",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
@@ -70,7 +70,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "mb5", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Escape - Fire",
+                    Text = "Fire Escape",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
@@ -82,7 +82,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "mb6", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Dino-Like - Fire",
+                    Text = "Safety Jump - Fire",
                     Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,

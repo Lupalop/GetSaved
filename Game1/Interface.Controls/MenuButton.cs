@@ -48,6 +48,10 @@ namespace Arkabound.Interface.Controls
                 Vector2 TextLength = Font.MeasureString(Text);
                 GraphicCenter = new Vector2(Location.X + (Bounds.Width / 2) - TextLength.X / 2, Location.Y + Bounds.Height / 4);
             }
+            if (Text != null & Graphic == null)
+            {
+                DimensionsOverride = Font.MeasureString(Text).ToPoint();
+            }
             MsState = sceneManager.MsState;
             CurrentFrame = 0;
 

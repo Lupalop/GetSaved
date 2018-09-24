@@ -112,15 +112,15 @@ namespace Arkabound.Interface.Scenes
                     break;
                 case Difficulty.Medium:
                     timeLeft = 10.0;
-                    FallingSpeed = .8f;
+                    FallingSpeed = 1f;
                     break;
                 case Difficulty.Hard:
-                    timeLeft = 5.0;
-                    FallingSpeed = .5f;
+                    timeLeft = 10.0;
+                    FallingSpeed = 1f;
                     break;
                 case Difficulty.EpicFail:
-                    timeLeft = 5.0;
-                    FallingSpeed = 2f;
+                    timeLeft = 10.0;
+                    FallingSpeed = 1f;
                     break;
             }
             this.difficulty = difficulty;

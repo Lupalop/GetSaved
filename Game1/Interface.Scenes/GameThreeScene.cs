@@ -16,7 +16,7 @@ namespace Arkabound.Interface.Scenes
     public class GameThreeScene : SceneBase
     {
         public GameThreeScene(SceneManager sceneManager, Difficulty difficulty)
-            : base(sceneManager, "Game 3 Scene: Dino-like Game")
+            : base(sceneManager, "Game 3 Scene: Safety Jump")
         {
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
@@ -89,7 +89,7 @@ namespace Arkabound.Interface.Scenes
                     projectileInterval = 700;
                     FallingSpeed = 10;
                     JumpHeight = -20;
-                    ScoreMultiplier = 5;    
+                    ScoreMultiplier = 3;
                     break;
             }
             DistanceFromBottom = -30;

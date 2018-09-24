@@ -11,16 +11,17 @@ using Arkabound.Objects;
 
 namespace Arkabound.Interface.Scenes
 {
-    public class MainMenuScene : SceneBase
+    public class CreditsScene : SceneBase
     {
-        public MainMenuScene(SceneManager sceneManager)
-            : base(sceneManager, "Main Menu")
+        public CreditsScene(SceneManager sceneManager)
+            : base(sceneManager, "Credits")
         {
             Objects = new Dictionary<string, ObjectBase> {
-                { "logo", new Image("logo") {
-                    Graphic = game.Content.Load<Texture2D>("gameLogo"),
-                    Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch
+                { "logo", new Label("logo")
+                {
+                    Text = "Get Saved:",
+                    spriteBatch = this.spriteBatch, 
+                    Font = fonts["default_l"]
                 }},
                 { "tagline", new Label("tagline")
                 {
@@ -28,38 +29,35 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"]
                 }},
-                { "mb1", new MenuButton("mb", sceneManager)
-                {
-                    Text = "", 
-                    Graphic = game.Content.Load<Texture2D>("playBtn"), 
-                    Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch, 
-                    Font = fonts["default_m"],
-                    SpriteType = SpriteTypes.Static,
-                    Rows = 1,
-                    Columns = 3,
-                    LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager),
-                    RightClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
-                }},
                 { "lb1", new Label("lb")
                 {
-                    Text = "Version 1.0.1",
+                    Text = CreditsText,
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default"]
                 }},
-                { "mb2", new MenuButton("mb", sceneManager)
+                { "BackButton", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Credits",
-                    Location = ScreenCenter,
+                    Text = "Back",
+                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Location = new Vector2(5,5),
+                    AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.Static,
+                    Rows = 1,
+                    Columns = 3,
                     Font = fonts["default"],
-                    LeftClickAction = () => sceneManager.currentScene = new CreditsScene(sceneManager)
-                }}
+                    LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
+                }},
             };
             // Layout stuff
-            spacing = 20;
+            spacing = 0;
         }
+
+        string CreditsText = "Game Font:\n  Zilla Slab\n    Copyright 2017, The Mozilla Foundation\n    Licensed under the SIL Open Font License 1.1\n    http://scripts.sil.org/OFL \n\n" +
+                             "Graphic Design, Lead Programmer, Localization:\n  Francis Dominic Fajardo\n\n" +
+                             "Graphics used in game:\n  Microsoft (Emoji set, potentially non-free)\n  undefined\n  undefined\n  undefined\n\n" +
+                             "NG Ideas:\n  Shannen Gabrielle Esporlas\n  Lara Nicole Meneses\n  MJ Moreno";
 
         public override void Draw(GameTime gameTime)
         {

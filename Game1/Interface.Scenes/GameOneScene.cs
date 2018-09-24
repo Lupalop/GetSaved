@@ -16,7 +16,7 @@ namespace Arkabound.Interface.Scenes
     public class GameOneScene : SceneBase
     {
         public GameOneScene(SceneManager sceneManager, Difficulty difficulty)
-            : base(sceneManager, "Game 1 Scene: Falling Objects")
+            : base(sceneManager, "Game 1 Scene: The Safety Kit")
         {
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
@@ -60,22 +60,22 @@ namespace Arkabound.Interface.Scenes
             switch (difficulty)
             {
                 case Difficulty.Easy:
-                    timeLeft = 15.0;
+                    timeLeft = 25.0;
                     projectileInterval = 500;
                     FallingSpeed = 3;
                     break;
                 case Difficulty.Medium:
-                    timeLeft = 10.0;
+                    timeLeft = 20.0;
                     projectileInterval = 300;
                     FallingSpeed = 3;
                     break;
                 case Difficulty.Hard:
-                    timeLeft = 5.0;
+                    timeLeft = 15.0;
                     projectileInterval = 200;
                     FallingSpeed = 5;
                     break;
                 case Difficulty.EpicFail:
-                    timeLeft = 15.0;
+                    timeLeft = 10.0;
                     projectileInterval = 50;
                     FallingSpeed = 10;
                     break;

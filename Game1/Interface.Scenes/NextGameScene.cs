@@ -37,7 +37,7 @@ namespace Arkabound.Interface.Scenes
             RandomizeDifficulty = false;
             Initialize();
         }
-
+        Texture2D HelpImage;
         public void Initialize()
         {
             NextGame = DetermineNextGame();
@@ -61,15 +61,31 @@ namespace Arkabound.Interface.Scenes
                     Text = String.Format("Difficulty: {0}", GameDifficulty.ToString()),
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"]
+                }},
+                { "SkipBtn", new MenuButton("skipBtn", sceneManager)
+                {
+                    Graphic = game.Content.Load<Texture2D>("overlayBG"),
+                    DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
+                    Tint = Color.Transparent,
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch,
+                    LeftClickAction = () => { sceneManager.currentScene = NextGame; },
+                    RightClickAction = () => { sceneManager.currentScene = NextGame; }
+                }},
+                { "HelpImage", new Image("htp")
+                {
+                    Graphic = HelpImage,
+                    Location = ScreenCenter,
+                    spriteBatch = this.spriteBatch
                 }}
             };
 
-            DiceSpinner.Elapsed += delegate { Objects["Dice"].Rotation += .1f; };
+            DiceSpinner.Elapsed += delegate { Objects["Dice"].Rotation += .05f; };
             SceneChanger.Elapsed += delegate { sceneManager.currentScene = NextGame; };
         }
 
         private Timer DiceSpinner = new Timer(1) { AutoReset = true, Enabled = true };
-        private Timer SceneChanger = new Timer(1000) { AutoReset = false, Enabled = true };
+        private Timer SceneChanger = new Timer(3000) { AutoReset = false, Enabled = true };
 
         public bool RandomizeGame = true;
         public bool RandomizeDifficulty = true;
@@ -83,31 +99,44 @@ namespace Arkabound.Interface.Scenes
             // Difficulty would remain random
             Random rand = new Random();
             if (RandomizeDifficulty)
-                GameDifficulty = (Difficulty)rand.Next(0, 3);
+                GameDifficulty = (Difficulty)rand.Next(0, 3);       // Epic fail difficulty intentionally ommitted, people can't handle that ;)
             else
                 GameDifficulty = ForcePassedDifficulty;
 
             // Choose whether to randomize game or use the passed game
             Games NxGame;
             if (RandomizeGame)
-                NxGame = (Games)rand.Next(0, 4);
+                NxGame = (Games)rand.Next(0, 5);
             else
                 NxGame = ForcePassedGame;
+
             switch (NxGame)
             {
+                // Falling Objects
                 case Games.FallingObjects:
+                    HelpImage = game.Content.Load<Texture2D>("htp-fallingobject");
                     return new GameOneScene(sceneManager, GameDifficulty);
+                // Earthquake Escape
                 case Games.EscapeEarthquake:
+                    HelpImage = game.Content.Load<Texture2D>("htp-esc");
                     return new GameTwoScene(sceneManager, GameDifficulty, Games.EscapeEarthquake);
+                // Fire Escape
                 case Games.EscapeFire:
+                    HelpImage = game.Content.Load<Texture2D>("htp-esc");
                     return new GameTwoScene(sceneManager, GameDifficulty, Games.EscapeFire);
+                // Running for their lives
                 case Games.RunningForTheirLives:
+                    HelpImage = game.Content.Load<Texture2D>("htp-dino");
                     return new GameThreeScene(sceneManager, GameDifficulty);
+                // Help others now
                 case Games.HelpOthersNow:
+                    HelpImage = game.Content.Load<Texture2D>("htp-aidem");
                     return new GameFourScene(sceneManager, GameDifficulty);
+                // If the randomizer crap failed, simply throw the world selection screen...
+                default:
+                    HelpImage = new Texture2D(game.GraphicsDevice, 0, 0);
+                    return new WorldSelectionScene(sceneManager);
             }
-            // If the randomizer crap failed, simply throw the world selection screen...
-            return new WorldSelectionScene(sceneManager);
         }
 
         public override void Unload()
@@ -130,6 +159,9 @@ namespace Arkabound.Interface.Scenes
         {
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
+            Rectangle SrcRectSkipBtn = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            Objects["SkipBtn"].DestinationRectangle = SrcRectSkipBtn;
+            Objects["SkipBtn"].SourceRectangle = SrcRectSkipBtn;
             ObjectBase Dice = Objects["Dice"];
             Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
             Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));
