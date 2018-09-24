@@ -106,7 +106,7 @@ namespace Arkabound.Interface.Scenes
             // Choose whether to randomize game or use the passed game
             Games NxGame;
             if (RandomizeGame)
-                NxGame = (Games)rand.Next(0, 5);
+                NxGame = (Games)rand.Next(0, 4);
             else
                 NxGame = ForcePassedGame;
 
