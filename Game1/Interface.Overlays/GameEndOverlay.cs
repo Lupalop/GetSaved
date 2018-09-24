@@ -78,8 +78,8 @@ namespace Arkabound.Interface.Scenes
                     Game1End(passedMessage);
                     break;
                 case Games.EscapeEarthquake:
-                    break;
                 case Games.EscapeFire:
+                    Game2End(passedMessage);
                     break;
                 case Games.RunningForTheirLives:
                     break;
@@ -102,6 +102,42 @@ namespace Arkabound.Interface.Scenes
             Objects["Background"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
+        }
+
+
+        public void SetGameEndGraphic(GameEndStates endState)
+        {
+            Image TmUp = (Image)Objects["TimesUp"];
+
+            switch (endState)
+            {
+                case GameEndStates.TimesUp:
+                default:
+                    TmUp.Graphic = game.Content.Load<Texture2D>("timesUp");
+                    break;
+                case GameEndStates.GameOver:
+                    TmUp.Graphic = game.Content.Load<Texture2D>("gameOver");
+                    break;
+                case GameEndStates.GameWon:
+                    TmUp.Graphic = game.Content.Load<Texture2D>("gameWin");
+                    break;
+            }
+        }
+
+        public void Game2End(List<ObjectBase> PassedMsg)
+        {
+            if (PassedMsg.Count != 0)
+            {
+                if ((bool)PassedMsg[0].MessageHolder[0] == false)
+                    SetGameEndGraphic(GameEndStates.GameOver);
+                else if ((bool)PassedMsg[0].MessageHolder[0] == true)
+                    SetGameEndGraphic(GameEndStates.GameWon);
+            }
+            else
+            {
+                SetGameEndGraphic(GameEndStates.TimesUp);
+            }
+
         }
 
         public void Game1End(List<ObjectBase> CollectedObjects)

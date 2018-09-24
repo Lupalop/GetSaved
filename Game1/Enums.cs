@@ -21,4 +21,10 @@ namespace Arkabound
         RunningForTheirLives,
         HelpOthersNow
     }
+    public enum GameEndStates
+    {
+        TimesUp,
+        GameOver,
+        GameWon
+    }
 }
