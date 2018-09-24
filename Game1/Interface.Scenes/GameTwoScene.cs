@@ -68,9 +68,17 @@ namespace Arkabound.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     Font = fonts["default_l"]
                 }},
+                { "DeathTimer", new Label("timer")
+                {
+                    //Text = String.Format("{0}", timeLeft2),
+                    Tint = Color.Black,
+                    spriteBatch = this.spriteBatch,
+                    Font = fonts["default_l"]
+                }},
+
                 { "HelpLabel", new Label("helplabel")
                 {
-                    Text = "Click/Tap/Press Space to move.",
+                    Text = "",
                     AlignToCenter = true,
                     Tint = Color.Black,
                     spriteBatch = this.spriteBatch,
@@ -133,6 +141,7 @@ namespace Arkabound.Interface.Scenes
         private Dictionary<string, ObjectBase> GameObjects = new Dictionary<string, ObjectBase>();
 
         private double timeLeft;
+        private double timeLeft2 = 5;
         private float FallingSpeed;
 
         // Points
@@ -144,17 +153,23 @@ namespace Arkabound.Interface.Scenes
         private Difficulty difficulty;
 
         Timer TimeLeftController;
+        Timer DeadLeftController;
         Timer GameTimer;
 
         private void InitializeTimer()
         {
             // Initiailize timers
             TimeLeftController = new Timer(1000);
+            DeadLeftController = new Timer(1000);
             GameTimer = new Timer(timeLeft * 1000);
 
             TimeLeftController.Elapsed += OnTimeLeftEnd;
             TimeLeftController.AutoReset = true;
             TimeLeftController.Enabled = true;
+
+            DeadLeftController.Elapsed += OnDeadLeftEnd;
+            DeadLeftController.AutoReset = true;
+            DeadLeftController.Enabled = false;
 
             GameTimer.Elapsed += OnGameTimerEnd;
             GameTimer.AutoReset = false;
@@ -166,27 +181,56 @@ namespace Arkabound.Interface.Scenes
             // Stop timers
             TimeLeftController.Close();
             GameTimer.Close();
+            DeadLeftController.Close();
 
             base.Unload();
         }
-
+        private void OnDeadLeftEnd(Object source, ElapsedEventArgs e)
+        {
+            if (timeLeft2 >= 1)
+                timeLeft2 -= 1;
+            if (timeLeft2 <= 0)
+            {
+                GameTimer.Enabled = false;
+                TimeLeftController.Enabled = false;
+                EndStateDeterminer.MessageHolder.Add(false);
+                CallEndOverlay();
+            }
+        }
         private void OnTimeLeftEnd(Object source, ElapsedEventArgs e)
         {
             if (timeLeft >= 1)
                 timeLeft -= 1;
+            if ((MsState.LeftButton == ButtonState.Released || KeybdState.IsKeyUp(Keys.Space)) && !DeadLeftController.Enabled)
+            {
+                timeLeft2 = 5;
+                DeadLeftController.Enabled = true;
+            }
         }
         bool removeObjectCatcher = false;
         private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
         {
-            removeObjectCatcher = true;
-            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.EscapeEarthquake, null, this));
+            EndStateDeterminer.MessageHolder.Add(false);
+            CallEndOverlay();
             GameTimer.Enabled = false;
         }
+        private void CallEndOverlay()
+        {
+            removeObjectCatcher = true;
+
+            PassedMessage.Add(EndStateDeterminer);
+
+            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.EscapeEarthquake, PassedMessage, this));
+        }
+        ObjectBase EndStateDeterminer = new Controls.Label("cr");
+        List<ObjectBase> PassedMessage = new List<ObjectBase>();
 
         public override void Draw(GameTime gameTime)
         {
             Label a = (Label)Objects["Timer"];
             a.Text = String.Format("{0} second(s) left", timeLeft);
+            Label b = (Label)Objects["DeathTimer"];
+            b.Text = String.Format("{0}", timeLeft2);
             spriteBatch.Begin();
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
@@ -207,20 +251,31 @@ namespace Arkabound.Interface.Scenes
                 ObjectBase Catchr = Objects["ObjectCatcher"];
                 if ((MsState.LeftButton == ButtonState.Pressed && !isMsPressed) || (KeybdState.IsKeyDown(Keys.Space) && !isKeyPressed))
                 {
+                    DeadLeftController.Enabled = false;
                     if (PosWhich == Vector2.Zero)
                     {
                         PosWhich = PosB;
                         SetHelpMessage(PosA);
+                        Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg1");
                     }
                     if (Catchr.Bounds.Contains(PosB))
                     {
                         PosWhich = PosC;
                         SetHelpMessage(PosB);
+                        Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg2");
                     }
                     if (Catchr.Bounds.Contains(PosC))
                     {
                         PosWhich = PosD;
                         SetHelpMessage(PosC);
+                        Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg3");
+                    }
+                    if (Catchr.Bounds.Contains(PosD))
+                    {
+                        GameTimer.Enabled = false;
+                        TimeLeftController.Enabled = false;
+                        EndStateDeterminer.MessageHolder.Add(true);
+                        CallEndOverlay();
                     }
 
                     //get the difference from pos to player
