@@ -25,8 +25,6 @@ namespace Arkabound.Interface
             spriteBatch = sceneManager.spriteBatch;
             fonts = sceneManager.fonts;
             Objects = new Dictionary<string, ObjectBase> {};
-            // Load the scene's content
-            LoadContent();
             // Layout stuff
             spacing = 5;
         }

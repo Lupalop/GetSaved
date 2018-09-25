@@ -18,6 +18,13 @@ namespace Arkabound.Interface.Scenes
         public GameFourScene(SceneManager sceneManager, Difficulty difficulty)
             : base(sceneManager, "Game 4 Scene: Aid 'em")
         {
+            this.difficulty = difficulty;
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
@@ -150,7 +157,7 @@ namespace Arkabound.Interface.Scenes
                     hitsBeforeSaved = 10;
                     break;
             }
-            this.difficulty = difficulty;
+
             InitializeTimer();
         }
 

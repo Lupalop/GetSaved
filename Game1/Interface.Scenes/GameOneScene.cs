@@ -18,6 +18,65 @@ namespace Arkabound.Interface.Scenes
         public GameOneScene(SceneManager sceneManager, Difficulty difficulty)
             : base(sceneManager, "Game 1 Scene: The Safety Kit")
         {
+            this.difficulty = difficulty;
+        }
+
+        
+        private List<string> FallingObjects = new List<string> {
+			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
+			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
+			};
+        private MouseOverlay MsOverlay;
+        private List<ObjectBase> GameObjects = new List<ObjectBase>();
+        private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
+        private Dictionary<string, Texture2D> Images = new Dictionary<string, Texture2D>();
+
+        private double timeLeft;
+        private int projectileInterval;
+        private float FallingSpeed;
+        private int DistanceFromBottom;
+
+        private Difficulty difficulty;
+
+        Timer ProjectileGenerator;
+        Timer TimeLeftController;
+        Timer GameTimer;
+
+        private void InitializeTimer()
+        {
+            // Initiailize timers
+            ProjectileGenerator = new Timer(projectileInterval) { AutoReset = true, Enabled = true };
+            TimeLeftController = new Timer(1000)                { AutoReset = true, Enabled = true };
+            GameTimer = new Timer(timeLeft * 1000)              { AutoReset = false, Enabled = true };
+            // Add the event handler to the timer object
+            ProjectileGenerator.Elapsed += delegate
+            { 
+                GenerateFallingCrap();
+            };
+            TimeLeftController.Elapsed += delegate
+            {
+                if (timeLeft >= 1)
+                    timeLeft -= 1;
+            };
+            GameTimer.Elapsed += delegate
+            {
+                stopCreatingCrap = true;
+                sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects, this));
+            };
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
+            foreach (var item in FallingObjects)
+            {
+                string it = item;
+                if (it.Contains('!') || it.Contains('~'))
+                    it = it.Remove(0, 1);
+                Images.Add(it.ToLower(), game.Content.Load<Texture2D>("falling-object/" + it));
+            }
+
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
@@ -81,64 +140,8 @@ namespace Arkabound.Interface.Scenes
                     break;
             }
             DistanceFromBottom = -30;
-            this.difficulty = difficulty;
             InitializeTimer();
-        }
 
-        
-        private List<string> FallingObjects = new List<string> {
-			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
-			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
-			};
-        private MouseOverlay MsOverlay;
-        private List<ObjectBase> GameObjects = new List<ObjectBase>();
-        private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
-        private Dictionary<string, Texture2D> Images = new Dictionary<string, Texture2D>();
-
-        private double timeLeft;
-        private int projectileInterval;
-        private float FallingSpeed;
-        private int DistanceFromBottom;
-
-        private Difficulty difficulty;
-
-        Timer ProjectileGenerator;
-        Timer TimeLeftController;
-        Timer GameTimer;
-
-        private void InitializeTimer()
-        {
-            // Initiailize timers
-            ProjectileGenerator = new Timer(projectileInterval) { AutoReset = true, Enabled = true };
-            TimeLeftController = new Timer(1000)                { AutoReset = true, Enabled = true };
-            GameTimer = new Timer(timeLeft * 1000)              { AutoReset = false, Enabled = true };
-            // Add the event handler to the timer object
-            ProjectileGenerator.Elapsed += delegate
-            { 
-                GenerateFallingCrap();
-            };
-            TimeLeftController.Elapsed += delegate
-            {
-                if (timeLeft >= 1)
-                    timeLeft -= 1;
-            };
-            GameTimer.Elapsed += delegate
-            {
-                stopCreatingCrap = true;
-                sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects, this));
-            };
-        }
-
-        public override void LoadContent()
-        {
-            foreach (var item in FallingObjects)
-            {
-                string it = item;
-                if (it.Contains('!') || it.Contains('~'))
-                    it = it.Remove(0, 1);
-                Images.Add(it.ToLower(), game.Content.Load<Texture2D>("falling-object/" + it));
-            }
-            base.LoadContent();
         }
 
         public override void Unload()

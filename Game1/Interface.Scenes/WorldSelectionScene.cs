@@ -17,6 +17,12 @@ namespace Arkabound.Interface.Scenes
         public WorldSelectionScene(SceneManager sceneManager)
             : base(sceneManager, "Game Selection")
         {
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
             Objects = new Dictionary<string, ObjectBase> {
                 { "mb1", new MenuButton("mb", sceneManager)
                 {

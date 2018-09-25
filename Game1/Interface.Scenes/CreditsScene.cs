@@ -16,6 +16,12 @@ namespace Arkabound.Interface.Scenes
         public CreditsScene(SceneManager sceneManager)
             : base(sceneManager, "Credits")
         {
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
             Objects = new Dictionary<string, ObjectBase> {
                 { "logo", new Label("logo")
                 {

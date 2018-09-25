@@ -18,6 +18,13 @@ namespace Arkabound.Interface.Scenes
         public GameThreeScene(SceneManager sceneManager, Difficulty difficulty)
             : base(sceneManager, "Game 3 Scene: Safety Jump")
         {
+            this.difficulty = difficulty;
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
@@ -93,7 +100,6 @@ namespace Arkabound.Interface.Scenes
                     break;
             }
             DistanceFromBottom = -30;
-            this.difficulty = difficulty;
             InitializeTimer();
             UpdateMinMaxY();
             GenerateFallingCrap();

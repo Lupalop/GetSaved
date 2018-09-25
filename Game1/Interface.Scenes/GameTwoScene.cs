@@ -31,6 +31,14 @@ namespace Arkabound.Interface.Scenes
         public GameTwoScene(SceneManager sceneManager, Difficulty difficulty, Games cgame)
             : base(sceneManager, "Game 2 Scene: " + GetGameName(cgame))
         {
+            this.difficulty = difficulty;
+            currentGame = cgame;
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
@@ -123,8 +131,7 @@ namespace Arkabound.Interface.Scenes
                     WalkSpeed = 2f;
                     break;
             }
-            this.difficulty = difficulty;
-            currentGame = cgame;
+
             InitializeTimer();
         }
 

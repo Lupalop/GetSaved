@@ -17,7 +17,6 @@ namespace Arkabound.Interface.Scenes
         public NextGameScene(SceneManager sceneManager)
             : base(sceneManager, "Next Game Scene")
         {
-            Initialize();
         }
 
         public NextGameScene(SceneManager sceneManager, Games passedGame)
@@ -25,7 +24,6 @@ namespace Arkabound.Interface.Scenes
         {
             ForcePassedGame = passedGame;
             RandomizeGame = false;
-            Initialize();
         }
 
         public NextGameScene(SceneManager sceneManager, Games passedGame, Difficulty passedDifficulty)
@@ -35,6 +33,11 @@ namespace Arkabound.Interface.Scenes
             ForcePassedDifficulty = passedDifficulty;
             RandomizeGame = false;
             RandomizeDifficulty = false;
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
             Initialize();
         }
         Texture2D HelpImage;

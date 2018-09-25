@@ -16,6 +16,12 @@ namespace Arkabound.Interface.Scenes
         public MainMenuScene(SceneManager sceneManager)
             : base(sceneManager, "Main Menu")
         {
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
             Objects = new Dictionary<string, ObjectBase> {
                 { "logo", new Image("logo") {
                     Graphic = game.Content.Load<Texture2D>("gameLogo"),
