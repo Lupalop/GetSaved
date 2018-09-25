@@ -34,7 +34,7 @@ namespace Arkabound.Interface.Scenes
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = game.Content.Load<Texture2D>("gameBG1"),
+                    Graphic = game.Content.Load<Texture2D>("game4-bg1"),
                     DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch
@@ -90,25 +90,17 @@ namespace Arkabound.Interface.Scenes
                 { "PointB", new Image("PointB")
                 {
                     Graphic = game.Content.Load<Texture2D>("point"),
-                    Location = PosB,
+                    Location = PosA,
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                 }},
                 { "PointC", new Image("PointC")
                 {
-                    Graphic = game.Content.Load<Texture2D>("point"),
-                    Location = PosC,
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
-                }},
-                { "PointD", new Image("PointD")
-                {
-                    Graphic = game.Content.Load<Texture2D>("point"),
-                    Location = PosD,
+                    Graphic = game.Content.Load<Texture2D>("htp"),
+                    Location = PosB,
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                 }}
-
             };
 
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
@@ -116,19 +108,19 @@ namespace Arkabound.Interface.Scenes
             {
                 case Difficulty.Easy:
                     timeLeft = 15.0;
-                    FallingSpeed = 1f;
+                    WalkSpeed = 1.5f;
                     break;
                 case Difficulty.Medium:
                     timeLeft = 10.0;
-                    FallingSpeed = 1f;
+                    WalkSpeed = 2.5f;
                     break;
                 case Difficulty.Hard:
                     timeLeft = 10.0;
-                    FallingSpeed = 1f;
+                    WalkSpeed = 2f;
                     break;
                 case Difficulty.EpicFail:
                     timeLeft = 10.0;
-                    FallingSpeed = 1f;
+                    WalkSpeed = 2f;
                     break;
             }
             this.difficulty = difficulty;
@@ -142,13 +134,13 @@ namespace Arkabound.Interface.Scenes
 
         private double timeLeft;
         private double timeLeft2 = 5;
-        private float FallingSpeed;
+        private float WalkSpeed;
 
         // Points
-        Vector2 PosA = new Vector2(630, 165);
-        Vector2 PosB = new Vector2(665, 485);
-        Vector2 PosC = new Vector2(100, 485);
-        Vector2 PosD = new Vector2(80, 90);
+        Vector2 PosA = new Vector2(665, 485);
+        Vector2 PosB = new Vector2(100, 485);
+
+        private int currentStage = 0;
 
         private Difficulty difficulty;
 
@@ -201,8 +193,15 @@ namespace Arkabound.Interface.Scenes
         {
             if (timeLeft >= 1)
                 timeLeft -= 1;
+            if (currentGame == Games.EscapeFire)
+            {
+                string overlayName = String.Format("fade-{0}", DateTime.Now);
+                sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.Red) { fadeSpeed = 0.1f });
+            }
             if ((MsState.LeftButton == ButtonState.Released || KeybdState.IsKeyUp(Keys.Space)) && !DeadLeftController.Enabled)
             {
+                Label b = (Label)Objects["DeathTimer"];
+                b.Tint = Color.Black;
                 timeLeft2 = 5;
                 DeadLeftController.Enabled = true;
             }
@@ -240,37 +239,72 @@ namespace Arkabound.Interface.Scenes
         Vector2 PosWhich = Vector2.Zero;
         bool isMsPressed = false;
         bool isKeyPressed = false;
+        bool locMove = false;
+        int currX = 0;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            ObjectBase GameBG = Objects["GameBG"];
+            if (currentStage != 3 && currentGame == Games.EscapeEarthquake)
+            {
+                if (!locMove)
+                {
+                    currX++;
+                    if (currX == 3)
+                        locMove = true;
+                }
+                else {
+                    currX--;
+                    if (currX == -3)
+                        locMove = false;
+                }
+                GameBG.DestinationRectangle = new Rectangle(currX, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            }
+            else
+            {
+                GameBG.DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            }
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
+            // If person is in object
             if (Objects.ContainsKey("ObjectCatcher"))
             {
                 ObjectBase Catchr = Objects["ObjectCatcher"];
+                if (currentStage == 3 && Catchr.Graphic.Name != "human-line")
+                {
+                    Catchr.Graphic = game.Content.Load<Texture2D>("human-line");
+                }
                 if ((MsState.LeftButton == ButtonState.Pressed && !isMsPressed) || (KeybdState.IsKeyDown(Keys.Space) && !isKeyPressed))
                 {
+                    Label b = (Label)Objects["DeathTimer"];
+                    b.Tint = Color.Transparent;
                     DeadLeftController.Enabled = false;
                     if (PosWhich == Vector2.Zero)
                     {
                         PosWhich = PosB;
-                        SetHelpMessage(PosA);
-                        Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg1");
+                        SetHelpMessage(1);
+                        currentStage = 1;
+                        //Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg1");
+                        return;
                     }
-                    if (Catchr.Bounds.Contains(PosB))
+                    if (Catchr.Bounds.Contains(PosB) && currentStage == 1)
                     {
-                        PosWhich = PosC;
-                        SetHelpMessage(PosB);
+                        ResetObjectCatcherPosition();
+                        SetHelpMessage(2);
+                        currentStage = 2;
                         Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg2");
+                        return;
                     }
-                    if (Catchr.Bounds.Contains(PosC))
+                    if (Catchr.Bounds.Contains(PosB) && currentStage == 2)
                     {
-                        PosWhich = PosD;
-                        SetHelpMessage(PosC);
+                        ResetObjectCatcherPosition();
+                        SetHelpMessage(3);
+                        currentStage = 3;
                         Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg3");
+                        return;
                     }
-                    if (Catchr.Bounds.Contains(PosD))
+                    // If last stage
+                    if (Catchr.Bounds.Contains(PosB) && currentStage == 3)
                     {
                         GameTimer.Enabled = false;
                         TimeLeftController.Enabled = false;
@@ -287,7 +321,7 @@ namespace Arkabound.Interface.Scenes
 
                     //then move in that direction
                     //based on how much time has passed
-                    Catchr.Location += differenceToPlayer * (float)gameTime.ElapsedGameTime.TotalMilliseconds * FallingSpeed;
+                    Catchr.Location += differenceToPlayer * (float)gameTime.ElapsedGameTime.TotalMilliseconds * WalkSpeed;
                     if (MsState.LeftButton == ButtonState.Pressed)
                         isMsPressed = true;
                     else
@@ -303,25 +337,35 @@ namespace Arkabound.Interface.Scenes
             }
         }
 
-        private void SetHelpMessage(Vector2 PosWhich)
+        private void ResetObjectCatcherPosition()
+        {
+            if (Objects.ContainsKey("ObjectCatcher"))
+            {
+                ObjectBase Catchr = Objects["ObjectCatcher"];
+                Catchr.Location = PosA;
+            }
+        }
+
+        // This method sets the help message show in the center (perhaps remove?)
+        private void SetHelpMessage(int PosWhich)
         {
             Label label = (Label)Objects["HelpLabel"];
             switch (currentGame)
             {
                 case Games.EscapeEarthquake:
-                    if (PosWhich == PosA)
+                    if (PosWhich == 1)
                         label.Text = "Duck, cover, and Hold!";
-                    if (PosWhich == PosB)
+                    if (PosWhich == 2)
                         label.Text = "Stand up and check surrounding area.";
-                    if (PosWhich == PosC)
+                    if (PosWhich == 3)
                         label.Text = "Line up properly and go outside the\nbuilding or towards to safety!";
                     break;
                 case Games.EscapeFire:
-                    if (PosWhich == PosA)
+                    if (PosWhich == 1)
                         label.Text = "Raise alarm! Indicate that there is fire!";
-                    if (PosWhich == PosB)
+                    if (PosWhich == 2)
                         label.Text = "Use the fire emergency staircases \nand exit the building immediately!";
-                    if (PosWhich == PosC)
+                    if (PosWhich == 3)
                         label.Text = "Inform authorities and evacuate!";
                     break;
                 default:
