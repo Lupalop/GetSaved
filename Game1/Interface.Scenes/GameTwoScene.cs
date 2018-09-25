@@ -111,11 +111,11 @@ namespace Arkabound.Interface.Scenes
                     WalkSpeed = 1.5f;
                     break;
                 case Difficulty.Medium:
-                    timeLeft = 10.0;
+                    timeLeft = 12.0;
                     WalkSpeed = 2.5f;
                     break;
                 case Difficulty.Hard:
-                    timeLeft = 10.0;
+                    timeLeft = 12.0;
                     WalkSpeed = 2f;
                     break;
                 case Difficulty.EpicFail:
@@ -284,7 +284,6 @@ namespace Arkabound.Interface.Scenes
                         PosWhich = PosB;
                         SetHelpMessage(1);
                         currentStage = 1;
-                        //Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg1");
                         return;
                     }
                     if (Catchr.Bounds.Contains(PosB) && currentStage == 1)
@@ -364,9 +363,9 @@ namespace Arkabound.Interface.Scenes
                     if (PosWhich == 1)
                         label.Text = "Raise alarm! Indicate that there is fire!";
                     if (PosWhich == 2)
-                        label.Text = "Use the fire emergency staircases \nand exit the building immediately!";
+                        label.Text = "Make sure to exit the room or stay away\n from the fire.";
                     if (PosWhich == 3)
-                        label.Text = "Inform authorities and evacuate!";
+                        label.Text = "Use the fire emergency staircases \nand exit the building immediately!";
                     break;
                 default:
                     // Do nothing

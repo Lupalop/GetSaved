@@ -55,8 +55,8 @@ namespace Arkabound.Interface.Scenes
         }
 
         string CreditsText = "Game Font:\n  Zilla Slab\n    Copyright 2017, The Mozilla Foundation\n    Licensed under the SIL Open Font License 1.1\n    http://scripts.sil.org/OFL \n\n" +
-                             "Graphic Design, Lead Programmer, Localization:\n  Francis Dominic Fajardo\n\n" +
-                             "Graphics used in game:\n  Microsoft (Emoji set, potentially non-free)\n  undefined\n  undefined\n  undefined\n\n" +
+                             "Graphic Design and Lead Programmer:\n  Francis Dominic Fajardo\n\n" +
+                             "Graphics used in game:\n  Microsoft (Emoji set, potentially non-free)\n  Images from DuckDuckGo Search:\n    https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/\n    nWJ1xCb/pov-running-through-high-school-hallway-60fps_h09ooieg__F0000.png\n    https://cdn.wallpapersafari.com/15/28/a05csx.png\n\n" +
                              "NG Ideas:\n  Shannen Gabrielle Esporlas\n  Lara Nicole Meneses\n  MJ Moreno";
 
         public override void Draw(GameTime gameTime)

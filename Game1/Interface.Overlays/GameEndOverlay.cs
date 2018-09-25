@@ -160,6 +160,11 @@ namespace Arkabound.Interface.Scenes
                     correctCrap++;
             }
 
+            if (wrongCrap <= 1)
+                SetGameEndGraphic(GameEndStates.GameWon);
+            else
+                SetGameEndGraphic(GameEndStates.TimesUp);
+
             Objects.Add("CorrectCrap", new Label("CorrectCrap")
             {
                 Location = ScreenCenter,
@@ -178,29 +183,34 @@ namespace Arkabound.Interface.Scenes
 
         public void Game4End(List<ObjectBase> CollectedObjects)
         {
-            int correctCrap = 0;
-            int wrongCrap = 0;
-            // Count correct crap
+            int peopleSaved = 0;
+            int peopleDied = 0;
+            // Count crap
             foreach (var crap in CollectedObjects)
             {
                 if (crap.MessageHolder[0].ToString().Contains('!'))
-                    wrongCrap++;
+                    peopleDied++;
                 else
-                    correctCrap++;
+                    peopleSaved++;
             }
+
+            if (peopleDied <= 1)
+                SetGameEndGraphic(GameEndStates.GameWon);
+            else
+                SetGameEndGraphic(GameEndStates.TimesUp);
 
             Objects.Add("CorrectCrap", new Label("CorrectCrap")
             {
                 Location = ScreenCenter,
                 spriteBatch = this.spriteBatch,
-                Text = "People Saved: " + correctCrap,
+                Text = "People Saved: " + peopleSaved,
                 Font = fonts["default_m"]
             });
             Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
             {
                 Location = ScreenCenter,
                 spriteBatch = this.spriteBatch,
-                Text = "People Died: " + wrongCrap,
+                Text = "People Died: " + peopleDied,
                 Font = fonts["default_m"]
             });
         }
