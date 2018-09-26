@@ -74,7 +74,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "Controller-Bandage", new MenuButton("controller-x", sceneManager)
                 {
-                    Text = "Bandage",
+                    Text = "Bandage (X)",
                     Graphic = game.Content.Load<Texture2D>("controllerBtn"),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -87,7 +87,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "Controller-Stitch", new MenuButton("controller-a", sceneManager)
                 {
-                    Text = "Stitch",
+                    Text = "Stitch (A)",
                     Graphic = game.Content.Load<Texture2D>("controllerBtn"),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -100,7 +100,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "Controller-Medicine", new MenuButton("controller-s", sceneManager)
                 {
-                    Text = "Medicine",
+                    Text = "Medicine (S)",
                     Graphic = game.Content.Load<Texture2D>("controllerBtn"),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -113,7 +113,7 @@ namespace Arkabound.Interface.Scenes
                 }},
                 { "Controller-CPR", new MenuButton("controller-o", sceneManager)
                 {
-                    Text = "CPR",
+                    Text = "CPR (O)",
                     Graphic = game.Content.Load<Texture2D>("controllerBtn"),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -220,9 +220,17 @@ namespace Arkabound.Interface.Scenes
             {
                 Helpman helpman = (Helpman)GameObjects["helpman"];
                 if (helpman.HitsBeforeBreak > 0)
+                {
+                    string overlayName = String.Format("fade-{0}", DateTime.Now);
+                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.DarkRed) { fadeSpeed = 0.1f });
                     helpman.MessageHolder.Add("!");
+                }
                 else
+                {
+                    string overlayName = String.Format("fade-{0}", DateTime.Now);
+                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.LightGreen) { fadeSpeed = 0.1f });
                     helpman.MessageHolder.Add("~");
+                }
                 CollectedObjects.Add(helpman);
                 GameObjects.Remove("helpman");
             }
@@ -235,9 +243,19 @@ namespace Arkabound.Interface.Scenes
             {
                 Helpman helpman = (Helpman)GameObjects["helpman"];
                 if (CurrentController == cKey)
+                {
                     helpman.HitsBeforeBreak--;
+                }
                 else
-                    helpman.HitsBeforeBreak++;
+                {
+                    string overlayName = String.Format("fade-{0}", DateTime.Now);
+                    try
+                    {
+                        sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.Red) { fadeSpeed = 0.1f });
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex); }
+                }
+                    //helpman.HitsBeforeBreak++;
                 ChangeControllerKeyNow = true;
                 if (helpman.HitsBeforeBreak <= 0)
                     AttemptRemoveHelpman();
@@ -258,8 +276,12 @@ namespace Arkabound.Interface.Scenes
         {
             spriteBatch.Begin();
             base.Draw(gameTime);
-            Label a = (Label)Objects["Timer"];
-            a.Text = String.Format("{0} second(s) left", timeLeft);
+            try
+            {
+                Label a = (Label)Objects["Timer"];
+                a.Text = String.Format("{0} second(s) left", timeLeft);
+            }
+            catch (Exception ex) { Console.WriteLine(ex); }
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
             spriteBatch.End();
@@ -277,52 +299,55 @@ namespace Arkabound.Interface.Scenes
         public Keys PreviousKey;
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-            // Allow keyboard hits
-            if (KeybdState.IsKeyDown(Keys.X) && PreviousKey != Keys.X)
+            try
             {
-                AddSubtractBrickHit(ControllerKeys.Bandage);
-                PreviousKey = Keys.X;
+                base.Update(gameTime);
+                // Allow keyboard hits
+                if (KeybdState.IsKeyDown(Keys.X) && (PreviousKey != Keys.X || CurrentController == ControllerKeys.Bandage))
+                {
+                    AddSubtractBrickHit(ControllerKeys.Bandage);
+                    PreviousKey = Keys.X;
+                }
+                if (KeybdState.IsKeyDown(Keys.A) && (PreviousKey != Keys.A || CurrentController == ControllerKeys.Stitch))
+                {
+                    AddSubtractBrickHit(ControllerKeys.Stitch);
+                    PreviousKey = Keys.A;
+                }
+                if (KeybdState.IsKeyDown(Keys.S) && (PreviousKey != Keys.S || CurrentController == ControllerKeys.Medicine))
+                {
+                    AddSubtractBrickHit(ControllerKeys.Medicine);
+                    PreviousKey = Keys.S;
+                }
+                if (KeybdState.IsKeyDown(Keys.O) && (PreviousKey != Keys.O || CurrentController == ControllerKeys.CPR))
+                {
+                    AddSubtractBrickHit(ControllerKeys.CPR);
+                    PreviousKey = Keys.O;
+                }
+                Keys[] pressedKeys = KeybdState.GetPressedKeys();
+                if (pressedKeys.Length != 0) PreviousKey = pressedKeys[0];
+                // Update object location on viewport change
+                Label Timer = (Label)Objects["Timer"];
+                Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
+                Objects["Hand1"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - (Objects["Hand1"].Bounds.Width / 2) - 100, game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height + 100);
+                Objects["Hand2"].Location = new Vector2(-100, game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height + 100);
+                // Align controllers
+                Objects["Controller-Bandage"].Location = new Vector2(60,
+                    game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
+                Objects["Controller-Stitch"].Location = new Vector2(100,
+                    game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
+                Objects["Controller-Medicine"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 60,
+                    game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
+                Objects["Controller-CPR"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 100,
+                    game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
+                // Resize game background if necessary
+                Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                // Current Controller
+                DetermineCurrentController();
+                Label pressLabel = (Label)Objects["PressLabel"];
+                pressLabel.Text = String.Format("Press/Tap: {0}!", CurrentController.ToString());
+                pressLabel.Location = new Vector2(ScreenCenter.X - (fonts["default_m"].MeasureString(pressLabel.Text).X / 2), 80);
             }
-            if (KeybdState.IsKeyDown(Keys.A) && PreviousKey != Keys.A)
-            {
-                AddSubtractBrickHit(ControllerKeys.Stitch);
-                PreviousKey = Keys.A;
-            }
-            if (KeybdState.IsKeyDown(Keys.S) && PreviousKey != Keys.S)
-            {
-                AddSubtractBrickHit(ControllerKeys.Medicine);
-                PreviousKey = Keys.S;
-            }
-            if (KeybdState.IsKeyDown(Keys.O) && PreviousKey != Keys.O)
-            {
-                AddSubtractBrickHit(ControllerKeys.CPR);
-                PreviousKey = Keys.O;
-            }
-            Keys[] pressedKeys = KeybdState.GetPressedKeys();
-            if (pressedKeys.Length != 0) PreviousKey = pressedKeys[0];
-
-            // Update object location on viewport change
-            Label Timer = (Label)Objects["Timer"];
-            Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
-            Objects["Hand1"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - (Objects["Hand1"].Bounds.Width / 2) - 100, game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height + 100);
-            Objects["Hand2"].Location = new Vector2(-100, game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height + 100);
-            // Align controllers
-            Objects["Controller-Bandage"].Location = new Vector2(60, 
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
-            Objects["Controller-Stitch"].Location = new Vector2(100,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
-            Objects["Controller-Medicine"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 60,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
-            Objects["Controller-CPR"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 100,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
-            // Resize game background if necessary
-            Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
-            // Current Controller
-            DetermineCurrentController();
-            Label pressLabel = (Label)Objects["PressLabel"];
-            pressLabel.Text = String.Format("Press/Tap: {0}!", CurrentController.ToString());
-            pressLabel.Location = new Vector2(ScreenCenter.X - (fonts["default_m"].MeasureString(pressLabel.Text).X / 2), 80);
+            catch (Exception ex) { Console.WriteLine(ex); }
             // base
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
