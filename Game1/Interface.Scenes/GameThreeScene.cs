@@ -100,6 +100,12 @@ namespace Arkabound.Interface.Scenes
                     break;
             }
             DistanceFromBottom = -30;
+        }
+
+        public override void DelayLoadContent()
+        {
+            base.DelayLoadContent();
+
             InitializeTimer();
             UpdateMinMaxY();
             GenerateFallingCrap();
@@ -180,17 +186,13 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            try
-            {
-                spriteBatch.Begin();
-                base.Draw(gameTime);
-                Label a = (Label)Objects["Timer"];
-                a.Text = String.Format("Score: {0}", timeLeft);
-                base.DrawObjects(gameTime, Objects);
-                base.DrawObjects(gameTime, GameObjects);
-                spriteBatch.End();
-            }
-            catch (Exception ex) { Console.WriteLine(ex); }
+            spriteBatch.Begin();
+            base.Draw(gameTime);
+            Label a = (Label)Objects["Timer"];
+            a.Text = String.Format("Score: {0}", timeLeft);
+            base.DrawObjects(gameTime, Objects);
+            base.DrawObjects(gameTime, GameObjects);
+            spriteBatch.End();
         }
 
         void UpdateMinMaxY()
@@ -208,68 +210,64 @@ namespace Arkabound.Interface.Scenes
         bool IsJumping = false;
         public override void Update(GameTime gameTime)
         {
-            try
+            base.Update(gameTime);
+            // Timer
+            Label Timer = (Label)Objects["Timer"];
+            Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
+            // Backrgound Resize
+            Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            // base updates
+            base.UpdateObjects(gameTime, Objects);
+            base.UpdateObjects(gameTime, GameObjects);
+            UpdateMinMaxY();
+            if (IsJumping)
             {
-                base.Update(gameTime);
-                // Timer
-                Label Timer = (Label)Objects["Timer"];
-                Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
-                // Backrgound Resize
-                Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
-                // base updates
-                base.UpdateObjects(gameTime, Objects);
-                base.UpdateObjects(gameTime, GameObjects);
-                UpdateMinMaxY();
-                if (IsJumping)
+                PlayerPosition.Y += JumpSpeed;//Making it go up
+                JumpSpeed += 0.5f;//Some math (explained later)
+                if (PlayerPosition.Y >= MaxYPos)
+                //If it's farther than ground
                 {
-                    PlayerPosition.Y += JumpSpeed;//Making it go up
-                    JumpSpeed += 0.5f;//Some math (explained later)
-                    if (PlayerPosition.Y >= MaxYPos)
-                    //If it's farther than ground
-                    {
-                        PlayerPosition.Y = MaxYPos;//Then set it on
-                        IsJumping = false;
-                    }
-                }
-                else
-                {
-                    if (KeybdState.IsKeyDown(Keys.Space) || MsState.LeftButton == ButtonState.Pressed ||
-                        MsState.RightButton == ButtonState.Pressed || MsState.MiddleButton == ButtonState.Pressed)
-                    {
-                        IsJumping = true;
-                        JumpSpeed = JumpHeight;//Give it upward thrust
-                    }
-                }
-                if (Objects.ContainsKey("ObjectCatcher"))
-                {
-                    if (stopCreatingCrap)
-                        Objects.Remove("ObjectCatcher");
-                    else
-                        Objects["ObjectCatcher"].Location = PlayerPosition;
-                }
-
-                for (int i = 0; i < GameObjects.Count; i++)
-                {
-                    // Move crap by 3
-                    GameObjects[i].Location = new Vector2(GameObjects[i].Location.X - FallingSpeed, GameObjects[i].Location.Y);
-
-                    // Check if game object collides/intersects with catcher
-                    if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Contains(GameObjects[i].Bounds.Center))
-                    {
-                        GameOverReason = -1;
-                        GameTimer_Elapsed(null, null);
-                        GameObjects.Remove(GameObjects[i]);
-                        return;
-                    }
-
-                    // cleanup crapped shit
-                    // (normal human speak: remove objects once it exceeds the object catcher)
-                    // also remove all crap once time is up
-                    if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.X < Objects["ObjectCatcher"].Location.X - 50)) || stopCreatingCrap)
-                        GameObjects.Remove(GameObjects[i]);
+                    PlayerPosition.Y = MaxYPos;//Then set it on
+                    IsJumping = false;
                 }
             }
-            catch (Exception ex) { Console.WriteLine(ex); }
+            else
+            {
+                if (KeybdState.IsKeyDown(Keys.Space) || MsState.LeftButton == ButtonState.Pressed ||
+                    MsState.RightButton == ButtonState.Pressed || MsState.MiddleButton == ButtonState.Pressed)
+                {
+                    IsJumping = true;
+                    JumpSpeed = JumpHeight;//Give it upward thrust
+                }
+            }
+            if (Objects.ContainsKey("ObjectCatcher"))
+            {
+                if (stopCreatingCrap)
+                    Objects.Remove("ObjectCatcher");
+                else
+                    Objects["ObjectCatcher"].Location = PlayerPosition;
+            }
+
+            for (int i = 0; i < GameObjects.Count; i++)
+            {
+                // Move crap by 3
+                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X - FallingSpeed, GameObjects[i].Location.Y);
+
+                // Check if game object collides/intersects with catcher
+                if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Contains(GameObjects[i].Bounds.Center))
+                {
+                    GameOverReason = -1;
+                    GameTimer_Elapsed(null, null);
+                    GameObjects.Remove(GameObjects[i]);
+                    return;
+                }
+
+                // cleanup crapped shit
+                // (normal human speak: remove objects once it exceeds the object catcher)
+                // also remove all crap once time is up
+                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.X < Objects["ObjectCatcher"].Location.X - 50)) || stopCreatingCrap)
+                    GameObjects.Remove(GameObjects[i]);
+            }
         }
     }
 }

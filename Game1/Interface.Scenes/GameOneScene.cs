@@ -140,8 +140,13 @@ namespace Arkabound.Interface.Scenes
                     break;
             }
             DistanceFromBottom = -30;
-            InitializeTimer();
+        }
 
+        public override void DelayLoadContent()
+        {
+            base.DelayLoadContent();
+
+            InitializeTimer();
         }
 
         public override void Unload()
@@ -180,58 +185,50 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            try
-            {
-                spriteBatch.Begin();
-                base.Draw(gameTime);
+            spriteBatch.Begin();
+            base.Draw(gameTime);
 
-                Label a = (Label)Objects["Timer"];
-                a.Text = String.Format("{0} second(s) left", timeLeft);
-                base.DrawObjects(gameTime, Objects);
-                base.DrawObjects(gameTime, GameObjects);
-                spriteBatch.End();
-            }
-            catch (Exception ex) { Console.WriteLine(ex); }
+            Label a = (Label)Objects["Timer"];
+            a.Text = String.Format("{0} second(s) left", timeLeft);
+            base.DrawObjects(gameTime, Objects);
+            base.DrawObjects(gameTime, GameObjects);
+            spriteBatch.End();
         }
         public override void Update(GameTime gameTime)
         {
-            try
+            base.Update(gameTime);
+
+            Label Timer = (Label)Objects["Timer"];
+            Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
+            Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            base.UpdateObjects(gameTime, Objects);
+            base.UpdateObjects(gameTime, GameObjects);
+            if (Objects.ContainsKey("ObjectCatcher"))
             {
-                base.Update(gameTime);
-
-                Label Timer = (Label)Objects["Timer"];
-                Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
-                Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
-                base.UpdateObjects(gameTime, Objects);
-                base.UpdateObjects(gameTime, GameObjects);
-                if (Objects.ContainsKey("ObjectCatcher"))
-                {
-                    if (stopCreatingCrap)
-                        Objects.Remove("ObjectCatcher");
-                    else
-                        Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.Bounds.X - (Objects["ObjectCatcher"].Graphic.Width / 2), game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
-                }
-                for (int i = 0; i < GameObjects.Count; i++)
-                {
-                    // Move crap by 3
-                    GameObjects[i].Location = new Vector2(GameObjects[i].Location.X, GameObjects[i].Location.Y + FallingSpeed);
-
-                    // Check if game object collides/intersects with catcher
-                    if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
-                    {
-                        CollectedObjects.Add(GameObjects[i]);
-                        GameObjects.Remove(GameObjects[i]);
-                        return;
-                    }
-
-                    // cleanup crapped shit
-                    // (normal human speak: remove objects once it exceeds the object catcher)
-                    // also remove all crap once time is up
-                    if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || stopCreatingCrap)
-                        GameObjects.Remove(GameObjects[i]);
-                }
+                if (stopCreatingCrap)
+                    Objects.Remove("ObjectCatcher");
+                else
+                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.Bounds.X - (Objects["ObjectCatcher"].Graphic.Width / 2), game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
             }
-            catch (Exception ex) { Console.WriteLine(ex); }
+            for (int i = 0; i < GameObjects.Count; i++)
+            {
+                // Move crap by 3
+                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X, GameObjects[i].Location.Y + FallingSpeed);
+
+                // Check if game object collides/intersects with catcher
+                if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
+                {
+                    CollectedObjects.Add(GameObjects[i]);
+                    GameObjects.Remove(GameObjects[i]);
+                    return;
+                }
+
+                // cleanup crapped shit
+                // (normal human speak: remove objects once it exceeds the object catcher)
+                // also remove all crap once time is up
+                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || stopCreatingCrap)
+                    GameObjects.Remove(GameObjects[i]);
+            }
         }
     }
 }

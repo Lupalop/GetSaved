@@ -39,10 +39,10 @@ namespace Arkabound.Interface
                 // Unload previous scene
                 if (_currentScene != null)
                     _currentScene.Unload();
+                // Load delayed content
+                value.DelayLoadContent();
                 // Set current state to given scene
                 _currentScene = value;
-                // Load content
-                _currentScene.LoadContent();
                 // Show a fade effect to hide first frame misposition
                 string overlayKey = String.Format("fade-{0}", value);
                 if (!overlays.ContainsKey(overlayKey))

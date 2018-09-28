@@ -131,6 +131,11 @@ namespace Arkabound.Interface.Scenes
                     WalkSpeed = 2f;
                     break;
             }
+        }
+
+        public override void DelayLoadContent()
+        {
+            base.DelayLoadContent();
 
             InitializeTimer();
         }
@@ -233,19 +238,15 @@ namespace Arkabound.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            try
-            {
-                Label a = (Label)Objects["Timer"];
-                a.Text = String.Format("{0} second(s) left", timeLeft);
-                Label b = (Label)Objects["DeathTimer"];
-                b.Text = String.Format("{0}", timeLeft2);
-                spriteBatch.Begin();
-                base.Draw(gameTime);
-                base.DrawObjects(gameTime, Objects);
-                base.DrawObjects(gameTime, GameObjects);
-                spriteBatch.End();
-            }
-            catch (Exception ex) { Console.WriteLine(ex); }
+            Label a = (Label)Objects["Timer"];
+            a.Text = String.Format("{0} second(s) left", timeLeft);
+            Label b = (Label)Objects["DeathTimer"];
+            b.Text = String.Format("{0}", timeLeft2);
+            spriteBatch.Begin();
+            base.Draw(gameTime);
+            base.DrawObjects(gameTime, Objects);
+            base.DrawObjects(gameTime, GameObjects);
+            spriteBatch.End();
         }
         Vector2 PosWhich = Vector2.Zero;
         bool isMsPressed = false;
@@ -254,102 +255,98 @@ namespace Arkabound.Interface.Scenes
         int currX = 0;
         public override void Update(GameTime gameTime)
         {
-            try
+            base.Update(gameTime);
+            ObjectBase GameBG = Objects["GameBG"];
+            if (currentStage != 3 && currentGame == Games.EscapeEarthquake)
             {
-                base.Update(gameTime);
-                ObjectBase GameBG = Objects["GameBG"];
-                if (currentStage != 3 && currentGame == Games.EscapeEarthquake)
+                if (!locMove)
                 {
-                    if (!locMove)
-                    {
-                        currX++;
-                        if (currX == 3)
-                            locMove = true;
-                    }
-                    else
-                    {
-                        currX--;
-                        if (currX == -3)
-                            locMove = false;
-                    }
-                    GameBG.DestinationRectangle = new Rectangle(currX, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                    currX++;
+                    if (currX == 3)
+                        locMove = true;
                 }
                 else
                 {
-                    GameBG.DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                    currX--;
+                    if (currX == -3)
+                        locMove = false;
                 }
-                base.UpdateObjects(gameTime, Objects);
-                base.UpdateObjects(gameTime, GameObjects);
-                // If person is in object
-                if (Objects.ContainsKey("ObjectCatcher"))
-                {
-                    ObjectBase Catchr = Objects["ObjectCatcher"];
-                    if (currentStage == 3 && Catchr.Graphic.Name != "human-line")
-                    {
-                        Catchr.Graphic = game.Content.Load<Texture2D>("human-line");
-                    }
-                    if ((MsState.LeftButton == ButtonState.Pressed && !isMsPressed) || (KeybdState.IsKeyDown(Keys.Space) && !isKeyPressed))
-                    {
-                        Label b = (Label)Objects["DeathTimer"];
-                        b.Tint = Color.Transparent;
-                        DeadLeftController.Enabled = false;
-                        if (PosWhich == Vector2.Zero)
-                        {
-                            PosWhich = PosB;
-                            SetHelpMessage(1);
-                            currentStage = 1;
-                            return;
-                        }
-                        if (Catchr.Bounds.Contains(PosB) && currentStage == 1)
-                        {
-                            ResetObjectCatcherPosition();
-                            SetHelpMessage(2);
-                            currentStage = 2;
-                            Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg2");
-                            return;
-                        }
-                        if (Catchr.Bounds.Contains(PosB) && currentStage == 2)
-                        {
-                            ResetObjectCatcherPosition();
-                            SetHelpMessage(3);
-                            currentStage = 3;
-                            Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg3");
-                            return;
-                        }
-                        // If last stage
-                        if (Catchr.Bounds.Contains(PosB) && currentStage == 3)
-                        {
-                            GameTimer.Enabled = false;
-                            TimeLeftController.Enabled = false;
-                            EndStateDeterminer.MessageHolder.Add(true);
-                            CallEndOverlay();
-                        }
-
-                        //get the difference from pos to player
-                        Vector2 differenceToPlayer = PosWhich - Catchr.Location;
-
-                        //first get direction only by normalizing the difference vector
-                        //getting only the direction, with a length of one
-                        differenceToPlayer.Normalize();
-
-                        //then move in that direction
-                        //based on how much time has passed
-                        Catchr.Location += differenceToPlayer * (float)gameTime.ElapsedGameTime.TotalMilliseconds * WalkSpeed;
-                        if (MsState.LeftButton == ButtonState.Pressed)
-                            isMsPressed = true;
-                        else
-                            isKeyPressed = true;
-                    }
-                    if (MsState.LeftButton == ButtonState.Released)
-                        isMsPressed = false;
-                    if (KeybdState.IsKeyUp(Keys.Space))
-                        isKeyPressed = false;
-
-                    if (removeObjectCatcher)
-                        Objects.Remove("ObjectCatcher");
-                }
+                GameBG.DestinationRectangle = new Rectangle(currX, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             }
-            catch (Exception ex) { Console.WriteLine(ex); }
+            else
+            {
+                GameBG.DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            }
+            base.UpdateObjects(gameTime, Objects);
+            base.UpdateObjects(gameTime, GameObjects);
+            // If person is in object
+            if (Objects.ContainsKey("ObjectCatcher"))
+            {
+                ObjectBase Catchr = Objects["ObjectCatcher"];
+                if (currentStage == 3 && Catchr.Graphic.Name != "human-line")
+                {
+                    Catchr.Graphic = game.Content.Load<Texture2D>("human-line");
+                }
+                if ((MsState.LeftButton == ButtonState.Pressed && !isMsPressed) || (KeybdState.IsKeyDown(Keys.Space) && !isKeyPressed))
+                {
+                    Label b = (Label)Objects["DeathTimer"];
+                    b.Tint = Color.Transparent;
+                    DeadLeftController.Enabled = false;
+                    if (PosWhich == Vector2.Zero)
+                    {
+                        PosWhich = PosB;
+                        SetHelpMessage(1);
+                        currentStage = 1;
+                        return;
+                    }
+                    if (Catchr.Bounds.Contains(PosB) && currentStage == 1)
+                    {
+                        ResetObjectCatcherPosition();
+                        SetHelpMessage(2);
+                        currentStage = 2;
+                        Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg2");
+                        return;
+                    }
+                    if (Catchr.Bounds.Contains(PosB) && currentStage == 2)
+                    {
+                        ResetObjectCatcherPosition();
+                        SetHelpMessage(3);
+                        currentStage = 3;
+                        Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg3");
+                        return;
+                    }
+                    // If last stage
+                    if (Catchr.Bounds.Contains(PosB) && currentStage == 3)
+                    {
+                        GameTimer.Enabled = false;
+                        TimeLeftController.Enabled = false;
+                        EndStateDeterminer.MessageHolder.Add(true);
+                        CallEndOverlay();
+                    }
+
+                    //get the difference from pos to player
+                    Vector2 differenceToPlayer = PosWhich - Catchr.Location;
+
+                    //first get direction only by normalizing the difference vector
+                    //getting only the direction, with a length of one
+                    differenceToPlayer.Normalize();
+
+                    //then move in that direction
+                    //based on how much time has passed
+                    Catchr.Location += differenceToPlayer * (float)gameTime.ElapsedGameTime.TotalMilliseconds * WalkSpeed;
+                    if (MsState.LeftButton == ButtonState.Pressed)
+                        isMsPressed = true;
+                    else
+                        isKeyPressed = true;
+                }
+                if (MsState.LeftButton == ButtonState.Released)
+                    isMsPressed = false;
+                if (KeybdState.IsKeyUp(Keys.Space))
+                    isKeyPressed = false;
+
+                if (removeObjectCatcher)
+                    Objects.Remove("ObjectCatcher");
+            }
         }
 
         private void ResetObjectCatcherPosition()

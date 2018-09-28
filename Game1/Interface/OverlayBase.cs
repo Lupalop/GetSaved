@@ -14,16 +14,17 @@ namespace Arkabound.Interface
             : base(sceneManager, sceneName)
         {
             ParentScene = parentScene;
-            // Load the scene's content
-            LoadContent();
-
         }
 
         public OverlayBase(SceneManager sceneManager, string sceneName)
             : base(sceneManager, sceneName)
         {
-            // Load the scene's content
-            LoadContent();
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            DelayLoadContent();
         }
 
         public SceneBase ParentScene { get; set; }

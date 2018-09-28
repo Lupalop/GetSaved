@@ -25,6 +25,8 @@ namespace Arkabound.Interface
             spriteBatch = sceneManager.spriteBatch;
             fonts = sceneManager.fonts;
             Objects = new Dictionary<string, ObjectBase> {};
+            // Load the scene's content
+            LoadContent();
             // Layout stuff
             spacing = 5;
         }
@@ -47,6 +49,12 @@ namespace Arkabound.Interface
         {
             if (Program.OutputMessages)
                 Console.WriteLine("Loading content in: " + sceneName);
+        }
+
+        public virtual void DelayLoadContent()
+        {
+            if (Program.OutputMessages)
+                Console.WriteLine("Loading delayed content in: " + sceneName);
         }
 
         public virtual void Draw(GameTime gameTime)
