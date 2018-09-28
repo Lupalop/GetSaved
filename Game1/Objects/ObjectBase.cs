@@ -47,6 +47,10 @@ namespace Arkabound.Objects
         public Rectangle SourceRectangle { get; set; }
         public SpriteEffects GraphicEffects { get; set; }
 
+        // Update and draw events (essential to removing individual update commands from scenes)
+        public Action OnUpdate { get; set; }
+        public Action OnDraw { get; set; }
+
         // For Animated Sprites
         public SpriteTypes SpriteType { get; set; }
 
@@ -122,6 +126,8 @@ namespace Arkabound.Objects
                     spriteBatch.Draw(Graphic, Bounds, Tint);
                 }
             }
+            if (OnDraw != null)
+                OnDraw.Invoke();
         }
         public virtual void Update(GameTime gameTime)
         {
@@ -151,6 +157,9 @@ namespace Arkabound.Objects
             }
 
             Bounds = new Rectangle(Location.ToPoint(), dimens);
+
+            if (OnUpdate != null)
+                OnUpdate.Invoke();
         }
     }
     public enum SpriteTypes { Static, Animated, None };
