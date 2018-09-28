@@ -7,11 +7,11 @@ using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Arkabound.Interface;
-using Arkabound.Interface.Controls;
-using Arkabound.Objects;
+using Maquina.Interface;
+using Maquina.Interface.Controls;
+using Maquina.Objects;
 
-namespace Arkabound.Interface.Scenes
+namespace Maquina.Interface.Scenes
 {
     public class GameThreeScene : SceneBase
     {

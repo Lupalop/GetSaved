@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Arkabound.Interface.Controls;
-using Arkabound.Objects;
+using Maquina.Interface.Controls;
+using Maquina.Objects;
 
-namespace Arkabound.Interface.Scenes
+namespace Maquina.Interface.Scenes
 {
     public class MainMenuScene : SceneBase
     {

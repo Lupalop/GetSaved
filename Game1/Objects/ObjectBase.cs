@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Arkabound.Objects
+namespace Maquina.Objects
 {
     /// <summary>
     /// The Base class, where every game object inherits its properties

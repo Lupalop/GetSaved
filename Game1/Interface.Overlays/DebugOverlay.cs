@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Arkabound.Interface.Scenes
+namespace Maquina.Interface.Scenes
 {
     public class DebugOverlay : OverlayBase
     {

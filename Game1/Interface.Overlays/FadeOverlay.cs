@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Timers;
-using Arkabound.Interface.Controls;
+using Maquina.Interface.Controls;
 
-namespace Arkabound.Interface.Scenes
+namespace Maquina.Interface.Scenes
 {
     public class FadeOverlay : OverlayBase
     {

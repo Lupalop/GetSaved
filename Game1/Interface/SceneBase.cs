@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using Arkabound.Objects;
+using Maquina.Objects;
 
-namespace Arkabound.Interface
+namespace Maquina.Interface
 {
     // TODO: Implement basic layout engine (allowing object groups inside object groups and more...)
     public abstract class SceneBase

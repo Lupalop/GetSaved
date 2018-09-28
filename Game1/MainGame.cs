@@ -3,10 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-using Arkabound.Interface;
-using Arkabound.Interface.Scenes;
+using Maquina.Interface;
+using Maquina.Interface.Scenes;
 
-namespace Arkabound
+namespace Maquina
 {
     /// <summary>
     /// This is the main type for your game.

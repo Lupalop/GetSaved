@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Arkabound
+namespace Maquina
 {
 #if WINDOWS || LINUX
     /// <summary>

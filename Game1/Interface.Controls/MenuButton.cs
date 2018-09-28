@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Arkabound.Objects;
-using Arkabound.Interface.Scenes;
+using Maquina.Objects;
+using Maquina.Interface.Scenes;
 
-namespace Arkabound.Interface.Controls
+namespace Maquina.Interface.Controls
 {
     public class MenuButton : ObjectBase
     {

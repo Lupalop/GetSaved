@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Arkabound.Objects;
-using Arkabound.Interface.Controls;
+using Maquina.Objects;
+using Maquina.Interface.Controls;
 
-namespace Arkabound.Interface
+namespace Maquina.Interface
 {
     public abstract class OverlayBase : SceneBase
     {

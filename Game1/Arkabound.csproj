@@ -9,7 +9,7 @@
     <ProjectGuid>{10113C2A-3986-4838-894E-36B3550B155E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arkabound</RootNamespace>
+    <RootNamespace>Maquina</RootNamespace>
     <AssemblyName>arkabound</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>

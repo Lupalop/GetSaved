@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Arkabound.Objects;
-using Arkabound.Interface.Controls;
+using Maquina.Objects;
+using Maquina.Interface.Controls;
 
-namespace Arkabound.Interface.Scenes
+namespace Maquina.Interface.Scenes
 {
     public class MouseOverlay : OverlayBase {
     

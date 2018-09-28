@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
-namespace Arkabound.Interface
+namespace Maquina.Interface
 {
     public class SceneManager
     {
