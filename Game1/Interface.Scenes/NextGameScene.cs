@@ -17,6 +17,7 @@ namespace Arkabound.Interface.Scenes
         public NextGameScene(SceneManager sceneManager)
             : base(sceneManager, "Next Game Scene")
         {
+            Initialize();
         }
 
         public NextGameScene(SceneManager sceneManager, Games passedGame)
@@ -24,6 +25,7 @@ namespace Arkabound.Interface.Scenes
         {
             ForcePassedGame = passedGame;
             RandomizeGame = false;
+            Initialize();
         }
 
         public NextGameScene(SceneManager sceneManager, Games passedGame, Difficulty passedDifficulty)
@@ -33,14 +35,9 @@ namespace Arkabound.Interface.Scenes
             ForcePassedDifficulty = passedDifficulty;
             RandomizeGame = false;
             RandomizeDifficulty = false;
-        }
-
-        public override void LoadContent()
-        {
-            base.LoadContent();
             Initialize();
         }
-        Texture2D HelpImage;
+
         public void Initialize()
         {
             NextGame = DetermineNextGame();
@@ -87,7 +84,10 @@ namespace Arkabound.Interface.Scenes
             SceneChanger.Elapsed += delegate { sceneManager.currentScene = NextGame; };
         }
 
+        private Texture2D HelpImage;
+        // Dice spinner runs every 1ms;
         private Timer DiceSpinner = new Timer(1) { AutoReset = true, Enabled = true };
+        // Switch to new game scene will happen in 3 seconds (3000ms)
         private Timer SceneChanger = new Timer(3000) { AutoReset = false, Enabled = true };
 
         public bool RandomizeGame = true;
@@ -162,9 +162,11 @@ namespace Arkabound.Interface.Scenes
         {
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
+            // Click to skip area updater
             Rectangle SrcRectSkipBtn = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             Objects["SkipBtn"].DestinationRectangle = SrcRectSkipBtn;
             Objects["SkipBtn"].SourceRectangle = SrcRectSkipBtn;
+            // Rolling dice updater
             ObjectBase Dice = Objects["Dice"];
             Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
             Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));
