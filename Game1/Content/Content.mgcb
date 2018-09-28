@@ -49,27 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:menuBG.png
 
-#begin ZillaSlab_small.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:ZillaSlab_small.spritefont
-
-#begin ZillaSlab_large.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:ZillaSlab_large.spritefont
-
-#begin ZillaSlab_medium.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:ZillaSlab_medium.spritefont
-
 #begin timesUp.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -81,18 +60,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:timesUp.png
-
-#begin holder.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:holder.png
 
 #begin overlayBG.png
 /importer:TextureImporter
@@ -418,18 +385,6 @@
 /processorParam:TextureFormat=Color
 /build:dino/character.png
 
-#begin gameBG4.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:gameBG4.png
-
 #begin point.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -585,4 +540,49 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:human-line.png
+
+#begin fonts/ZillaSlab_large.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/ZillaSlab_large.spritefont
+
+#begin fonts/ZillaSlab_medium.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/ZillaSlab_medium.spritefont
+
+#begin fonts/ZillaSlab_small.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/ZillaSlab_small.spritefont
+
+#begin fonts/o-ZillaSlab_small.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:fonts/o-ZillaSlab_small.png
+
+#begin fonts/o-ZillaSlab_large.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:fonts/o-ZillaSlab_large.png
+
+#begin fonts/o-ZillaSlab_medium.png
+/importer:TextureImporter
+/processor:FontTextureProcessor
+/processorParam:FirstCharacter= 
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Color
+/build:fonts/o-ZillaSlab_medium.png
 
