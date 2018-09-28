@@ -59,9 +59,19 @@ namespace Maquina
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // Load all fonts into the Fonts dictionary
-            fonts["default"] = Content.Load<SpriteFont>("ZillaSlab_small");
-            fonts["default_m"] = Content.Load<SpriteFont>("ZillaSlab_medium");
-            fonts["default_l"] = Content.Load<SpriteFont>("ZillaSlab_large");
+            fonts["default"] = Content.Load<SpriteFont>("fonts/ZillaSlab_small");
+            fonts["default_m"] = Content.Load<SpriteFont>("fonts/ZillaSlab_medium");
+            fonts["default_l"] = Content.Load<SpriteFont>("fonts/ZillaSlab_large");
+            fonts["o-default"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_small");
+            fonts["o-default"].Spacing = -6.0f;
+            fonts["o-default"].LineSpacing = 12;
+            fonts["o-default_m"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_medium");
+            fonts["o-default_m"].Spacing = -6.0f;
+            fonts["o-default_m"].LineSpacing = 18;
+            fonts["o-default_l"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_large");
+            fonts["o-default_l"].Spacing = -6.0f;
+            fonts["o-default_l"].LineSpacing = 32;
+
             // Setup the Scene Manager
             sceneManager = new SceneManager(this, spriteBatch, fonts);
             // Register mouse overlay in the scene manager
@@ -126,7 +136,7 @@ namespace Maquina
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            // Stretch images using nearest neighbor
+            // Scale images using nearest neighbor
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
             sceneManager.Draw(gameTime);
