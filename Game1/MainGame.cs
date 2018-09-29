@@ -71,6 +71,10 @@ namespace Maquina
             fonts["o-default_l"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_large");
             fonts["o-default_l"].Spacing = -6.0f;
             fonts["o-default_l"].LineSpacing = 32;
+            fonts["o-default_xl"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_xl");
+            fonts["o-default_xl"].Spacing = -6.0f;
+            fonts["o-default_xl"].LineSpacing = 60;
+
 
             // Setup the Scene Manager
             sceneManager = new SceneManager(this, spriteBatch, fonts);
