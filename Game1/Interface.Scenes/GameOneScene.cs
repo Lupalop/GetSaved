@@ -30,6 +30,22 @@ namespace Maquina.Interface.Scenes
         private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
         private Dictionary<string, Texture2D> Images = new Dictionary<string, Texture2D>();
 
+        private double _InitialTimeLeft;
+        private double InitialTimeLeft
+        {
+            get
+            {
+                return _InitialTimeLeft;
+            }
+            set
+            {
+                _InitialTimeLeft = value;
+                TimeLeft = value;
+                var a = (ProgressBar)Objects["ProgressBar"];
+                a.maximum = (float)value;
+            }
+        }
+
         private double TimeLeft;
         private int GenerationInterval;
         private float FallingSpeed;
@@ -57,7 +73,7 @@ namespace Maquina.Interface.Scenes
             TimeLeftController.Elapsed += delegate
             {
                 if (TimeLeft > 0)
-                    TimeLeft -= 1;
+                    TimeLeft--;
             };
             GameTimer.Elapsed += delegate
             {
@@ -106,6 +122,15 @@ namespace Maquina.Interface.Scenes
                     spriteBatch = this.spriteBatch,
                     OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height)
                 }},
+                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, 32), sceneManager)
+                {
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch,
+                    OnUpdate = () => {
+                        var a = (ProgressBar)Objects["ProgressBar"];
+                        a.value = (float)TimeLeft;
+                    }
+                }},
                 { "BackButton", new MenuButton("mb", sceneManager)
                 {
                     Graphic = game.Content.Load<Texture2D>("back-btn"),
@@ -146,22 +171,22 @@ namespace Maquina.Interface.Scenes
             switch (GameDifficulty)
             {
                 case Difficulty.Easy:
-                    TimeLeft = 25.0;
+                    InitialTimeLeft = 25.0;
                     GenerationInterval = 500;
                     FallingSpeed = 3;
                     break;
                 case Difficulty.Medium:
-                    TimeLeft = 20.0;
+                    InitialTimeLeft = 20.0;
                     GenerationInterval = 300;
                     FallingSpeed = 3;
                     break;
                 case Difficulty.Hard:
-                    TimeLeft = 15.0;
+                    InitialTimeLeft = 15.0;
                     GenerationInterval = 200;
                     FallingSpeed = 5;
                     break;
                 case Difficulty.EpicFail:
-                    TimeLeft = 10.0;
+                    InitialTimeLeft = 10.0;
                     GenerationInterval = 50;
                     FallingSpeed = 10;
                     break;

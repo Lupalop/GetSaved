@@ -25,6 +25,22 @@ namespace Maquina.Interface.Scenes
         private MouseOverlay MsOverlay;
         private Dictionary<string, ObjectBase> GameObjects = new Dictionary<string, ObjectBase>();
 
+        private double _InitialTimeLeft;
+        private double InitialTimeLeft
+        {
+            get
+            {
+                return _InitialTimeLeft;
+            }
+            set
+            {
+                _InitialTimeLeft = value;
+                TimeLeft = value;
+                var a = (ProgressBar)Objects["ProgressBar"];
+                a.maximum = (float)value;
+            }
+        }
+
         private double TimeLeft;
         private double DeathTimeLeft = 3;
         private float WalkSpeed;
@@ -72,48 +88,44 @@ namespace Maquina.Interface.Scenes
             DeathTimeLeftController = new Timer(1000);
             GameTimer = new Timer(TimeLeft * 1000);
 
-            TimeLeftController.Elapsed += OnTimeLeftEnd;
+            TimeLeftController.Elapsed += delegate
+            {
+                if (TimeLeft >= 1)
+                    TimeLeft -= 1;
+                if (CurrentGame == Games.EscapeFire)
+                {
+                    string overlayName = String.Format("fade-{0}", DateTime.Now);
+                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
+                }
+                if ((MsState.LeftButton == ButtonState.Released || KeybdState.IsKeyUp(Keys.Space)) && !DeathTimeLeftController.Enabled)
+                {
+                    Label b = (Label)Objects["DeathTimer"];
+                    b.Tint = Color.Red;
+                    DeathTimeLeft = 2;
+                    DeathTimeLeftController.Enabled = true;
+                }
+            };
             TimeLeftController.AutoReset = true;
             TimeLeftController.Enabled = true;
 
-            DeathTimeLeftController.Elapsed += OnDeadLeftEnd;
+            DeathTimeLeftController.Elapsed += delegate
+            {
+                if (DeathTimeLeft >= 1)
+                    DeathTimeLeft -= 1;
+                if (DeathTimeLeft <= 0 && !IsGameEnd)
+                {
+                    GameTimer.Enabled = false;
+                    TimeLeftController.Enabled = false;
+                    EndStateDeterminer.MessageHolder.Add(false);
+                    CallEndOverlay();
+                }
+            };
             DeathTimeLeftController.AutoReset = true;
             DeathTimeLeftController.Enabled = false;
 
             GameTimer.Elapsed += OnGameTimerEnd;
             GameTimer.AutoReset = false;
             GameTimer.Enabled = true;
-        }
-
-        private void OnDeadLeftEnd(Object source, ElapsedEventArgs e)
-        {
-            if (DeathTimeLeft >= 1)
-                DeathTimeLeft -= 1;
-            if (DeathTimeLeft <= 0 && !IsGameEnd)
-            {
-                GameTimer.Enabled = false;
-                TimeLeftController.Enabled = false;
-                EndStateDeterminer.MessageHolder.Add(false);
-                CallEndOverlay();
-            }
-        }
-
-        private void OnTimeLeftEnd(Object source, ElapsedEventArgs e)
-        {
-            if (TimeLeft >= 1)
-                TimeLeft -= 1;
-            if (CurrentGame == Games.EscapeFire)
-            {
-                string overlayName = String.Format("fade-{0}", DateTime.Now);
-                sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
-            }
-            if ((MsState.LeftButton == ButtonState.Released || KeybdState.IsKeyUp(Keys.Space)) && !DeathTimeLeftController.Enabled)
-            {
-                Label b = (Label)Objects["DeathTimer"];
-                b.Tint = Color.Red;
-                DeathTimeLeft = 2;
-                DeathTimeLeftController.Enabled = true;
-            }
         }
 
         private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
@@ -203,6 +215,15 @@ namespace Maquina.Interface.Scenes
                     },
                     spriteBatch = this.spriteBatch
                 }},
+                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, 32), sceneManager)
+                {
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch,
+                    OnUpdate = () => {
+                        var a = (ProgressBar)Objects["ProgressBar"];
+                        a.value = (float)TimeLeft;
+                    }
+                }},
                 { "BackButton", new MenuButton("mb", sceneManager)
                 {
                     Graphic = game.Content.Load<Texture2D>("back-btn"),
@@ -275,19 +296,19 @@ namespace Maquina.Interface.Scenes
             switch (GameDifficulty)
             {
                 case Difficulty.Easy:
-                    TimeLeft = 15.0;
+                    InitialTimeLeft = 15.0;
                     WalkSpeed = 1.5f;
                     break;
                 case Difficulty.Medium:
-                    TimeLeft = 12.0;
+                    InitialTimeLeft = 12.0;
                     WalkSpeed = 2.5f;
                     break;
                 case Difficulty.Hard:
-                    TimeLeft = 12.0;
+                    InitialTimeLeft = 12.0;
                     WalkSpeed = 2f;
                     break;
                 case Difficulty.EpicFail:
-                    TimeLeft = 10.0;
+                    InitialTimeLeft = 10.0;
                     WalkSpeed = 2f;
                     break;
             }

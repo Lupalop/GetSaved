@@ -25,6 +25,22 @@ namespace Maquina.Interface.Scenes
         private Dictionary<string, ObjectBase> GameObjects = new Dictionary<string, ObjectBase>();
         private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
 
+        private double _InitialTimeLeft;
+        private double InitialTimeLeft
+        {
+            get
+            {
+                return _InitialTimeLeft;
+            }
+            set
+            {
+                _InitialTimeLeft = value;
+                TimeLeft = value;
+                var a = (ProgressBar)Objects["ProgressBar"];
+                a.maximum = (float)value;
+            }
+        }
+
         private double TimeLeft;
         private int ProjectileInterval;
         private int HitsBeforeSaved;
@@ -52,8 +68,8 @@ namespace Maquina.Interface.Scenes
             ProjectileGenerator_Elapsed(null, null);
             TimeLeftController.Elapsed += delegate
             {
-                if (TimeLeft >= 1)
-                    TimeLeft -= 1;
+                if (TimeLeft > 0)
+                    TimeLeft--;
             };
             GameTimer.Elapsed += delegate
             {
@@ -144,6 +160,15 @@ namespace Maquina.Interface.Scenes
                     AlignToCenter = false,
                     OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     spriteBatch = this.spriteBatch
+                }},
+                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, 32), sceneManager)
+                {
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch,
+                    OnUpdate = () => {
+                        var a = (ProgressBar)Objects["ProgressBar"];
+                        a.value = (float)TimeLeft;
+                    }
                 }},
                 { "BackButton", new MenuButton("mb", sceneManager)
                 {
@@ -251,22 +276,22 @@ namespace Maquina.Interface.Scenes
             switch (GameDifficulty)
             {
                 case Difficulty.Easy:
-                    TimeLeft = 24.0;
+                    InitialTimeLeft = 24.0;
                     ProjectileInterval = 6000;
                     HitsBeforeSaved = 5;
                     break;
                 case Difficulty.Medium:
-                    TimeLeft = 15.0;
+                    InitialTimeLeft = 15.0;
                     ProjectileInterval = 5000;
                     HitsBeforeSaved = 5;
                     break;
                 case Difficulty.Hard:
-                    TimeLeft = 12.0;
+                    InitialTimeLeft = 12.0;
                     ProjectileInterval = 4000;
                     HitsBeforeSaved = 5;
                     break;
                 case Difficulty.EpicFail:
-                    TimeLeft = 50.0;
+                    InitialTimeLeft = 50.0;
                     ProjectileInterval = 5000;
                     HitsBeforeSaved = 10;
                     break;
