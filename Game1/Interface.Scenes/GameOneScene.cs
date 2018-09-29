@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Maquina.Interface;
 using Maquina.Interface.Controls;
 using Maquina.Objects;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Maquina.Interface.Scenes
 {
@@ -51,6 +52,8 @@ namespace Maquina.Interface.Scenes
         private float FallingSpeed;
         private int DistanceFromBottom;
         private bool IsGameEnd = false;
+
+        private SoundEffect ObjectCaught;
 
         private Random RandNum = new Random();
         private Difficulty GameDifficulty;
@@ -160,6 +163,9 @@ namespace Maquina.Interface.Scenes
                 }}
             };
 
+            ObjectCaught = game.Content.Load<SoundEffect>("sfx/caught");
+
+            sceneManager.PlayBGM("hide-seek");
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
             DistanceFromBottom = -30;
         }
@@ -234,6 +240,7 @@ namespace Maquina.Interface.Scenes
                 // Check if game object collides/intersects with catcher
                 if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
                 {
+                    ObjectCaught.Play();
                     CollectedObjects.Add(GameObjects[i]);
                     GameObjects.Remove(GameObjects[i]);
                     return;

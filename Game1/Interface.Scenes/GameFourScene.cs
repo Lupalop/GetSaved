@@ -266,6 +266,7 @@ namespace Maquina.Interface.Scenes
                 }}
             };
 
+            sceneManager.PlayBGM("flying-high");
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
         }
 

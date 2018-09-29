@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Maquina.Interface;
 using Maquina.Interface.Controls;
 using Maquina.Objects;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Maquina.Interface.Scenes
 {
@@ -30,6 +31,8 @@ namespace Maquina.Interface.Scenes
         private int DistanceFromBottom;
         private float JumpHeight;
         private int ScoreMultiplier;
+
+        private SoundEffect JumpEffect;
 
         private Timer ProjectileGenerator;
         private Timer TimeLeftController;
@@ -136,6 +139,8 @@ namespace Maquina.Interface.Scenes
                 }}
             };
 
+            JumpEffect = game.Content.Load<SoundEffect>("sfx/caught");
+            sceneManager.PlayBGM("shenanigans");
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
             DistanceFromBottom = -30;
         }
@@ -218,6 +223,7 @@ namespace Maquina.Interface.Scenes
                     MsState.RightButton == ButtonState.Pressed || MsState.MiddleButton == ButtonState.Pressed)
                 {
                     IsJumping = true;
+                    JumpEffect.Play();
                     JumpSpeed = JumpHeight;
                 }
             }

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Maquina.Interface;
 using Maquina.Interface.Controls;
 using Maquina.Objects;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Maquina.Interface.Scenes
 {
@@ -53,6 +54,8 @@ namespace Maquina.Interface.Scenes
         private Games CurrentGame;
         private int CurrentStage = 0;
         private Difficulty GameDifficulty;
+
+        private SoundEffect PointReached;
 
         private Timer TimeLeftController;
         private Timer DeathTimeLeftController;
@@ -286,6 +289,8 @@ namespace Maquina.Interface.Scenes
                 }}
             };
 
+            PointReached = game.Content.Load<SoundEffect>("sfx/caught");
+            sceneManager.PlayBGM("in-pursuit");
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
         }
 
@@ -361,6 +366,7 @@ namespace Maquina.Interface.Scenes
                     if (Catchr.Bounds.Contains(PosB))
                     {
                         ResetPlayerPosition();
+                        PointReached.Play();
                         switch (CurrentStage)
                         {
                             case 1:

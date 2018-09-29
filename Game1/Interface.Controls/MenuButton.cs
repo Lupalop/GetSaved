@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using Maquina.Objects;
 using Maquina.Interface.Scenes;
 
@@ -25,6 +26,7 @@ namespace Maquina.Interface.Controls
             SpriteType = SpriteTypes.Static;
             Rows = 1;
             Columns = 3;
+            ClickSound = sceneManager.game.Content.Load<SoundEffect>("sfx/click");
         }
 
         private SceneManager sceneManager;
@@ -36,6 +38,7 @@ namespace Maquina.Interface.Controls
         public Action LeftClickAction { get; set; }
         public Action RightClickAction { get; set; }
         public bool Disabled { get; set; }
+        public SoundEffect ClickSound { get; set; }
 
         public override void Draw(GameTime gameTime)
         {
@@ -88,6 +91,7 @@ namespace Maquina.Interface.Controls
                     if (MsState.LeftButton == ButtonState.Released && LeftClickFired)
                     {
                         LeftClickAction.Invoke();
+                        ClickSound.Play();
                         // In order to prevent the action from being fired again
                         LeftClickFired = false;
                     }
@@ -103,6 +107,7 @@ namespace Maquina.Interface.Controls
                     if (MsState.RightButton == ButtonState.Released && RightClickFired)
                     {
                         RightClickAction.Invoke();
+                        ClickSound.Play();
                         // In order to prevent the action from being fired again
                         RightClickFired = false;
                     }

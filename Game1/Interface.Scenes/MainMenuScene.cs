@@ -55,6 +55,7 @@ namespace Maquina.Interface.Scenes
                     LeftClickAction = () => sceneManager.currentScene = new CreditsScene(sceneManager)
                 }}
             };
+            sceneManager.PlayBGM("flying-high");
             // Layout stuff
             spacing = 20;
         }
