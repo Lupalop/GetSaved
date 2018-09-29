@@ -80,6 +80,8 @@ namespace Maquina
             // Load all songs to the Songs dictionary
             songs["flying-high"] = Content.Load<Song>("bgm/Flying High");
             songs["in-pursuit"] = Content.Load<Song>("bgm/In Pursuit");
+            songs["hide-seek"] = Content.Load<Song>("bgm/Hide Seek");
+            songs["shenanigans"] = Content.Load<Song>("bgm/Shenanigans");
             // Setup the Scene Manager
             sceneManager = new SceneManager(this, spriteBatch, fonts, songs);
             // Register mouse overlay in the scene manager
