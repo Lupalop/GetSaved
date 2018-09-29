@@ -57,7 +57,7 @@ namespace Maquina.Interface.Scenes
             // List mouse coordinates
             if (isCounterVisible[3])
             {
-                mouseCoordinates = sceneManager.overlays["mouse"].Objects["Mouse"].Bounds.ToString();
+                mouseCoordinates = sceneManager.overlays["mouse"].Objects["Mouse"].Location.ToString();
             }
 
             // List overlays currently loaded
@@ -96,28 +96,24 @@ namespace Maquina.Interface.Scenes
                     string.Format(sceneCurrentHeader, sceneManager.currentScene.sceneName) + 
                     string.Format(sceneOverlayHeader, sceneManager.overlays.Count) + 
                     sceneOverlayList;
-                spriteBatch.DrawString(fonts["default"], sceneManagerInfo, new Vector2(0, 0), Color.Black);
-                spriteBatch.DrawString(fonts["default"], sceneManagerInfo, new Vector2(1, 1), Color.White);
+                spriteBatch.DrawString(fonts["o-default"], sceneManagerInfo, new Vector2(0, 0), Color.White);
             }
             if (isCounterVisible[1])
             {
                 string objectInfo = string.Format(sceneObjectHeader, sceneManager.currentScene.Objects.Count) +
                                     sceneObjectList;
-                spriteBatch.DrawString(fonts["default"], objectInfo, new Vector2(0, 0), Color.Black);
-                spriteBatch.DrawString(fonts["default"], objectInfo, new Vector2(1, 1), Color.White);
+                spriteBatch.DrawString(fonts["o-default"], objectInfo, new Vector2(0, 0), Color.White);
             }
 
             if (isCounterVisible[0])
             {
                 string dbCounter = string.Format("FPS: {0}, Memory: {1}, Overlay scenes: {2}", frameRate, GC.GetTotalMemory(false), sceneManager.overlays.Count);
-                spriteBatch.DrawString(fonts["default"], dbCounter, new Vector2(0, 0), Color.Black);
-                spriteBatch.DrawString(fonts["default"], dbCounter, new Vector2(1, 1), Color.White);
+                spriteBatch.DrawString(fonts["o-default"], dbCounter, new Vector2(0, 0), Color.White);
             }
             if (isCounterVisible[3])
             {
                 Vector2 msLoc = sceneManager.overlays["mouse"].Objects["Mouse"].Location;
-                spriteBatch.DrawString(fonts["default"], mouseCoordinates, new Vector2(msLoc.X, msLoc.Y + 15), Color.Black);
-                spriteBatch.DrawString(fonts["default"], mouseCoordinates, new Vector2(msLoc.X + 1, msLoc.Y + 16), Color.White);
+                spriteBatch.DrawString(fonts["o-default"], mouseCoordinates, new Vector2(msLoc.X, msLoc.Y + 15), Color.White);
             }
             spriteBatch.End();
         }
