@@ -19,6 +19,12 @@ namespace Maquina.Interface.Controls
             this.sceneManager = sceneManager;
             MsState = sceneManager.MsState;
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
+            // Default MB graphic
+            Graphic = sceneManager.game.Content.Load<Texture2D>("menuBG");
+            Font = sceneManager.fonts["default"];
+            SpriteType = SpriteTypes.Static;
+            Rows = 1;
+            Columns = 3;
         }
 
         private SceneManager sceneManager;
