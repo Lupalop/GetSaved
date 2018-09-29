@@ -23,15 +23,15 @@ namespace Maquina.Interface.Scenes
             base.LoadContent();
             string CreditsText = "Game Font:\n" + 
                      "  Zilla Slab\n    Copyright 2017, The Mozilla Foundation\n    Licensed under the SIL Open Font License 1.1\n    http://scripts.sil.org/OFL \n\n" +
-                     "Key People\n" +
+                     "Key People:\n" +
                      "  Graphic Design and Lead Programmer: Francis Dominic Fajardo\n" +
                      "  Ideas: Shannen Gabrielle Esporlas,  Lara Nicole Meneses,  MJ Moreno\n\n" +
                      "Graphics used in game:\n" +
                      "  Microsoft (Emoji set, potentially non-free)\n  Images from DuckDuckGo Search:\n    https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/\n    nWJ1xCb/pov-running-through-high-school-hallway-60fps_h09ooieg__F0000.png\n    https://cdn.wallpapersafari.com/15/28/a05csx.png\n\n" +
                      "Code contribution:\n" +
-                     "  ProgressBar code, 2009 Luke Rymarz\n  Contact information at www.lukerymarz.com\n\n" +
-                     "Music:\n" +
-                     "  Purple Planet Music, http://www.purple-planet.com";
+                     "  ProgressBar code, 2009 Luke Rymarz\n  www.lukerymarz.com\n\n" +
+                     "Music and SFX:\n" +
+                     "  Music - Purple Planet Music, www.purple-planet.com\n  SFX - Eric Matyas, www.soundimage.org";
 
             Objects = new Dictionary<string, ObjectBase> {
                 { "logo", new Label("logo")
