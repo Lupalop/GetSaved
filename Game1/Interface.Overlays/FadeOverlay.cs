@@ -16,69 +16,92 @@ namespace Maquina.Interface.Scenes
         public FadeOverlay(SceneManager sceneManager, string overlayKey)
             : base(sceneManager, "Fade Overlay")
         {
-            this.overlayKey = overlayKey;
-            this.fadeColor = Color.Black;
-            this.fadeSpeed = 0.1f;
+            this.OverlayKey = overlayKey;
+            this.FadeColor = Color.Black;
+            this.FadeSpeed = 0.1f;
         }
+
         public FadeOverlay(SceneManager sceneManager, string overlayKey, Color fadeColor)
             : base(sceneManager, "Fade Overlay")
         {
-            this.overlayKey = overlayKey;
-            this.fadeColor = fadeColor;
-            this.fadeSpeed = 0.1f;
+            this.OverlayKey = overlayKey;
+            this.FadeColor = fadeColor;
+            this.FadeSpeed = 0.1f;
         }
 
-        Color fadeColor = Color.Red;
-        public float fadeSpeed { get; set; }
+        private Timer Fader;
+        private float Opacity = 1f;
+        private string OverlayKey;
+        private Texture2D FadeBackground;
+        private Color _fadeColor;
+
+        public float FadeSpeed { get; set; }
+        public Color FadeColor
+        {
+            get
+            {
+                return _fadeColor;
+            }
+            set
+            {
+                _fadeColor = value;
+                Texture2D Dummy = new Texture2D(game.GraphicsDevice, 1, 1);
+                Dummy.SetData(new Color[] { value });
+                FadeBackground = Dummy;
+            }
+        }
+
         public override void LoadContent()
         {
-            Texture2D Dummy = new Texture2D(game.GraphicsDevice, 1, 1);
-            Dummy.SetData(new Color[] { fadeColor });
             Objects = new Dictionary<string, Objects.ObjectBase> {
                 { "Background", new Image("Background")
                 {
-                    Graphic = Dummy,
                     DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
-                    Tint = fadeColor * Opacity,
-                    spriteBatch = this.spriteBatch
+                    Tint = FadeColor * Opacity,
+                    spriteBatch = this.spriteBatch,
+                    OnUpdate = () => {
+                        Image BG = (Image)Objects["Background"];
+                        BG.Graphic = FadeBackground;
+                        BG.DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                        BG.Tint = FadeColor * Opacity;
+                    }
                 }}
             };
-
-            Fader = new Timer(10) { Enabled = true, AutoReset = true };
-            Fader.Elapsed += delegate { Opacity -= fadeSpeed; };
             base.LoadContent();
         }
 
-        Timer Fader;
-        private float Opacity = 1f;
-        private string overlayKey;
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
+            base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             spriteBatch.End();
-
-            base.Draw(gameTime);
         }
 
         public override void Update(GameTime gameTime)
         {
-            MouseState mState = Mouse.GetState();
+            base.Update(gameTime);
+            base.UpdateObjects(gameTime, Objects);
 
-            Image BG = (Image)Objects["Background"];
-            BG.DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
-            
-            BG.Tint = fadeColor * Opacity;
-
-            // Action when fade effect is done
+            // Remove overlay when opacity below 0
             if (Opacity <= 0f)
             {
-                // Remove this overlay
-                sceneManager.overlays.Remove(overlayKey);
+                sceneManager.overlays.Remove(OverlayKey);
             }
+        }
 
-            base.Update(gameTime);
+        public override void DelayLoadContent()
+        {
+            Fader = new Timer(10) { Enabled = true, AutoReset = true };
+            Fader.Elapsed += delegate { Opacity -= FadeSpeed; };
+            base.DelayLoadContent();
+        }
+
+        public override void Unload()
+        {
+            Fader.Close();
+            base.Unload();
         }
     }
 }
