@@ -48,8 +48,8 @@ namespace Maquina.Interface.Scenes
         private bool IsGameEnd = false;
 
         // Points
-        private Vector2 PosA = new Vector2(665, 485);
-        private Vector2 PosB = new Vector2(100, 485);
+        private Vector2 PosA = new Vector2(800 / 2 + 250, 600 / 2 + 185);
+        private Vector2 PosB = new Vector2(800 / 2 - 300, 600 / 2 + 185);
 
         private Games CurrentGame;
         private int CurrentStage = 0;
@@ -183,10 +183,17 @@ namespace Maquina.Interface.Scenes
             }
         }
 
+        private void UpdatePoints()
+        {
+            // Update positions
+            PosA = new Vector2(ScreenCenter.X + 250, ScreenCenter.Y + 185);
+            PosB = new Vector2(ScreenCenter.X - 300, ScreenCenter.Y + 185);
+            PosWhich = PosB;
+        }
+
         public override void LoadContent()
         {
             base.LoadContent();
-
             Objects = new Dictionary<string, ObjectBase> {
                 { "GameBG", new Image("GameBG")
                 {
@@ -279,6 +286,9 @@ namespace Maquina.Interface.Scenes
                     Location = PosA,
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    OnUpdate = () => {
+                        GameObjects["PointA"].Location = PosA;
+                    }
                 }},
                 { "PointB", new Image("PointB")
                 {
@@ -286,6 +296,9 @@ namespace Maquina.Interface.Scenes
                     Location = PosB,
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    OnUpdate = () => {
+                        GameObjects["PointB"].Location = PosB;
+                    }
                 }}
             };
 
@@ -319,7 +332,7 @@ namespace Maquina.Interface.Scenes
             }
 
             // Init level
-            PosWhich = PosB;
+            UpdatePoints();
             SetHelpMessage(1);
             CurrentStage = 1;
 
@@ -347,6 +360,7 @@ namespace Maquina.Interface.Scenes
 
         public override void Update(GameTime gameTime)
         {
+            UpdatePoints();
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
@@ -362,8 +376,9 @@ namespace Maquina.Interface.Scenes
                     Label b = (Label)Objects["DeathTimer"];
                     b.Tint = Color.Transparent;
                     DeathTimeLeftController.Enabled = false;
-
-                    if (Catchr.Bounds.Contains(PosB))
+                    // Keep in sync with human height
+                    var ExpandedBounds = new Rectangle((int)PosB.X, (int)PosB.Y, 79, 79);
+                    if (Catchr.Bounds.Intersects(ExpandedBounds))
                     {
                         ResetPlayerPosition();
                         PointReached.Play();
