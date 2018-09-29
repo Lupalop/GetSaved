@@ -63,7 +63,7 @@ namespace Maquina.Interface.Scenes
                 }},
                 { "GameDifficulty", new Label("GameDifficulty")
                 {
-                    Text = String.Format("GameDifficulty: {0}", GameDifficulty.ToString()),
+                    Text = String.Format("Difficulty: {0}", GameDifficulty.ToString()),
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"]
                 }},

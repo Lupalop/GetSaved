@@ -34,13 +34,13 @@ namespace Maquina.Interface.Scenes
                 }},
                 { "mb2", new MenuButton("mb", sceneManager)
                 {
-                    Text = String.Format("GameDifficulty: {0}", difficulty),
+                    Text = String.Format("Difficulty: {0}", difficulty),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                     OnUpdate = () => {
                         MenuButton dfBtn = (MenuButton)Objects["mb2"];
                         dfBtn.Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5);
-                        dfBtn.Text = String.Format("GameDifficulty: {0}", difficulty);
+                        dfBtn.Text = String.Format("Difficulty: {0}", difficulty);
                     },
                     LeftClickAction = () => ModifyDifficulty()
                 }},
