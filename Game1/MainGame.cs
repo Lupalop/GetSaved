@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Media;
 using Maquina.Interface;
 using Maquina.Interface.Scenes;
 
@@ -17,6 +18,7 @@ namespace Maquina
         SpriteBatch spriteBatch;
         SceneManager sceneManager;
         Dictionary<string, SpriteFont> fonts;
+        Dictionary<string, Song> songs;
 
         int LastWindowWidth = 800;
         int LastWindowHeight = 600;
@@ -37,6 +39,7 @@ namespace Maquina
             Window.Title = Program.GameName;
             // Initialize the Fonts dictionary
             fonts = new Dictionary<string, SpriteFont>();
+            songs = new Dictionary<string, Song>();
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ namespace Maquina
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            // Load all fonts into the Fonts dictionary
+            // Load all fonts to the Fonts dictionary
             fonts["default"] = Content.Load<SpriteFont>("fonts/ZillaSlab_small");
             fonts["default_m"] = Content.Load<SpriteFont>("fonts/ZillaSlab_medium");
             fonts["default_l"] = Content.Load<SpriteFont>("fonts/ZillaSlab_large");
@@ -74,10 +77,11 @@ namespace Maquina
             fonts["o-default_xl"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_xl");
             fonts["o-default_xl"].Spacing = -6.0f;
             fonts["o-default_xl"].LineSpacing = 60;
-
-
+            // Load all songs to the Songs dictionary
+            songs["flying-high"] = Content.Load<Song>("bgm/Flying High");
+            songs["in-pursuit"] = Content.Load<Song>("bgm/In Pursuit");
             // Setup the Scene Manager
-            sceneManager = new SceneManager(this, spriteBatch, fonts);
+            sceneManager = new SceneManager(this, spriteBatch, fonts, songs);
             // Register mouse overlay in the scene manager
             sceneManager.overlays.Add("mouse", new MouseOverlay(sceneManager));
             // Register debug overlay in the scene manager

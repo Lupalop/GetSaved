@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Media;
 
 namespace Maquina.Interface
 {
@@ -17,11 +18,12 @@ namespace Maquina.Interface
         /// </summary>
         /// <param name="game">The game instance to attach.</param>
         /// <param name="spriteBatch">The sprite batch present in the game instance</param>
-        public SceneManager(Game game, SpriteBatch spriteBatch, Dictionary<string, SpriteFont> fonts)
+        public SceneManager(Game game, SpriteBatch spriteBatch, Dictionary<string, SpriteFont> fonts, Dictionary<string, Song> songs)
         {
             this.game = game;
             this.spriteBatch = spriteBatch;
             this.fonts = fonts;
+            this.songs = songs;
             this.overlays = new Dictionary<string, SceneBase>();
         }
 
@@ -52,15 +54,27 @@ namespace Maquina.Interface
 
         public Game game;
         public SpriteBatch spriteBatch;
-        // List of fonts that are loaded in game
+        // List of loaded fonts
         public Dictionary<string, SpriteFont> fonts;
-        // List of scenes that are loaded above the current scene
+        // List of loaded songs
+        public Dictionary<string, Song> songs;
+        // List of loaded overlay scenes
         public Dictionary<string, SceneBase> overlays;
 
         public KeyboardState KeybdState;
         public GamePadState GamePdState;
         public MouseState MsState;
         public TouchCollection TouchState;
+
+        public void PlayBGM(string song, bool isRepeating = true)
+        {
+            Song bgm = songs[song];
+            if (MediaPlayer.Queue.ActiveSong != bgm)
+            {
+                MediaPlayer.Play(bgm);
+                MediaPlayer.IsRepeating = isRepeating;
+            }
+        }
 
         public void Draw(GameTime gameTime)
         {
