@@ -332,12 +332,12 @@ namespace Maquina.Interface.Controls
             // initialize colors
             borderColorOuter = Color.Transparent;
             borderColorInner = Color.Transparent;
-            fillColor = Color.DarkBlue;
-            backgroundColor = Color.White;
+            fillColor = new Color(0, 0, 0, 150);
+            backgroundColor = new Color(0, 0, 0, 50);
 
             // set border thickness
-            m_borderThicknessInner = 2;
-            m_borderThicknessOuter = 3;
+            m_borderThicknessInner = 0;
+            m_borderThicknessOuter = 0;
 
             // calculate the rectangles for displaying the progress bar
             UpdateRectangles();
