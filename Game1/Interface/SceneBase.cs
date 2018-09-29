@@ -12,6 +12,7 @@ using Maquina.Objects;
 namespace Maquina.Interface
 {
     // TODO: Implement basic layout engine (allowing object groups inside object groups and more...)
+    // TODO: Record previous input state
     public abstract class SceneBase
     {
         public SceneBase(SceneManager sceneManager, string sceneName)

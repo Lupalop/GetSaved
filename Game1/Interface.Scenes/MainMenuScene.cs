@@ -25,7 +25,6 @@ namespace Maquina.Interface.Scenes
             Objects = new Dictionary<string, ObjectBase> {
                 { "logo", new Image("logo") {
                     Graphic = game.Content.Load<Texture2D>("gameLogo"),
-                    Location = ScreenCenter,
                     spriteBatch = this.spriteBatch
                 }},
                 { "tagline", new Label("tagline")
@@ -36,30 +35,23 @@ namespace Maquina.Interface.Scenes
                 }},
                 { "mb1", new MenuButton("mb", sceneManager)
                 {
-                    Text = "", 
                     Graphic = game.Content.Load<Texture2D>("playBtn"), 
-                    Location = ScreenCenter,
                     spriteBatch = this.spriteBatch, 
-                    Font = fonts["default_m"],
-                    SpriteType = SpriteTypes.Static,
-                    Rows = 1,
-                    Columns = 3,
                     LeftClickAction = () => sceneManager.currentScene = new NextGameScene(sceneManager),
                     RightClickAction = () => sceneManager.currentScene = new WorldSelectionScene(sceneManager)
                 }},
                 { "lb1", new Label("lb")
                 {
-                    Text = "Version 1.0.1",
-                    Location = ScreenCenter,
+                    Text = "Prototype Version",
                     spriteBatch = this.spriteBatch,
-                    Font = fonts["default"]
+                    Font = fonts["o-default"]
                 }},
                 { "mb2", new MenuButton("mb", sceneManager)
                 {
                     Text = "Credits",
-                    Location = ScreenCenter,
+                    Graphic = null,
                     spriteBatch = this.spriteBatch,
-                    Font = fonts["default"],
+                    Font = fonts["default_m"],
                     LeftClickAction = () => sceneManager.currentScene = new CreditsScene(sceneManager)
                 }}
             };
@@ -69,8 +61,8 @@ namespace Maquina.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
             game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
+            spriteBatch.Begin();
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             spriteBatch.End();

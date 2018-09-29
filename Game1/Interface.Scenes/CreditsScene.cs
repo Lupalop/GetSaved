@@ -55,15 +55,10 @@ namespace Maquina.Interface.Scenes
                 }},
                 { "BackButton", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Back",
-                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Graphic = game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
-                    Rows = 1,
-                    Columns = 3,
-                    Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
                 }},
             };
@@ -73,8 +68,8 @@ namespace Maquina.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
             game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
+            spriteBatch.Begin();
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             spriteBatch.End();

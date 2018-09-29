@@ -15,10 +15,122 @@ namespace Maquina.Interface.Scenes
 {
     public class GameFourScene : SceneBase
     {
-        public GameFourScene(SceneManager sceneManager, Difficulty difficulty)
+        public GameFourScene(SceneManager sceneManager, Difficulty Difficulty)
             : base(sceneManager, "Game 4 Scene: Aid 'em")
         {
-            this.difficulty = difficulty;
+            GameDifficulty = Difficulty;
+        }
+
+        private MouseOverlay MsOverlay;
+        private Dictionary<string, ObjectBase> GameObjects = new Dictionary<string, ObjectBase>();
+        private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
+
+        private double TimeLeft;
+        private int ProjectileInterval;
+        private int HitsBeforeSaved;
+
+        private ControllerKeys CurrentController;
+        private Difficulty GameDifficulty;
+
+        private Timer ProjectileGenerator;
+        private Timer TimeLeftController;
+        private Timer GameTimer;
+
+        private Keys PreviousKey;
+        private bool ChangeControllerKeyNow = true;
+        private enum ControllerKeys { Bandage, Stitch, Medicine, CPR }
+
+        private void InitializeTimer()
+        {
+            // Initiailize timers
+            ProjectileGenerator = new Timer(ProjectileInterval) { AutoReset = true, Enabled = true };
+            TimeLeftController = new Timer(1000) { AutoReset = true, Enabled = true };
+            GameTimer = new Timer(TimeLeft * 1000) { AutoReset = false, Enabled = true };
+
+            // Add the event handler to the timer object
+            ProjectileGenerator.Elapsed += ProjectileGenerator_Elapsed;
+            ProjectileGenerator_Elapsed(null, null);
+            TimeLeftController.Elapsed += delegate
+            {
+                if (TimeLeft >= 1)
+                    TimeLeft -= 1;
+            };
+            GameTimer.Elapsed += delegate
+            {
+                ProjectileGenerator.Close();
+                AttemptRemoveHelpman();
+
+                sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.HelpOthersNow, CollectedObjects, this));
+                GameTimer.Enabled = false;
+            };
+        }
+
+        private void ProjectileGenerator_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            AttemptRemoveHelpman();
+            GameObjects.Add("helpman", new Helpman("helpman")
+            {
+                Graphic = game.Content.Load<Texture2D>("aid-em/helpman"),
+                Location = ScreenCenter,
+                spriteBatch = this.spriteBatch,
+                HitsBeforeBreak = HitsBeforeSaved
+            });
+        }
+
+        private void AttemptRemoveHelpman()
+        {
+            if (GameObjects.ContainsKey("helpman"))
+            {
+                Helpman helpman = (Helpman)GameObjects["helpman"];
+                if (helpman.HitsBeforeBreak > 0)
+                {
+                    string overlayName = String.Format("fade-{0}", DateTime.Now);
+                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.DarkRed) { FadeSpeed = 0.1f });
+                    helpman.MessageHolder.Add("!");
+                }
+                else
+                {
+                    string overlayName = String.Format("fade-{0}", DateTime.Now);
+                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.LightGreen) { FadeSpeed = 0.1f });
+                    helpman.MessageHolder.Add("~");
+                }
+                CollectedObjects.Add(helpman);
+                GameObjects.Remove("helpman");
+            }
+        }
+
+        private void AddSubtractBrickHit(ControllerKeys cKey)
+        {
+            if (GameObjects.ContainsKey("helpman"))
+            {
+                Helpman helpman = (Helpman)GameObjects["helpman"];
+                if (CurrentController == cKey)
+                {
+                    helpman.HitsBeforeBreak--;
+                }
+                else
+                {
+                    string overlayName = String.Format("fade-{0}-{1}", DateTime.Now, new Random().Next(0, 1000));
+                    try
+                    {
+                        sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex); }
+                }
+                ChangeControllerKeyNow = true;
+                if (helpman.HitsBeforeBreak <= 0)
+                    AttemptRemoveHelpman();
+            }
+        }
+
+        public void DetermineCurrentController()
+        {
+            Random crap = new Random();
+            if (ChangeControllerKeyNow)
+            {
+                CurrentController = (ControllerKeys)crap.Next(0, 3);
+                ChangeControllerKeyNow = false;
+            }
         }
 
         public override void LoadContent()
@@ -30,28 +142,24 @@ namespace Maquina.Interface.Scenes
                 {
                     Graphic = game.Content.Load<Texture2D>("gameBG2"),
                     AlignToCenter = false,
+                    OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     spriteBatch = this.spriteBatch
                 }},
                 { "BackButton", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Back",
-                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Graphic = game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
-                    Rows = 1,
-                    Columns = 3,
-                    Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
                 }},
                 { "Timer", new Label("timer")
                 {
-                    Text = String.Format("{0} second(s) left", timeLeft),
+                    Text = String.Format("{0} second(s) left", TimeLeft),
                     Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
-                    Font = fonts["default_l"]
+                    Font = fonts["o-default_l"]
                 }},
                 { "Hand1", new Image("hand1")
                 {
@@ -134,137 +242,37 @@ namespace Maquina.Interface.Scenes
             };
 
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
-            switch (difficulty)
-            {
-                case Difficulty.Easy:
-                    timeLeft = 24.0;
-                    projectileInterval = 6000;
-                    hitsBeforeSaved = 5;
-                    break;
-                case Difficulty.Medium:
-                    timeLeft = 15.0;
-                    projectileInterval = 5000;
-                    hitsBeforeSaved = 5;
-                    break;
-                case Difficulty.Hard:
-                    timeLeft = 12.0;
-                    projectileInterval = 4000;
-                    hitsBeforeSaved = 5;
-                    break;
-                case Difficulty.EpicFail:
-                    timeLeft = 50.0;
-                    projectileInterval = 5000;
-                    hitsBeforeSaved = 10;
-                    break;
-            }
         }
 
         public override void DelayLoadContent()
         {
             base.DelayLoadContent();
 
+            switch (GameDifficulty)
+            {
+                case Difficulty.Easy:
+                    TimeLeft = 24.0;
+                    ProjectileInterval = 6000;
+                    HitsBeforeSaved = 5;
+                    break;
+                case Difficulty.Medium:
+                    TimeLeft = 15.0;
+                    ProjectileInterval = 5000;
+                    HitsBeforeSaved = 5;
+                    break;
+                case Difficulty.Hard:
+                    TimeLeft = 12.0;
+                    ProjectileInterval = 4000;
+                    HitsBeforeSaved = 5;
+                    break;
+                case Difficulty.EpicFail:
+                    TimeLeft = 50.0;
+                    ProjectileInterval = 5000;
+                    HitsBeforeSaved = 10;
+                    break;
+            }
+
             InitializeTimer();
-        }
-
-        private MouseOverlay MsOverlay;
-        private Dictionary<string, ObjectBase> GameObjects = new Dictionary<string, ObjectBase>();
-        private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
-
-        private double timeLeft;
-        private int projectileInterval;
-        private int hitsBeforeSaved;
-
-        private ControllerKeys CurrentController;
-
-        private Difficulty difficulty;
-
-        Timer ProjectileGenerator;
-        Timer TimeLeftController;
-        Timer GameTimer;
-
-        private void InitializeTimer()
-        {
-            // Initiailize timers
-            ProjectileGenerator = new Timer(projectileInterval) { AutoReset = true, Enabled = true };
-            TimeLeftController = new Timer(1000)                { AutoReset = true, Enabled = true };
-            GameTimer = new Timer(timeLeft * 1000)              { AutoReset = false, Enabled = true };
-
-            // Add the event handler to the timer object
-            ProjectileGenerator.Elapsed += ProjectileGenerator_Elapsed;
-            ProjectileGenerator_Elapsed(null, null);
-            TimeLeftController.Elapsed += delegate
-            {
-                if (timeLeft >= 1)
-                    timeLeft -= 1;
-            };
-            GameTimer.Elapsed += delegate
-            {
-                ProjectileGenerator.Close();
-                AttemptRemoveHelpman();
-
-                sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.HelpOthersNow, CollectedObjects, this));
-                GameTimer.Enabled = false;
-            };
-        }
-
-        void ProjectileGenerator_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            AttemptRemoveHelpman();
-            GameObjects.Add("helpman", new Helpman("helpman")
-            {
-                Graphic = game.Content.Load<Texture2D>("aid-em/helpman"),
-                Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
-                HitsBeforeBreak = hitsBeforeSaved
-            });
-        }
-
-        void AttemptRemoveHelpman()
-        {
-            if (GameObjects.ContainsKey("helpman"))
-            {
-                Helpman helpman = (Helpman)GameObjects["helpman"];
-                if (helpman.HitsBeforeBreak > 0)
-                {
-                    string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.DarkRed) { fadeSpeed = 0.1f });
-                    helpman.MessageHolder.Add("!");
-                }
-                else
-                {
-                    string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.LightGreen) { fadeSpeed = 0.1f });
-                    helpman.MessageHolder.Add("~");
-                }
-                CollectedObjects.Add(helpman);
-                GameObjects.Remove("helpman");
-            }
-        }
-        bool ChangeControllerKeyNow = true;
-        enum ControllerKeys { Bandage, Stitch, Medicine, CPR }
-        void AddSubtractBrickHit(ControllerKeys cKey)
-        {
-            if (GameObjects.ContainsKey("helpman"))
-            {
-                Helpman helpman = (Helpman)GameObjects["helpman"];
-                if (CurrentController == cKey)
-                {
-                    helpman.HitsBeforeBreak--;
-                }
-                else
-                {
-                    string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    try
-                    {
-                        sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.Red) { fadeSpeed = 0.1f });
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex); }
-                }
-                    //helpman.HitsBeforeBreak++;
-                ChangeControllerKeyNow = true;
-                if (helpman.HitsBeforeBreak <= 0)
-                    AttemptRemoveHelpman();
-            }
         }
 
         public override void Unload()
@@ -282,22 +290,12 @@ namespace Maquina.Interface.Scenes
             spriteBatch.Begin();
             base.Draw(gameTime);
             Label a = (Label)Objects["Timer"];
-            a.Text = String.Format("{0} second(s) left", timeLeft);
+            a.Text = String.Format("{0} second(s) left", TimeLeft);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
             spriteBatch.End();
         }
 
-        public void DetermineCurrentController()
-        {
-            Random crap = new Random();
-            if (ChangeControllerKeyNow)
-            {
-                CurrentController = (ControllerKeys)crap.Next(0, 3);
-                ChangeControllerKeyNow = false;
-            }
-        }
-        public Keys PreviousKey;
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -338,8 +336,6 @@ namespace Maquina.Interface.Scenes
                 game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
             Objects["Controller-CPR"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 100,
                 game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
-            // Resize game background if necessary
-            Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             // Current Controller
             DetermineCurrentController();
             Label pressLabel = (Label)Objects["PressLabel"];

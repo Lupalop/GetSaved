@@ -15,13 +15,12 @@ namespace Maquina.Interface.Scenes
 {
     public class GameOneScene : SceneBase
     {
-        public GameOneScene(SceneManager sceneManager, Difficulty difficulty)
+        public GameOneScene(SceneManager sceneManager, Difficulty Difficulty)
             : base(sceneManager, "Game 1 Scene: The Safety Kit")
         {
-            this.difficulty = difficulty;
+            GameDifficulty = Difficulty;
         }
 
-        
         private List<string> FallingObjects = new List<string> {
 			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
 			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
@@ -31,38 +30,60 @@ namespace Maquina.Interface.Scenes
         private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
         private Dictionary<string, Texture2D> Images = new Dictionary<string, Texture2D>();
 
-        private double timeLeft;
-        private int projectileInterval;
+        private double TimeLeft;
+        private int GenerationInterval;
         private float FallingSpeed;
         private int DistanceFromBottom;
+        private bool IsGameEnd = false;
 
-        private Difficulty difficulty;
+        private Random RandNum = new Random();
+        private Difficulty GameDifficulty;
 
-        Timer ProjectileGenerator;
-        Timer TimeLeftController;
-        Timer GameTimer;
+        private Timer ProjectileGenerator;
+        private Timer TimeLeftController;
+        private Timer GameTimer;
 
         private void InitializeTimer()
         {
             // Initiailize timers
-            ProjectileGenerator = new Timer(projectileInterval) { AutoReset = true, Enabled = true };
+            ProjectileGenerator = new Timer(GenerationInterval) { AutoReset = true, Enabled = true };
             TimeLeftController = new Timer(1000)                { AutoReset = true, Enabled = true };
-            GameTimer = new Timer(timeLeft * 1000)              { AutoReset = false, Enabled = true };
+            GameTimer = new Timer(TimeLeft * 1000)              { AutoReset = false, Enabled = true };
             // Add the event handler to the timer object
             ProjectileGenerator.Elapsed += delegate
             { 
-                GenerateFallingCrap();
+                GenerateFallingItems();
             };
             TimeLeftController.Elapsed += delegate
             {
-                if (timeLeft >= 1)
-                    timeLeft -= 1;
+                if (TimeLeft > 0)
+                    TimeLeft -= 1;
             };
             GameTimer.Elapsed += delegate
             {
-                stopCreatingCrap = true;
+                IsGameEnd = true;
                 sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.FallingObjects, CollectedObjects, this));
             };
+        }
+
+        private void GenerateFallingItems()
+        {
+            if (!IsGameEnd)
+            {
+                // create new button object
+                Image nwBtn = new Image("crap")
+                {
+                    Graphic = game.Content.Load<Texture2D>("point"),
+                    Location = new Vector2((float)RandNum.Next(5, (int)game.GraphicsDevice.Viewport.Width - 5), 30),
+                    AlignToCenter = false,
+                    spriteBatch = this.spriteBatch
+                };
+                string tex = FallingObjects[RandNum.Next(0, FallingObjects.Count)];
+                nwBtn.MessageHolder.Add(tex);
+                if (tex.Contains('!') || tex.Contains('~')) tex = tex.Remove(0, 1);
+                nwBtn.Graphic = Images[tex.ToLower()];
+                GameObjects.Add(nwBtn);
+            }
         }
 
         public override void LoadContent()
@@ -81,21 +102,16 @@ namespace Maquina.Interface.Scenes
                 { "GameBG", new Image("GameBG")
                 {
                     Graphic = game.Content.Load<Texture2D>("gameBG1"),
-                    DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
-                    spriteBatch = this.spriteBatch
+                    spriteBatch = this.spriteBatch,
+                    OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height)
                 }},
                 { "BackButton", new MenuButton("mb", sceneManager)
                 {
-                    Text = "Back",
-                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Graphic = game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
-                    Rows = 1,
-                    Columns = 3,
-                    Font = fonts["default"],
                     LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
@@ -105,46 +121,51 @@ namespace Maquina.Interface.Scenes
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
                 }},
-                { "Timer", new Label("timer")
+                { "Timer", new Label("o-timer")
                 {
-                    Text = String.Format("{0} second(s) left", timeLeft),
-                    Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5), //new Vector2(300, 5),
+                    Text = String.Format("{0} second(s) left", TimeLeft),
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
-                    Font = fonts["default_l"]
+                    Font = fonts["o-default_l"],
+                    OnUpdate = () => {
+                        Label Timer = (Label)Objects["Timer"];
+                        Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
+                        Timer.Text = String.Format("{0} second(s) left", MathHelper.Clamp((int)TimeLeft, 0, 100));
+                    }
                 }}
             };
 
             MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
-            switch (difficulty)
-            {
-                case Difficulty.Easy:
-                    timeLeft = 25.0;
-                    projectileInterval = 500;
-                    FallingSpeed = 3;
-                    break;
-                case Difficulty.Medium:
-                    timeLeft = 20.0;
-                    projectileInterval = 300;
-                    FallingSpeed = 3;
-                    break;
-                case Difficulty.Hard:
-                    timeLeft = 15.0;
-                    projectileInterval = 200;
-                    FallingSpeed = 5;
-                    break;
-                case Difficulty.EpicFail:
-                    timeLeft = 10.0;
-                    projectileInterval = 50;
-                    FallingSpeed = 10;
-                    break;
-            }
             DistanceFromBottom = -30;
         }
 
         public override void DelayLoadContent()
         {
             base.DelayLoadContent();
+
+            switch (GameDifficulty)
+            {
+                case Difficulty.Easy:
+                    TimeLeft = 25.0;
+                    GenerationInterval = 500;
+                    FallingSpeed = 3;
+                    break;
+                case Difficulty.Medium:
+                    TimeLeft = 20.0;
+                    GenerationInterval = 300;
+                    FallingSpeed = 3;
+                    break;
+                case Difficulty.Hard:
+                    TimeLeft = 15.0;
+                    GenerationInterval = 200;
+                    FallingSpeed = 5;
+                    break;
+                case Difficulty.EpicFail:
+                    TimeLeft = 10.0;
+                    GenerationInterval = 50;
+                    FallingSpeed = 10;
+                    break;
+            }
 
             InitializeTimer();
         }
@@ -159,60 +180,30 @@ namespace Maquina.Interface.Scenes
             base.Unload();
         }
 
-        private bool stopCreatingCrap = false;
-
-        Random randNum = new Random();
-
-        private void GenerateFallingCrap()
-        {
-            if (!stopCreatingCrap)
-            {
-                // create new button object
-                Image nwBtn = new Image("crap") {
-                    Graphic = game.Content.Load<Texture2D>("holder"),
-                    Location = new Vector2((float)randNum.Next(5, (int)game.GraphicsDevice.Viewport.Width - 5), 30),
-                    //Font = fonts["default"],
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch
-                };
-                string tex = FallingObjects[randNum.Next(0, FallingObjects.Count)];
-                nwBtn.MessageHolder.Add(tex);
-                if (tex.Contains('!') || tex.Contains('~')) tex = tex.Remove(0, 1);
-                nwBtn.Graphic = Images[tex.ToLower()];
-                GameObjects.Add(nwBtn);
-            }
-        }
-
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
             base.Draw(gameTime);
-
-            Label a = (Label)Objects["Timer"];
-            a.Text = String.Format("{0} second(s) left", timeLeft);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
             spriteBatch.End();
         }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            Label Timer = (Label)Objects["Timer"];
-            Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
-            Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
             if (Objects.ContainsKey("ObjectCatcher"))
             {
-                if (stopCreatingCrap)
+                if (IsGameEnd)
                     Objects.Remove("ObjectCatcher");
                 else
                     Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.Bounds.X - (Objects["ObjectCatcher"].Graphic.Width / 2), game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
             }
             for (int i = 0; i < GameObjects.Count; i++)
             {
-                // Move crap by 3
+                // Moves game object
                 GameObjects[i].Location = new Vector2(GameObjects[i].Location.X, GameObjects[i].Location.Y + FallingSpeed);
 
                 // Check if game object collides/intersects with catcher
@@ -223,10 +214,8 @@ namespace Maquina.Interface.Scenes
                     return;
                 }
 
-                // cleanup crapped shit
-                // (normal human speak: remove objects once it exceeds the object catcher)
-                // also remove all crap once time is up
-                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || stopCreatingCrap)
+                // Remove objects once it exceeds the object catcher, this also removes all objects when time's up
+                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || IsGameEnd)
                     GameObjects.Remove(GameObjects[i]);
             }
         }

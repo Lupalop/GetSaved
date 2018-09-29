@@ -48,7 +48,12 @@ namespace Maquina.Interface.Scenes
                     Graphic = game.Content.Load<Texture2D>("dice"),
                     Location = ScreenCenter,
                     Tint = new Color(Color.White, 0),
-                    spriteBatch = this.spriteBatch
+                    spriteBatch = this.spriteBatch,
+                    OnUpdate = () => {
+                        ObjectBase Dice = Objects["Dice"];
+                        Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
+                        Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));
+                    }
                 }},
                 { "GameName", new Label("gameName")
                 {
@@ -56,19 +61,24 @@ namespace Maquina.Interface.Scenes
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_l"]
                 }},
-                { "Difficulty", new Label("difficulty")
+                { "GameDifficulty", new Label("GameDifficulty")
                 {
-                    Text = String.Format("Difficulty: {0}", GameDifficulty.ToString()),
+                    Text = String.Format("GameDifficulty: {0}", GameDifficulty.ToString()),
                     spriteBatch = this.spriteBatch, 
                     Font = fonts["default_m"]
                 }},
                 { "SkipBtn", new MenuButton("skipBtn", sceneManager)
                 {
                     Graphic = game.Content.Load<Texture2D>("overlayBG"),
-                    DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     Tint = Color.Transparent,
                     AlignToCenter = false,
                     spriteBatch = this.spriteBatch,
+                    SpriteType = SpriteTypes.None,
+                    OnUpdate = () => {
+                        Rectangle SrcRectSkipBtn = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                        Objects["SkipBtn"].DestinationRectangle = SrcRectSkipBtn;
+                        Objects["SkipBtn"].SourceRectangle = SrcRectSkipBtn;
+                    },
                     LeftClickAction = () => { sceneManager.currentScene = NextGame; },
                     RightClickAction = () => { sceneManager.currentScene = NextGame; }
                 }},
@@ -99,10 +109,10 @@ namespace Maquina.Interface.Scenes
 
         public SceneBase DetermineNextGame()
         {
-            // Difficulty would remain random
+            // GameDifficulty would remain random
             Random rand = new Random();
             if (RandomizeDifficulty)
-                GameDifficulty = (Difficulty)rand.Next(0, 3);       // Epic fail difficulty intentionally ommitted, people can't handle that ;)
+                GameDifficulty = (Difficulty)rand.Next(0, 3);       // Epic fail GameDifficulty intentionally ommitted, people can't handle that ;)
             else
                 GameDifficulty = ForcePassedDifficulty;
 
@@ -115,7 +125,7 @@ namespace Maquina.Interface.Scenes
 
             switch (NxGame)
             {
-                // Falling Objects
+                // The Safety Kit
                 case Games.FallingObjects:
                     HelpImage = game.Content.Load<Texture2D>("htp-fallingobject");
                     return new GameOneScene(sceneManager, GameDifficulty);
@@ -127,11 +137,11 @@ namespace Maquina.Interface.Scenes
                 case Games.EscapeFire:
                     HelpImage = game.Content.Load<Texture2D>("htp-esc");
                     return new GameTwoScene(sceneManager, GameDifficulty, Games.EscapeFire);
-                // Running for their lives
+                // Safety Jump
                 case Games.RunningForTheirLives:
                     HelpImage = game.Content.Load<Texture2D>("htp-dino");
                     return new GameThreeScene(sceneManager, GameDifficulty);
-                // Help others now
+                // Aid 'Em
                 case Games.HelpOthersNow:
                     HelpImage = game.Content.Load<Texture2D>("htp-aidem");
                     return new GameFourScene(sceneManager, GameDifficulty);
@@ -162,14 +172,6 @@ namespace Maquina.Interface.Scenes
         {
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
-            // Click to skip area updater
-            Rectangle SrcRectSkipBtn = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
-            Objects["SkipBtn"].DestinationRectangle = SrcRectSkipBtn;
-            Objects["SkipBtn"].SourceRectangle = SrcRectSkipBtn;
-            // Rolling dice updater
-            ObjectBase Dice = Objects["Dice"];
-            Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
-            Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));
         }
     }
 }

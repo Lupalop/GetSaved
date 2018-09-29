@@ -23,8 +23,10 @@ namespace Maquina.Interface.Scenes
                 { "Background", new Image("Background")
                 {
                     Graphic = game.Content.Load<Texture2D>("overlayBG"),
-                    DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
                     AlignToCenter = false,
+                    OnUpdate = () => {
+                        Objects["Background"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                    },
                     spriteBatch = this.spriteBatch
                 }},
                 { "TimesUp", new Image("TimesUp")
@@ -35,7 +37,6 @@ namespace Maquina.Interface.Scenes
                 }},
                 { "NextRoundBtn", new MenuButton("NextRoundBtn", sceneManager)
                 {
-                    Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -47,7 +48,6 @@ namespace Maquina.Interface.Scenes
                 }},
                 { "TryAgainBtn", new MenuButton("TryAgainBtn", sceneManager)
                 {
-                    Graphic = game.Content.Load<Texture2D>("menuBG"),
                     Location = ScreenCenter,
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
@@ -59,14 +59,13 @@ namespace Maquina.Interface.Scenes
                 }},
                 { "MainMenuBtn", new MenuButton("MainMenuBtn", sceneManager)
                 {
-                    Graphic = game.Content.Load<Texture2D>("menuBG"),
+                    Graphic = game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     spriteBatch = this.spriteBatch,
                     SpriteType = SpriteTypes.Static,
                     Rows = 1,
                     Columns = 3,
                     AlignToCenter = false,
-                    Text = "Go Home",
                     Font = fonts["default_m"],
                     LeftClickAction = () => { sceneManager.currentScene = new MainMenuScene(sceneManager); sceneManager.overlays.Remove("gameEnd"); }
                 }}
@@ -90,6 +89,15 @@ namespace Maquina.Interface.Scenes
             }
         }
 
+        public override void DelayLoadContent()
+        {
+            base.DelayLoadContent();
+
+            // Show a fade effect to hide first frame misposition
+            if (!sceneManager.overlays.ContainsKey("fade-{0}"))
+                sceneManager.overlays.Add("fade-{0}", new Scenes.FadeOverlay(sceneManager, "fade-{0}"));
+        }
+
         Games currentGame;
         public override void Draw(GameTime gameTime)
         {
@@ -98,9 +106,9 @@ namespace Maquina.Interface.Scenes
             base.DrawObjects(gameTime, Objects);
             spriteBatch.End();
         }
+
         public override void Update(GameTime gameTime)
         {
-            Objects["Background"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
         }
