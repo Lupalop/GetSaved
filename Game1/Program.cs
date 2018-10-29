@@ -27,6 +27,9 @@ namespace Maquina
                         case "--restartOnExit":
                             PromptForRestart = true;
                             break;
+                        case "--debug":
+                            Debug = true;
+                            break;
                         default:
                             // Ignore other arguments passed
                             break;
@@ -34,19 +37,26 @@ namespace Maquina
                 }
             }
 
-            WriteHeader();
+            if (Debug)
+            {
+                WriteHeader();
+            }
+
             RunGame();
 
-            while (PromptForRestart)
+            if (Debug)
             {
-                Console.WriteLine("Game execution has ended, would you like to restart? Y = Yes, Other keys = No");
-                if (Console.ReadKey(true).Key == ConsoleKey.Y)
+                while (PromptForRestart)
                 {
-                    WriteHeader();
-                    RunGame();
+                    Console.WriteLine("Game execution has ended, would you like to restart? Y = Yes, Other keys = No");
+                    if (Console.ReadKey(true).Key == ConsoleKey.Y)
+                    {
+                        WriteHeader();
+                        RunGame();
+                    }
+                    else
+                        return;
                 }
-                else
-                    return;
             }
         }
 
@@ -70,6 +80,7 @@ namespace Maquina
         public static bool OutputMessages = true;
         public static bool VerboseMessages = false;
         public static bool PromptForRestart = false;
+        public static bool Debug = false;
         public static string GameName = "Get Saved";
     }
 #endif
