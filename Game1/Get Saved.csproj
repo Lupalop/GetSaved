@@ -7,7 +7,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{10113C2A-3986-4838-894E-36B3550B155E}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Maquina</RootNamespace>
     <AssemblyName>game</AssemblyName>
@@ -60,32 +60,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
-    <Compile Include="Interface.Controls\Label.cs" />
-    <Compile Include="Interface.Controls\Image.cs" />
-    <Compile Include="Interface.Controls\ProgressBar.cs" />
-    <Compile Include="Interface.Scenes\CreditsScene.cs" />
-    <Compile Include="Interface.Scenes\GameTwoScene.cs" />
-    <Compile Include="Interface.Scenes\GameFourScene.cs" />
-    <Compile Include="Interface.Scenes\GameThreeScene.cs" />
-    <Compile Include="Interface.Overlays\DebugOverlay.cs" />
-    <Compile Include="Interface.Overlays\GameEndOverlay.cs" />
-    <Compile Include="Interface.Scenes\GameOneScene.cs" />
-    <Compile Include="Interface.Overlays\FadeOverlay.cs" />
-    <Compile Include="Interface.Scenes\MainMenuScene.cs" />
-    <Compile Include="Interface.Controls\MenuButton.cs" />
-    <Compile Include="Interface.Overlays\MouseOverlay.cs" />
-    <Compile Include="Interface.Scenes\NextGameScene.cs" />
-    <Compile Include="Interface.Scenes\WorldSelectionScene.cs" />
-    <Compile Include="Interface\OverlayBase.cs" />
-    <Compile Include="Interface\SceneBase.cs" />
+    <Compile Include="UI.Scenes\CreditsScene.cs" />
+    <Compile Include="UI.Scenes\GameTwoScene.cs" />
+    <Compile Include="UI.Scenes\GameFourScene.cs" />
+    <Compile Include="UI.Scenes\GameThreeScene.cs" />
+    <Compile Include="UI.Overlays\GameEndOverlay.cs" />
+    <Compile Include="UI.Scenes\GameOneScene.cs" />
+    <Compile Include="UI.Scenes\MainMenuScene.cs" />
+    <Compile Include="UI.Scenes\NextGameScene.cs" />
+    <Compile Include="UI.Scenes\WorldSelectionScene.cs" />
     <Compile Include="MainGame.cs" />
-    <Compile Include="Objects\DefaultObjects.cs" />
-    <Compile Include="Objects\GameObjectBase.cs" />
+    <Compile Include="Objects\GameElement.cs" />
     <Compile Include="Objects\Helpman.cs" />
-    <Compile Include="Objects\ObjectBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interface\SceneManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -95,6 +83,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Resources.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +108,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Maquina\src\Maquina.csproj">
+      <Project>{4d111415-ba1c-4eaa-a41c-4e2a012fa3c9}</Project>
+      <Name>Maquina</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

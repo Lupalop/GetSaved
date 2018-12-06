@@ -7,24 +7,25 @@ using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Interface;
-using Maquina.Interface.Controls;
+using Maquina.UI;
+using Maquina.UI.Controls;
 using Maquina.Objects;
 using Microsoft.Xna.Framework.Audio;
+using System.Collections.ObjectModel;
 
-namespace Maquina.Interface.Scenes
+namespace Maquina.UI.Scenes
 {
     public class GameTwoScene : SceneBase
     {
-        public GameTwoScene(SceneManager sceneManager, Difficulty Difficulty, Games cgame)
-            : base(sceneManager, "Game 2 Scene: " + GetGameName(cgame))
+        public GameTwoScene(SceneManager SceneManager, Difficulty Difficulty, Games cgame)
+            : base(SceneManager, "Game 2 Scene: " + GetGameName(cgame))
         {
             GameDifficulty = Difficulty;
             CurrentGame = cgame;
         }
 
         private MouseOverlay MsOverlay;
-        private Dictionary<string, ObjectBase> GameObjects = new Dictionary<string, ObjectBase>();
+        private Dictionary<string, GenericElement> GameObjects = new Dictionary<string, GenericElement>();
 
         private double _InitialTimeLeft;
         private double InitialTimeLeft
@@ -61,8 +62,8 @@ namespace Maquina.Interface.Scenes
         private Timer DeathTimeLeftController;
         private Timer GameTimer;
 
-        private ObjectBase EndStateDeterminer = new Controls.Label("cr");
-        private List<ObjectBase> PassedMessage = new List<ObjectBase>();
+        private GenericElement EndStateDeterminer = new Controls.Label("cr");
+        private Collection<GenericElement> PassedMessage = new Collection<GenericElement>();
 
         private Vector2 PosWhich = Vector2.Zero;
         private bool IsMsPressed = false;
@@ -98,9 +99,9 @@ namespace Maquina.Interface.Scenes
                 if (CurrentGame == Games.EscapeFire)
                 {
                     string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
+                    SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
                 }
-                if ((MsState.LeftButton == ButtonState.Released || KeybdState.IsKeyUp(Keys.Space)) && !DeathTimeLeftController.Enabled)
+                if ((MouseState.LeftButton == ButtonState.Released || KeyboardState.IsKeyUp(Keys.Space)) && !DeathTimeLeftController.Enabled)
                 {
                     Label b = (Label)Objects["DeathTimer"];
                     b.Tint = Color.Red;
@@ -142,14 +143,14 @@ namespace Maquina.Interface.Scenes
         {
             IsGameEnd = true;
             PassedMessage.Add(EndStateDeterminer);
-            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.EscapeEarthquake, PassedMessage, this));
+            SceneManager.Overlays.Add("gameEnd", new GameEndOverlay(SceneManager, Games.EscapeEarthquake, PassedMessage, this));
         }
 
         private void ResetPlayerPosition()
         {
             if (Objects.ContainsKey("ObjectCatcher"))
             {
-                ObjectBase Catchr = Objects["ObjectCatcher"];
+                GenericElement Catchr = Objects["ObjectCatcher"];
                 Catchr.Location = PosA;
             }
         }
@@ -194,14 +195,14 @@ namespace Maquina.Interface.Scenes
         public override void LoadContent()
         {
             base.LoadContent();
-            Objects = new Dictionary<string, ObjectBase> {
+            Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = game.Content.Load<Texture2D>("game4-bg1"),
-                    DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
-                    AlignToCenter = false,
+                    Graphic = Game.Content.Load<Texture2D>("game4-bg1"),
+                    DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height),
+                    ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = () => {
-                        ObjectBase GameBG = Objects["GameBG"];
+                        GenericElement GameBG = Objects["GameBG"];
                         if (CurrentStage != 3 && CurrentGame == Games.EscapeEarthquake)
                         {
                             if (!ShakeToLeft)
@@ -216,95 +217,95 @@ namespace Maquina.Interface.Scenes
                                 if (ShakeFactor == -3)
                                     ShakeToLeft = false;
                             }
-                            GameBG.DestinationRectangle = new Rectangle(ShakeFactor, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                            GameBG.DestinationRectangle = new Rectangle(ShakeFactor, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                         }
                         else
                         {
-                            GameBG.DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                            GameBG.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                         }
                     },
-                    spriteBatch = this.spriteBatch
+                    SpriteBatch = this.SpriteBatch
                 }},
-                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, 32), sceneManager)
+                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32), SceneManager)
                 {
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         var a = (ProgressBar)Objects["ProgressBar"];
                         a.value = (float)TimeLeft;
                     }
                 }},
-                { "BackButton", new MenuButton("mb", sceneManager)
+                { "BackButton", new MenuButton("mb", SceneManager)
                 {
-                    Graphic = game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
-                    LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
-                    Graphic = game.Content.Load<Texture2D>("human"),
+                    Graphic = Game.Content.Load<Texture2D>("human"),
                     Location = PosA,
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
                 }},
                 { "Timer", new Label("timer")
                 {
                     Text = String.Format("{0} second(s) left", TimeLeft),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label a = (Label)Objects["Timer"];
-                        a.Location = new Vector2(game.GraphicsDevice.Viewport.Width - a.Font.MeasureString(a.Text).X, 5);
+                        a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Font.MeasureString(a.Text).X, 5);
                         a.Text = String.Format("{0} second(s) left", TimeLeft);
                     },
-                    Font = fonts["o-default_l"]
+                    Font = Fonts["o-default_l"]
                 }},
                 { "DeathTimer", new Label("timer")
                 {
                     Tint = Color.Red,
-                    spriteBatch = this.spriteBatch,
+                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label b = (Label)Objects["DeathTimer"];
                         b.Text = String.Format("{0}", DeathTimeLeft);
                     },
-                    Font = fonts["o-default_xl"]
+                    Font = Fonts["o-default_xl"]
                 }},
                 { "HelpLabel", new Label("helplabel")
                 {
-                    AlignToCenter = true,
-                    spriteBatch = this.spriteBatch,
-                    Font = fonts["o-default_l"]
+                    ControlAlignment = ControlAlignment.Center,
+                    SpriteBatch = this.SpriteBatch,
+                    Font = Fonts["o-default_l"]
                 }}
             };
 
-            GameObjects = new Dictionary<string, ObjectBase>() {
+            GameObjects = new Dictionary<string, GenericElement>() {
                 { "PointA", new Image("PointA")
                 {
-                    Graphic = game.Content.Load<Texture2D>("point"),
+                    Graphic = Game.Content.Load<Texture2D>("point"),
                     Location = PosA,
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         GameObjects["PointA"].Location = PosA;
                     }
                 }},
                 { "PointB", new Image("PointB")
                 {
-                    Graphic = game.Content.Load<Texture2D>("htp"),
+                    Graphic = Game.Content.Load<Texture2D>("htp"),
                     Location = PosB,
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         GameObjects["PointB"].Location = PosB;
                     }
                 }}
             };
 
-            PointReached = game.Content.Load<SoundEffect>("sfx/caught");
-            sceneManager.PlayBGM("in-pursuit");
-            MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
+            PointReached = Game.Content.Load<SoundEffect>("sfx/caught");
+            SceneManager.PlaySong("in-pursuit");
+            MsOverlay = (MouseOverlay)SceneManager.Overlays["mouse"];
         }
 
         public override void DelayLoadContent()
@@ -351,11 +352,11 @@ namespace Maquina.Interface.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
+            SpriteBatch.Begin();
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);
-            spriteBatch.End();
+            SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
@@ -367,11 +368,11 @@ namespace Maquina.Interface.Scenes
             // If person is in object
             if (Objects.ContainsKey("ObjectCatcher"))
             {
-                ObjectBase Catchr = Objects["ObjectCatcher"];
+                GenericElement Catchr = Objects["ObjectCatcher"];
                 if (CurrentStage == 3 && Catchr.Graphic.Name != "human-line")
-                    Catchr.Graphic = game.Content.Load<Texture2D>("human-line");
+                    Catchr.Graphic = Game.Content.Load<Texture2D>("human-line");
                 
-                if ((MsState.LeftButton == ButtonState.Pressed && !IsMsPressed) || (KeybdState.IsKeyDown(Keys.Space) && !IsKeyPressed))
+                if ((MouseState.LeftButton == ButtonState.Pressed && !IsMsPressed) || (KeyboardState.IsKeyDown(Keys.Space) && !IsKeyPressed))
                 {
                     Label b = (Label)Objects["DeathTimer"];
                     b.Tint = Color.Transparent;
@@ -387,12 +388,12 @@ namespace Maquina.Interface.Scenes
                             case 1:
                                 SetHelpMessage(2);
                                 CurrentStage = 2;
-                                Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg2");
+                                Objects["GameBG"].Graphic = Game.Content.Load<Texture2D>("game4-bg2");
                                 return;
                             case 2:
                                 SetHelpMessage(3);
                                 CurrentStage = 3;
-                                Objects["GameBG"].Graphic = game.Content.Load<Texture2D>("game4-bg3");
+                                Objects["GameBG"].Graphic = Game.Content.Load<Texture2D>("game4-bg3");
                                 return;
                             case 3:
                                 SetHelpMessage(0);
@@ -415,14 +416,14 @@ namespace Maquina.Interface.Scenes
 
                     // Move in that direction based on elapsed time
                     Catchr.Location += differenceToPlayer * (float)gameTime.ElapsedGameTime.TotalMilliseconds * WalkSpeed;
-                    if (MsState.LeftButton == ButtonState.Pressed)
+                    if (MouseState.LeftButton == ButtonState.Pressed)
                         IsMsPressed = true;
                     else
                         IsKeyPressed = true;
                 }
-                if (MsState.LeftButton == ButtonState.Released)
+                if (MouseState.LeftButton == ButtonState.Released)
                     IsMsPressed = false;
-                if (KeybdState.IsKeyUp(Keys.Space))
+                if (KeyboardState.IsKeyUp(Keys.Space))
                     IsKeyPressed = false;
 
                 if (IsGameEnd)

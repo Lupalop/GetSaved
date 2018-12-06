@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
-using Maquina.Interface;
-using Maquina.Interface.Scenes;
+using Maquina.UI;
+using Maquina.UI.Scenes;
+using Maquina.Resources;
 
 namespace Maquina
 {
@@ -14,32 +16,32 @@ namespace Maquina
     /// </summary>
     public class MainGame : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        SceneManager sceneManager;
-        Dictionary<string, SpriteFont> fonts;
-        Dictionary<string, Song> songs;
+        GraphicsDeviceManager Graphics;
+        SpriteBatch SpriteBatch;
+        SceneManager SceneManager;
+        Dictionary<string, SpriteFont> Fonts;
+        Dictionary<string, Song> Songs;
 
-        int LastWindowWidth = 800;
-        int LastWindowHeight = 600;
+        private int LastWindowWidth = 800;
+        private int LastWindowHeight = 600;
 
         public MainGame()
         {
             // Initialize graphics manager
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             // Set root directory where content files will be loaded
-            Content.RootDirectory = "Content";
+            Content.RootDirectory = Platform.ContentRootDirectory;
             // Make the mouse inivisible (perhaps, this should be placed somewhere else)
             IsMouseVisible = false;
             // Set the default window size to (800x600)
-            graphics.PreferredBackBufferWidth = LastWindowWidth;
-            graphics.PreferredBackBufferHeight = LastWindowHeight;
+            Graphics.PreferredBackBufferWidth = LastWindowWidth;
+            Graphics.PreferredBackBufferHeight = LastWindowHeight;
             // Allow the window to be resized by the user
-            //Window.AllowUserResizing = true;
-            Window.Title = Program.GameName;
+            Window.AllowUserResizing = false;
+            Window.Title = "Get Saved";
             // Initialize the Fonts dictionary
-            fonts = new Dictionary<string, SpriteFont>();
-            songs = new Dictionary<string, Song>();
+            Fonts = new Dictionary<string, SpriteFont>();
+            Songs = new Dictionary<string, Song>();
         }
 
         /// <summary>
@@ -59,37 +61,37 @@ namespace Maquina
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            // Load all fonts to the Fonts dictionary
-            fonts["default"] = Content.Load<SpriteFont>("fonts/ZillaSlab_small");
-            fonts["default_m"] = Content.Load<SpriteFont>("fonts/ZillaSlab_medium");
-            fonts["default_l"] = Content.Load<SpriteFont>("fonts/ZillaSlab_large");
-            fonts["o-default"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_small");
-            fonts["o-default"].Spacing = -6.0f;
-            fonts["o-default"].LineSpacing = 12;
-            fonts["o-default_m"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_medium");
-            fonts["o-default_m"].Spacing = -6.0f;
-            fonts["o-default_m"].LineSpacing = 18;
-            fonts["o-default_l"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_large");
-            fonts["o-default_l"].Spacing = -6.0f;
-            fonts["o-default_l"].LineSpacing = 32;
-            fonts["o-default_xl"] = Content.Load<SpriteFont>("fonts/o-ZillaSlab_xl");
-            fonts["o-default_xl"].Spacing = -6.0f;
-            fonts["o-default_xl"].LineSpacing = 60;
+            // Create instance of SpriteBatch, which can be used to draw textures.
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            // Create instance of the Content Manager
+            ContentManager<ResourceContent> resources = new ContentManager<ResourceContent>();
+            resources.Content = resources.LoadContent(Utils.CreateLocation(
+                new string[] { Platform.ContentRootDirectory, Platform.ResourceXml }));
+            ResourceContent ResContent = (ResourceContent)resources.Content;
+            // TODO: MOVE to CONTENT LOADER
+            // Load all Fonts to the Fonts dictionary
+            for (int i = 0; i < ResContent.Fonts.Count; i++)
+            {
+                FontParameters font = ResContent.Fonts[i];
+                Fonts[font.Name] = Content.Load<SpriteFont>(font.Location);
+                Fonts[font.Name].Spacing = font.Spacing;
+                Fonts[font.Name].LineSpacing = font.LineSpacing;
+            }
+            // TODO: DONT HARDCODE THESE STUFF
             // Load all songs to the Songs dictionary
-            songs["flying-high"] = Content.Load<Song>("bgm/Flying High");
-            songs["in-pursuit"] = Content.Load<Song>("bgm/In Pursuit");
-            songs["hide-seek"] = Content.Load<Song>("bgm/Hide Seek");
-            songs["shenanigans"] = Content.Load<Song>("bgm/Shenanigans");
-            // Setup the Scene Manager
-            sceneManager = new SceneManager(this, spriteBatch, fonts, songs);
-            // Register mouse overlay in the scene manager
-            sceneManager.overlays.Add("mouse", new MouseOverlay(sceneManager));
-            // Register debug overlay in the scene manager
-            sceneManager.overlays.Add("debug", new DebugOverlay(sceneManager));
+            Songs["flying-high"] = Content.Load<Song>("bgm/Flying High");
+            Songs["in-pursuit"] = Content.Load<Song>("bgm/In Pursuit");
+            Songs["hide-seek"] = Content.Load<Song>("bgm/Hide Seek");
+            Songs["shenanigans"] = Content.Load<Song>("bgm/Shenanigans");
+            // Initialize the Scene Manager
+            SceneManager = new SceneManager(this, SpriteBatch, Fonts, Songs, null);
+            // Register Overlays in the scene manager
+            SceneManager.Overlays.Add("mouse", new MouseOverlay(SceneManager, Content.Load<Texture2D>("mouseCur")));
+#if DEBUG
+            SceneManager.Overlays.Add("debug", new DebugOverlay(SceneManager));
+#endif
             // Setup first scene (Main Menu)
-            sceneManager.currentScene = new MainMenuScene(sceneManager);
+            SceneManager.SwitchToScene(new MainMenuScene(SceneManager), true);
         }
 
         /// <summary>
@@ -98,7 +100,12 @@ namespace Maquina
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+#if DEBUG
+            Console.WriteLine("Unloading game content");
+#endif
+            SceneManager.Dispose();
+            SpriteBatch.Dispose();
+            Graphics.Dispose();
         }
         
         /// <summary>
@@ -108,34 +115,35 @@ namespace Maquina
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState KeybdState = Keyboard.GetState();
+            KeyboardState KeyboardState = Keyboard.GetState();
             GamePadState GamePdState = GamePad.GetState(PlayerIndex.One);
-            MouseState MsState = Mouse.GetState();
-            TouchCollection TouchState = TouchPanel.GetState();
+            MouseState MouseState = Mouse.GetState();
+            TouchPanelState TouchState = TouchPanel.GetState(this.Window);
 
-            sceneManager.GamePdState = GamePdState;
-            sceneManager.KeybdState = KeybdState;
-            sceneManager.MsState = MsState;
-            sceneManager.TouchState = TouchState;
+            SceneManager.GamepadState = GamePdState;
+            SceneManager.KeyboardState = KeyboardState;
+            SceneManager.MouseState = MouseState;
+            SceneManager.TouchState = TouchState;
 
-            if (GamePdState.Buttons.Back == ButtonState.Pressed || (KeybdState.IsKeyDown(Keys.Escape)))
+            if (GamePdState.Buttons.Back == ButtonState.Pressed || (KeyboardState.IsKeyDown(Keys.Escape)))
                 Exit();
-            if ((KeybdState.IsKeyDown(Keys.RightAlt) || KeybdState.IsKeyDown(Keys.LeftAlt)) && KeybdState.IsKeyDown(Keys.Enter))
+
+            if ((KeyboardState.IsKeyDown(Keys.RightAlt) || KeyboardState.IsKeyDown(Keys.LeftAlt)) && KeyboardState.IsKeyDown(Keys.Enter))
             {
-                if (graphics.IsFullScreen)
+                if (Graphics.IsFullScreen)
                 {
-                    graphics.PreferredBackBufferHeight = LastWindowHeight;
-                    graphics.PreferredBackBufferWidth = LastWindowWidth;
+                    Graphics.PreferredBackBufferHeight = LastWindowHeight;
+                    Graphics.PreferredBackBufferWidth = LastWindowWidth;
                 }
                 else
                 {
-                    graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-                    graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+                    Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+                    Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
                 }
-                graphics.ToggleFullScreen();
+                Graphics.ToggleFullScreen();
             }
             
-            sceneManager.Update(gameTime);
+            SceneManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -149,7 +157,7 @@ namespace Maquina
             // Scale images using nearest neighbor
             GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
-            sceneManager.Draw(gameTime);
+            SceneManager.Draw(gameTime);
             base.Draw(gameTime);
         }
     }

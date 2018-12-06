@@ -7,10 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Maquina.Objects
 {
-    public abstract class GameObjectBase : ObjectBase
+    public abstract class GameElement : GenericElement, IElement
     {
         // Constructor
-        public GameObjectBase(string name)
+        public GameElement(string name)
             : base(name) {
             Breakable = true;
         }

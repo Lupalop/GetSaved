@@ -6,30 +6,30 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Interface.Controls;
+using Maquina.UI.Controls;
 using Maquina.Objects;
 using System.Timers;
 
-namespace Maquina.Interface.Scenes
+namespace Maquina.UI.Scenes
 {
     public class NextGameScene : SceneBase
     {
-        public NextGameScene(SceneManager sceneManager)
-            : base(sceneManager, "Next Game Scene")
+        public NextGameScene(SceneManager SceneManager)
+            : base(SceneManager, "Next Game Scene")
         {
             Initialize();
         }
 
-        public NextGameScene(SceneManager sceneManager, Games passedGame)
-            : base(sceneManager, "Next Game Scene")
+        public NextGameScene(SceneManager SceneManager, Games passedGame)
+            : base(SceneManager, "Next Game Scene")
         {
             ForcePassedGame = passedGame;
             RandomizeGame = false;
             Initialize();
         }
 
-        public NextGameScene(SceneManager sceneManager, Games passedGame, Difficulty passedDifficulty)
-            : base(sceneManager, "Next Game Scene")
+        public NextGameScene(SceneManager SceneManager, Games passedGame, Difficulty passedDifficulty)
+            : base(SceneManager, "Next Game Scene")
         {
             ForcePassedGame = passedGame;
             ForcePassedDifficulty = passedDifficulty;
@@ -42,62 +42,62 @@ namespace Maquina.Interface.Scenes
         {
             NextGame = DetermineNextGame();
 
-            Objects = new Dictionary<string, ObjectBase> {
+            Objects = new Dictionary<string, GenericElement> {
                 { "Dice", new Image("dice")
                 {
-                    Graphic = game.Content.Load<Texture2D>("dice"),
+                    Graphic = Game.Content.Load<Texture2D>("dice"),
                     Location = ScreenCenter,
                     Tint = new Color(Color.White, 0),
-                    spriteBatch = this.spriteBatch,
+                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
-                        ObjectBase Dice = Objects["Dice"];
+                        GenericElement Dice = Objects["Dice"];
                         Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
                         Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));
                     }
                 }},
-                { "GameName", new Label("gameName")
+                { "GameName", new Label("GameName")
                 {
-                    Text = NextGame.sceneName.Substring(14),
-                    spriteBatch = this.spriteBatch, 
-                    Font = fonts["default_l"]
+                    Text = NextGame.SceneName.Substring(14),
+                    SpriteBatch = this.SpriteBatch, 
+                    Font = Fonts["default_l"]
                 }},
                 { "GameDifficulty", new Label("GameDifficulty")
                 {
                     Text = String.Format("Difficulty: {0}", GameDifficulty.ToString()),
-                    spriteBatch = this.spriteBatch, 
-                    Font = fonts["default_m"]
+                    SpriteBatch = this.SpriteBatch, 
+                    Font = Fonts["default_m"]
                 }},
-                { "SkipBtn", new MenuButton("skipBtn", sceneManager)
+                { "SkipBtn", new MenuButton("skipBtn", SceneManager)
                 {
-                    Graphic = game.Content.Load<Texture2D>("overlayBG"),
+                    Graphic = Game.Content.Load<Texture2D>("overlayBG"),
                     Tint = Color.Transparent,
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.None,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.None,
                     OnUpdate = () => {
-                        Rectangle SrcRectSkipBtn = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                        Rectangle SrcRectSkipBtn = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                         Objects["SkipBtn"].DestinationRectangle = SrcRectSkipBtn;
                         Objects["SkipBtn"].SourceRectangle = SrcRectSkipBtn;
                     },
-                    LeftClickAction = () => { sceneManager.currentScene = NextGame; },
-                    RightClickAction = () => { sceneManager.currentScene = NextGame; }
+                    LeftClickAction = () => { SceneManager.SwitchToScene(NextGame); },
+                    RightClickAction = () => { SceneManager.SwitchToScene(NextGame); }
                 }},
                 { "HelpImage", new Image("htp")
                 {
                     Graphic = HelpImage,
                     Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch
+                    SpriteBatch = this.SpriteBatch
                 }}
             };
 
             DiceSpinner.Elapsed += delegate { Objects["Dice"].Rotation += .05f; };
-            SceneChanger.Elapsed += delegate { sceneManager.currentScene = NextGame; };
+            SceneChanger.Elapsed += delegate { SceneManager.SwitchToScene(NextGame); };
         }
 
         private Texture2D HelpImage;
         // Dice spinner runs every 1ms;
         private Timer DiceSpinner = new Timer(1) { AutoReset = true, Enabled = true };
-        // Switch to new game scene will happen in 3 seconds (3000ms)
+        // Switch to new Game scene will happen in 3 seconds (3000ms)
         private Timer SceneChanger = new Timer(3000) { AutoReset = false, Enabled = true };
 
         public bool RandomizeGame = true;
@@ -116,7 +116,7 @@ namespace Maquina.Interface.Scenes
             else
                 GameDifficulty = ForcePassedDifficulty;
 
-            // Choose whether to randomize game or use the passed game
+            // Choose whether to randomize Game or use the passed Game
             Games NxGame;
             if (RandomizeGame)
                 NxGame = (Games)rand.Next(0, 4);
@@ -127,28 +127,28 @@ namespace Maquina.Interface.Scenes
             {
                 // The Safety Kit
                 case Games.FallingObjects:
-                    HelpImage = game.Content.Load<Texture2D>("htp-fallingobject");
-                    return new GameOneScene(sceneManager, GameDifficulty);
+                    HelpImage = Game.Content.Load<Texture2D>("htp-fallingobject");
+                    return new GameOneScene(SceneManager, GameDifficulty);
                 // Earthquake Escape
                 case Games.EscapeEarthquake:
-                    HelpImage = game.Content.Load<Texture2D>("htp-esc");
-                    return new GameTwoScene(sceneManager, GameDifficulty, Games.EscapeEarthquake);
+                    HelpImage = Game.Content.Load<Texture2D>("htp-esc");
+                    return new GameTwoScene(SceneManager, GameDifficulty, Games.EscapeEarthquake);
                 // Fire Escape
                 case Games.EscapeFire:
-                    HelpImage = game.Content.Load<Texture2D>("htp-esc");
-                    return new GameTwoScene(sceneManager, GameDifficulty, Games.EscapeFire);
+                    HelpImage = Game.Content.Load<Texture2D>("htp-esc");
+                    return new GameTwoScene(SceneManager, GameDifficulty, Games.EscapeFire);
                 // Safety Jump
                 case Games.RunningForTheirLives:
-                    HelpImage = game.Content.Load<Texture2D>("htp-dino");
-                    return new GameThreeScene(sceneManager, GameDifficulty);
+                    HelpImage = Game.Content.Load<Texture2D>("htp-dino");
+                    return new GameThreeScene(SceneManager, GameDifficulty);
                 // Aid 'Em
                 case Games.HelpOthersNow:
-                    HelpImage = game.Content.Load<Texture2D>("htp-aidem");
-                    return new GameFourScene(sceneManager, GameDifficulty);
+                    HelpImage = Game.Content.Load<Texture2D>("htp-aidem");
+                    return new GameFourScene(SceneManager, GameDifficulty);
                 // If the randomizer crap failed, simply throw the world selection screen...
                 default:
-                    HelpImage = new Texture2D(game.GraphicsDevice, 0, 0);
-                    return new WorldSelectionScene(sceneManager);
+                    HelpImage = new Texture2D(Game.GraphicsDevice, 0, 0);
+                    return new WorldSelectionScene(SceneManager);
             }
         }
 
@@ -159,19 +159,19 @@ namespace Maquina.Interface.Scenes
             SceneChanger.Close();
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(GameTime GameTime)
         {
-            game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
-            spriteBatch.Begin();
-            base.Draw(gameTime);
-            base.DrawObjects(gameTime, Objects);
-            spriteBatch.End();
+            Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
+            SpriteBatch.Begin();
+            base.Draw(GameTime);
+            base.DrawObjects(GameTime, Objects);
+            SpriteBatch.End();
         }
         
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime GameTime)
         {
-            base.Update(gameTime);
-            base.UpdateObjects(gameTime, Objects);
+            base.Update(GameTime);
+            base.UpdateObjects(GameTime, Objects);
         }
     }
 }

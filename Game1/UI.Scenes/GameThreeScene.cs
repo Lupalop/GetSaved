@@ -7,23 +7,24 @@ using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Interface;
-using Maquina.Interface.Controls;
+using Maquina.UI;
+using Maquina.UI.Controls;
 using Maquina.Objects;
 using Microsoft.Xna.Framework.Audio;
+using System.Collections.ObjectModel;
 
-namespace Maquina.Interface.Scenes
+namespace Maquina.UI.Scenes
 {
     public class GameThreeScene : SceneBase
     {
-        public GameThreeScene(SceneManager sceneManager, Difficulty Difficulty)
-            : base(sceneManager, "Game 3 Scene: Safety Jump")
+        public GameThreeScene(SceneManager SceneManager, Difficulty Difficulty)
+            : base(SceneManager, "Game 3 Scene: Safety Jump")
         {
             GameDifficulty = Difficulty;
         }
 
         private MouseOverlay MsOverlay;
-        private List<ObjectBase> GameObjects = new List<ObjectBase>();
+        private Collection<GenericElement> GameObjects = new Collection<GenericElement>();
 
         private double Score;
         private int ProjectileInterval;
@@ -66,15 +67,15 @@ namespace Maquina.Interface.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.RunningForTheirLives, null, this));
+            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(SceneManager, Games.RunningForTheirLives, null, this));
         }
 
         private void UpdateMinMaxY()
         {
             if (Objects.ContainsKey("ObjectCatcher"))
             {
-                MaxYPos = game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height - DistanceFromBottom - 100;
-                StartingXPos = game.GraphicsDevice.Viewport.Width - Objects["ObjectCatcher"].Bounds.Width - 10;
+                MaxYPos = Game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height - DistanceFromBottom - 100;
+                StartingXPos = Game.GraphicsDevice.Viewport.Width - Objects["ObjectCatcher"].Bounds.Width - 10;
             }
         }
 
@@ -85,10 +86,10 @@ namespace Maquina.Interface.Scenes
                 // create new button object
                 Image nwBtn = new Image("crap")
                 {
-                    Graphic = game.Content.Load<Texture2D>("dino/fire"),
+                    Graphic = Game.Content.Load<Texture2D>("dino/fire"),
                     Location = new Vector2((float)RandNum.Next(StartingXPos - 100, StartingXPos), MaxYPos),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch
                 };
                 GameObjects.Add(nwBtn);
             }
@@ -98,50 +99,50 @@ namespace Maquina.Interface.Scenes
         {
             base.LoadContent();
 
-            Objects = new Dictionary<string, ObjectBase> {
+            Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = game.Content.Load<Texture2D>("dino/gameBG3"),
-                    AlignToCenter = false,
+                    Graphic = Game.Content.Load<Texture2D>("dino/GameBG3"),
+                    ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = () => {
-                        Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                        Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
-                    spriteBatch = this.spriteBatch
+                    SpriteBatch = this.SpriteBatch
                 }},
-                { "BackButton", new MenuButton("mb", sceneManager)
+                { "BackButton", new MenuButton("mb", SceneManager)
                 {
-                    Graphic = game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
-                    LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
-                    Graphic = game.Content.Load<Texture2D>("human"),
-                    Location = new Vector2(5, game.GraphicsDevice.Viewport.Height - 70),
-                    AlignToCenter = false,
+                    Graphic = Game.Content.Load<Texture2D>("human"),
+                    Location = new Vector2(5, Game.GraphicsDevice.Viewport.Height - 70),
+                    ControlAlignment = ControlAlignment.Fixed,
                     GraphicEffects = SpriteEffects.FlipHorizontally,
-                    spriteBatch = this.spriteBatch
+                    SpriteBatch = this.SpriteBatch
                 }},
                 { "ScoreCounter", new Label("timer")
                 {
                     Text = String.Format("Score: {0}", Score),
-                    Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
+                    Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5),
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label a = (Label)Objects["ScoreCounter"];
                         a.Text = String.Format("Score: {0}", Score);
-                        a.Location = new Vector2(game.GraphicsDevice.Viewport.Width - a.Font.MeasureString(a.Text).X, 5);
+                        a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Font.MeasureString(a.Text).X, 5);
                     },
-                    Font = fonts["o-default_l"]
+                    Font = Fonts["o-default_l"]
                 }}
             };
 
-            JumpEffect = game.Content.Load<SoundEffect>("sfx/caught");
-            sceneManager.PlayBGM("shenanigans");
-            MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
+            JumpEffect = Game.Content.Load<SoundEffect>("sfx/caught");
+            SceneManager.PlaySong("shenanigans");
+            MsOverlay = (MouseOverlay)SceneManager.Overlays["mouse"];
             DistanceFromBottom = -30;
         }
 
@@ -192,20 +193,20 @@ namespace Maquina.Interface.Scenes
             base.Unload();
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(GameTime GameTime)
         {
-            spriteBatch.Begin();
-            base.Draw(gameTime);
-            base.DrawObjects(gameTime, Objects);
-            base.DrawObjects(gameTime, GameObjects);
-            spriteBatch.End();
+            SpriteBatch.Begin();
+            base.Draw(GameTime);
+            base.DrawObjects(GameTime, Objects);
+            base.DrawObjects(GameTime, GameObjects);
+            SpriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime GameTime)
         {
-            base.Update(gameTime);
-            base.UpdateObjects(gameTime, Objects);
-            base.UpdateObjects(gameTime, GameObjects);
+            base.Update(GameTime);
+            base.UpdateObjects(GameTime, Objects);
+            base.UpdateObjects(GameTime, GameObjects);
             UpdateMinMaxY();
             if (IsJumping)
             {
@@ -219,8 +220,8 @@ namespace Maquina.Interface.Scenes
             }
             else
             {
-                if (KeybdState.IsKeyDown(Keys.Space) || MsState.LeftButton == ButtonState.Pressed ||
-                    MsState.RightButton == ButtonState.Pressed || MsState.MiddleButton == ButtonState.Pressed)
+                if (KeyboardState.IsKeyDown(Keys.Space) || MouseState.LeftButton == ButtonState.Pressed ||
+                    MouseState.RightButton == ButtonState.Pressed || MouseState.MiddleButton == ButtonState.Pressed)
                 {
                     IsJumping = true;
                     JumpEffect.Play();
@@ -238,10 +239,10 @@ namespace Maquina.Interface.Scenes
 
             for (int i = 0; i < GameObjects.Count; i++)
             {
-                // Moves game object
+                // Moves Game object
                 GameObjects[i].Location = new Vector2(GameObjects[i].Location.X - FallingSpeed, GameObjects[i].Location.Y);
 
-                // Check if game object collides/intersects with catcher
+                // Check if Game object collides/intersects with catcher
                 if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Contains(GameObjects[i].Bounds.Center))
                 {
                     CallEndOverlay();

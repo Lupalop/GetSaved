@@ -7,23 +7,24 @@ using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Interface;
-using Maquina.Interface.Controls;
+using Maquina.UI;
+using Maquina.UI.Controls;
 using Maquina.Objects;
+using System.Collections.ObjectModel;
 
-namespace Maquina.Interface.Scenes
+namespace Maquina.UI.Scenes
 {
     public class GameFourScene : SceneBase
     {
-        public GameFourScene(SceneManager sceneManager, Difficulty Difficulty)
-            : base(sceneManager, "Game 4 Scene: Aid 'em")
+        public GameFourScene(SceneManager SceneManager, Difficulty Difficulty)
+            : base(SceneManager, "Game 4 Scene: Aid 'em")
         {
             GameDifficulty = Difficulty;
         }
 
         private MouseOverlay MsOverlay;
-        private Dictionary<string, ObjectBase> GameObjects = new Dictionary<string, ObjectBase>();
-        private List<ObjectBase> CollectedObjects = new List<ObjectBase>();
+        private Dictionary<string, GenericElement> GameObjects = new Dictionary<string, GenericElement>();
+        private Collection<GenericElement> CollectedObjects = new Collection<GenericElement>();
 
         private double _InitialTimeLeft;
         private double InitialTimeLeft
@@ -76,7 +77,7 @@ namespace Maquina.Interface.Scenes
                 ProjectileGenerator.Close();
                 AttemptRemoveHelpman();
 
-                sceneManager.overlays.Add("gameEnd", new GameEndOverlay(sceneManager, Games.HelpOthersNow, CollectedObjects, this));
+                SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(SceneManager, Games.HelpOthersNow, CollectedObjects, this));
                 GameTimer.Enabled = false;
             };
         }
@@ -86,9 +87,9 @@ namespace Maquina.Interface.Scenes
             AttemptRemoveHelpman();
             GameObjects.Add("helpman", new Helpman("helpman")
             {
-                Graphic = game.Content.Load<Texture2D>("aid-em/helpman"),
+                Graphic = Game.Content.Load<Texture2D>("aid-em/helpman"),
                 Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
+                SpriteBatch = this.SpriteBatch,
                 HitsBeforeBreak = HitsBeforeSaved
             });
         }
@@ -101,13 +102,13 @@ namespace Maquina.Interface.Scenes
                 if (helpman.HitsBeforeBreak > 0)
                 {
                     string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.DarkRed) { FadeSpeed = 0.1f });
+                    SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.DarkRed) { FadeSpeed = 0.1f });
                     helpman.MessageHolder.Add("!");
                 }
                 else
                 {
                     string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.LightGreen) { FadeSpeed = 0.1f });
+                    SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.LightGreen) { FadeSpeed = 0.1f });
                     helpman.MessageHolder.Add("~");
                 }
                 CollectedObjects.Add(helpman);
@@ -129,7 +130,7 @@ namespace Maquina.Interface.Scenes
                     string overlayName = String.Format("fade-{0}-{1}", DateTime.Now, new Random().Next(0, 1000));
                     try
                     {
-                        sceneManager.overlays.Add(overlayName, new FadeOverlay(sceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
+                        SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
                     }
                     catch (Exception ex) { Console.WriteLine(ex); }
                 }
@@ -153,106 +154,106 @@ namespace Maquina.Interface.Scenes
         {
             base.LoadContent();
 
-            Objects = new Dictionary<string, ObjectBase> {
+            Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = game.Content.Load<Texture2D>("gameBG2"),
-                    AlignToCenter = false,
-                    OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height),
-                    spriteBatch = this.spriteBatch
+                    Graphic = Game.Content.Load<Texture2D>("GameBG2"),
+                    ControlAlignment = ControlAlignment.Fixed,
+                    OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height),
+                    SpriteBatch = this.SpriteBatch
                 }},
-                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, 32), sceneManager)
+                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32), SceneManager)
                 {
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         var a = (ProgressBar)Objects["ProgressBar"];
                         a.value = (float)TimeLeft;
                     }
                 }},
-                { "BackButton", new MenuButton("mb", sceneManager)
+                { "BackButton", new MenuButton("mb", SceneManager)
                 {
-                    Graphic = game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
-                    LeftClickAction = () => sceneManager.currentScene = new MainMenuScene(sceneManager)
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
                 { "Timer", new Label("timer")
                 {
                     Text = String.Format("{0} second(s) left", TimeLeft),
-                    Location = new Vector2(game.GraphicsDevice.Viewport.Width - 305, 5),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
-                    Font = fonts["o-default_l"]
+                    Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5),
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
+                    Font = Fonts["o-default_l"]
                 }},
                 { "Hand1", new Image("hand1")
                 {
-                    Graphic = game.Content.Load<Texture2D>("aid-em/Hand"),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
+                    Graphic = Game.Content.Load<Texture2D>("aid-em/Hand"),
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
                     Columns = 2,
                     Rows = 1
                 }},
                 { "Hand2", new Image("hand2")
                 {
-                    Graphic = game.Content.Load<Texture2D>("aid-em/Hand"),
-                    AlignToCenter = false,
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
+                    Graphic = Game.Content.Load<Texture2D>("aid-em/Hand"),
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
                     CurrentFrame = 1,
                     Columns = 2,
                     Rows = 1
                 }},
-                { "Controller-Bandage", new MenuButton("controller-x", sceneManager)
+                { "Controller-Bandage", new MenuButton("controller-x", SceneManager)
                 {
                     Text = "Bandage (X)",
-                    Graphic = game.Content.Load<Texture2D>("controllerBtn"),
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
-                    AlignToCenter = false,
+                    Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
+                    ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(80,460),
-                    Font = fonts["default_l"],
+                    Font = Fonts["default_l"],
                     Columns = 3,
                     Rows = 1,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Bandage)
                 }},
-                { "Controller-Stitch", new MenuButton("controller-a", sceneManager)
+                { "Controller-Stitch", new MenuButton("controller-a", SceneManager)
                 {
                     Text = "Stitch (A)",
-                    Graphic = game.Content.Load<Texture2D>("controllerBtn"),
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
-                    AlignToCenter = false,
+                    Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
+                    ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(150, 530),
-                    Font = fonts["default_l"],
+                    Font = Fonts["default_l"],
                     Columns = 3,
                     Rows = 1,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Stitch)
                 }},
-                { "Controller-Medicine", new MenuButton("controller-s", sceneManager)
+                { "Controller-Medicine", new MenuButton("controller-s", SceneManager)
                 {
                     Text = "Medicine (S)",
-                    Graphic = game.Content.Load<Texture2D>("controllerBtn"),
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
-                    AlignToCenter = false,
+                    Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
+                    ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(730,460),
-                    Font = fonts["default_l"],
+                    Font = Fonts["default_l"],
                     Columns = 3,
                     Rows = 1,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Medicine)
                 }},
-                { "Controller-CPR", new MenuButton("controller-o", sceneManager)
+                { "Controller-CPR", new MenuButton("controller-o", SceneManager)
                 {
                     Text = "CPR (O)",
-                    Graphic = game.Content.Load<Texture2D>("controllerBtn"),
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
-                    AlignToCenter = false,
+                    Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
+                    ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(650, 550),
-                    Font = fonts["default_l"],
+                    Font = Fonts["default_l"],
                     Columns = 3,
                     Rows = 1,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.CPR)
@@ -260,14 +261,14 @@ namespace Maquina.Interface.Scenes
                 { "PressLabel", new Label("press-label")
                 {
                     Text = String.Format("Press/Tap: {0}!", CurrentController.ToString()),
-                    spriteBatch = this.spriteBatch,
-                    AlignToCenter = false,
-                    Font = fonts["default_m"]
+                    SpriteBatch = this.SpriteBatch,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    Font = Fonts["default_m"]
                 }}
             };
 
-            sceneManager.PlayBGM("flying-high");
-            MsOverlay = (MouseOverlay)sceneManager.overlays["mouse"];
+            SceneManager.PlaySong("flying-high");
+            MsOverlay = (MouseOverlay)SceneManager.Overlays["mouse"];
         }
 
         public override void DelayLoadContent()
@@ -311,65 +312,65 @@ namespace Maquina.Interface.Scenes
             base.Unload();
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(GameTime GameTime)
         {
-            spriteBatch.Begin();
-            base.Draw(gameTime);
+            SpriteBatch.Begin();
+            base.Draw(GameTime);
             Label a = (Label)Objects["Timer"];
             a.Text = String.Format("{0} second(s) left", TimeLeft);
-            base.DrawObjects(gameTime, Objects);
-            base.DrawObjects(gameTime, GameObjects);
-            spriteBatch.End();
+            base.DrawObjects(GameTime, Objects);
+            base.DrawObjects(GameTime, GameObjects);
+            SpriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime GameTime)
         {
-            base.Update(gameTime);
+            base.Update(GameTime);
             // Allow keyboard hits
-            if (KeybdState.IsKeyDown(Keys.X) && (PreviousKey != Keys.X || CurrentController == ControllerKeys.Bandage))
+            if (KeyboardState.IsKeyDown(Keys.X) && (PreviousKey != Keys.X || CurrentController == ControllerKeys.Bandage))
             {
                 AddSubtractBrickHit(ControllerKeys.Bandage);
                 PreviousKey = Keys.X;
             }
-            if (KeybdState.IsKeyDown(Keys.A) && (PreviousKey != Keys.A || CurrentController == ControllerKeys.Stitch))
+            if (KeyboardState.IsKeyDown(Keys.A) && (PreviousKey != Keys.A || CurrentController == ControllerKeys.Stitch))
             {
                 AddSubtractBrickHit(ControllerKeys.Stitch);
                 PreviousKey = Keys.A;
             }
-            if (KeybdState.IsKeyDown(Keys.S) && (PreviousKey != Keys.S || CurrentController == ControllerKeys.Medicine))
+            if (KeyboardState.IsKeyDown(Keys.S) && (PreviousKey != Keys.S || CurrentController == ControllerKeys.Medicine))
             {
                 AddSubtractBrickHit(ControllerKeys.Medicine);
                 PreviousKey = Keys.S;
             }
-            if (KeybdState.IsKeyDown(Keys.O) && (PreviousKey != Keys.O || CurrentController == ControllerKeys.CPR))
+            if (KeyboardState.IsKeyDown(Keys.O) && (PreviousKey != Keys.O || CurrentController == ControllerKeys.CPR))
             {
                 AddSubtractBrickHit(ControllerKeys.CPR);
                 PreviousKey = Keys.O;
             }
-            Keys[] pressedKeys = KeybdState.GetPressedKeys();
+            Keys[] pressedKeys = KeyboardState.GetPressedKeys();
             if (pressedKeys.Length != 0) PreviousKey = pressedKeys[0];
             // Update object location on viewport change
             Label Timer = (Label)Objects["Timer"];
-            Timer.Location = new Vector2(game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
-            Objects["Hand1"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - (Objects["Hand1"].Bounds.Width / 2) - 100, game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height + 100);
-            Objects["Hand2"].Location = new Vector2(-100, game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height + 100);
+            Timer.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
+            Objects["Hand1"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - (Objects["Hand1"].Bounds.Width / 2) - 100, Game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height + 100);
+            Objects["Hand2"].Location = new Vector2(-100, Game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height + 100);
             // Align controllers
             Objects["Controller-Bandage"].Location = new Vector2(60,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
+                Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
             Objects["Controller-Stitch"].Location = new Vector2(100,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
-            Objects["Controller-Medicine"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 60,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
-            Objects["Controller-CPR"].Location = new Vector2(game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 100,
-                game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
+                Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
+            Objects["Controller-Medicine"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 60,
+                Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
+            Objects["Controller-CPR"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 100,
+                Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
             // Current Controller
             DetermineCurrentController();
             Label pressLabel = (Label)Objects["PressLabel"];
             pressLabel.Text = String.Format("Press/Tap: {0}!", CurrentController.ToString());
-            pressLabel.Location = new Vector2(ScreenCenter.X - (fonts["default_m"].MeasureString(pressLabel.Text).X / 2), 80);
+            pressLabel.Location = new Vector2(ScreenCenter.X - (Fonts["default_m"].MeasureString(pressLabel.Text).X / 2), 80);
             // base
-            base.UpdateObjects(gameTime, Objects);
-            base.UpdateObjects(gameTime, GameObjects);
+            base.UpdateObjects(GameTime, Objects);
+            base.UpdateObjects(GameTime, GameObjects);
         }
     }
 }

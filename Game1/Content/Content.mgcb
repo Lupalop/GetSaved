@@ -25,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:mouseCur.png
 
-#begin gameLogo.png
+#begin GameLogo.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,7 +35,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gameLogo.png
+/build:GameLogo.png
 
 #begin menuBG.png
 /importer:TextureImporter
@@ -277,7 +277,7 @@
 /processorParam:TextureFormat=Color
 /build:playBtn.png
 
-#begin gameBG1.jpg
+#begin GameBG1.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -287,9 +287,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gameBG1.jpg
+/build:GameBG1.jpg
 
-#begin gameBG2.jpg
+#begin GameBG2.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -299,7 +299,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gameBG2.jpg
+/build:GameBG2.jpg
 
 #begin dice.png
 /importer:TextureImporter
@@ -361,7 +361,7 @@
 /processorParam:TextureFormat=Color
 /build:dino/fire.png
 
-#begin dino/gameBG3.jpg
+#begin dino/GameBG3.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -371,7 +371,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:dino/gameBG3.jpg
+/build:dino/GameBG3.jpg
 
 #begin dino/character.png
 /importer:TextureImporter
@@ -421,7 +421,7 @@
 /processorParam:TextureFormat=Color
 /build:htp.png
 
-#begin gameOver.png
+#begin GameOver.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -431,9 +431,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gameOver.png
+/build:GameOver.png
 
-#begin gameWin.png
+#begin GameWin.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -443,7 +443,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gameWin.png
+/build:GameWin.png
 
 #begin htp-aidem.png
 /importer:TextureImporter
@@ -493,7 +493,7 @@
 /processorParam:TextureFormat=Color
 /build:htp-fallingobject.png
 
-#begin game4-bg1.png
+#begin Game4-bg1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -503,9 +503,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:game4-bg1.png
+/build:Game4-bg1.png
 
-#begin game4-bg2.png
+#begin Game4-bg2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -515,9 +515,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:game4-bg2.png
+/build:Game4-bg2.png
 
-#begin game4-bg3.png
+#begin Game4-bg3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -527,7 +527,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:game4-bg3.png
+/build:Game4-bg3.png
 
 #begin human-line.png
 /importer:TextureImporter

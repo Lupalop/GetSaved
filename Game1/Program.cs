@@ -15,73 +15,15 @@ namespace Maquina
         [STAThread]
         private static void Main(string[] args)
         {
-            if (args.Length != 0)
-            {
-                foreach (string arg in args)
-                {
-                    switch (arg)
-                    {
-                        case "--v":
-                            VerboseMessages = true;
-                            break;
-                        case "--restartOnExit":
-                            PromptForRestart = true;
-                            break;
-                        case "--debug":
-                            Debug = true;
-                            break;
-                        default:
-                            // Ignore other arguments passed
-                            break;
-                    }
-                }
-            }
-
-            if (Debug)
-            {
-                WriteHeader();
-            }
-
-            RunGame();
-
-            if (Debug)
-            {
-                while (PromptForRestart)
-                {
-                    Console.WriteLine("Game execution has ended, would you like to restart? Y = Yes, Other keys = No");
-                    if (Console.ReadKey(true).Key == ConsoleKey.Y)
-                    {
-                        WriteHeader();
-                        RunGame();
-                    }
-                    else
-                        return;
-                }
-            }
-        }
-
-        private static void WriteHeader()
-        {
-            Console.Clear();
-            Console.Title = String.Format("{0} Debug Console", GameName);
-            Console.WriteLine("/*");
-            Console.WriteLine(" * {0} v{1}", GameName, AssemblyName.GetAssemblyName(Assembly.GetExecutingAssembly().Location).Version.ToString());
-            Console.WriteLine(" * Debug Console");
-            Console.WriteLine(" */");
-            Console.WriteLine();
+            Platform.RunGame = RunGame;
+            Platform.StartEngine(args);
         }
 
         private static void RunGame()
         {
-            using (var game = new MainGame())
-                game.Run();
+            using (var Game = new MainGame())
+                Game.Run();
         }
-
-        public static bool OutputMessages = true;
-        public static bool VerboseMessages = false;
-        public static bool PromptForRestart = false;
-        public static bool Debug = false;
-        public static string GameName = "Get Saved";
     }
 #endif
 }

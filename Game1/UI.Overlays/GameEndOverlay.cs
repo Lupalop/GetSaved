@@ -7,67 +7,68 @@ using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Interface;
-using Maquina.Interface.Controls;
+using Maquina.UI;
+using Maquina.UI.Controls;
 using Maquina.Objects;
+using System.Collections.ObjectModel;
 
-namespace Maquina.Interface.Scenes
+namespace Maquina.UI.Scenes
 {
     public class GameEndOverlay : OverlayBase
     {
-        public GameEndOverlay(SceneManager sceneManager, Games cgame, List<ObjectBase> passedMessage, SceneBase parentScene)
-            : base(sceneManager, "Game End Overlay", parentScene)
+        public GameEndOverlay(SceneManager SceneManager, Games cGame, Collection<GenericElement> passedMessage, SceneBase parentScene)
+            : base(SceneManager, "Game End Overlay", parentScene)
         {
-            currentGame = cgame;
-            Objects = new Dictionary<string, ObjectBase> {
+            currentGame = cGame;
+            Objects = new Dictionary<string, GenericElement> {
                 { "Background", new Image("Background")
                 {
-                    Graphic = game.Content.Load<Texture2D>("overlayBG"),
-                    AlignToCenter = false,
+                    Graphic = Game.Content.Load<Texture2D>("overlayBG"),
+                    ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = () => {
-                        Objects["Background"].DestinationRectangle = new Rectangle(0, 0, game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+                        Objects["Background"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
-                    spriteBatch = this.spriteBatch
+                    SpriteBatch = this.SpriteBatch
                 }},
                 { "TimesUp", new Image("TimesUp")
                 {
-                    Graphic = game.Content.Load<Texture2D>("timesUp"),
+                    Graphic = Game.Content.Load<Texture2D>("timesUp"),
                     Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch
+                    SpriteBatch = this.SpriteBatch
                 }},
-                { "NextRoundBtn", new MenuButton("NextRoundBtn", sceneManager)
+                { "NextRoundBtn", new MenuButton("NextRoundBtn", SceneManager)
                 {
                     Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
                     Rows = 1,
                     Columns = 3,
                     Text = "Next Round",
-                    Font = fonts["default_m"],
-                    LeftClickAction = () => { sceneManager.currentScene = new NextGameScene(sceneManager); sceneManager.overlays.Remove("gameEnd"); }
+                    Font = Fonts["default_m"],
+                    LeftClickAction = () => { SceneManager.SwitchToScene(new NextGameScene(SceneManager)); SceneManager.Overlays.Remove("GameEnd"); }
                 }},
-                { "TryAgainBtn", new MenuButton("TryAgainBtn", sceneManager)
+                { "TryAgainBtn", new MenuButton("TryAgainBtn", SceneManager)
                 {
                     Location = ScreenCenter,
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
                     Rows = 1,
                     Columns = 3,
                     Text = "Try Again",
-                    Font = fonts["default_m"],
-                    LeftClickAction = () => { sceneManager.currentScene = new NextGameScene(sceneManager, currentGame); sceneManager.overlays.Remove("gameEnd"); }
+                    Font = Fonts["default_m"],
+                    LeftClickAction = () => { SceneManager.SwitchToScene(new NextGameScene(SceneManager, currentGame)); SceneManager.Overlays.Remove("GameEnd"); }
                 }},
-                { "MainMenuBtn", new MenuButton("MainMenuBtn", sceneManager)
+                { "MainMenuBtn", new MenuButton("MainMenuBtn", SceneManager)
                 {
-                    Graphic = game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
-                    spriteBatch = this.spriteBatch,
-                    SpriteType = SpriteTypes.Static,
+                    SpriteBatch = this.SpriteBatch,
+                    SpriteType = SpriteType.Static,
                     Rows = 1,
                     Columns = 3,
-                    AlignToCenter = false,
-                    Font = fonts["default_m"],
-                    LeftClickAction = () => { sceneManager.currentScene = new MainMenuScene(sceneManager); sceneManager.overlays.Remove("gameEnd"); }
+                    ControlAlignment = ControlAlignment.Fixed,
+                    Font = Fonts["default_m"],
+                    LeftClickAction = () => { SceneManager.SwitchToScene(new MainMenuScene(SceneManager)); SceneManager.Overlays.Remove("GameEnd"); }
                 }}
             };
 
@@ -94,23 +95,23 @@ namespace Maquina.Interface.Scenes
             base.DelayLoadContent();
 
             // Show a fade effect to hide first frame misposition
-            if (!sceneManager.overlays.ContainsKey("fade-{0}"))
-                sceneManager.overlays.Add("fade-{0}", new Scenes.FadeOverlay(sceneManager, "fade-{0}"));
+            if (!SceneManager.Overlays.ContainsKey("fade-{0}"))
+                SceneManager.Overlays.Add("fade-{0}", new Scenes.FadeOverlay(SceneManager, "fade-{0}"));
         }
 
         Games currentGame;
-        public override void Draw(GameTime gameTime)
+        public override void Draw(GameTime GameTime)
         {
-            spriteBatch.Begin();
-            base.Draw(gameTime);
-            base.DrawObjects(gameTime, Objects);
-            spriteBatch.End();
+            SpriteBatch.Begin();
+            base.Draw(GameTime);
+            base.DrawObjects(GameTime, Objects);
+            SpriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime GameTime)
         {
-            base.Update(gameTime);
-            base.UpdateObjects(gameTime, Objects);
+            base.Update(GameTime);
+            base.UpdateObjects(GameTime, Objects);
         }
 
 
@@ -122,18 +123,18 @@ namespace Maquina.Interface.Scenes
             {
                 case GameEndStates.TimesUp:
                 default:
-                    TmUp.Graphic = game.Content.Load<Texture2D>("timesUp");
+                    TmUp.Graphic = Game.Content.Load<Texture2D>("timesUp");
                     break;
                 case GameEndStates.GameOver:
-                    TmUp.Graphic = game.Content.Load<Texture2D>("gameOver");
+                    TmUp.Graphic = Game.Content.Load<Texture2D>("GameOver");
                     break;
                 case GameEndStates.GameWon:
-                    TmUp.Graphic = game.Content.Load<Texture2D>("gameWin");
+                    TmUp.Graphic = Game.Content.Load<Texture2D>("GameWin");
                     break;
             }
         }
 
-        public void Game2End(List<ObjectBase> PassedMsg)
+        public void Game2End(Collection<GenericElement> PassedMsg)
         {
             if (PassedMsg.Count != 0)
             {
@@ -151,11 +152,11 @@ namespace Maquina.Interface.Scenes
 
         public void Game3End()
         {
-            // Hardcoded to show game over, no timer, no finish line crap
+            // Hardcoded to show Game over, no timer, no finish line crap
             SetGameEndGraphic(GameEndStates.GameOver);
         }
 
-        public void Game1End(List<ObjectBase> CollectedObjects)
+        public void Game1End(Collection<GenericElement> CollectedObjects)
         {
             int correctCrap = 0;
             int wrongCrap = 0;
@@ -176,20 +177,20 @@ namespace Maquina.Interface.Scenes
             Objects.Add("CorrectCrap", new Label("CorrectCrap")
             {
                 Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
+                SpriteBatch = this.SpriteBatch,
                 Text = "Correct items: " + correctCrap,
-                Font = fonts["default_m"]
+                Font = Fonts["default_m"]
             });
             Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
             {
                 Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
+                SpriteBatch = this.SpriteBatch,
                 Text = "Incorrect items: " + wrongCrap,
-                Font = fonts["default_m"]
+                Font = Fonts["default_m"]
             });
         }
 
-        public void Game4End(List<ObjectBase> CollectedObjects)
+        public void Game4End(Collection<GenericElement> CollectedObjects)
         {
             int peopleSaved = 0;
             int peopleDied = 0;
@@ -210,16 +211,16 @@ namespace Maquina.Interface.Scenes
             Objects.Add("CorrectCrap", new Label("CorrectCrap")
             {
                 Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
+                SpriteBatch = this.SpriteBatch,
                 Text = "People Saved: " + peopleSaved,
-                Font = fonts["default_m"]
+                Font = Fonts["default_m"]
             });
             Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
             {
                 Location = ScreenCenter,
-                spriteBatch = this.spriteBatch,
+                SpriteBatch = this.SpriteBatch,
                 Text = "People Died: " + peopleDied,
-                Font = fonts["default_m"]
+                Font = Fonts["default_m"]
             });
         }
     }

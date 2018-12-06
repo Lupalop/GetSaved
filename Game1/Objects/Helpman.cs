@@ -7,11 +7,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.Objects;
-using Maquina.Interface.Scenes;
+using Maquina.UI.Scenes;
 
-namespace Maquina.Interface.Controls
+namespace Maquina.Objects
 {
-    public class Helpman : GameObjectBase
+    public class Helpman : GameElement
     {
         public Helpman(string ObjectName)
             : base(ObjectName)
