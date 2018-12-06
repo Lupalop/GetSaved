@@ -107,7 +107,7 @@ namespace Maquina.UI.Scenes
                     difficulty = Difficulty.Easy;
                     break;
             }
-            Console.WriteLine(String.Format("GameDifficulty changed to: {0}", difficulty));
+            Console.WriteLine(String.Format("Difficulty changed to: {0}", difficulty));
         }
 
         public override void Draw(GameTime GameTime)

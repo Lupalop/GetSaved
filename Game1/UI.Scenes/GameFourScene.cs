@@ -157,7 +157,7 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("GameBG2"),
+                    Graphic = Game.Content.Load<Texture2D>("gameBG2"),
                     ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height),
                     SpriteBatch = this.SpriteBatch

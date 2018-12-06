@@ -126,10 +126,10 @@ namespace Maquina.UI.Scenes
                     TmUp.Graphic = Game.Content.Load<Texture2D>("timesUp");
                     break;
                 case GameEndStates.GameOver:
-                    TmUp.Graphic = Game.Content.Load<Texture2D>("GameOver");
+                    TmUp.Graphic = Game.Content.Load<Texture2D>("gameOver");
                     break;
                 case GameEndStates.GameWon:
-                    TmUp.Graphic = Game.Content.Load<Texture2D>("GameWin");
+                    TmUp.Graphic = Game.Content.Load<Texture2D>("gameWin");
                     break;
             }
         }
