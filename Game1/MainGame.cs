@@ -65,24 +65,11 @@ namespace Maquina
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             // Create instance of the Content Manager
             ContentManager<ResourceContent> resources = new ContentManager<ResourceContent>();
-            resources.Content = resources.LoadContent(Utils.CreateLocation(
+            resources.Content = resources.Initialize(Utils.CreateLocation(
                 new string[] { Platform.ContentRootDirectory, Platform.ResourceXml }));
-            ResourceContent ResContent = (ResourceContent)resources.Content;
-            // TODO: MOVE to CONTENT LOADER
-            // Load all Fonts to the Fonts dictionary
-            for (int i = 0; i < ResContent.Fonts.Count; i++)
-            {
-                FontParameters font = ResContent.Fonts[i];
-                Fonts[font.Name] = Content.Load<SpriteFont>(font.Location);
-                Fonts[font.Name].Spacing = font.Spacing;
-                Fonts[font.Name].LineSpacing = font.LineSpacing;
-            }
-            // TODO: DONT HARDCODE THESE STUFF
-            // Load all songs to the Songs dictionary
-            Songs["flying-high"] = Content.Load<Song>("bgm/Flying High");
-            Songs["in-pursuit"] = Content.Load<Song>("bgm/In Pursuit");
-            Songs["hide-seek"] = Content.Load<Song>("bgm/Hide Seek");
-            Songs["shenanigans"] = Content.Load<Song>("bgm/Shenanigans");
+            // Load resources
+            Fonts = resources.Content.LoadContent(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
+            Songs = resources.Content.LoadContent(ResourceType.BGM, this) as Dictionary<string, Song>;
             // Initialize the Scene Manager
             SceneManager = new SceneManager(this, SpriteBatch, Fonts, Songs, null);
             // Register Overlays in the scene manager
