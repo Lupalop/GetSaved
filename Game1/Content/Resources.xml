@@ -9,7 +9,12 @@
     <FontParameters Name="o-default_l" Location="fonts/o-ZillaSlab_large" LineSpacing="32" Spacing="-6.0" />
     <FontParameters Name="o-default_xl" Location="fonts/o-ZillaSlab_xl" LineSpacing="60" Spacing="-6.0" />
   </Fonts>
-  <BGM />
+  <BGM>
+    <ResourceParameters Name="flying-high" Location="bgm/Flying High" />
+    <ResourceParameters Name="in-pursuit" Location="bgm/In Pursuit" />
+    <ResourceParameters Name="hide-seek" Location="bgm/Hide Seek" />
+    <ResourceParameters Name="shenanigans" Location="bgm/Shenanigans" />
+  </BGM>
   <SFX />
   <Textures />
 </Content>
