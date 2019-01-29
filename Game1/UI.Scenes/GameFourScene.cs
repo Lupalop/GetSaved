@@ -53,7 +53,6 @@ namespace Maquina.UI.Scenes
         private Timer TimeLeftController;
         private Timer GameTimer;
 
-        private Keys PreviousKey;
         private bool ChangeControllerKeyNow = true;
         private enum ControllerKeys { Bandage, Stitch, Medicine, CPR }
 
@@ -327,28 +326,22 @@ namespace Maquina.UI.Scenes
         {
             base.Update(GameTime);
             // Allow keyboard hits
-            if (KeyboardState.IsKeyDown(Keys.X) && (PreviousKey != Keys.X || CurrentController == ControllerKeys.Bandage))
+            if (InputManager.KeyPressed(Keys.X))
             {
                 AddSubtractBrickHit(ControllerKeys.Bandage);
-                PreviousKey = Keys.X;
             }
-            if (KeyboardState.IsKeyDown(Keys.A) && (PreviousKey != Keys.A || CurrentController == ControllerKeys.Stitch))
+            if (InputManager.KeyPressed(Keys.A))
             {
                 AddSubtractBrickHit(ControllerKeys.Stitch);
-                PreviousKey = Keys.A;
             }
-            if (KeyboardState.IsKeyDown(Keys.S) && (PreviousKey != Keys.S || CurrentController == ControllerKeys.Medicine))
+            if (InputManager.KeyPressed(Keys.S))
             {
                 AddSubtractBrickHit(ControllerKeys.Medicine);
-                PreviousKey = Keys.S;
             }
-            if (KeyboardState.IsKeyDown(Keys.O) && (PreviousKey != Keys.O || CurrentController == ControllerKeys.CPR))
+            if (InputManager.KeyPressed(Keys.O))
             {
                 AddSubtractBrickHit(ControllerKeys.CPR);
-                PreviousKey = Keys.O;
             }
-            Keys[] pressedKeys = KeyboardState.GetPressedKeys();
-            if (pressedKeys.Length != 0) PreviousKey = pressedKeys[0];
             // Update object location on viewport change
             Label Timer = (Label)Objects["Timer"];
             Timer.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);

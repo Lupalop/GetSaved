@@ -67,7 +67,6 @@ namespace Maquina.UI.Scenes
 
         private Vector2 PosWhich = Vector2.Zero;
         private bool IsMsPressed = false;
-        private bool IsKeyPressed = false;
         private bool ShakeToLeft = false;
         private int ShakeFactor = 0;
 
@@ -101,7 +100,8 @@ namespace Maquina.UI.Scenes
                     string overlayName = String.Format("fade-{0}", DateTime.Now);
                     SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
                 }
-                if ((MouseState.LeftButton == ButtonState.Released || KeyboardState.IsKeyUp(Keys.Space)) && !DeathTimeLeftController.Enabled)
+                if ((InputManager.MouseState.LeftButton == ButtonState.Released ||
+                    InputManager.KeyUp(Keys.Space)) && !DeathTimeLeftController.Enabled)
                 {
                     Label b = (Label)Objects["DeathTimer"];
                     b.Tint = Color.Red;
@@ -372,7 +372,7 @@ namespace Maquina.UI.Scenes
                 if (CurrentStage == 3 && Catchr.Graphic.Name != "human-line")
                     Catchr.Graphic = Game.Content.Load<Texture2D>("human-line");
                 
-                if ((MouseState.LeftButton == ButtonState.Pressed && !IsMsPressed) || (KeyboardState.IsKeyDown(Keys.Space) && !IsKeyPressed))
+                if ((InputManager.MouseState.LeftButton == ButtonState.Pressed && !IsMsPressed) || InputManager.KeyPressed(Keys.Space))
                 {
                     Label b = (Label)Objects["DeathTimer"];
                     b.Tint = Color.Transparent;
@@ -416,15 +416,11 @@ namespace Maquina.UI.Scenes
 
                     // Move in that direction based on elapsed time
                     Catchr.Location += differenceToPlayer * (float)gameTime.ElapsedGameTime.TotalMilliseconds * WalkSpeed;
-                    if (MouseState.LeftButton == ButtonState.Pressed)
+                    if (InputManager.MouseState.LeftButton == ButtonState.Pressed)
                         IsMsPressed = true;
-                    else
-                        IsKeyPressed = true;
                 }
-                if (MouseState.LeftButton == ButtonState.Released)
+                if (InputManager.MouseState.LeftButton == ButtonState.Released)
                     IsMsPressed = false;
-                if (KeyboardState.IsKeyUp(Keys.Space))
-                    IsKeyPressed = false;
 
                 if (IsGameEnd)
                     Objects.Remove("ObjectCatcher");

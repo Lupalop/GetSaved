@@ -19,6 +19,7 @@ namespace Maquina
         GraphicsDeviceManager Graphics;
         SpriteBatch SpriteBatch;
         SceneManager SceneManager;
+        InputManager InputManager;
         Dictionary<string, SpriteFont> Fonts;
         Dictionary<string, Song> Songs;
 
@@ -31,7 +32,7 @@ namespace Maquina
             Graphics = new GraphicsDeviceManager(this);
             // Set root directory where content files will be loaded
             Content.RootDirectory = Platform.ContentRootDirectory;
-            // Make the mouse inivisible (perhaps, this should be placed somewhere else)
+            // Make the mouse invisible (perhaps, this should be placed somewhere else)
             IsMouseVisible = false;
             // Set the default window size to (800x600)
             Graphics.PreferredBackBufferWidth = LastWindowWidth;
@@ -70,8 +71,10 @@ namespace Maquina
             // Load resources
             Fonts = resources.Content.LoadContent(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
             Songs = resources.Content.LoadContent(ResourceType.BGM, this) as Dictionary<string, Song>;
+            // Create instance
+            InputManager = new InputManager(this);
             // Initialize the Scene Manager
-            SceneManager = new SceneManager(this, SpriteBatch, Fonts, Songs, null);
+            SceneManager = new SceneManager(this, SpriteBatch, Fonts, Songs, null, InputManager);
             // Register Overlays in the scene manager
             SceneManager.Overlays.Add("mouse", new MouseOverlay(SceneManager, Content.Load<Texture2D>("mouseCur")));
 #if DEBUG
@@ -102,20 +105,12 @@ namespace Maquina
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState KeyboardState = Keyboard.GetState();
-            GamePadState GamePdState = GamePad.GetState(PlayerIndex.One);
-            MouseState MouseState = Mouse.GetState();
-            TouchPanelState TouchState = TouchPanel.GetState(this.Window);
-
-            SceneManager.GamepadState = GamePdState;
-            SceneManager.KeyboardState = KeyboardState;
-            SceneManager.MouseState = MouseState;
-            SceneManager.TouchState = TouchState;
-
-            if (GamePdState.Buttons.Back == ButtonState.Pressed || (KeyboardState.IsKeyDown(Keys.Escape)))
+            // Back/Esc.
+            if (InputManager.GamepadState.Buttons.Back == ButtonState.Pressed || InputManager.KeyPressed(Keys.Escape))
                 Exit();
 
-            if ((KeyboardState.IsKeyDown(Keys.RightAlt) || KeyboardState.IsKeyDown(Keys.LeftAlt)) && KeyboardState.IsKeyDown(Keys.Enter))
+            // Alt + Enter
+            if ((InputManager.KeyDown(Keys.RightAlt) || InputManager.KeyDown(Keys.LeftAlt)) && InputManager.KeyPressed(Keys.Enter))
             {
                 if (Graphics.IsFullScreen)
                 {
@@ -129,7 +124,7 @@ namespace Maquina
                 }
                 Graphics.ToggleFullScreen();
             }
-            
+
             SceneManager.Update(gameTime);
 
             base.Update(gameTime);

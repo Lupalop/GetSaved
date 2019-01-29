@@ -220,8 +220,8 @@ namespace Maquina.UI.Scenes
             }
             else
             {
-                if (KeyboardState.IsKeyDown(Keys.Space) || MouseState.LeftButton == ButtonState.Pressed ||
-                    MouseState.RightButton == ButtonState.Pressed || MouseState.MiddleButton == ButtonState.Pressed)
+                if (InputManager.KeyboardState.IsKeyDown(Keys.Space) || InputManager.MouseState.LeftButton == ButtonState.Pressed ||
+                    InputManager.MouseState.RightButton == ButtonState.Pressed || InputManager.MouseState.MiddleButton == ButtonState.Pressed)
                 {
                     IsJumping = true;
                     JumpEffect.Play();
