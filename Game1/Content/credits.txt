@@ -1,0 +1,39 @@
+﻿+Game Font
+
+  Zilla Slab
+    Copyright 2017, The Mozilla Foundation
+    Licensed under the SIL Open Font License 1.1
+    http://scripts.sil.org/OFL
+
++Key People
+
+  Graphic Design and Lead Programmer
+	Francis Dominic Fajardo
+
+  Ideas
+	Shannen Gabrielle Esporlas,
+	Lara Nicole Meneses,
+	MJ Moreno
+
+
++Graphics used in Game
+
+  Microsoft (Emoji set, potentially non-free)
+
+  Images from DuckDuckGo Search:
+    https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/
+    nWJ1xCb/pov-running-through-high-school-hallway-60fps_h09ooieg__F0000.png
+    https://cdn.wallpapersafari.com/15/28/a05csx.png
+
++Code contribution
+
+  ProgressBar code, 2009 Luke Rymarz
+  www.lukerymarz.com
+
++Music and SFX
+
+  Music
+  Purple Planet Music, www.purple-planet.com
+
+  SFX
+  Eric Matyas, www.soundimage.org

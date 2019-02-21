@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI.Controls;
 using Maquina.Objects;
+using System.IO;
 
 namespace Maquina.UI.Scenes
 {
@@ -21,38 +22,7 @@ namespace Maquina.UI.Scenes
         public override void LoadContent()
         {
             base.LoadContent();
-            string CreditsText = "Game Font:\n" + 
-                     "  Zilla Slab\n    Copyright 2017, The Mozilla Foundation\n    Licensed under the SIL Open Font License 1.1\n    http://scripts.sil.org/OFL \n\n" +
-                     "Key People:\n" +
-                     "  Graphic Design and Lead Programmer: Francis Dominic Fajardo\n" +
-                     "  Ideas: Shannen Gabrielle Esporlas,  Lara Nicole Meneses,  MJ Moreno\n\n" +
-                     "Graphics used in Game:\n" +
-                     "  Microsoft (Emoji set, potentially non-free)\n  Images from DuckDuckGo Search:\n    https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/\n    nWJ1xCb/pov-running-through-high-school-hallway-60fps_h09ooieg__F0000.png\n    https://cdn.wallpapersafari.com/15/28/a05csx.png\n\n" +
-                     "Code contribution:\n" +
-                     "  ProgressBar code, 2009 Luke Rymarz\n  www.lukerymarz.com\n\n" +
-                     "Music and SFX:\n" +
-                     "  Music - Purple Planet Music, www.purple-planet.com\n  SFX - Eric Matyas, www.soundimage.org";
-
             Objects = new Dictionary<string, GenericElement> {
-                { "logo", new Label("logo")
-                {
-                    Text = "Get Saved:",
-                    SpriteBatch = this.SpriteBatch, 
-                    Font = Fonts["default_l"]
-                }},
-                { "tagline", new Label("tagline")
-                {
-                    Text = "Disaster Preparedness for Everyone!",
-                    SpriteBatch = this.SpriteBatch, 
-                    Font = Fonts["default_m"]
-                }},
-                { "lb1", new Label("lb")
-                {
-                    Text = CreditsText,
-                    Location = ScreenCenter,
-                    SpriteBatch = this.SpriteBatch,
-                    Font = Fonts["default"]
-                }},
                 { "BackButton", new MenuButton("mb", SceneManager)
                 {
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
@@ -61,11 +31,53 @@ namespace Maquina.UI.Scenes
                     SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
+                { "logo", new Label("logo")
+                {
+                    Text = "Get Saved",
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch, 
+                    Font = Fonts["default_l"]
+                }},
+                { "tagline", new Label("tagline")
+                {
+                    Text = "Disaster Preparedness for Everyone!",
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch, 
+                    Font = Fonts["default_m"]
+                }},
             };
+
+            string[] CreditsText = File.ReadAllLines(Utils.CreateLocation(
+                new string[] { Platform.ContentRootDirectory, "credits.txt" }));
+
+            for (int i = 0; i < CreditsText.Length; i++)
+            {
+                // Header
+                if (CreditsText[i].StartsWith("+"))
+                {
+                    Objects.Add("lb_header" + i, new Label("lbh")
+                    {
+                        Text = CreditsText[i].Substring(1),
+                        ControlAlignment = ControlAlignment.Fixed,
+                        SpriteBatch = this.SpriteBatch,
+                        Font = Fonts["o-default_m"]
+                    });
+                    continue;
+                }
+                // Regular text
+                Objects.Add("lb" + i, new Label("lb")
+                {
+                    Text = CreditsText[i],
+                    ControlAlignment = ControlAlignment.Fixed,
+                    SpriteBatch = this.SpriteBatch,
+                    Font = Fonts["default"]
+                });
+            }
+
             // Layout stuff
             ObjectSpacing = 0;
         }
-
+        private float credPosition = 0;
         public override void Draw(GameTime GameTime)
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
@@ -79,6 +91,25 @@ namespace Maquina.UI.Scenes
         {
             base.Update(GameTime);
             base.UpdateObjects(GameTime, Objects);
+
+            int distanceFromTop = (int)(ScreenCenter.Y - (GetAllObjectsHeight(Objects) / 2));
+            int padding = 0;
+            foreach (var item in Objects.Values)
+            {
+                if (item.Name == "lbh")
+                    padding = 15;
+
+                credPosition -= 0.02f;
+                distanceFromTop += padding;
+                item.Location = new Vector2(ScreenCenter.X - (item.Bounds.Width / 2),
+                    distanceFromTop + credPosition);
+                distanceFromTop += item.Bounds.Height;
+                distanceFromTop += (ObjectSpacing + padding);
+                padding = 0;
+            }
+
+            if (credPosition <= -distanceFromTop)
+                credPosition = 400;
         }
     }
 }
