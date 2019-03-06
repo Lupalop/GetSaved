@@ -181,9 +181,13 @@ namespace Maquina.UI.Scenes
                 { "Timer", new Label("timer")
                 {
                     Text = String.Format("{0} second(s) left", TimeLeft),
-                    Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
+                    OnUpdate = () => {
+                        Label a = (Label)Objects["Timer"];
+                        a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
+                        a.Text = String.Format("{0} second(s) left", TimeLeft);
+                    },
                     Font = Fonts["o-default_l"]
                 }},
                 { "Hand1", new Image("hand1")

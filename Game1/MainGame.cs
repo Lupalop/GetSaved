@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Media;
 using Maquina.UI;
 using Maquina.UI.Scenes;
 using Maquina.Resources;
+using System.IO;
 
 namespace Maquina
 {
@@ -16,15 +17,17 @@ namespace Maquina
     /// </summary>
     public class MainGame : Game
     {
-        GraphicsDeviceManager Graphics;
-        SpriteBatch SpriteBatch;
-        SceneManager SceneManager;
-        InputManager InputManager;
-        Dictionary<string, SpriteFont> Fonts;
-        Dictionary<string, Song> Songs;
+        public GraphicsDeviceManager Graphics;
+        private SpriteBatch SpriteBatch;
+        private SceneManager SceneManager;
+        private LocaleManager LocaleManager;
+        private InputManager InputManager;
+        private PreferencesManager PreferencesManager;
+        private Dictionary<string, SpriteFont> Fonts;
+        private Dictionary<string, Song> Songs;
 
-        private int LastWindowWidth = 800;
-        private int LastWindowHeight = 600;
+        private int LastWindowWidth;
+        private int LastWindowHeight;
 
         public MainGame()
         {
@@ -32,17 +35,6 @@ namespace Maquina
             Graphics = new GraphicsDeviceManager(this);
             // Set root directory where content files will be loaded
             Content.RootDirectory = Platform.ContentRootDirectory;
-            // Make the mouse invisible (perhaps, this should be placed somewhere else)
-            IsMouseVisible = false;
-            // Set the default window size to (800x600)
-            Graphics.PreferredBackBufferWidth = LastWindowWidth;
-            Graphics.PreferredBackBufferHeight = LastWindowHeight;
-            // Allow the window to be resized by the user
-            Window.AllowUserResizing = false;
-            Window.Title = "Get Saved";
-            // Initialize the Fonts dictionary
-            Fonts = new Dictionary<string, SpriteFont>();
-            Songs = new Dictionary<string, Song>();
         }
 
         /// <summary>
@@ -53,6 +45,34 @@ namespace Maquina
         /// </summary>
         protected override void Initialize()
         {
+            // Create instance
+            PreferencesManager = new PreferencesManager();
+            LocaleManager = new LocaleManager(PreferencesManager);
+            InputManager = new InputManager(this);
+
+            // Use prefs
+            IsMouseVisible = PreferencesManager.GetBoolPref("app.window.isMouseVisible", false);
+            LastWindowWidth = PreferencesManager.GetIntPref("app.window.width", 800);
+            LastWindowHeight = PreferencesManager.GetIntPref("app.window.height", 600);
+            Window.AllowUserResizing = PreferencesManager.GetBoolPref("app.window.allowUserResizing", false);
+            // Identify if we should go fullscreen
+            if (PreferencesManager.GetBoolPref("app.window.fullscreen", false))
+            {
+                Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+                Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+
+                Graphics.ToggleFullScreen();
+            }
+            else
+            {
+                Graphics.PreferredBackBufferWidth = LastWindowWidth;
+                Graphics.PreferredBackBufferHeight = LastWindowHeight;
+            }
+            Graphics.ApplyChanges();
+
+            // Set window title
+            Window.Title = "Get Saved";
+
             base.Initialize();
         }
 
@@ -66,15 +86,13 @@ namespace Maquina
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             // Create instance of the Content Manager
             ContentManager<ResourceContent> resources = new ContentManager<ResourceContent>();
-            resources.Content = resources.Initialize(Utils.CreateLocation(
-                new string[] { Platform.ContentRootDirectory, Platform.ResourceXml }));
+            resources.Content = resources.Initialize(Path.Combine(
+                Platform.ContentRootDirectory, Platform.ResourceXml));
             // Load resources
             Fonts = resources.Content.LoadContent(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
             Songs = resources.Content.LoadContent(ResourceType.BGM, this) as Dictionary<string, Song>;
-            // Create instance
-            InputManager = new InputManager(this);
             // Initialize the Scene Manager
-            SceneManager = new SceneManager(this, SpriteBatch, Fonts, Songs, null, InputManager);
+            SceneManager = new SceneManager(this, SpriteBatch, Fonts, Songs, LocaleManager, InputManager);
             // Register Overlays in the scene manager
             SceneManager.Overlays.Add("mouse", new MouseOverlay(SceneManager, Content.Load<Texture2D>("mouseCur")));
 #if DEBUG
@@ -93,11 +111,18 @@ namespace Maquina
 #if DEBUG
             Console.WriteLine("Unloading game content");
 #endif
+            // Save window height if not in fullscreen
+            if (!Graphics.IsFullScreen)
+            {
+                PreferencesManager.SetIntPref("app.window.width", Graphics.PreferredBackBufferWidth);
+                PreferencesManager.SetIntPref("app.window.height", Graphics.PreferredBackBufferHeight);
+            }
+            // Dispose content
             SceneManager.Dispose();
             SpriteBatch.Dispose();
             Graphics.Dispose();
         }
-        
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -116,11 +141,15 @@ namespace Maquina
                 {
                     Graphics.PreferredBackBufferHeight = LastWindowHeight;
                     Graphics.PreferredBackBufferWidth = LastWindowWidth;
+                    PreferencesManager.SetBoolPref("app.window.fullscreen", false);
                 }
                 else
                 {
+                    LastWindowWidth = Graphics.PreferredBackBufferWidth;
+                    LastWindowHeight = Graphics.PreferredBackBufferHeight;
                     Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
                     Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+                    PreferencesManager.SetBoolPref("app.window.fullscreen", true);
                 }
                 Graphics.ToggleFullScreen();
             }

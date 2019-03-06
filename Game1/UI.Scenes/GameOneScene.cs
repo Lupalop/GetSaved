@@ -158,7 +158,7 @@ namespace Maquina.UI.Scenes
                     Font = Fonts["o-default_l"],
                     OnUpdate = () => {
                         Label Timer = (Label)Objects["Timer"];
-                        Timer.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
+                        Timer.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Timer.Dimensions.X, 5);
                         Timer.Text = String.Format("{0} second(s) left", MathHelper.Clamp((int)TimeLeft, 0, 100));
                     }
                 }}

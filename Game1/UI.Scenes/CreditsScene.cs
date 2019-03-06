@@ -47,8 +47,8 @@ namespace Maquina.UI.Scenes
                 }},
             };
 
-            string[] CreditsText = File.ReadAllLines(Utils.CreateLocation(
-                new string[] { Platform.ContentRootDirectory, "credits.txt" }));
+            string[] CreditsText = File.ReadAllLines(Path.Combine(
+                Platform.ContentRootDirectory, "credits.txt"));
 
             for (int i = 0; i < CreditsText.Length; i++)
             {

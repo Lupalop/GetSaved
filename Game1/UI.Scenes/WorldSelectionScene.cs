@@ -39,7 +39,7 @@ namespace Maquina.UI.Scenes
                     SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         MenuButton dfBtn = (MenuButton)Objects["mb2"];
-                        dfBtn.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5);
+                        dfBtn.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - dfBtn.Dimensions.X, 5);
                         dfBtn.Text = String.Format("Difficulty: {0}", difficulty);
                     },
                     LeftClickAction = () => ModifyDifficulty()
