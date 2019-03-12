@@ -24,7 +24,6 @@ namespace Maquina.UI.Scenes
             CurrentGame = cgame;
         }
 
-        private MouseOverlay MsOverlay;
         private Dictionary<string, GenericElement> GameObjects = new Dictionary<string, GenericElement>();
 
         private double _InitialTimeLeft;
@@ -66,7 +65,6 @@ namespace Maquina.UI.Scenes
         private Collection<GenericElement> PassedMessage = new Collection<GenericElement>();
 
         private Vector2 PosWhich = Vector2.Zero;
-        private bool IsMsPressed = false;
         private bool ShakeToLeft = false;
         private int ShakeFactor = 0;
 
@@ -100,8 +98,11 @@ namespace Maquina.UI.Scenes
                     string overlayName = String.Format("fade-{0}", DateTime.Now);
                     SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
                 }
-                if ((InputManager.MouseState.LeftButton == ButtonState.Released ||
-                    InputManager.KeyUp(Keys.Space)) && !DeathTimeLeftController.Enabled)
+                if ((InputManager.MouseUp(MouseButton.Left) ||
+                     InputManager.MouseUp(MouseButton.Right) ||
+                     InputManager.MouseUp(MouseButton.Middle) ||
+                     InputManager.KeyUp(Keys.Space)) &&
+                    !DeathTimeLeftController.Enabled)
                 {
                     Label b = (Label)Objects["DeathTimer"];
                     b.Tint = Color.Red;
@@ -305,7 +306,6 @@ namespace Maquina.UI.Scenes
 
             PointReached = Game.Content.Load<SoundEffect>("sfx/caught");
             SceneManager.PlaySong("in-pursuit");
-            MsOverlay = (MouseOverlay)SceneManager.Overlays["mouse"];
         }
 
         public override void DelayLoadContent()
@@ -372,7 +372,10 @@ namespace Maquina.UI.Scenes
                 if (CurrentStage == 3 && Catchr.Graphic.Name != "human-line")
                     Catchr.Graphic = Game.Content.Load<Texture2D>("human-line");
                 
-                if ((InputManager.MouseState.LeftButton == ButtonState.Pressed && !IsMsPressed) || InputManager.KeyPressed(Keys.Space))
+                if (InputManager.MousePressed(MouseButton.Left) ||
+                    InputManager.MousePressed(MouseButton.Right) ||
+                    InputManager.MousePressed(MouseButton.Middle) ||
+                    InputManager.KeyPressed(Keys.Space))
                 {
                     Label b = (Label)Objects["DeathTimer"];
                     b.Tint = Color.Transparent;
@@ -416,11 +419,7 @@ namespace Maquina.UI.Scenes
 
                     // Move in that direction based on elapsed time
                     Catchr.Location += differenceToPlayer * (float)gameTime.ElapsedGameTime.TotalMilliseconds * WalkSpeed;
-                    if (InputManager.MouseState.LeftButton == ButtonState.Pressed)
-                        IsMsPressed = true;
                 }
-                if (InputManager.MouseState.LeftButton == ButtonState.Released)
-                    IsMsPressed = false;
 
                 if (IsGameEnd)
                     Objects.Remove("ObjectCatcher");

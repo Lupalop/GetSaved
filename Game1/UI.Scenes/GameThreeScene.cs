@@ -23,7 +23,6 @@ namespace Maquina.UI.Scenes
             GameDifficulty = Difficulty;
         }
 
-        private MouseOverlay MsOverlay;
         private Collection<GenericElement> GameObjects = new Collection<GenericElement>();
 
         private double Score;
@@ -142,7 +141,6 @@ namespace Maquina.UI.Scenes
 
             JumpEffect = Game.Content.Load<SoundEffect>("sfx/caught");
             SceneManager.PlaySong("shenanigans");
-            MsOverlay = (MouseOverlay)SceneManager.Overlays["mouse"];
             DistanceFromBottom = -30;
         }
 
@@ -220,8 +218,10 @@ namespace Maquina.UI.Scenes
             }
             else
             {
-                if (InputManager.KeyboardState.IsKeyDown(Keys.Space) || InputManager.MouseState.LeftButton == ButtonState.Pressed ||
-                    InputManager.MouseState.RightButton == ButtonState.Pressed || InputManager.MouseState.MiddleButton == ButtonState.Pressed)
+                if (InputManager.KeyboardState.IsKeyDown(Keys.Space) ||
+                    InputManager.MousePressed(MouseButton.Left) ||
+                    InputManager.MousePressed(MouseButton.Right) ||
+                    InputManager.MousePressed(MouseButton.Middle))
                 {
                     IsJumping = true;
                     JumpEffect.Play();

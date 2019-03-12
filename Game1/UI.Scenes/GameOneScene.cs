@@ -27,7 +27,7 @@ namespace Maquina.UI.Scenes
 			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
 			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
 			};
-        private MouseOverlay MsOverlay;
+
         private Collection<GenericElement> GameObjects = new Collection<GenericElement>();
         private Collection<GenericElement> CollectedObjects = new Collection<GenericElement>();
         private Dictionary<string, Texture2D> Images = new Dictionary<string, Texture2D>();
@@ -167,7 +167,6 @@ namespace Maquina.UI.Scenes
             ObjectCaught = Game.Content.Load<SoundEffect>("sfx/caught");
 
             SceneManager.PlaySong("hide-seek");
-            MsOverlay = (MouseOverlay)SceneManager.Overlays["mouse"];
             DistanceFromBottom = -30;
         }
 
@@ -231,7 +230,9 @@ namespace Maquina.UI.Scenes
                 if (IsGameEnd)
                     Objects.Remove("ObjectCatcher");
                 else
-                    Objects["ObjectCatcher"].Location = new Vector2(MsOverlay.Bounds.X - (Objects["ObjectCatcher"].Graphic.Width / 2), Game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
+                    Objects["ObjectCatcher"].Location = new Vector2(
+                        InputManager.MousePosition.X - (Objects["ObjectCatcher"].Graphic.Width / 2),
+                        Game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
             }
             for (int i = 0; i < GameObjects.Count; i++)
             {

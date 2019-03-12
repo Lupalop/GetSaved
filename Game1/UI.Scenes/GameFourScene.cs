@@ -22,7 +22,6 @@ namespace Maquina.UI.Scenes
             GameDifficulty = Difficulty;
         }
 
-        private MouseOverlay MsOverlay;
         private Dictionary<string, GenericElement> GameObjects = new Dictionary<string, GenericElement>();
         private Collection<GenericElement> CollectedObjects = new Collection<GenericElement>();
 
@@ -271,7 +270,6 @@ namespace Maquina.UI.Scenes
             };
 
             SceneManager.PlaySong("flying-high");
-            MsOverlay = (MouseOverlay)SceneManager.Overlays["mouse"];
         }
 
         public override void DelayLoadContent()

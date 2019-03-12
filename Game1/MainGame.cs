@@ -51,7 +51,7 @@ namespace Maquina
             InputManager = new InputManager(this);
 
             // Use prefs
-            IsMouseVisible = PreferencesManager.GetBoolPref("app.window.isMouseVisible", false);
+            IsMouseVisible = PreferencesManager.GetBoolPref("app.window.useNativeCursor", false);
             LastWindowWidth = PreferencesManager.GetIntPref("app.window.width", 800);
             LastWindowHeight = PreferencesManager.GetIntPref("app.window.height", 600);
             Window.AllowUserResizing = PreferencesManager.GetBoolPref("app.window.allowUserResizing", false);
@@ -94,7 +94,10 @@ namespace Maquina
             // Initialize the Scene Manager
             SceneManager = new SceneManager(this, SpriteBatch, Fonts, Songs, LocaleManager, InputManager);
             // Register Overlays in the scene manager
-            SceneManager.Overlays.Add("mouse", new MouseOverlay(SceneManager, Content.Load<Texture2D>("mouseCur")));
+            if (!IsMouseVisible)
+            {
+                SceneManager.Overlays.Add("mouse", new MouseOverlay(SceneManager, Content.Load<Texture2D>("mouseCur")));
+            }
 #if DEBUG
             SceneManager.Overlays.Add("debug", new DebugOverlay(SceneManager));
 #endif
@@ -108,7 +111,7 @@ namespace Maquina
         /// </summary>
         protected override void UnloadContent()
         {
-#if DEBUG
+#if HAS_CONSOLE && LOG_GENERAL
             Console.WriteLine("Unloading game content");
 #endif
             // Save window height if not in fullscreen
@@ -131,7 +134,7 @@ namespace Maquina
         protected override void Update(GameTime gameTime)
         {
             // Back/Esc.
-            if (InputManager.GamepadState.Buttons.Back == ButtonState.Pressed || InputManager.KeyPressed(Keys.Escape))
+            if (InputManager.GamepadState.Buttons.Back == ButtonState.Pressed)
                 Exit();
 
             // Alt + Enter
