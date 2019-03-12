@@ -31,12 +31,9 @@ namespace Maquina.UI.Scenes
                     SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
-                { "logo", new Label("logo")
-                {
-                    Text = "Get Saved",
-                    ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch, 
-                    Font = Fonts["default_l"]
+                { "logo", new Image("logo") {
+                    Graphic = Game.Content.Load<Texture2D>("gameLogo"),
+                    SpriteBatch = this.SpriteBatch
                 }},
                 { "tagline", new Label("tagline")
                 {
@@ -60,9 +57,31 @@ namespace Maquina.UI.Scenes
                         Text = CreditsText[i].Substring(1),
                         ControlAlignment = ControlAlignment.Fixed,
                         SpriteBatch = this.SpriteBatch,
+                        Font = Fonts["o-default_l"]
+                    });
+                    continue;
+                }
+                if (CreditsText[i].StartsWith("-"))
+                {
+                    Objects.Add("lb_o" + i, new Label("lbo")
+                    {
+                        Text = CreditsText[i].Substring(1),
+                        ControlAlignment = ControlAlignment.Fixed,
+                        SpriteBatch = this.SpriteBatch,
                         Font = Fonts["o-default_m"]
                     });
                     continue;
+                }
+                if (CreditsText[i].Trim() == "")
+                {
+                    // Regular text
+                    Objects.Add("spacer" + i, new Label("spacer")
+                    {
+                        Text = CreditsText[i],
+                        ControlAlignment = ControlAlignment.Fixed,
+                        SpriteBatch = this.SpriteBatch,
+                        Font = Fonts["default"]
+                    });
                 }
                 // Regular text
                 Objects.Add("lb" + i, new Label("lb")
@@ -96,9 +115,10 @@ namespace Maquina.UI.Scenes
             int padding = 0;
             foreach (var item in Objects.Values)
             {
-                if (item.Name == "lbh")
-                    padding = 15;
-
+                if (item.Name == "mb")
+                    continue;
+                if (item.Name == "spacer")
+                    padding = 10;
                 credPosition -= 0.02f;
                 distanceFromTop += padding;
                 item.Location = new Vector2(ScreenCenter.X - (item.Bounds.Width / 2),
