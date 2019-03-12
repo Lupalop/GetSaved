@@ -140,7 +140,7 @@ namespace Maquina.UI.Scenes
             };
 
             JumpEffect = Game.Content.Load<SoundEffect>("sfx/caught");
-            SceneManager.PlaySong("shenanigans");
+            SceneManager.Audio.PlaySong("shenanigans");
             DistanceFromBottom = -30;
         }
 

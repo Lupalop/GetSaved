@@ -305,7 +305,7 @@ namespace Maquina.UI.Scenes
             };
 
             PointReached = Game.Content.Load<SoundEffect>("sfx/caught");
-            SceneManager.PlaySong("in-pursuit");
+            SceneManager.Audio.PlaySong("in-pursuit");
         }
 
         public override void DelayLoadContent()

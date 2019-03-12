@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI.Controls;
 using Maquina.Objects;
+using Microsoft.Xna.Framework.Media;
 
 namespace Maquina.UI.Scenes
 {
@@ -51,13 +52,24 @@ namespace Maquina.UI.Scenes
                     Text = "Credits",
                     Graphic = null,
                     SpriteBatch = this.SpriteBatch,
-                    Font = Fonts["default_m"],
+                    Font = Fonts["default"],
                     LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene(SceneManager))
+                }},
+                { "mb3", new MenuButton("mb", SceneManager)
+                {
+                    Text = "Mute Music",
+                    Graphic = null,
+                    SpriteBatch = this.SpriteBatch,
+                    Font = Fonts["default"],
+                    LeftClickAction = () =>
+                    {
+                        SceneManager.Audio.ToggleMute();
+                    }
                 }}
             };
-            SceneManager.PlaySong("flying-high");
+            SceneManager.Audio.PlaySong("flying-high");
             // Layout stuff
-            ObjectSpacing = 20;
+            ObjectSpacing = 12;
         }
 
         public override void Draw(GameTime gameTime)

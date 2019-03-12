@@ -23,8 +23,7 @@ namespace Maquina
         private LocaleManager LocaleManager;
         private InputManager InputManager;
         private PreferencesManager PreferencesManager;
-        private Dictionary<string, SpriteFont> Fonts;
-        private Dictionary<string, Song> Songs;
+        private AudioManager AudioManager;
 
         private int LastWindowWidth;
         private int LastWindowHeight;
@@ -47,14 +46,23 @@ namespace Maquina
         {
             // Create instance
             PreferencesManager = new PreferencesManager();
-            LocaleManager = new LocaleManager(PreferencesManager);
+            LocaleManager = new LocaleManager(PreferencesManager.GetCharPref("app.locale", Platform.DefaultLocale));
             InputManager = new InputManager(this);
+            AudioManager = new AudioManager();
 
-            // Use prefs
+            // Window
             IsMouseVisible = PreferencesManager.GetBoolPref("app.window.useNativeCursor", false);
             LastWindowWidth = PreferencesManager.GetIntPref("app.window.width", 800);
             LastWindowHeight = PreferencesManager.GetIntPref("app.window.height", 600);
             Window.AllowUserResizing = PreferencesManager.GetBoolPref("app.window.allowUserResizing", false);
+
+            // Audio
+            float soundVolume;
+            float.TryParse(PreferencesManager.GetCharPref("app.audio.sound", "1f"), out soundVolume);
+            AudioManager.SoundVolume = soundVolume;
+            AudioManager.MusicVolume = PreferencesManager.GetIntPref("app.audio.music", 255);
+            AudioManager.IsMuted = PreferencesManager.GetBoolPref("app.audio.mastermuted", false);
+
             // Identify if we should go fullscreen
             if (PreferencesManager.GetBoolPref("app.window.fullscreen", false))
             {
@@ -89,10 +97,12 @@ namespace Maquina
             resources.Content = resources.Initialize(Path.Combine(
                 Platform.ContentRootDirectory, Platform.ResourceXml));
             // Load resources
-            Fonts = resources.Content.LoadContent(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
-            Songs = resources.Content.LoadContent(ResourceType.BGM, this) as Dictionary<string, Song>;
+            Dictionary<string, SpriteFont> Fonts =
+                resources.Content.LoadContent(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
+            AudioManager.Songs =
+                resources.Content.LoadContent(ResourceType.BGM, this) as Dictionary<string, Song>;
             // Initialize the Scene Manager
-            SceneManager = new SceneManager(this, SpriteBatch, Fonts, Songs, LocaleManager, InputManager);
+            SceneManager = new SceneManager(this, SpriteBatch, Fonts, AudioManager, LocaleManager, InputManager);
             // Register Overlays in the scene manager
             if (!IsMouseVisible)
             {
@@ -114,12 +124,18 @@ namespace Maquina
 #if HAS_CONSOLE && LOG_GENERAL
             Console.WriteLine("Unloading game content");
 #endif
-            // Save window height if not in fullscreen
+
+            PreferencesManager.SetBoolPref("app.window.fullscreen", Graphics.IsFullScreen);
+            // Save window dimensions if not in fullscreen
             if (!Graphics.IsFullScreen)
             {
                 PreferencesManager.SetIntPref("app.window.width", Graphics.PreferredBackBufferWidth);
                 PreferencesManager.SetIntPref("app.window.height", Graphics.PreferredBackBufferHeight);
             }
+            PreferencesManager.SetBoolPref("app.audio.mastermuted", AudioManager.IsMuted);
+            PreferencesManager.SetCharPref("app.audio.sound", AudioManager.SoundVolume.ToString());
+            PreferencesManager.SetIntPref("app.audio.music", AudioManager.MusicVolume);
+
             // Dispose content
             SceneManager.Dispose();
             SpriteBatch.Dispose();
@@ -144,7 +160,6 @@ namespace Maquina
                 {
                     Graphics.PreferredBackBufferHeight = LastWindowHeight;
                     Graphics.PreferredBackBufferWidth = LastWindowWidth;
-                    PreferencesManager.SetBoolPref("app.window.fullscreen", false);
                 }
                 else
                 {
@@ -152,7 +167,6 @@ namespace Maquina
                     LastWindowHeight = Graphics.PreferredBackBufferHeight;
                     Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
                     Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-                    PreferencesManager.SetBoolPref("app.window.fullscreen", true);
                 }
                 Graphics.ToggleFullScreen();
             }

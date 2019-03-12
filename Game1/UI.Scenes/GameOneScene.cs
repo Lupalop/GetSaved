@@ -166,7 +166,7 @@ namespace Maquina.UI.Scenes
 
             ObjectCaught = Game.Content.Load<SoundEffect>("sfx/caught");
 
-            SceneManager.PlaySong("hide-seek");
+            SceneManager.Audio.PlaySong("hide-seek");
             DistanceFromBottom = -30;
         }
 
