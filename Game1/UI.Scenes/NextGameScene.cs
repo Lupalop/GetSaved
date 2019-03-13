@@ -79,8 +79,8 @@ namespace Maquina.UI.Scenes
                         Objects["SkipBtn"].DestinationRectangle = SrcRectSkipBtn;
                         Objects["SkipBtn"].SourceRectangle = SrcRectSkipBtn;
                     },
-                    LeftClickAction = () => { SceneManager.SwitchToScene(NextGame); },
-                    RightClickAction = () => { SceneManager.SwitchToScene(NextGame); }
+                    LeftClickAction = () => SceneManager.SwitchToScene(NextGame),
+                    RightClickAction = () => SceneManager.SwitchToScene(NextGame)
                 }},
                 { "HelpImage", new Image("htp")
                 {
