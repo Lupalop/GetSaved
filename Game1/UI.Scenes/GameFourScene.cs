@@ -86,7 +86,11 @@ namespace Maquina.UI.Scenes
             GameObjects.Add("helpman", new Helpman("helpman")
             {
                 Graphic = Game.Content.Load<Texture2D>("aid-em/helpman"),
-                Location = ScreenCenter,
+                OnUpdate = () =>
+                {
+                    Helpman helpman = (Helpman)GameObjects["helpman"];
+                    helpman.Location = new Vector2(ScreenCenter.X - helpman.Dimensions.X / 2, ScreenCenter.Y - helpman.Dimensions.Y / 2);
+                },
                 SpriteBatch = this.SpriteBatch,
                 HitsBeforeBreak = HitsBeforeSaved
             });
@@ -99,19 +103,41 @@ namespace Maquina.UI.Scenes
                 Helpman helpman = (Helpman)GameObjects["helpman"];
                 if (helpman.HitsBeforeBreak > 0)
                 {
-                    string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.DarkRed) { FadeSpeed = 0.1f });
+                    CreateFade(Color.Red);
+                    CreateFlash("dead", 1.4f);
                     helpman.MessageHolder.Add("!");
                 }
                 else
                 {
-                    string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.LightGreen) { FadeSpeed = 0.1f });
+                    CreateFade(Color.Green);
+                    CreateFlash("saved", 1.4f);
                     helpman.MessageHolder.Add("~");
                 }
                 CollectedObjects.Add(helpman);
                 GameObjects.Remove("helpman");
             }
+        }
+
+        private void CreateFlash(string resource, float scale = 1f)
+        {
+            string overlayName = String.Format("flash-{0}-{1}", DateTime.Now, new Random().Next(0, 1000));
+            try
+            {
+                SceneManager.Overlays.Add(overlayName,
+                    new FlashOverlay(SceneManager,
+                        overlayName, Game.Content.Load<Texture2D>(resource), scale) { FadeSpeed = 0.01f });
+            }
+            catch (Exception ex) { Console.WriteLine(ex); }
+        }
+        private void CreateFade(Color color)
+        {
+            string overlayName = String.Format("fade-{0}-{1}", DateTime.Now, new Random().Next(0, 1000));
+            try
+            {
+                SceneManager.Overlays.Add(overlayName,
+                    new FadeOverlay(SceneManager, overlayName, color) { FadeSpeed = 0.01f });
+            }
+            catch (Exception ex) { Console.WriteLine(ex); }
         }
 
         private void AddSubtractBrickHit(ControllerKeys cKey)
@@ -122,15 +148,11 @@ namespace Maquina.UI.Scenes
                 if (CurrentController == cKey)
                 {
                     helpman.HitsBeforeBreak--;
+                    CreateFlash("check");
                 }
                 else
                 {
-                    string overlayName = String.Format("fade-{0}-{1}", DateTime.Now, new Random().Next(0, 1000));
-                    try
-                    {
-                        SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex); }
+                    CreateFlash("cross");
                 }
                 ChangeControllerKeyNow = true;
                 if (helpman.HitsBeforeBreak <= 0)
@@ -216,7 +238,7 @@ namespace Maquina.UI.Scenes
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(80,460),
-                    Font = Fonts["default_l"],
+                    Font = Fonts["default_m"],
                     Columns = 3,
                     Rows = 1,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Bandage)
@@ -229,7 +251,7 @@ namespace Maquina.UI.Scenes
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(150, 530),
-                    Font = Fonts["default_l"],
+                    Font = Fonts["default_m"],
                     Columns = 3,
                     Rows = 1,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Stitch)
@@ -242,7 +264,7 @@ namespace Maquina.UI.Scenes
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(730,460),
-                    Font = Fonts["default_l"],
+                    Font = Fonts["default_m"],
                     Columns = 3,
                     Rows = 1,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Medicine)
@@ -255,7 +277,7 @@ namespace Maquina.UI.Scenes
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(650, 550),
-                    Font = Fonts["default_l"],
+                    Font = Fonts["default_m"],
                     Columns = 3,
                     Rows = 1,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.CPR)

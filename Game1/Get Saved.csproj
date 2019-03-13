@@ -60,6 +60,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
+    <Compile Include="UI.Overlays\FlashOverlay.cs" />
     <Compile Include="UI.Scenes\CreditsScene.cs" />
     <Compile Include="UI.Scenes\GameTwoScene.cs" />
     <Compile Include="UI.Scenes\GameFourScene.cs" />
