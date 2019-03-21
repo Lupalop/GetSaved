@@ -118,6 +118,15 @@ namespace Maquina.UI.Scenes
 
         private void CreateFlash(string resource, float scale = 1f, int delay = 0)
         {
+            // Try to remove previous flashes
+            for (int i = 0; i < SceneManager.Overlays.Keys.Count; i++)
+			{
+                if (SceneManager.Overlays.Keys.ElementAt(i).Contains("flash"))
+                {
+                    SceneManager.Overlays.Remove(SceneManager.Overlays.Keys.ElementAt(i));
+                }
+			}
+
             string overlayName = String.Format("flash-{0}-{1}{2}", DateTime.Now, new Random().Next(0, 1000), resource);
             try
             {
