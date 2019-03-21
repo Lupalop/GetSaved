@@ -103,13 +103,13 @@ namespace Maquina.UI.Scenes
                 if (helpman.HitsBeforeBreak > 0)
                 {
                     CreateFade(Color.Red);
-                    CreateFlash("dead", 1.4f, 1000);
+                    CreateFlash("aid-em/dead", 1.4f, 1000);
                     helpman.IsAlive = false;
                 }
                 else
                 {
                     CreateFade(Color.Green);
-                    CreateFlash("saved", 1.4f, 1000);
+                    CreateFlash("aid-em/saved", 1.4f, 1000);
                 }
                 CollectedObjects.Add(helpman);
                 GameObjects.Remove("helpman");
@@ -155,11 +155,11 @@ namespace Maquina.UI.Scenes
                 if (CurrentController == cKey)
                 {
                     helpman.HitsBeforeBreak--;
-                    CreateFlash("check", 1f, 500);
+                    CreateFlash("aid-em/check", 1f, 500);
                 }
                 else
                 {
-                    CreateFlash("cross", 1f, 500);
+                    CreateFlash("aid-em/cross", 1f, 500);
                 }
                 ChangeControllerKeyNow = true;
                 if (helpman.HitsBeforeBreak <= 0)

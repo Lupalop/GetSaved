@@ -44,7 +44,7 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "Dice", new Image("dice")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("dice"),
+                    Graphic = Game.Content.Load<Texture2D>("htp/dice"),
                     Location = ScreenCenter,
                     Tint = new Color(Color.White, 0),
                     SpriteBatch = this.SpriteBatch,
@@ -126,23 +126,23 @@ namespace Maquina.UI.Scenes
             {
                 // The Safety Kit
                 case Games.FallingObjects:
-                    HelpImage = Game.Content.Load<Texture2D>("htp-fallingobject");
+                    HelpImage = Game.Content.Load<Texture2D>("htp/fallingobject");
                     return new GameOneScene(SceneManager, GameDifficulty);
                 // Earthquake Escape
                 case Games.EscapeEarthquake:
-                    HelpImage = Game.Content.Load<Texture2D>("htp-esc");
+                    HelpImage = Game.Content.Load<Texture2D>("htp/esc");
                     return new GameTwoScene(SceneManager, GameDifficulty, Games.EscapeEarthquake);
                 // Fire Escape
                 case Games.EscapeFire:
-                    HelpImage = Game.Content.Load<Texture2D>("htp-esc");
+                    HelpImage = Game.Content.Load<Texture2D>("htp/esc");
                     return new GameTwoScene(SceneManager, GameDifficulty, Games.EscapeFire);
                 // Safety Jump
                 case Games.RunningForTheirLives:
-                    HelpImage = Game.Content.Load<Texture2D>("htp-dino");
+                    HelpImage = Game.Content.Load<Texture2D>("htp/dino");
                     return new GameThreeScene(SceneManager, GameDifficulty);
                 // Aid 'Em
                 case Games.HelpOthersNow:
-                    HelpImage = Game.Content.Load<Texture2D>("htp-aidem");
+                    HelpImage = Game.Content.Load<Texture2D>("htp/aidem");
                     return new GameFourScene(SceneManager, GameDifficulty);
                 // If the randomizer item failed, simply throw the world selection screen...
                 default:
