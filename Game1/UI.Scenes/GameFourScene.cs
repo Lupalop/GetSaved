@@ -240,7 +240,7 @@ namespace Maquina.UI.Scenes
                 { "Controller-Bandage", new MenuButton("controller-x", SceneManager)
                 {
                     Text = "Bandage (X)",
-                    Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
+                    //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
                     SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
@@ -253,7 +253,7 @@ namespace Maquina.UI.Scenes
                 { "Controller-Stitch", new MenuButton("controller-a", SceneManager)
                 {
                     Text = "Stitch (A)",
-                    Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
+                    //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
                     SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
@@ -266,7 +266,7 @@ namespace Maquina.UI.Scenes
                 { "Controller-Medicine", new MenuButton("controller-s", SceneManager)
                 {
                     Text = "Medicine (S)",
-                    Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
+                    //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
                     SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
@@ -279,7 +279,7 @@ namespace Maquina.UI.Scenes
                 { "Controller-CPR", new MenuButton("controller-o", SceneManager)
                 {
                     Text = "CPR (O)",
-                    Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
+                    //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
                     SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
