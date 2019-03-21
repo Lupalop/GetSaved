@@ -13,27 +13,34 @@ namespace Maquina.UI.Scenes
 {
     public class FlashOverlay : OverlayBase, IDisposable
     {
-        public FlashOverlay(SceneManager sceneManager, string overlayKey, Texture2D image, float scale)
+        public FlashOverlay(SceneManager sceneManager,
+            string overlayKey, Texture2D image,
+            float scale, int delay = 0)
             : base(sceneManager, "Fade Overlay")
         {
-            this.OverlayKey = overlayKey;
-            this.FadeSpeed = 0.1f;
-            this.FadeBackground = image;
-            this.Scale = scale;
+            OverlayKey = overlayKey;
+            FadeSpeed = 0.1f;
+            FadeBackground = image;
+            Scale = scale;
+            Delay = delay;
         }
 
+        private int Delay = 0;
         private float Opacity = 1f;
         private string OverlayKey;
         public Texture2D FadeBackground { get; set; }
         public float FadeSpeed { get; set; }
 
         private float Scale;
+        private Timer DelayTimer;
+        private bool IsReady = false;
 
         public override void LoadContent()
         {
             Objects = new Dictionary<string, GenericElement> {
                 { "Background", new Image("Background")
                 {
+                    Location = ScreenCenter,
                     SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Image BG = (Image)Objects["Background"];
@@ -43,6 +50,14 @@ namespace Maquina.UI.Scenes
                     Scale = this.Scale
                 }}
             };
+            if (Delay > 0)
+            {
+                DelayTimer = new Timer(Delay) { AutoReset = false, Enabled = true };
+                DelayTimer.Elapsed += delegate
+                {
+                    IsReady = true;
+                };
+            }
             base.LoadContent();
         }
 
@@ -56,7 +71,10 @@ namespace Maquina.UI.Scenes
 
         public override void Update(GameTime gameTime)
         {
-            Opacity -= FadeSpeed;
+            if (IsReady)
+            {
+                Opacity -= FadeSpeed;
+            }
 
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);

@@ -15,10 +15,13 @@ namespace Maquina.UI.Scenes
 {
     public class GameEndOverlay : OverlayBase
     {
-        public GameEndOverlay(SceneManager SceneManager, Games cGame, Collection<GenericElement> passedMessage, SceneBase parentScene)
-            : base(SceneManager, "Game End Overlay", parentScene)
+        public GameEndOverlay(SceneManager sceneManager,
+            Games currentGame, Collection<GenericElement> passedMessage,
+            SceneBase parentScene)
+            : base(sceneManager, "Game End Overlay", parentScene)
         {
-            currentGame = cGame;
+            CurrentGame = currentGame;
+            ParentScene = parentScene;
             Objects = new Dictionary<string, GenericElement> {
                 { "Background", new Image("Background")
                 {
@@ -55,7 +58,7 @@ namespace Maquina.UI.Scenes
                     Columns = 3,
                     Text = "Try Again",
                     Font = Fonts["default_m"],
-                    LeftClickAction = () => { SceneManager.SwitchToScene(new NextGameScene(SceneManager, currentGame)); SceneManager.Overlays.Remove("GameEnd"); }
+                    LeftClickAction = () => { SceneManager.SwitchToScene(new NextGameScene(SceneManager, CurrentGame)); SceneManager.Overlays.Remove("GameEnd"); }
                 }},
                 { "MainMenuBtn", new MenuButton("MainMenuBtn", SceneManager)
                 {
@@ -71,14 +74,14 @@ namespace Maquina.UI.Scenes
                 }}
             };
 
-            switch (currentGame)
+            switch (CurrentGame)
             {
                 case Games.FallingObjects:
                     Game1End(passedMessage);
                     break;
                 case Games.EscapeEarthquake:
                 case Games.EscapeFire:
-                    Game2End(passedMessage);
+                    Game2End();
                     break;
                 case Games.RunningForTheirLives:
                     Game3End();
@@ -98,19 +101,19 @@ namespace Maquina.UI.Scenes
                 SceneManager.Overlays.Add("fade-{0}", new FadeOverlay(SceneManager, "fade-{0}"));
         }
 
-        Games currentGame;
-        public override void Draw(GameTime GameTime)
+        Games CurrentGame;
+        public override void Draw(GameTime gameTime)
         {
             SpriteBatch.Begin();
-            base.Draw(GameTime);
-            base.DrawObjects(GameTime, Objects);
+            base.Draw(gameTime);
+            base.DrawObjects(gameTime, Objects);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime GameTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(GameTime);
-            base.UpdateObjects(GameTime, Objects);
+            base.Update(gameTime);
+            base.UpdateObjects(gameTime, Objects);
         }
 
 
@@ -133,58 +136,67 @@ namespace Maquina.UI.Scenes
             }
         }
 
-        public void Game2End(Collection<GenericElement> PassedMsg)
+        public void Game2End()
         {
-            if (PassedMsg.Count != 0)
-            {
-                if ((bool)PassedMsg[0].MessageHolder[0] == false)
-                    SetGameEndGraphic(GameEndStates.GameOver);
-                else if ((bool)PassedMsg[0].MessageHolder[0] == true)
-                    SetGameEndGraphic(GameEndStates.GameWon);
-            }
-            else
+            // Cast
+            GameTwoScene scene = (GameTwoScene)ParentScene;
+            //
+            if (scene.IsTimedOut)
             {
                 SetGameEndGraphic(GameEndStates.TimesUp);
+                return;
             }
-
+            //
+            if (!scene.IsLevelPassed)
+            {
+                SetGameEndGraphic(GameEndStates.GameOver);
+                return;
+            }
+            SetGameEndGraphic(GameEndStates.GameWon);
         }
 
         public void Game3End()
         {
-            // Hardcoded to show Game over, no timer, no finish line crap
+            // Hardcoded to show Game over, no timer, no finish line
             SetGameEndGraphic(GameEndStates.GameOver);
         }
-
+        // TODO: Merge Game1 with Game4
         public void Game1End(Collection<GenericElement> CollectedObjects)
         {
-            int correctCrap = 0;
-            int wrongCrap = 0;
-            // Count correct crap
-            foreach (var crap in CollectedObjects)
+            int correctItems = 0;
+            int incorrectItems = 0;
+            // Count correct item
+            foreach (FallingItem item in CollectedObjects)
             {
-                if (crap.MessageHolder[0].ToString().Contains('!'))
-                    wrongCrap++;
-                else
-                    correctCrap++;
+                if (!item.IsEmergencyItem)
+                {
+                    incorrectItems++;
+                    continue;
+                }
+                correctItems++;
             }
 
-            if (wrongCrap <= 1)
+            if (incorrectItems <= 1)
+            {
                 SetGameEndGraphic(GameEndStates.GameWon);
+            }
             else
+            {
                 SetGameEndGraphic(GameEndStates.TimesUp);
+            }
 
-            Objects.Add("CorrectCrap", new Label("CorrectCrap")
+            Objects.Add("CorrectItem", new Label("CorrectItem")
             {
                 Location = ScreenCenter,
                 SpriteBatch = this.SpriteBatch,
-                Text = "Correct items: " + correctCrap,
+                Text = "Correct items: " + correctItems,
                 Font = Fonts["default_m"]
             });
-            Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
+            Objects.Add("IncorrectItem", new Label("IncorrectItem")
             {
                 Location = ScreenCenter,
                 SpriteBatch = this.SpriteBatch,
-                Text = "Incorrect items: " + wrongCrap,
+                Text = "Incorrect items: " + incorrectItems,
                 Font = Fonts["default_m"]
             });
         }
@@ -193,19 +205,25 @@ namespace Maquina.UI.Scenes
         {
             int peopleSaved = 0;
             int peopleDied = 0;
-            // Count crap
-            foreach (var crap in CollectedObjects)
+            // Count item
+            foreach (Helpman crap in CollectedObjects)
             {
-                if (crap.MessageHolder[0].ToString().Contains('!'))
+                if (!crap.IsAlive)
+                {
                     peopleDied++;
-                else
-                    peopleSaved++;
+                    continue;
+                }
+                peopleSaved++;
             }
 
             if (peopleDied <= 1)
+            {
                 SetGameEndGraphic(GameEndStates.GameWon);
+            }
             else
+            {
                 SetGameEndGraphic(GameEndStates.TimesUp);
+            }
 
             Objects.Add("CorrectCrap", new Label("CorrectCrap")
             {

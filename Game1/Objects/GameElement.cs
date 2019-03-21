@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Maquina.Elements
 {
-    public abstract class GameElement : GenericElement, IBaseElement
+    public abstract class GameElement : GenericElement
     {
         // Constructor
         public GameElement(string name)

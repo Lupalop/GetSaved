@@ -82,7 +82,7 @@ namespace Maquina.UI.Scenes
             if (!IsGameEnd)
             {
                 // create new button object
-                Image nwBtn = new Image("crap")
+                Image nwBtn = new Image("item")
                 {
                     Graphic = Game.Content.Load<Texture2D>("dino/fire"),
                     Location = new Vector2((float)RandNum.Next(StartingXPos - 100, StartingXPos), MaxYPos),

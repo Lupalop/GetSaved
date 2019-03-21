@@ -22,7 +22,7 @@ namespace Maquina.UI.Scenes
             GameDifficulty = Difficulty;
         }
 
-        private Collection<string> FallingObjects = new Collection<string> {
+        private Collection<string> AvailableItems = new Collection<string> {
 			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
 			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
 			};
@@ -69,10 +69,7 @@ namespace Maquina.UI.Scenes
             TimeLeftController = new Timer(1000)                { AutoReset = true, Enabled = true };
             GameTimer = new Timer(TimeLeft * 1000)              { AutoReset = false, Enabled = true };
             // Add the event handler to the timer object
-            ProjectileGenerator.Elapsed += delegate
-            { 
-                GenerateFallingItems();
-            };
+            ProjectileGenerator.Elapsed += CreateFallingItem;
             TimeLeftController.Elapsed += delegate
             {
                 if (TimeLeft > 0)
@@ -81,27 +78,32 @@ namespace Maquina.UI.Scenes
             GameTimer.Elapsed += delegate
             {
                 IsGameEnd = true;
-                SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(SceneManager, Games.FallingObjects, CollectedObjects, this));
+                SceneManager.Overlays.Add("GameEnd",
+                    new GameEndOverlay(SceneManager, Games.FallingObjects, CollectedObjects, this));
             };
         }
 
-        private void GenerateFallingItems()
+        private void CreateFallingItem(object sender, EventArgs eventArgs)
         {
             if (!IsGameEnd)
             {
-                // create new button object
-                Image nwBtn = new Image("crap")
+                FallingItem fallingItem = new FallingItem("falling-item")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("point"),
-                    Location = new Vector2((float)RandNum.Next(5, (int)Game.GraphicsDevice.Viewport.Width - 5), 30),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    // Random X, constant Y initial value
+                    Location = new Vector2(
+                        (float)RandNum.Next(5, Game.GraphicsDevice.Viewport.Width - 5), 30),
                     SpriteBatch = this.SpriteBatch
                 };
-                string tex = FallingObjects[RandNum.Next(0, FallingObjects.Count)];
-                nwBtn.MessageHolder.Add(tex);
-                if (tex.Contains('!') || tex.Contains('~')) tex = tex.Remove(0, 1);
-                nwBtn.Graphic = Images[tex.ToLower()];
-                GameObjects.Add(nwBtn);
+
+                string givenName = AvailableItems[RandNum.Next(0, AvailableItems.Count)];
+                if (givenName.Contains('!'))
+                {
+                    fallingItem.IsEmergencyItem = false;
+                    givenName = givenName.Remove(0, 1);
+                }
+
+                fallingItem.Graphic = Images[givenName.ToLower()];
+                GameObjects.Add(fallingItem);
             }
         }
 
@@ -109,10 +111,10 @@ namespace Maquina.UI.Scenes
         {
             base.LoadContent();
 
-            foreach (var item in FallingObjects)
+            foreach (var item in AvailableItems)
             {
                 string it = item;
-                if (it.Contains('!') || it.Contains('~'))
+                if (it.Contains('!'))
                     it = it.Remove(0, 1);
                 Images.Add(it.ToLower(), Game.Content.Load<Texture2D>("falling-object/" + it));
             }
@@ -221,25 +223,27 @@ namespace Maquina.UI.Scenes
 
         public override void Update(GameTime GameTime)
         {
-            base.Update(GameTime);
-            base.UpdateObjects(GameTime, Objects);
-            base.UpdateObjects(GameTime, GameObjects);
             if (Objects.ContainsKey("ObjectCatcher"))
             {
                 if (IsGameEnd)
                     Objects.Remove("ObjectCatcher");
                 else
                     Objects["ObjectCatcher"].Location = new Vector2(
-                        InputManager.MousePosition.X - (Objects["ObjectCatcher"].Graphic.Width / 2),
-                        Game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
+                        InputManager.MousePosition.X - 
+                        (Objects["ObjectCatcher"].Graphic.Width / 2),
+                        Game.GraphicsDevice.Viewport.Height -
+                        Objects["ObjectCatcher"].Bounds.Height + DistanceFromBottom);
             }
+
             for (int i = 0; i < GameObjects.Count; i++)
             {
-                // Moves Game object
-                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X, GameObjects[i].Location.Y + FallingSpeed);
+                // Positions the falling object
+                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X,
+                    GameObjects[i].Location.Y + FallingSpeed);
 
-                // Check if Game object collides/intersects with catcher
-                if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
+                // Check if game object intersects with emergency kit
+                if (Objects.ContainsKey("ObjectCatcher") &&
+                    Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
                 {
                     ObjectCaught.Play();
                     CollectedObjects.Add(GameObjects[i]);
@@ -247,10 +251,16 @@ namespace Maquina.UI.Scenes
                     return;
                 }
 
-                // Remove objects once it exceeds the object catcher, this also removes all objects when time's up
-                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || IsGameEnd)
+                // Remove the object once it reaches the bottom-most part of the window
+                // This also removes all the objects when the time is up
+                if ((Objects.ContainsKey("ObjectCatcher") &&
+                    (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || IsGameEnd)
                     GameObjects.Remove(GameObjects[i]);
             }
+
+            base.Update(GameTime);
+            base.UpdateObjects(GameTime, Objects);
+            base.UpdateObjects(GameTime, GameObjects);
         }
     }
 }

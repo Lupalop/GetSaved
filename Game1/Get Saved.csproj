@@ -90,6 +90,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
+    <Compile Include="Objects\FallingItem.cs" />
+    <Compile Include="Objects\Helpman.cs" />
     <Compile Include="UI.Overlays\FlashOverlay.cs" />
     <Compile Include="UI.Scenes\CreditsScene.cs" />
     <Compile Include="UI.Scenes\GameTwoScene.cs" />
@@ -102,7 +104,6 @@
     <Compile Include="UI.Scenes\WorldSelectionScene.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="Objects\GameElement.cs" />
-    <Compile Include="Objects\Helpman.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

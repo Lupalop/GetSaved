@@ -3,29 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Maquina.Elements;
-using Maquina.UI.Scenes;
 
 namespace Maquina.Elements
 {
     public class Helpman : GameElement
     {
-        public Helpman(string ObjectName)
-            : base(ObjectName)
+        public Helpman(string name) : base(name)
         {
+            // Always assume that the person is alive.
+            IsAlive = true;
         }
-
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
+        public bool IsAlive { get; set; }
     }
 }

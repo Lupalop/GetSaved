@@ -144,7 +144,7 @@ namespace Maquina.UI.Scenes
                 case Games.HelpOthersNow:
                     HelpImage = Game.Content.Load<Texture2D>("htp-aidem");
                     return new GameFourScene(SceneManager, GameDifficulty);
-                // If the randomizer crap failed, simply throw the world selection screen...
+                // If the randomizer item failed, simply throw the world selection screen...
                 default:
                     HelpImage = new Texture2D(Game.GraphicsDevice, 0, 0);
                     return new WorldSelectionScene(SceneManager);

@@ -60,8 +60,8 @@ namespace Maquina.UI.Scenes
         private Timer DeathTimeLeftController;
         private Timer GameTimer;
 
-        private GenericElement EndStateDeterminer = new Label("cr");
-        private Collection<GenericElement> PassedMessage = new Collection<GenericElement>();
+        public bool IsLevelPassed = false;
+        public bool IsTimedOut = false;
 
         private Vector2 PosWhich = Vector2.Zero;
         private bool ShakeToLeft = false;
@@ -120,7 +120,7 @@ namespace Maquina.UI.Scenes
                 {
                     GameTimer.Enabled = false;
                     TimeLeftController.Enabled = false;
-                    EndStateDeterminer.MessageHolder.Add(false);
+                    IsTimedOut = true;
                     CallEndOverlay();
                 }
             };
@@ -134,7 +134,6 @@ namespace Maquina.UI.Scenes
 
         private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
         {
-            EndStateDeterminer.MessageHolder.Add(false);
             CallEndOverlay();
             GameTimer.Enabled = false;
         }
@@ -142,8 +141,8 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            PassedMessage.Add(EndStateDeterminer);
-            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(SceneManager, Games.EscapeEarthquake, PassedMessage, this));
+            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(
+                SceneManager, Games.EscapeEarthquake, null, this));
         }
 
         private void ResetPlayerPosition()
@@ -401,7 +400,7 @@ namespace Maquina.UI.Scenes
                                 SetHelpMessage(0);
                                 GameTimer.Enabled = false;
                                 TimeLeftController.Enabled = false;
-                                EndStateDeterminer.MessageHolder.Add(true);
+                                IsLevelPassed = true;
                                 CallEndOverlay();
                                 return;
                             default:

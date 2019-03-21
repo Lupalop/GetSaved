@@ -103,28 +103,27 @@ namespace Maquina.UI.Scenes
                 if (helpman.HitsBeforeBreak > 0)
                 {
                     CreateFade(Color.Red);
-                    CreateFlash("dead", 1.4f);
-                    helpman.MessageHolder.Add("!");
+                    CreateFlash("dead", 1.4f, 1000);
+                    helpman.IsAlive = false;
                 }
                 else
                 {
                     CreateFade(Color.Green);
-                    CreateFlash("saved", 1.4f);
-                    helpman.MessageHolder.Add("~");
+                    CreateFlash("saved", 1.4f, 1000);
                 }
                 CollectedObjects.Add(helpman);
                 GameObjects.Remove("helpman");
             }
         }
 
-        private void CreateFlash(string resource, float scale = 1f)
+        private void CreateFlash(string resource, float scale = 1f, int delay = 0)
         {
-            string overlayName = String.Format("flash-{0}-{1}", DateTime.Now, new Random().Next(0, 1000));
+            string overlayName = String.Format("flash-{0}-{1}{2}", DateTime.Now, new Random().Next(0, 1000), resource);
             try
             {
                 SceneManager.Overlays.Add(overlayName,
                     new FlashOverlay(SceneManager,
-                        overlayName, Game.Content.Load<Texture2D>(resource), scale) { FadeSpeed = 0.01f });
+                        overlayName, Game.Content.Load<Texture2D>(resource), scale, delay) { FadeSpeed = 0.1f });
             }
             catch (Exception ex) { Console.WriteLine(ex); }
         }
@@ -147,11 +146,11 @@ namespace Maquina.UI.Scenes
                 if (CurrentController == cKey)
                 {
                     helpman.HitsBeforeBreak--;
-                    CreateFlash("check");
+                    CreateFlash("check", 1f, 500);
                 }
                 else
                 {
-                    CreateFlash("cross");
+                    CreateFlash("cross", 1f, 500);
                 }
                 ChangeControllerKeyNow = true;
                 if (helpman.HitsBeforeBreak <= 0)
