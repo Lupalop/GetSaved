@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.UI.Controls;
+using Maquina.Elements;
 using System.Timers;
 
 namespace Maquina.UI.Scenes
@@ -31,7 +31,7 @@ namespace Maquina.UI.Scenes
 
         public override void LoadContent()
         {
-            Objects = new Dictionary<string, Objects.GenericElement> {
+            Objects = new Dictionary<string, GenericElement> {
                 { "Background", new Image("Background")
                 {
                     SpriteBatch = this.SpriteBatch,

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.UI.Controls;
-using Maquina.Objects;
+using Maquina.Elements;
 using Microsoft.Xna.Framework.Media;
 
 namespace Maquina.UI.Scenes
@@ -57,17 +56,17 @@ namespace Maquina.UI.Scenes
                 }},
                 { "mb3", new MenuButton("mb", SceneManager)
                 {
-                    Text = "Mute Music",
+                    Text = "Mute Audio",
                     Graphic = null,
                     SpriteBatch = this.SpriteBatch,
                     Font = Fonts["default"],
                     LeftClickAction = () =>
                     {
-                        SceneManager.Audio.ToggleMute();
+                        SceneManager.AudioManager.ToggleMute();
                     }
                 }}
             };
-            SceneManager.Audio.PlaySong("flying-high");
+            SceneManager.AudioManager.PlaySong("flying-high");
             // Layout stuff
             ObjectSpacing = 12;
         }

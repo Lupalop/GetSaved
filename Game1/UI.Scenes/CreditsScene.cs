@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.UI.Controls;
-using Maquina.Objects;
+using Maquina.Elements;
 using System.IO;
 
 namespace Maquina.UI.Scenes

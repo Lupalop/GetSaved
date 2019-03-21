@@ -8,8 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.UI.Controls;
-using Maquina.Objects;
+using Maquina.Elements;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.ObjectModel;
 
@@ -140,7 +139,7 @@ namespace Maquina.UI.Scenes
             };
 
             JumpEffect = Game.Content.Load<SoundEffect>("sfx/caught");
-            SceneManager.Audio.PlaySong("shenanigans");
+            SceneManager.AudioManager.PlaySong("shenanigans");
             DistanceFromBottom = -30;
         }
 

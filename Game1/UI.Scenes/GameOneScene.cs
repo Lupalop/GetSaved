@@ -8,8 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.UI.Controls;
-using Maquina.Objects;
+using Maquina.Elements;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.ObjectModel;
 
@@ -166,7 +165,7 @@ namespace Maquina.UI.Scenes
 
             ObjectCaught = Game.Content.Load<SoundEffect>("sfx/caught");
 
-            SceneManager.Audio.PlaySong("hide-seek");
+            SceneManager.AudioManager.PlaySong("hide-seek");
             DistanceFromBottom = -30;
         }
 

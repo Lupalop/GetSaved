@@ -7,8 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.UI.Controls;
-using Maquina.Objects;
+using Maquina.Elements;
 
 namespace Maquina.UI.Scenes
 {

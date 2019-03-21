@@ -8,8 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.UI.Controls;
-using Maquina.Objects;
+using Maquina.Elements;
 using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
@@ -291,7 +290,7 @@ namespace Maquina.UI.Scenes
                 }}
             };
 
-            SceneManager.Audio.PlaySong("flying-high");
+            SceneManager.AudioManager.PlaySong("flying-high");
         }
 
         public override void DelayLoadContent()

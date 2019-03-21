@@ -8,8 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.UI.Controls;
-using Maquina.Objects;
+using Maquina.Elements;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.ObjectModel;
 
@@ -61,7 +60,7 @@ namespace Maquina.UI.Scenes
         private Timer DeathTimeLeftController;
         private Timer GameTimer;
 
-        private GenericElement EndStateDeterminer = new Controls.Label("cr");
+        private GenericElement EndStateDeterminer = new Label("cr");
         private Collection<GenericElement> PassedMessage = new Collection<GenericElement>();
 
         private Vector2 PosWhich = Vector2.Zero;
@@ -305,7 +304,7 @@ namespace Maquina.UI.Scenes
             };
 
             PointReached = Game.Content.Load<SoundEffect>("sfx/caught");
-            SceneManager.Audio.PlaySong("in-pursuit");
+            SceneManager.AudioManager.PlaySong("in-pursuit");
         }
 
         public override void DelayLoadContent()

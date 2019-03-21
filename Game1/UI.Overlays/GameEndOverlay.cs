@@ -8,8 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.UI.Controls;
-using Maquina.Objects;
+using Maquina.Elements;
 using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
@@ -96,7 +95,7 @@ namespace Maquina.UI.Scenes
 
             // Show a fade effect to hide first frame misposition
             if (!SceneManager.Overlays.ContainsKey("fade-{0}"))
-                SceneManager.Overlays.Add("fade-{0}", new Scenes.FadeOverlay(SceneManager, "fade-{0}"));
+                SceneManager.Overlays.Add("fade-{0}", new FadeOverlay(SceneManager, "fade-{0}"));
         }
 
         Games currentGame;

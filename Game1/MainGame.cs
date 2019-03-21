@@ -93,14 +93,14 @@ namespace Maquina
             // Create instance of SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             // Create instance of the Content Manager
-            ContentManager<ResourceContent> resources = new ContentManager<ResourceContent>();
+            ContentLoader<ResourceContent> resources = new ContentLoader<ResourceContent>();
             resources.Content = resources.Initialize(Path.Combine(
                 Platform.ContentRootDirectory, Platform.ResourceXml));
             // Load resources
             Dictionary<string, SpriteFont> Fonts =
-                resources.Content.LoadContent(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
+                resources.Content.Load(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
             AudioManager.Songs =
-                resources.Content.LoadContent(ResourceType.BGM, this) as Dictionary<string, Song>;
+                resources.Content.Load(ResourceType.BGM, this) as Dictionary<string, Song>;
             // Initialize the Scene Manager
             SceneManager = new SceneManager(this, SpriteBatch, Fonts, AudioManager, LocaleManager, InputManager);
             // Register Overlays in the scene manager
@@ -182,9 +182,6 @@ namespace Maquina
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            // Scale images using nearest neighbor
-            GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-
             SceneManager.Draw(gameTime);
             base.Draw(gameTime);
         }

@@ -15,8 +15,8 @@ namespace Maquina
         [STAThread]
         private static void Main(string[] args)
         {
-            Platform.RunGame = RunGame;
-            Platform.StartEngine(args);
+            Startup.GameAction = RunGame;
+            Startup.Run(args);
         }
 
         private static void RunGame()
