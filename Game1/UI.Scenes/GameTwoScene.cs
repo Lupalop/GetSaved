@@ -197,7 +197,7 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("game4-bg1"),
+                    Graphic = Game.Content.Load<Texture2D>("game-bg/4_1"),
                     DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height),
                     ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = () => {
@@ -389,12 +389,12 @@ namespace Maquina.UI.Scenes
                             case 1:
                                 SetHelpMessage(2);
                                 CurrentStage = 2;
-                                Objects["GameBG"].Graphic = Game.Content.Load<Texture2D>("game4-bg2");
+                                Objects["GameBG"].Graphic = Game.Content.Load<Texture2D>("game-bg/4_2");
                                 return;
                             case 2:
                                 SetHelpMessage(3);
                                 CurrentStage = 3;
-                                Objects["GameBG"].Graphic = Game.Content.Load<Texture2D>("game4-bg3");
+                                Objects["GameBG"].Graphic = Game.Content.Load<Texture2D>("game-bg/4_3");
                                 return;
                             case 3:
                                 SetHelpMessage(0);

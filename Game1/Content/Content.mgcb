@@ -157,18 +157,6 @@
 /processorParam:TextureFormat=Color
 /build:dino/fire.png
 
-#begin dino/gameBG3.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:dino/gameBG3.jpg
-
 #begin falling-object/ball.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -414,7 +402,7 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/ZillaSlab_small.spritefont
 
-#begin game4-bg1.png
+#begin game-bg/1.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -424,9 +412,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:game4-bg1.png
+/build:game-bg/1.jpg
 
-#begin game4-bg2.png
+#begin game-bg/2.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -436,9 +424,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:game4-bg2.png
+/build:game-bg/2.jpg
 
-#begin game4-bg3.png
+#begin game-bg/3.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -448,9 +436,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:game4-bg3.png
+/build:game-bg/3.jpg
 
-#begin gameBG1.jpg
+#begin game-bg/4_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -460,9 +448,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gameBG1.jpg
+/build:game-bg/4_1.png
 
-#begin gameBG2.jpg
+#begin game-bg/4_2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -472,7 +460,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gameBG2.jpg
+/build:game-bg/4_2.png
+
+#begin game-bg/4_3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:game-bg/4_3.png
 
 #begin gameLogo.png
 /importer:TextureImporter
