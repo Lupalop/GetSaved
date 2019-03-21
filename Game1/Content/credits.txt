@@ -1,5 +1,8 @@
-﻿This application was created by the
-Get Saved Life Labs Group
+﻿
+This app was created by:
+Get Saved
+Life Labs Group
+Grade 9AM-1, APEC Schools - Muntinlupa
 
 
 +Key People
@@ -9,9 +12,9 @@ Francis Dominic Fajardo
 
 
 -Ideas
-Shannen Gabrielle Esporlas,
-Lara Nicole Meneses,
-MJ Moreno
+Shannen Gabrielle Esporlas
+Lara Nicole Meneses
+Michael Joseph Moreno
 
 
 +Graphics
@@ -34,7 +37,7 @@ www.purple-planet.com
 
 -SFX
 Eric Matyas
-www.soundimage.orgs
+www.soundimage.org
 
 
 +Special Thanks
