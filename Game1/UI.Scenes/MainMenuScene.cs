@@ -46,23 +46,30 @@ namespace Maquina.UI.Scenes
                     SpriteBatch = this.SpriteBatch,
                     Font = Fonts["o-default"]
                 }},
-                { "mb2", new MenuButton("mb", SceneManager)
+                { "container1", new ElementContainer("cr")
                 {
-                    Text = "Credits",
-                    Graphic = null,
-                    SpriteBatch = this.SpriteBatch,
-                    Font = Fonts["default"],
-                    LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene(SceneManager))
-                }},
-                { "mb3", new MenuButton("mb", SceneManager)
-                {
-                    Text = "Mute Audio",
-                    Graphic = null,
-                    SpriteBatch = this.SpriteBatch,
-                    Font = Fonts["default"],
-                    LeftClickAction = () =>
-                    {
-                        SceneManager.AudioManager.ToggleMute();
+                    ElementSpacing = 5,
+                    ContainerAlignment = ContainerAlignment.Horizontal,
+                    Children = new Dictionary<string, GenericElement> {
+                        { "mb2", new MenuButton("mb", SceneManager)
+                        {
+                            Text = "Credits",
+                            Graphic = null,
+                            SpriteBatch = this.SpriteBatch,
+                            Font = Fonts["default"],
+                            LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene(SceneManager))
+                        }},
+                        { "mb3", new MenuButton("mb", SceneManager)
+                        {
+                            Text = "Mute Audio",
+                            Graphic = null,
+                            SpriteBatch = this.SpriteBatch,
+                            Font = Fonts["default"],
+                            LeftClickAction = () =>
+                            {
+                                SceneManager.AudioManager.ToggleMute();
+                            }
+                        }}
                     }
                 }}
             };
