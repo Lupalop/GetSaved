@@ -1,6 +1,9 @@
-﻿
-This app was created by:
-Get Saved
+﻿~gameLogo
+
+_Disaster Preparedness for Everyone!
+
+This app was created by
+_Get Saved
 Life Labs Group
 Grade 9AM-1, APEC Schools - Muntinlupa
 
@@ -10,8 +13,8 @@ Grade 9AM-1, APEC Schools - Muntinlupa
 -Lead Programmer
 Francis Dominic Fajardo
 
-
--Ideas
+-Concept Ideas
+Jake Baria
 Shannen Gabrielle Esporlas
 Lara Nicole Meneses
 Michael Joseph Moreno
@@ -22,7 +25,7 @@ Michael Joseph Moreno
 -Emoji set, potentially non-free
 Microsoft Corporation
 
--Images from DuckDuckGo Search:
+-Images from DuckDuckGo Search
 https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/
 nWJ1xCb/pov-running-through-high-school-hallway-60fps_h09ooieg__F0000.png
 https://cdn.wallpapersafari.com/15/28/a05csx.png
