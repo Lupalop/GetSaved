@@ -13,10 +13,10 @@ namespace Maquina.UI.Scenes
 {
     public class CreditsScene : SceneBase
     {
-        public CreditsScene(SceneManager SceneManager)
-            : base(SceneManager, "Credits")
-        {
-        }
+        public CreditsScene(SceneManager SceneManager) : base(SceneManager, "Credits") {}
+
+        private Dictionary<string, GenericElement> ScrollingElements;
+        private float ScrollPosition = 0;
 
         public override void LoadContent()
         {
@@ -25,33 +25,35 @@ namespace Maquina.UI.Scenes
                 { "BackButton", new MenuButton("mb", SceneManager)
                 {
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
-                    Location = new Vector2(5,5),
+                    Location = new Vector2(5, 5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
-                }},
-                { "logo", new Image("logo") {
-                    Graphic = Game.Content.Load<Texture2D>("gameLogo"),
-                    SpriteBatch = this.SpriteBatch
-                }},
-                { "tagline", new Label("tagline")
-                {
-                    Text = "Disaster Preparedness for Everyone!",
-                    ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch, 
-                    Font = Fonts["default_m"]
-                }},
+                }}
             };
 
+            ScrollingElements = new Dictionary<string, GenericElement>();
             string[] CreditsText = File.ReadAllLines(Path.Combine(
                 Platform.ContentRootDirectory, "credits.txt"));
 
+            // Loop to parse contents of credits file
             for (int i = 0; i < CreditsText.Length; i++)
             {
-                // Header
+                // Image
+                if (CreditsText[i].StartsWith("~"))
+                {
+                    ScrollingElements.Add("image" + i, new Image("image")
+                    {
+                        Graphic = Game.Content.Load<Texture2D>(CreditsText[i].Substring(1)),
+                        SpriteBatch = this.SpriteBatch
+                    });
+                    continue;
+                }
+
+                // Large text (with shadow)
                 if (CreditsText[i].StartsWith("+"))
                 {
-                    Objects.Add("lb_header" + i, new Label("lbh")
+                    ScrollingElements.Add("label_l_s" + i, new Label("label_l_s")
                     {
                         Text = CreditsText[i].Substring(1),
                         ControlAlignment = ControlAlignment.Fixed,
@@ -60,9 +62,11 @@ namespace Maquina.UI.Scenes
                     });
                     continue;
                 }
+
+                // Medium text (with shadow)
                 if (CreditsText[i].StartsWith("-"))
                 {
-                    Objects.Add("lb_o" + i, new Label("lbo")
+                    ScrollingElements.Add("label_m_s" + i, new Label("label_m_s")
                     {
                         Text = CreditsText[i].Substring(1),
                         ControlAlignment = ControlAlignment.Fixed,
@@ -71,19 +75,48 @@ namespace Maquina.UI.Scenes
                     });
                     continue;
                 }
+
+                // Large text (no shadow)
+                if (CreditsText[i].StartsWith("="))
+                {
+                    ScrollingElements.Add("label_l" + i, new Label("label_l")
+                    {
+                        Text = CreditsText[i].Substring(1),
+                        ControlAlignment = ControlAlignment.Fixed,
+                        SpriteBatch = this.SpriteBatch,
+                        Font = Fonts["default_l"]
+                    });
+                    continue;
+                }
+
+                // Medium text (no shadow)
+                if (CreditsText[i].StartsWith("_"))
+                {
+                    ScrollingElements.Add("label_m" + i, new Label("label_m")
+                    {
+                        Text = CreditsText[i].Substring(1),
+                        ControlAlignment = ControlAlignment.Fixed,
+                        SpriteBatch = this.SpriteBatch,
+                        Font = Fonts["default_m"]
+                    });
+                    continue;
+                }
+
+                // Spacers (empty lines)
                 if (CreditsText[i].Trim() == "")
                 {
-                    // Regular text
-                    Objects.Add("spacer" + i, new Label("spacer")
+                    ScrollingElements.Add("spacer" + i, new Label("spacer")
                     {
                         Text = CreditsText[i],
                         ControlAlignment = ControlAlignment.Fixed,
                         SpriteBatch = this.SpriteBatch,
                         Font = Fonts["default"]
                     });
+                    continue;
                 }
+
                 // Regular text
-                Objects.Add("lb" + i, new Label("lb")
+                ScrollingElements.Add("label" + i, new Label("label")
                 {
                     Text = CreditsText[i],
                     ControlAlignment = ControlAlignment.Fixed,
@@ -91,17 +124,15 @@ namespace Maquina.UI.Scenes
                     Font = Fonts["default"]
                 });
             }
-
-            // Layout stuff
-            ObjectSpacing = 0;
         }
-        private float credPosition = 0;
+
         public override void Draw(GameTime GameTime)
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             SpriteBatch.Begin();
             base.Draw(GameTime);
             base.DrawObjects(GameTime, Objects);
+            base.DrawObjects(GameTime, ScrollingElements);
             SpriteBatch.End();
         }
 
@@ -109,26 +140,31 @@ namespace Maquina.UI.Scenes
         {
             base.Update(GameTime);
             base.UpdateObjects(GameTime, Objects);
+            base.UpdateObjects(GameTime, ScrollingElements);
 
             int distanceFromTop = (int)(ScreenCenter.Y - (GetAllObjectsHeight(Objects) / 2));
             int padding = 0;
-            foreach (var item in Objects.Values)
+
+            foreach (var item in ScrollingElements.Values)
             {
-                if (item.Name == "mb")
-                    continue;
                 if (item.Name == "spacer")
+                {
                     padding = 10;
-                credPosition -= 0.02f;
+                }
+
+                ScrollPosition -= 0.02f;
                 distanceFromTop += padding;
+
                 item.Location = new Vector2(ScreenCenter.X - (item.Bounds.Width / 2),
-                    distanceFromTop + credPosition);
+                    distanceFromTop + ScrollPosition);
+
                 distanceFromTop += item.Bounds.Height;
-                distanceFromTop += (ObjectSpacing + padding);
+                distanceFromTop += padding;
                 padding = 0;
             }
 
-            if (credPosition <= -distanceFromTop)
-                credPosition = 400;
+            if (ScrollPosition <= -distanceFromTop)
+                ScrollPosition = 400;
         }
     }
 }
