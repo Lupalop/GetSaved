@@ -41,7 +41,7 @@ namespace Maquina.UI.Scenes
             }
         }
 
-        private double TimeLeft;
+        public double TimeLeft { private set; get; }
         private double DeathTimeLeft = 3;
         private float WalkSpeed;
         private bool IsGameEnd = false;

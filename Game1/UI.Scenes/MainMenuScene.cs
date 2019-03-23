@@ -76,7 +76,8 @@ namespace Maquina.UI.Scenes
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
                             Icon = Game.Content.Load<Texture2D>("highscore-btn"),
                             SpriteBatch = this.SpriteBatch,
-                            Font = Fonts["default"]
+                            Font = Fonts["default"],
+                            LeftClickAction = () => SceneManager.SwitchToScene(new HighScoreScene(SceneManager))
                         }},
                         { "mb5", new MenuButton("mb", SceneManager)
                         {
@@ -84,7 +85,8 @@ namespace Maquina.UI.Scenes
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
                             Icon = Game.Content.Load<Texture2D>("user-btn"),
                             SpriteBatch = this.SpriteBatch,
-                            Font = Fonts["default"]
+                            Font = Fonts["default"],
+                            LeftClickAction = () => SceneManager.SwitchToScene(new UserProfileScene(SceneManager))
                         }}
                     }
                 }}

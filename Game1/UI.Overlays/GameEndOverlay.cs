@@ -115,7 +115,6 @@ namespace Maquina.UI.Scenes
             base.UpdateObjects(gameTime, Objects);
         }
 
-
         public void SetGameEndGraphic(GameEndStates endState)
         {
             Image TmUp = (Image)Objects["TimesUp"];
@@ -143,27 +142,35 @@ namespace Maquina.UI.Scenes
             if (scene.IsTimedOut)
             {
                 SetGameEndGraphic(GameEndStates.TimesUp);
+                SetPointsEarned(0);
                 return;
             }
             //
             if (!scene.IsLevelPassed)
             {
                 SetGameEndGraphic(GameEndStates.GameOver);
+                SetPointsEarned(0);
                 return;
             }
             SetGameEndGraphic(GameEndStates.GameWon);
+            SetPointsEarned(100 * MathHelper.Clamp((int)scene.TimeLeft, 1, int.MaxValue));
         }
 
         public void Game3End()
         {
+            // Cast
+            GameThreeScene scene = (GameThreeScene)ParentScene;
             // Hardcoded to show Game over, no timer, no finish line
             SetGameEndGraphic(GameEndStates.GameOver);
+            SetPointsEarned((int)scene.Score);
         }
+
         // TODO: Merge Game1 with Game4
         public void Game1End(Collection<GenericElement> CollectedObjects)
         {
             int correctItems = 0;
             int incorrectItems = 0;
+            int totalItems = 0;
             // Count correct item
             foreach (FallingItem item in CollectedObjects)
             {
@@ -174,6 +181,8 @@ namespace Maquina.UI.Scenes
                 }
                 correctItems++;
             }
+
+            totalItems = (correctItems - incorrectItems);
 
             if (incorrectItems <= 1)
             {
@@ -186,24 +195,25 @@ namespace Maquina.UI.Scenes
 
             Objects.Add("CorrectItem", new Label("CorrectItem")
             {
-                Location = ScreenCenter,
                 SpriteBatch = this.SpriteBatch,
                 Text = "Correct items: " + correctItems,
                 Font = Fonts["default_m"]
             });
             Objects.Add("IncorrectItem", new Label("IncorrectItem")
             {
-                Location = ScreenCenter,
                 SpriteBatch = this.SpriteBatch,
                 Text = "Incorrect items: " + incorrectItems,
                 Font = Fonts["default_m"]
             });
+
+            SetPointsEarned(50 * MathHelper.Clamp(totalItems, 0, int.MaxValue));
         }
 
         public void Game4End(Collection<GenericElement> CollectedObjects)
         {
             int peopleSaved = 0;
             int peopleDied = 0;
+            int peopleTotal = 0;
             // Count item
             foreach (Helpman crap in CollectedObjects)
             {
@@ -214,6 +224,8 @@ namespace Maquina.UI.Scenes
                 }
                 peopleSaved++;
             }
+
+            peopleTotal = (peopleSaved - peopleDied);
 
             if (peopleDied <= 1)
             {
@@ -226,17 +238,34 @@ namespace Maquina.UI.Scenes
 
             Objects.Add("CorrectCrap", new Label("CorrectCrap")
             {
-                Location = ScreenCenter,
                 SpriteBatch = this.SpriteBatch,
                 Text = "People Saved: " + peopleSaved,
                 Font = Fonts["default_m"]
             });
             Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
             {
-                Location = ScreenCenter,
                 SpriteBatch = this.SpriteBatch,
                 Text = "People Died: " + peopleDied,
                 Font = Fonts["default_m"]
+            });
+
+            SetPointsEarned(50 * MathHelper.Clamp(peopleTotal, 0, int.MaxValue));
+        }
+
+        public void SetPointsEarned(int points)
+        {
+            UserGlobal.Score += points;
+            Objects.Add("PointsEarned", new Label("points")
+            {
+                SpriteBatch = this.SpriteBatch,
+                Text = String.Format("You earned {0} points!", points),
+                Font = Fonts["o-default_m"]
+            });
+            Objects.Add("TotalPointsEarned", new Label("points")
+            {
+                SpriteBatch = this.SpriteBatch,
+                Text = String.Format("{0}, you have {1} points in total.", UserGlobal.UserName, UserGlobal.Score),
+                Font = Fonts["o-default"]
             });
         }
     }

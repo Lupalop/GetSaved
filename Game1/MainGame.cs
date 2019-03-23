@@ -81,6 +81,12 @@ namespace Maquina
             // Set window title
             Window.Title = "Get Saved";
 
+            #region Game-specific
+            UserGlobal.UserName = PreferencesManager.GetCharPref("game.username", "Guest");
+            UserGlobal.Score = 0;
+            UserGlobal.PreferencesManager = PreferencesManager;
+            #endregion
+
             base.Initialize();
         }
 
@@ -124,6 +130,17 @@ namespace Maquina
 #if HAS_CONSOLE && LOG_GENERAL
             Console.WriteLine("Unloading game content");
 #endif
+
+            #region Game-specific
+            if (UserGlobal.UserName != "Guest")
+            {
+#if HAS_CONSOLE && LOG_GENERAL
+                Console.WriteLine("Saving user information");
+#endif
+                UserGlobal.SaveCurrentUser();
+                UserGlobal.SetNewHighscore();
+            }
+            #endregion
 
             PreferencesManager.SetBoolPref("app.window.fullscreen", Graphics.IsFullScreen);
             // Save window dimensions if not in fullscreen

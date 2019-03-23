@@ -24,7 +24,7 @@ namespace Maquina.UI.Scenes
 
         private Collection<GenericElement> GameObjects = new Collection<GenericElement>();
 
-        private double Score;
+        public double Score { private set; get; }
         private int ProjectileInterval;
         private float FallingSpeed;
         private int DistanceFromBottom;
