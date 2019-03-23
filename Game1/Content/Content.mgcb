@@ -714,6 +714,18 @@
 /processorParam:TextureFormat=Color
 /build:sound-btn.png
 
+#begin textbox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textbox.png
+
 #begin timesUp.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -32,11 +32,55 @@ namespace Maquina.UI.Scenes
                     SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
-
-                { "mb3", new MenuButton("mb", SceneManager)
+                { "lb1", new Label("lb")
                 {
-                    Text = "The Safety Kit",
+                    Text = String.Format("Are you {0}?", UserGlobal.UserName),
+                    Font = SceneManager.Fonts["o-default_l"],
+                    SpriteBatch = this.SpriteBatch
+                }},
+                { "lb2", new Label("lb")
+                {
+                    Text = String.Format("You currently have {0} points!", UserGlobal.Score),
+                    Font = SceneManager.Fonts["default_m"],
+                    SpriteBatch = this.SpriteBatch
+                }},
+                { "lb3", new Label("lb")
+                {
+                    Text = "If no, type your name at the box\n below and confirm.",
+                    Font = SceneManager.Fonts["default_m"],
+                    SpriteBatch = this.SpriteBatch
+                }},
+                { "tb1", new TextBox("tb", SceneManager)
+                {
                     SpriteBatch = this.SpriteBatch,
+                    OnInput = () => Objects["lb4"].Tint = Color.Transparent,
+                }},
+                { "mb2", new MenuButton("mb", SceneManager)
+                {
+                    Tooltip = "Clicking here will clear your points\n and change the active user.",
+                    Text = "Confirm and change user",
+                    SpriteBatch = this.SpriteBatch,
+                    LeftClickAction = () =>
+                    {
+                        TextBox textbox = (TextBox)Objects["tb1"];
+                        // Show the validation warning when textbox is left blank.
+                        if (textbox.Text.Trim() == "")
+                        {
+                            Objects["lb4"].Tint = Color.White;
+                            return;
+                        }
+                        UserGlobal.UserName = textbox.Text;
+                        UserGlobal.Score = 0;
+
+                        SceneManager.SwitchToScene(new MainMenuScene(SceneManager));
+                    }
+                }},
+                { "lb4", new Label("lb")
+                {
+                    Text = "Leaving the name field blank is bad.",
+                    Font = SceneManager.Fonts["default"],
+                    Tint = Color.Transparent,
+                    SpriteBatch = this.SpriteBatch
                 }},
             };
         }
