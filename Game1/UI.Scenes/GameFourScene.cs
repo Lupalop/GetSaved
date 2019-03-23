@@ -119,13 +119,7 @@ namespace Maquina.UI.Scenes
         private void CreateFlash(string resource, float scale = 1f, int delay = 0)
         {
             // Try to remove previous flashes
-            for (int i = 0; i < SceneManager.Overlays.Keys.Count; i++)
-			{
-                if (SceneManager.Overlays.Keys.ElementAt(i).Contains("flash"))
-                {
-                    SceneManager.Overlays.Remove(SceneManager.Overlays.Keys.ElementAt(i));
-                }
-			}
+            SceneManager.TryRemoveOverlays("flash");
 
             string overlayName = String.Format("flash-{0}-{1}{2}", DateTime.Now, new Random().Next(0, 1000), resource);
             try
@@ -172,7 +166,7 @@ namespace Maquina.UI.Scenes
             Random crap = new Random();
             if (ChangeControllerKeyNow)
             {
-                CurrentController = (ControllerKeys)crap.Next(0, 3);
+                CurrentController = (ControllerKeys)crap.Next(0, 4);
                 ChangeControllerKeyNow = false;
             }
         }
@@ -200,22 +194,24 @@ namespace Maquina.UI.Scenes
                 }},
                 { "BackButton", new MenuButton("mb", SceneManager)
                 {
+                    Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
+                    LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
                 { "Timer", new Label("timer")
                 {
-                    Text = String.Format("{0} second(s) left", TimeLeft),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label a = (Label)Objects["Timer"];
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
-                        a.Text = String.Format("{0} second(s) left", TimeLeft);
+                        a.Text = TimeLeft.ToString();
                     },
+                    LayerDepth = 0.1f,
                     Font = Fonts["o-default_l"]
                 }},
                 { "Hand1", new Image("hand1")
@@ -248,6 +244,7 @@ namespace Maquina.UI.Scenes
                     Font = Fonts["default_m"],
                     Columns = 3,
                     Rows = 1,
+                    LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Bandage)
                 }},
                 { "Controller-Stitch", new MenuButton("controller-a", SceneManager)
@@ -261,6 +258,7 @@ namespace Maquina.UI.Scenes
                     Font = Fonts["default_m"],
                     Columns = 3,
                     Rows = 1,
+                    LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Stitch)
                 }},
                 { "Controller-Medicine", new MenuButton("controller-s", SceneManager)
@@ -274,6 +272,7 @@ namespace Maquina.UI.Scenes
                     Font = Fonts["default_m"],
                     Columns = 3,
                     Rows = 1,
+                    LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Medicine)
                 }},
                 { "Controller-CPR", new MenuButton("controller-o", SceneManager)
@@ -287,14 +286,15 @@ namespace Maquina.UI.Scenes
                     Font = Fonts["default_m"],
                     Columns = 3,
                     Rows = 1,
+                    LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.CPR)
                 }},
                 { "PressLabel", new Label("press-label")
                 {
-                    Text = String.Format("Press/Tap: {0}!", CurrentController.ToString()),
+                    Text = String.Format("Use {0}!", CurrentController.ToString()),
                     SpriteBatch = this.SpriteBatch,
                     ControlAlignment = ControlAlignment.Fixed,
-                    Font = Fonts["default_m"]
+                    Font = Fonts["default_l"]
                 }}
             };
 
@@ -344,7 +344,7 @@ namespace Maquina.UI.Scenes
 
         public override void Draw(GameTime GameTime)
         {
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
             Label a = (Label)Objects["Timer"];
             a.Text = String.Format("{0} second(s) left", TimeLeft);
@@ -390,8 +390,9 @@ namespace Maquina.UI.Scenes
             // Current Controller
             DetermineCurrentController();
             Label pressLabel = (Label)Objects["PressLabel"];
-            pressLabel.Text = String.Format("Press/Tap: {0}!", CurrentController.ToString());
-            pressLabel.Location = new Vector2(ScreenCenter.X - (Fonts["default_m"].MeasureString(pressLabel.Text).X / 2), 80);
+            pressLabel.Text = String.Format("Use {0}!", CurrentController.ToString());
+            pressLabel.Location = new Vector2(
+                ScreenCenter.X -(Fonts["default_l"].MeasureString(pressLabel.Text).X / 2), 80);
             // base
             base.UpdateObjects(GameTime, Objects);
             base.UpdateObjects(GameTime, GameObjects);

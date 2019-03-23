@@ -24,6 +24,7 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "BackButton", new MenuButton("mb", SceneManager)
                 {
+                    Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5, 5),
                     ControlAlignment = ControlAlignment.Fixed,
@@ -129,7 +130,7 @@ namespace Maquina.UI.Scenes
         public override void Draw(GameTime GameTime)
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
             base.DrawObjects(GameTime, Objects);
             base.DrawObjects(GameTime, ScrollingElements);

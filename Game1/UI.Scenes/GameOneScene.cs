@@ -138,10 +138,12 @@ namespace Maquina.UI.Scenes
                 }},
                 { "BackButton", new MenuButton("mb", SceneManager)
                 {
+                    Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
+                    LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
@@ -153,14 +155,14 @@ namespace Maquina.UI.Scenes
                 }},
                 { "Timer", new Label("o-timer")
                 {
-                    Text = String.Format("{0} second(s) left", TimeLeft),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
                     Font = Fonts["o-default_l"],
+                    LayerDepth = 0.1f,
                     OnUpdate = () => {
                         Label Timer = (Label)Objects["Timer"];
                         Timer.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Timer.Dimensions.X, 5);
-                        Timer.Text = String.Format("{0} second(s) left", MathHelper.Clamp((int)TimeLeft, 0, 100));
+                        Timer.Text = MathHelper.Clamp((int)TimeLeft, 0, 100).ToString();
                     }
                 }}
             };
@@ -214,7 +216,7 @@ namespace Maquina.UI.Scenes
 
         public override void Draw(GameTime GameTime)
         {
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
             base.DrawObjects(GameTime, Objects);
             base.DrawObjects(GameTime, GameObjects);

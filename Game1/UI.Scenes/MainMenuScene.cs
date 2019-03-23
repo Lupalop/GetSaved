@@ -35,6 +35,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "mb1", new MenuButton("mb", SceneManager)
                 {
+                    Tooltip = "Play Game!",
                     Graphic = Game.Content.Load<Texture2D>("playBtn"), 
                     SpriteBatch = this.SpriteBatch, 
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(SceneManager)),
@@ -53,22 +54,37 @@ namespace Maquina.UI.Scenes
                     Children = new Dictionary<string, GenericElement> {
                         { "mb2", new MenuButton("mb", SceneManager)
                         {
-                            Text = "Credits",
-                            Graphic = null,
+                            Tooltip = "Credits",
+                            Graphic = Game.Content.Load<Texture2D>("circle-btn"),
+                            Icon = Game.Content.Load<Texture2D>("credits-btn"),
                             SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene(SceneManager))
                         }},
                         { "mb3", new MenuButton("mb", SceneManager)
                         {
-                            Text = "Mute Audio",
-                            Graphic = null,
+                            Tooltip = "Mute Audio",
+                            Graphic = Game.Content.Load<Texture2D>("circle-btn"),
+                            Icon = Game.Content.Load<Texture2D>("sound-btn"),
                             SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
-                            LeftClickAction = () =>
-                            {
-                                SceneManager.AudioManager.ToggleMute();
-                            }
+                            LeftClickAction = () => SceneManager.AudioManager.ToggleMute()
+                        }},
+                        { "mb4", new MenuButton("mb", SceneManager)
+                        {
+                            Tooltip = "View High Scores",
+                            Graphic = Game.Content.Load<Texture2D>("circle-btn"),
+                            Icon = Game.Content.Load<Texture2D>("highscore-btn"),
+                            SpriteBatch = this.SpriteBatch,
+                            Font = Fonts["default"]
+                        }},
+                        { "mb5", new MenuButton("mb", SceneManager)
+                        {
+                            Tooltip = "Change User",
+                            Graphic = Game.Content.Load<Texture2D>("circle-btn"),
+                            Icon = Game.Content.Load<Texture2D>("user-btn"),
+                            SpriteBatch = this.SpriteBatch,
+                            Font = Fonts["default"]
                         }}
                     }
                 }}
@@ -81,7 +97,7 @@ namespace Maquina.UI.Scenes
         public override void Draw(GameTime gameTime)
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             SpriteBatch.End();

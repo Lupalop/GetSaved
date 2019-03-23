@@ -35,39 +35,38 @@ namespace Maquina.UI.Scenes
                 { "TimesUp", new Image("TimesUp")
                 {
                     Graphic = Game.Content.Load<Texture2D>("timesUp"),
-                    Location = ScreenCenter,
                     SpriteBatch = this.SpriteBatch
                 }},
                 { "NextRoundBtn", new MenuButton("NextRoundBtn", SceneManager)
                 {
-                    Location = ScreenCenter,
+                    Tooltip = "Proceed to the next game",
                     SpriteBatch = this.SpriteBatch,
-                    SpriteType = SpriteType.Static,
-                    Rows = 1,
-                    Columns = 3,
                     Text = "Next Round",
                     Font = Fonts["default_m"],
-                    LeftClickAction = () => { SceneManager.SwitchToScene(new NextGameScene(SceneManager)); SceneManager.Overlays.Remove("GameEnd"); }
+                    LeftClickAction = () =>
+                    {
+                        SceneManager.SwitchToScene(new NextGameScene(SceneManager));
+                        SceneManager.Overlays.Remove("GameEnd");
+                    }
                 }},
                 { "TryAgainBtn", new MenuButton("TryAgainBtn", SceneManager)
                 {
-                    Location = ScreenCenter,
+                    Tooltip = "Having a hard time? Try this game again!",
                     SpriteBatch = this.SpriteBatch,
-                    SpriteType = SpriteType.Static,
-                    Rows = 1,
-                    Columns = 3,
                     Text = "Try Again",
                     Font = Fonts["default_m"],
-                    LeftClickAction = () => { SceneManager.SwitchToScene(new NextGameScene(SceneManager, CurrentGame)); SceneManager.Overlays.Remove("GameEnd"); }
+                    LeftClickAction = () =>
+                    {
+                        SceneManager.SwitchToScene(new NextGameScene(SceneManager, CurrentGame));
+                        SceneManager.Overlays.Remove("GameEnd");
+                    }
                 }},
                 { "MainMenuBtn", new MenuButton("MainMenuBtn", SceneManager)
                 {
+                    Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
-                    Location = new Vector2(5,5),
+                    Location = new Vector2(5, 5),
                     SpriteBatch = this.SpriteBatch,
-                    SpriteType = SpriteType.Static,
-                    Rows = 1,
-                    Columns = 3,
                     ControlAlignment = ControlAlignment.Fixed,
                     Font = Fonts["default_m"],
                     LeftClickAction = () => { SceneManager.SwitchToScene(new MainMenuScene(SceneManager)); SceneManager.Overlays.Remove("GameEnd"); }
@@ -104,7 +103,7 @@ namespace Maquina.UI.Scenes
         Games CurrentGame;
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             SpriteBatch.End();

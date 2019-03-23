@@ -121,6 +121,30 @@
 /processorParam:Quality=Best
 /build:bgm/Shenanigans.mp3
 
+#begin circle-btn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:circle-btn.png
+
+#begin credits-btn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:credits-btn.png
+
 #begin dino/character.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -498,6 +522,18 @@
 /processorParam:TextureFormat=Color
 /build:gameWin.png
 
+#begin highscore-btn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:highscore-btn.png
+
 #begin htp.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -666,6 +702,18 @@
 /processorParam:Quality=Best
 /build:sfx/click.mp3
 
+#begin sound-btn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sound-btn.png
+
 #begin timesUp.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -677,4 +725,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:timesUp.png
+
+#begin user-btn.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:user-btn.png
 

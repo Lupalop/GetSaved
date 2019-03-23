@@ -109,10 +109,12 @@ namespace Maquina.UI.Scenes
                 }},
                 { "BackButton", new MenuButton("mb", SceneManager)
                 {
+                    Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
+                    LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
@@ -125,10 +127,10 @@ namespace Maquina.UI.Scenes
                 }},
                 { "ScoreCounter", new Label("timer")
                 {
-                    Text = String.Format("Score: {0}", Score),
                     Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
+                    LayerDepth = 0.1f,
                     OnUpdate = () => {
                         Label a = (Label)Objects["ScoreCounter"];
                         a.Text = String.Format("Score: {0}", Score);
@@ -192,7 +194,7 @@ namespace Maquina.UI.Scenes
 
         public override void Draw(GameTime GameTime)
         {
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
             base.DrawObjects(GameTime, Objects);
             base.DrawObjects(GameTime, GameObjects);

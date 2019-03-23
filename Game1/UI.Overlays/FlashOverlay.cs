@@ -40,12 +40,15 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "Background", new Image("Background")
                 {
-                    Location = ScreenCenter,
                     SpriteBatch = this.SpriteBatch,
+                    ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = () => {
                         Image BG = (Image)Objects["Background"];
                         BG.Graphic = FadeBackground;
                         BG.Tint = Color.White * Opacity;
+                        BG.Location = new Vector2(
+                            ScreenCenter.X - (BG.Bounds.Width / 2),
+                            ScreenCenter.Y - (BG.Bounds.Height / 2));
                     },
                     Scale = this.Scale
                 }}
@@ -63,7 +66,7 @@ namespace Maquina.UI.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             SpriteBatch.End();

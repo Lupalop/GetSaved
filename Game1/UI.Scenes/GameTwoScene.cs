@@ -236,10 +236,12 @@ namespace Maquina.UI.Scenes
                 }},
                 { "BackButton", new MenuButton("mb", SceneManager)
                 {
+                    Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
+                    LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
@@ -251,14 +253,14 @@ namespace Maquina.UI.Scenes
                 }},
                 { "Timer", new Label("timer")
                 {
-                    Text = String.Format("{0} second(s) left", TimeLeft),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label a = (Label)Objects["Timer"];
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
-                        a.Text = String.Format("{0} second(s) left", TimeLeft);
+                        a.Text = TimeLeft.ToString();
                     },
+                    LayerDepth = 0.1f,
                     Font = Fonts["o-default_l"]
                 }},
                 { "DeathTimer", new Label("timer")
@@ -267,7 +269,7 @@ namespace Maquina.UI.Scenes
                     SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label b = (Label)Objects["DeathTimer"];
-                        b.Text = String.Format("{0}", DeathTimeLeft);
+                        b.Text = DeathTimeLeft.ToString();
                     },
                     Font = Fonts["o-default_xl"]
                 }},
@@ -350,7 +352,7 @@ namespace Maquina.UI.Scenes
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
             base.DrawObjects(gameTime, GameObjects);

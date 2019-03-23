@@ -118,7 +118,7 @@ namespace Maquina.UI.Scenes
             // Choose whether to randomize Game or use the passed Game
             Games NxGame;
             if (RandomizeGame)
-                NxGame = (Games)rand.Next(0, 4);
+                NxGame = (Games)rand.Next(0, 5);
             else
                 NxGame = ForcePassedGame;
 
@@ -161,7 +161,7 @@ namespace Maquina.UI.Scenes
         public override void Draw(GameTime GameTime)
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
             base.DrawObjects(GameTime, Objects);
             SpriteBatch.End();

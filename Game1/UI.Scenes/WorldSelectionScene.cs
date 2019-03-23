@@ -25,6 +25,7 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "mb1", new MenuButton("mb", SceneManager)
                 {
+                    Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
@@ -33,6 +34,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "mb2", new MenuButton("mb", SceneManager)
                 {
+                    Tooltip = "Change the difficulty of the game",
                     Text = String.Format("Difficulty: {0}", difficulty),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
@@ -112,7 +114,7 @@ namespace Maquina.UI.Scenes
         public override void Draw(GameTime GameTime)
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
             base.DrawObjects(GameTime, Objects);
             SpriteBatch.End();
