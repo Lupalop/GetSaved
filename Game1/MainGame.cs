@@ -71,6 +71,8 @@ namespace Maquina
             AudioManager.MusicVolume = PreferencesManager.GetIntPref("app.audio.music", 255);
             AudioManager.IsMuted = PreferencesManager.GetBoolPref("app.audio.mastermuted", false);
 
+            Graphics.HardwareModeSwitch = !PreferencesManager.GetBoolPref("app.window.fullscreen.borderless", false);
+
             // Identify if we should go fullscreen
             if (PreferencesManager.GetBoolPref("app.window.fullscreen", false))
             {
