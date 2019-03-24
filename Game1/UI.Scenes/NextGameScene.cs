@@ -13,26 +13,17 @@ namespace Maquina.UI.Scenes
 {
     public class NextGameScene : SceneBase
     {
-        // TODO: Reduce logic complexity (remove randomize bools)
         public NextGameScene(Games passedGame = Games.Random, Difficulty passedDifficulty = Difficulty.Random)
             : base("Next Game Scene")
         {
-            if (passedGame != Games.Random)
-            {
-                ForcePassedGame = passedGame;
-                RandomizeGame = false;
-            }
-            if (passedDifficulty != Difficulty.Random)
-            {
-                ForcePassedDifficulty = passedDifficulty;
-                RandomizeDifficulty = false;
-            }
+            NextGame = passedGame;
+            GameDifficulty = passedDifficulty;
             Initialize();
         }
 
         public void Initialize()
         {
-            NextGame = DetermineNextGame();
+            NewGameScene = DetermineNewGame();
 
             Objects = new Dictionary<string, GenericElement> {
                 { "Dice", new Image("dice")
@@ -49,7 +40,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "GameName", new Label("GameName")
                 {
-                    Text = NextGame.SceneName.Substring(14),
+                    Text = NewGameScene.SceneName.Substring(14),
                     SpriteBatch = this.SpriteBatch, 
                     Font = Fonts["default_l"]
                 }},
@@ -71,8 +62,8 @@ namespace Maquina.UI.Scenes
                         Objects["SkipBtn"].DestinationRectangle = SrcRectSkipBtn;
                         Objects["SkipBtn"].SourceRectangle = SrcRectSkipBtn;
                     },
-                    LeftClickAction = () => SceneManager.SwitchToScene(NextGame),
-                    RightClickAction = () => SceneManager.SwitchToScene(NextGame)
+                    LeftClickAction = () => SceneManager.SwitchToScene(NewGameScene),
+                    RightClickAction = () => SceneManager.SwitchToScene(NewGameScene)
                 }},
                 { "HelpImage", new Image("htp")
                 {
@@ -83,7 +74,7 @@ namespace Maquina.UI.Scenes
             };
 
             DiceSpinner.Elapsed += delegate { Objects["Dice"].Rotation += .05f; };
-            SceneChanger.Elapsed += delegate { SceneManager.SwitchToScene(NextGame); };
+            SceneChanger.Elapsed += delegate { SceneManager.SwitchToScene(NewGameScene); };
         }
 
         private Texture2D HelpImage;
@@ -92,30 +83,24 @@ namespace Maquina.UI.Scenes
         // Switch to new Game scene will happen in 3 seconds (3000ms)
         private Timer SceneChanger = new Timer(3000) { AutoReset = false, Enabled = true };
 
-        public bool RandomizeGame = true;
-        public bool RandomizeDifficulty = true;
-        public Games ForcePassedGame { get; set; }
-        public Difficulty ForcePassedDifficulty { get; set; }
-        public SceneBase NextGame { get; set; }
+        public Games NextGame { get; set; }
+        public SceneBase NewGameScene { get; set; }
         public Difficulty GameDifficulty { get; set; }
 
-        public SceneBase DetermineNextGame()
+        public SceneBase DetermineNewGame()
         {
-            // GameDifficulty would remain random
             Random rand = new Random();
-            if (RandomizeDifficulty)
-                GameDifficulty = (Difficulty)rand.Next(0, 3);       // Epic fail GameDifficulty intentionally ommitted, people can't handle that ;)
-            else
-                GameDifficulty = ForcePassedDifficulty;
+            if (GameDifficulty == Difficulty.Random)
+            {
+                // Epic fail difficulty intentionally ommitted, people can't handle that ;)
+                GameDifficulty = (Difficulty)rand.Next(0, 3);
+            }
+            if (NextGame == Games.Random)
+            {
+                NextGame = (Games)rand.Next(0, 5);
+            }
 
-            // Choose whether to randomize Game or use the passed Game
-            Games NxGame;
-            if (RandomizeGame)
-                NxGame = (Games)rand.Next(0, 5);
-            else
-                NxGame = ForcePassedGame;
-
-            switch (NxGame)
+            switch (NextGame)
             {
                 // The Safety Kit
                 case Games.FallingObjects:
