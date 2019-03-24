@@ -13,10 +13,7 @@ namespace Maquina.UI.Scenes
 {
     public class MainMenuScene : SceneBase
     {
-        public MainMenuScene(SceneManager SceneManager)
-            : base(SceneManager, "Main Menu")
-        {
-        }
+        public MainMenuScene() : base("Main Menu") {}
 
         public override void LoadContent()
         {
@@ -38,8 +35,8 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Play Game!",
                     Graphic = Game.Content.Load<Texture2D>("playBtn"), 
                     SpriteBatch = this.SpriteBatch, 
-                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(SceneManager)),
-                    RightClickAction = () => SceneManager.SwitchToScene(new WorldSelectionScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene()),
+                    RightClickAction = () => SceneManager.SwitchToScene(new WorldSelectionScene())
                 }},
                 { "lb1", new Label("lb")
                 {
@@ -59,7 +56,7 @@ namespace Maquina.UI.Scenes
                             Icon = Game.Content.Load<Texture2D>("credits-btn"),
                             SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
-                            LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene(SceneManager))
+                            LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene())
                         }},
                         { "mb3", new MenuButton("mb", SceneManager)
                         {
@@ -68,7 +65,7 @@ namespace Maquina.UI.Scenes
                             Icon = Game.Content.Load<Texture2D>("sound-btn"),
                             SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
-                            LeftClickAction = () => SceneManager.AudioManager.ToggleMute()
+                            LeftClickAction = () => Global.AudioManager.ToggleMute()
                         }},
                         { "mb4", new MenuButton("mb", SceneManager)
                         {
@@ -77,7 +74,7 @@ namespace Maquina.UI.Scenes
                             Icon = Game.Content.Load<Texture2D>("highscore-btn"),
                             SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
-                            LeftClickAction = () => SceneManager.SwitchToScene(new HighScoreScene(SceneManager))
+                            LeftClickAction = () => SceneManager.SwitchToScene(new HighScoreScene())
                         }},
                         { "mb5", new MenuButton("mb", SceneManager)
                         {
@@ -86,12 +83,12 @@ namespace Maquina.UI.Scenes
                             Icon = Game.Content.Load<Texture2D>("user-btn"),
                             SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
-                            LeftClickAction = () => SceneManager.SwitchToScene(new UserProfileScene(SceneManager))
+                            LeftClickAction = () => SceneManager.SwitchToScene(new UserProfileScene())
                         }}
                     }
                 }}
             };
-            SceneManager.AudioManager.PlaySong("flying-high");
+            Global.AudioManager.PlaySong("flying-high");
             // Layout stuff
             ObjectSpacing = 12;
         }

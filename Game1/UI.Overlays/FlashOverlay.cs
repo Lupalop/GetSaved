@@ -13,10 +13,9 @@ namespace Maquina.UI.Scenes
 {
     public class FlashOverlay : OverlayBase, IDisposable
     {
-        public FlashOverlay(SceneManager sceneManager,
-            string overlayKey, Texture2D image,
+        public FlashOverlay(string overlayKey, Texture2D image,
             float scale, int delay = 0)
-            : base(sceneManager, "Fade Overlay")
+            : base("Fade Overlay")
         {
             OverlayKey = overlayKey;
             FadeSpeed = 0.1f;

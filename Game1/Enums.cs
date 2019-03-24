@@ -11,7 +11,8 @@ namespace Maquina
         Easy,
         Medium,
         Hard,
-        EpicFail
+        EpicFail,
+        Random
     }
     public enum Games
     {
@@ -19,7 +20,8 @@ namespace Maquina
         EscapeEarthquake,
         EscapeFire,
         RunningForTheirLives,
-        HelpOthersNow
+        HelpOthersNow,
+        Random
     }
     public enum GameEndStates
     {

@@ -16,8 +16,8 @@ namespace Maquina.UI.Scenes
 {
     public class GameThreeScene : SceneBase
     {
-        public GameThreeScene(SceneManager SceneManager, Difficulty Difficulty)
-            : base(SceneManager, "Game 3 Scene: Safety Jump")
+        public GameThreeScene(Difficulty Difficulty)
+            : base("Game 3 Scene: Safety Jump")
         {
             GameDifficulty = Difficulty;
         }
@@ -65,7 +65,7 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(SceneManager, Games.RunningForTheirLives, null, this));
+            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.RunningForTheirLives, null, this));
         }
 
         private void UpdateMinMaxY()
@@ -115,7 +115,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
@@ -141,7 +141,7 @@ namespace Maquina.UI.Scenes
             };
 
             JumpEffect = Game.Content.Load<SoundEffect>("sfx/caught");
-            SceneManager.AudioManager.PlaySong("shenanigans");
+            Global.AudioManager.PlaySong("shenanigans");
             DistanceFromBottom = -30;
         }
 

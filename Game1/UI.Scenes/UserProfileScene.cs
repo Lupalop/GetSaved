@@ -13,10 +13,7 @@ namespace Maquina.UI.Scenes
 {
     public class UserProfileScene : SceneBase
     {
-        public UserProfileScene(SceneManager SceneManager)
-            : base(SceneManager, "User Profile")
-        {
-        }
+        public UserProfileScene() : base("User Profile") {}
 
         public override void LoadContent()
         {
@@ -30,24 +27,24 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "lb1", new Label("lb")
                 {
                     Text = String.Format("Are you {0}?", UserGlobal.UserName),
-                    Font = SceneManager.Fonts["o-default_l"],
+                    Font = Fonts["o-default_l"],
                     SpriteBatch = this.SpriteBatch
                 }},
                 { "lb2", new Label("lb")
                 {
                     Text = String.Format("You currently have {0} points!", UserGlobal.Score),
-                    Font = SceneManager.Fonts["default_m"],
+                    Font = Fonts["default_m"],
                     SpriteBatch = this.SpriteBatch
                 }},
                 { "lb3", new Label("lb")
                 {
                     Text = "If no, type your name at the box\n below and confirm.",
-                    Font = SceneManager.Fonts["default_m"],
+                    Font = Fonts["default_m"],
                     SpriteBatch = this.SpriteBatch
                 }},
                 { "tb1", new TextBox("tb", SceneManager)
@@ -72,13 +69,13 @@ namespace Maquina.UI.Scenes
                         UserGlobal.UserName = textbox.Text;
                         UserGlobal.Score = 0;
 
-                        SceneManager.SwitchToScene(new MainMenuScene(SceneManager));
+                        SceneManager.SwitchToScene(new MainMenuScene());
                     }
                 }},
                 { "lb4", new Label("lb")
                 {
                     Text = "Leaving the name field blank is bad.",
-                    Font = SceneManager.Fonts["default"],
+                    Font = Fonts["default"],
                     Tint = Color.Transparent,
                     SpriteBatch = this.SpriteBatch
                 }},

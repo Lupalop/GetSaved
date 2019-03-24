@@ -13,27 +13,20 @@ namespace Maquina.UI.Scenes
 {
     public class NextGameScene : SceneBase
     {
-        public NextGameScene(SceneManager SceneManager)
-            : base(SceneManager, "Next Game Scene")
+        // TODO: Reduce logic complexity (remove randomize bools)
+        public NextGameScene(Games passedGame = Games.Random, Difficulty passedDifficulty = Difficulty.Random)
+            : base("Next Game Scene")
         {
-            Initialize();
-        }
-
-        public NextGameScene(SceneManager SceneManager, Games passedGame)
-            : base(SceneManager, "Next Game Scene")
-        {
-            ForcePassedGame = passedGame;
-            RandomizeGame = false;
-            Initialize();
-        }
-
-        public NextGameScene(SceneManager SceneManager, Games passedGame, Difficulty passedDifficulty)
-            : base(SceneManager, "Next Game Scene")
-        {
-            ForcePassedGame = passedGame;
-            ForcePassedDifficulty = passedDifficulty;
-            RandomizeGame = false;
-            RandomizeDifficulty = false;
+            if (passedGame != Games.Random)
+            {
+                ForcePassedGame = passedGame;
+                RandomizeGame = false;
+            }
+            if (passedDifficulty != Difficulty.Random)
+            {
+                ForcePassedDifficulty = passedDifficulty;
+                RandomizeDifficulty = false;
+            }
             Initialize();
         }
 
@@ -127,27 +120,27 @@ namespace Maquina.UI.Scenes
                 // The Safety Kit
                 case Games.FallingObjects:
                     HelpImage = Game.Content.Load<Texture2D>("htp/fallingobject");
-                    return new GameOneScene(SceneManager, GameDifficulty);
+                    return new GameOneScene(GameDifficulty);
                 // Earthquake Escape
                 case Games.EscapeEarthquake:
                     HelpImage = Game.Content.Load<Texture2D>("htp/esc");
-                    return new GameTwoScene(SceneManager, GameDifficulty, Games.EscapeEarthquake);
+                    return new GameTwoScene(GameDifficulty, Games.EscapeEarthquake);
                 // Fire Escape
                 case Games.EscapeFire:
                     HelpImage = Game.Content.Load<Texture2D>("htp/esc");
-                    return new GameTwoScene(SceneManager, GameDifficulty, Games.EscapeFire);
+                    return new GameTwoScene(GameDifficulty, Games.EscapeFire);
                 // Safety Jump
                 case Games.RunningForTheirLives:
                     HelpImage = Game.Content.Load<Texture2D>("htp/dino");
-                    return new GameThreeScene(SceneManager, GameDifficulty);
+                    return new GameThreeScene(GameDifficulty);
                 // Aid 'Em
                 case Games.HelpOthersNow:
                     HelpImage = Game.Content.Load<Texture2D>("htp/aidem");
-                    return new GameFourScene(SceneManager, GameDifficulty);
+                    return new GameFourScene(GameDifficulty);
                 // If the randomizer item failed, simply throw the world selection screen...
                 default:
                     HelpImage = new Texture2D(Game.GraphicsDevice, 0, 0);
-                    return new WorldSelectionScene(SceneManager);
+                    return new WorldSelectionScene();
             }
         }
 

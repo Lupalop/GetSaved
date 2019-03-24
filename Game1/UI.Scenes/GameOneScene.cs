@@ -16,8 +16,8 @@ namespace Maquina.UI.Scenes
 {
     public class GameOneScene : SceneBase
     {
-        public GameOneScene(SceneManager SceneManager, Difficulty Difficulty)
-            : base(SceneManager, "Game 1 Scene: The Safety Kit")
+        public GameOneScene(Difficulty Difficulty)
+            : base("Game 1 Scene: The Safety Kit")
         {
             GameDifficulty = Difficulty;
         }
@@ -79,7 +79,7 @@ namespace Maquina.UI.Scenes
             {
                 IsGameEnd = true;
                 SceneManager.Overlays.Add("GameEnd",
-                    new GameEndOverlay(SceneManager, Games.FallingObjects, CollectedObjects, this));
+                    new GameEndOverlay(Games.FallingObjects, CollectedObjects, this));
             };
         }
 
@@ -127,7 +127,7 @@ namespace Maquina.UI.Scenes
                     SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height)
                 }},
-                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32), SceneManager)
+                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
@@ -144,7 +144,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
@@ -169,7 +169,7 @@ namespace Maquina.UI.Scenes
 
             ObjectCaught = Game.Content.Load<SoundEffect>("sfx/caught");
 
-            SceneManager.AudioManager.PlaySong("hide-seek");
+            Global.AudioManager.PlaySong("hide-seek");
             DistanceFromBottom = -30;
         }
 

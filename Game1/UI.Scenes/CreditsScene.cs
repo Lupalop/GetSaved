@@ -13,7 +13,7 @@ namespace Maquina.UI.Scenes
 {
     public class CreditsScene : SceneBase
     {
-        public CreditsScene(SceneManager SceneManager) : base(SceneManager, "Credits") {}
+        public CreditsScene() : base("Credits") {}
 
         private Dictionary<string, GenericElement> ScrollingElements;
         private float ScrollPosition = 0;
@@ -29,13 +29,13 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(5, 5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }}
             };
 
             ScrollingElements = new Dictionary<string, GenericElement>();
             string[] CreditsText = File.ReadAllLines(Path.Combine(
-                Platform.ContentRootDirectory, "credits.txt"));
+                Global.ContentRootDirectory, "credits.txt"));
 
             // Loop to parse contents of credits file
             for (int i = 0; i < CreditsText.Length; i++)

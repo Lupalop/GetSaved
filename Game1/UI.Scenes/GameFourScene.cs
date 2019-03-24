@@ -15,8 +15,7 @@ namespace Maquina.UI.Scenes
 {
     public class GameFourScene : SceneBase
     {
-        public GameFourScene(SceneManager SceneManager, Difficulty Difficulty)
-            : base(SceneManager, "Game 4 Scene: Aid 'em")
+        public GameFourScene(Difficulty Difficulty) : base("Game 4 Scene: Aid 'em")
         {
             GameDifficulty = Difficulty;
         }
@@ -74,7 +73,7 @@ namespace Maquina.UI.Scenes
                 ProjectileGenerator.Close();
                 AttemptRemoveHelpman();
 
-                SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(SceneManager, Games.HelpOthersNow, CollectedObjects, this));
+                SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.HelpOthersNow, CollectedObjects, this));
                 GameTimer.Enabled = false;
             };
         }
@@ -125,8 +124,9 @@ namespace Maquina.UI.Scenes
             try
             {
                 SceneManager.Overlays.Add(overlayName,
-                    new FlashOverlay(SceneManager,
-                        overlayName, Game.Content.Load<Texture2D>(resource), scale, delay) { FadeSpeed = 0.1f });
+                    new FlashOverlay(overlayName,
+                        Game.Content.Load<Texture2D>(resource), scale,
+                        delay) { FadeSpeed = 0.1f });
             }
             catch (Exception ex) { Console.WriteLine(ex); }
         }
@@ -136,7 +136,7 @@ namespace Maquina.UI.Scenes
             try
             {
                 SceneManager.Overlays.Add(overlayName,
-                    new FadeOverlay(SceneManager, overlayName, color) { FadeSpeed = 0.01f });
+                    new FadeOverlay(overlayName, color) { FadeSpeed = 0.01f });
             }
             catch (Exception ex) { Console.WriteLine(ex); }
         }
@@ -183,7 +183,7 @@ namespace Maquina.UI.Scenes
                     OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height),
                     SpriteBatch = this.SpriteBatch
                 }},
-                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32), SceneManager)
+                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
@@ -200,7 +200,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "Timer", new Label("timer")
                 {
@@ -298,7 +298,7 @@ namespace Maquina.UI.Scenes
                 }}
             };
 
-            SceneManager.AudioManager.PlaySong("flying-high");
+            Global.AudioManager.PlaySong("flying-high");
         }
 
         public override void DelayLoadContent()

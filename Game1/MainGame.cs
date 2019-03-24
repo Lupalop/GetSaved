@@ -33,7 +33,7 @@ namespace Maquina
             // Initialize graphics manager
             Graphics = new GraphicsDeviceManager(this);
             // Set root directory where content files will be loaded
-            Content.RootDirectory = Platform.ContentRootDirectory;
+            Content.RootDirectory = Global.ContentRootDirectory;
         }
 
         /// <summary>
@@ -46,9 +46,17 @@ namespace Maquina
         {
             // Create instance
             PreferencesManager = new PreferencesManager();
-            LocaleManager = new LocaleManager(PreferencesManager.GetCharPref("app.locale", Platform.DefaultLocale));
+            LocaleManager = new LocaleManager(PreferencesManager.GetCharPref("app.locale", Global.DefaultLocale));
             InputManager = new InputManager(this);
             AudioManager = new AudioManager();
+            SceneManager = new SceneManager();
+
+            Global.PreferencesManager = PreferencesManager;
+            Global.LocaleManager = LocaleManager;
+            Global.InputManager = InputManager;
+            Global.AudioManager = AudioManager;
+            Global.SceneManager = SceneManager;
+            Global.Game = this;
 
             // Window
             IsMouseVisible = PreferencesManager.GetBoolPref("app.window.useNativeCursor", false);
@@ -98,27 +106,28 @@ namespace Maquina
         {
             // Create instance of SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-            // Create instance of the Content Manager
+            // Create instance of the content loader
             ContentLoader<ResourceContent> resources = new ContentLoader<ResourceContent>();
             resources.Content = resources.Initialize(Path.Combine(
-                Platform.ContentRootDirectory, Platform.ResourceXml));
+                Global.ContentRootDirectory, Global.ResourceXml));
             // Load resources
             Dictionary<string, SpriteFont> Fonts =
                 resources.Content.Load(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
             AudioManager.Songs =
                 resources.Content.Load(ResourceType.BGM, this) as Dictionary<string, Song>;
-            // Initialize the Scene Manager
-            SceneManager = new SceneManager(this, SpriteBatch, Fonts, AudioManager, LocaleManager, InputManager);
+            //
+            Global.SpriteBatch = SpriteBatch;
+            Global.Fonts = Fonts;
             // Register Overlays in the scene manager
             if (!IsMouseVisible)
             {
-                SceneManager.Overlays.Add("mouse", new MouseOverlay(SceneManager, Content.Load<Texture2D>("mouseCur")));
+                SceneManager.Overlays.Add("mouse", new MouseOverlay(Content.Load<Texture2D>("mouseCur")));
             }
 #if DEBUG
-            SceneManager.Overlays.Add("debug", new DebugOverlay(SceneManager));
+            SceneManager.Overlays.Add("debug", new DebugOverlay());
 #endif
             // Setup first scene (Main Menu)
-            SceneManager.SwitchToScene(new MainMenuScene(SceneManager), true);
+            SceneManager.SwitchToScene(new MainMenuScene(), true);
         }
 
         /// <summary>

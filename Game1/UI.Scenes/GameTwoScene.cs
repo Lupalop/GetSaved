@@ -16,8 +16,8 @@ namespace Maquina.UI.Scenes
 {
     public class GameTwoScene : SceneBase
     {
-        public GameTwoScene(SceneManager SceneManager, Difficulty Difficulty, Games cgame)
-            : base(SceneManager, "Game 2 Scene: " + GetGameName(cgame))
+        public GameTwoScene(Difficulty Difficulty, Games cgame)
+            : base("Game 2 Scene: " + GetGameName(cgame))
         {
             GameDifficulty = Difficulty;
             CurrentGame = cgame;
@@ -95,7 +95,7 @@ namespace Maquina.UI.Scenes
                 if (CurrentGame == Games.EscapeFire)
                 {
                     string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    SceneManager.Overlays.Add(overlayName, new FadeOverlay(SceneManager, overlayName, Color.Red) { FadeSpeed = 0.1f });
+                    SceneManager.Overlays.Add(overlayName, new FadeOverlay(overlayName, Color.Red) { FadeSpeed = 0.1f });
                 }
                 if ((InputManager.MouseUp(MouseButton.Left) ||
                      InputManager.MouseUp(MouseButton.Right) ||
@@ -141,8 +141,7 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(
-                SceneManager, Games.EscapeEarthquake, null, this));
+            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this));
         }
 
         private void ResetPlayerPosition()
@@ -225,7 +224,7 @@ namespace Maquina.UI.Scenes
                     },
                     SpriteBatch = this.SpriteBatch
                 }},
-                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32), SceneManager)
+                { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
@@ -242,7 +241,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
@@ -305,7 +304,7 @@ namespace Maquina.UI.Scenes
             };
 
             PointReached = Game.Content.Load<SoundEffect>("sfx/caught");
-            SceneManager.AudioManager.PlaySong("in-pursuit");
+            Global.AudioManager.PlaySong("in-pursuit");
         }
 
         public override void DelayLoadContent()

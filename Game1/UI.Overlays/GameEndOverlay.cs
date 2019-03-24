@@ -15,10 +15,9 @@ namespace Maquina.UI.Scenes
 {
     public class GameEndOverlay : OverlayBase
     {
-        public GameEndOverlay(SceneManager sceneManager,
-            Games currentGame, Collection<GenericElement> passedMessage,
-            SceneBase parentScene)
-            : base(sceneManager, "Game End Overlay", parentScene)
+        public GameEndOverlay(Games currentGame,
+            Collection<GenericElement> passedMessage, SceneBase parentScene)
+            : base("Game End Overlay", parentScene)
         {
             CurrentGame = currentGame;
             ParentScene = parentScene;
@@ -45,7 +44,7 @@ namespace Maquina.UI.Scenes
                     Font = Fonts["default_m"],
                     LeftClickAction = () =>
                     {
-                        SceneManager.SwitchToScene(new NextGameScene(SceneManager));
+                        SceneManager.SwitchToScene(new NextGameScene());
                         SceneManager.Overlays.Remove("GameEnd");
                     }
                 }},
@@ -57,7 +56,7 @@ namespace Maquina.UI.Scenes
                     Font = Fonts["default_m"],
                     LeftClickAction = () =>
                     {
-                        SceneManager.SwitchToScene(new NextGameScene(SceneManager, CurrentGame));
+                        SceneManager.SwitchToScene(new NextGameScene(CurrentGame));
                         SceneManager.Overlays.Remove("GameEnd");
                     }
                 }},
@@ -69,7 +68,11 @@ namespace Maquina.UI.Scenes
                     SpriteBatch = this.SpriteBatch,
                     ControlAlignment = ControlAlignment.Fixed,
                     Font = Fonts["default_m"],
-                    LeftClickAction = () => { SceneManager.SwitchToScene(new MainMenuScene(SceneManager)); SceneManager.Overlays.Remove("GameEnd"); }
+                    LeftClickAction = () =>
+                    {
+                        SceneManager.SwitchToScene(new MainMenuScene());
+                        SceneManager.Overlays.Remove("GameEnd");
+                    }
                 }}
             };
 
@@ -95,9 +98,9 @@ namespace Maquina.UI.Scenes
         {
             base.DelayLoadContent();
 
-            // Show a fade effect to hide first frame misposition
-            if (!SceneManager.Overlays.ContainsKey("fade-{0}"))
-                SceneManager.Overlays.Add("fade-{0}", new FadeOverlay(SceneManager, "fade-{0}"));
+            // Show a fade effect in order for this overlay's appearance to be not abrupt
+            if (!SceneManager.Overlays.ContainsKey("fade-gameEnd"))
+                SceneManager.Overlays.Add("fade-gameEnd", new FadeOverlay("fade-gameEnd"));
         }
 
         Games CurrentGame;

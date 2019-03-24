@@ -13,8 +13,8 @@ namespace Maquina.UI.Scenes
 {
     public class HighScoreScene : SceneBase
     {
-        public HighScoreScene(SceneManager SceneManager)
-            : base(SceneManager, "High Scores")
+        //TODO: Remove local instance of preferences manager
+        public HighScoreScene() : base("High Scores")
         {
             this.PreferencesManager = new PreferencesManager();
         }
@@ -58,7 +58,7 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(5, 5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "header", new Label("lb")
                 {

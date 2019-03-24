@@ -13,10 +13,7 @@ namespace Maquina.UI.Scenes
 {
     public class WorldSelectionScene : SceneBase
     {
-        public WorldSelectionScene(SceneManager SceneManager)
-            : base(SceneManager, "Game Selection")
-        {
-        }
+        public WorldSelectionScene() : base("Game Selection") {}
 
         public override void LoadContent()
         {
@@ -30,7 +27,7 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "mb2", new MenuButton("mb", SceneManager)
                 {
@@ -49,31 +46,31 @@ namespace Maquina.UI.Scenes
                 {
                     Text = "The Safety Kit",
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(SceneManager, Games.FallingObjects, difficulty))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.FallingObjects, difficulty))
                 }},
                 { "mb4", new MenuButton("mb", SceneManager)
                 {
                     Text = "Earthquake Escape",
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(SceneManager, Games.EscapeEarthquake, difficulty))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.EscapeEarthquake, difficulty))
                 }},
                 { "mb5", new MenuButton("mb", SceneManager)
                 {
                     Text = "Fire Escape",
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(SceneManager, Games.EscapeFire, difficulty))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.EscapeFire, difficulty))
                 }},
                 { "mb6", new MenuButton("mb", SceneManager)
                 {
                     Text = "Safety Jump - Fire",
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(SceneManager, Games.RunningForTheirLives, difficulty))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.RunningForTheirLives, difficulty))
                 }},
                 { "mb7", new MenuButton("mb", SceneManager)
                 {
                     Text = "Aid 'Em - Earthquake",
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(SceneManager, Games.HelpOthersNow, difficulty))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.HelpOthersNow, difficulty))
                 }},
                 { "mb8", new MenuButton("mb", SceneManager)
                 {
@@ -84,7 +81,7 @@ namespace Maquina.UI.Scenes
                 {
                     Text = "Random Game",
                     SpriteBatch = this.SpriteBatch,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(SceneManager))
+                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene())
                 }},
             };
         }
