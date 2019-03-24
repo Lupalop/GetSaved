@@ -92,7 +92,6 @@ namespace Maquina
             #region Game-specific
             UserGlobal.UserName = PreferencesManager.GetCharPref("game.username", "Guest");
             UserGlobal.Score = 0;
-            UserGlobal.PreferencesManager = PreferencesManager;
             #endregion
 
             base.Initialize();
