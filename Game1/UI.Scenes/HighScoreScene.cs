@@ -13,13 +13,7 @@ namespace Maquina.UI.Scenes
 {
     public class HighScoreScene : SceneBase
     {
-        //TODO: Remove local instance of preferences manager
-        public HighScoreScene() : base("High Scores")
-        {
-            this.PreferencesManager = new PreferencesManager();
-        }
-
-        private PreferencesManager PreferencesManager;
+        public HighScoreScene() : base("High Scores") {}
 
         public override void LoadContent()
         {
@@ -32,7 +26,7 @@ namespace Maquina.UI.Scenes
 
             for (int i = 1; i <= 10; i++)
             {
-                if (PreferencesManager.GetCharPref(String.Format("game.highscore.user-{0}", i)).Trim() == "")
+                if (Global.PreferencesManager.GetCharPref(String.Format("game.highscore.user-{0}", i)).Trim() == "")
                 {
                     continue;
                 }
@@ -41,9 +35,9 @@ namespace Maquina.UI.Scenes
                 {
                     Text = String.Format("{0}. {1} earned {2} points!",
                         i,
-                        PreferencesManager.GetCharPref(
+                        Global.PreferencesManager.GetCharPref(
                             String.Format("game.highscore.user-{0}", i)),
-                        PreferencesManager.GetIntPref(
+                        Global.PreferencesManager.GetIntPref(
                             String.Format("game.highscore.score-{0}", i))),
                     SpriteBatch = this.SpriteBatch,
                     Font = Fonts["default_m"]
