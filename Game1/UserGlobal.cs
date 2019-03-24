@@ -35,11 +35,12 @@ namespace Maquina
             {
                 for (int i = NoOfScoresToStore - 1; i > ScoreIndex; i--)
                 {
+                    int userID = i--;
                     Global.PreferencesManager.SetCharPref(
-                        String.Format("game.highscore.user-{0}", i--),
+                        String.Format("game.highscore.user-{0}", userID),
                         Global.PreferencesManager.GetCharPref(String.Format("game.highscore.user-{0}", i)));
                     Global.PreferencesManager.SetIntPref(
-                        String.Format("game.highscore.score-{0}", i--),
+                        String.Format("game.highscore.score-{0}", userID),
                         Global.PreferencesManager.GetIntPref(String.Format("game.highscore.score-{0}", i)));
                 }
 
