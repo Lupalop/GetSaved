@@ -222,12 +222,10 @@ namespace Maquina.UI.Scenes
                             GameBG.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                         }
                     },
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         var a = (ProgressBar)Objects["ProgressBar"];
                         a.value = (float)TimeLeft;
@@ -239,7 +237,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
@@ -248,12 +245,10 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("human"),
                     Location = PosA,
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                 }},
                 { "Timer", new Label("timer")
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label a = (Label)Objects["Timer"];
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
@@ -265,7 +260,6 @@ namespace Maquina.UI.Scenes
                 { "DeathTimer", new Label("timer")
                 {
                     Tint = Color.Red,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label b = (Label)Objects["DeathTimer"];
                         b.Text = DeathTimeLeft.ToString();
@@ -275,7 +269,6 @@ namespace Maquina.UI.Scenes
                 { "HelpLabel", new Label("helplabel")
                 {
                     ControlAlignment = ControlAlignment.Center,
-                    SpriteBatch = this.SpriteBatch,
                     Font = Fonts["o-default_l"]
                 }}
             };
@@ -286,7 +279,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("point"),
                     Location = PosA,
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         GameObjects["PointA"].Location = PosA;
                     }
@@ -296,7 +288,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("htp"),
                     Location = PosB,
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         GameObjects["PointB"].Location = PosB;
                     }

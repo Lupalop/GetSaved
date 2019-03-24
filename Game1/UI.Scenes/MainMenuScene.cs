@@ -22,26 +22,22 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "logo", new Image("logo") {
                     Graphic = Game.Content.Load<Texture2D>("gameLogo"),
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "tagline", new Label("tagline")
                 {
                     Text = "Disaster Preparedness for Everyone!",
-                    SpriteBatch = this.SpriteBatch, 
                     Font = Fonts["default_m"]
                 }},
                 { "mb1", new MenuButton("mb", SceneManager)
                 {
                     Tooltip = "Play Game!",
                     Graphic = Game.Content.Load<Texture2D>("playBtn"), 
-                    SpriteBatch = this.SpriteBatch, 
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene()),
                     RightClickAction = () => SceneManager.SwitchToScene(new WorldSelectionScene())
                 }},
                 { "lb1", new Label("lb")
                 {
                     Text = "Prototype Version",
-                    SpriteBatch = this.SpriteBatch,
                     Font = Fonts["o-default"]
                 }},
                 { "container1", new ElementContainer("cr")
@@ -54,7 +50,6 @@ namespace Maquina.UI.Scenes
                             Tooltip = "Credits",
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
                             Icon = Game.Content.Load<Texture2D>("credits-btn"),
-                            SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene())
                         }},
@@ -63,7 +58,6 @@ namespace Maquina.UI.Scenes
                             Tooltip = "Mute Audio",
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
                             Icon = Game.Content.Load<Texture2D>("sound-btn"),
-                            SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
                             LeftClickAction = () => Global.AudioManager.ToggleMute()
                         }},
@@ -72,7 +66,6 @@ namespace Maquina.UI.Scenes
                             Tooltip = "View High Scores",
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
                             Icon = Game.Content.Load<Texture2D>("highscore-btn"),
-                            SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new HighScoreScene())
                         }},
@@ -81,7 +74,6 @@ namespace Maquina.UI.Scenes
                             Tooltip = "Change User",
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
                             Icon = Game.Content.Load<Texture2D>("user-btn"),
-                            SpriteBatch = this.SpriteBatch,
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new UserProfileScene())
                         }}

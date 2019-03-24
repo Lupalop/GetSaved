@@ -89,7 +89,6 @@ namespace Maquina.UI.Scenes
                     Helpman helpman = (Helpman)GameObjects["helpman"];
                     helpman.Location = new Vector2(ScreenCenter.X - helpman.Dimensions.X / 2, ScreenCenter.Y - helpman.Dimensions.Y / 2);
                 },
-                SpriteBatch = this.SpriteBatch,
                 HitsBeforeBreak = HitsBeforeSaved
             });
         }
@@ -181,12 +180,10 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("game-bg/2"),
                     ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height),
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         var a = (ProgressBar)Objects["ProgressBar"];
                         a.value = (float)TimeLeft;
@@ -198,14 +195,12 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "Timer", new Label("timer")
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         Label a = (Label)Objects["Timer"];
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
@@ -218,7 +213,6 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Game.Content.Load<Texture2D>("aid-em/Hand"),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     Columns = 2,
                     Rows = 1
@@ -227,7 +221,6 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Game.Content.Load<Texture2D>("aid-em/Hand"),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     CurrentFrame = 1,
                     Columns = 2,
@@ -237,7 +230,6 @@ namespace Maquina.UI.Scenes
                 {
                     Text = "Bandage (X)",
                     //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
-                    SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(80,460),
@@ -251,7 +243,6 @@ namespace Maquina.UI.Scenes
                 {
                     Text = "Stitch (A)",
                     //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
-                    SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(150, 530),
@@ -265,7 +256,6 @@ namespace Maquina.UI.Scenes
                 {
                     Text = "Medicine (S)",
                     //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
-                    SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(730,460),
@@ -279,7 +269,6 @@ namespace Maquina.UI.Scenes
                 {
                     Text = "CPR (O)",
                     //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
-                    SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.Static,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(650, 550),
@@ -292,7 +281,6 @@ namespace Maquina.UI.Scenes
                 { "PressLabel", new Label("press-label")
                 {
                     Text = String.Format("Use {0}!", CurrentController.ToString()),
-                    SpriteBatch = this.SpriteBatch,
                     ControlAlignment = ControlAlignment.Fixed,
                     Font = Fonts["default_l"]
                 }}

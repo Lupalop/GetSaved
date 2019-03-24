@@ -26,7 +26,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "mb2", new MenuButton("mb", SceneManager)
@@ -34,7 +33,6 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Change the difficulty of the game",
                     Text = String.Format("Difficulty: {0}", difficulty),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         MenuButton dfBtn = (MenuButton)Objects["mb2"];
                         dfBtn.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - dfBtn.Dimensions.X, 5);
@@ -45,42 +43,35 @@ namespace Maquina.UI.Scenes
                 { "mb3", new MenuButton("mb", SceneManager)
                 {
                     Text = "The Safety Kit",
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.FallingObjects, difficulty))
                 }},
                 { "mb4", new MenuButton("mb", SceneManager)
                 {
                     Text = "Earthquake Escape",
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.EscapeEarthquake, difficulty))
                 }},
                 { "mb5", new MenuButton("mb", SceneManager)
                 {
                     Text = "Fire Escape",
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.EscapeFire, difficulty))
                 }},
                 { "mb6", new MenuButton("mb", SceneManager)
                 {
                     Text = "Safety Jump - Fire",
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.RunningForTheirLives, difficulty))
                 }},
                 { "mb7", new MenuButton("mb", SceneManager)
                 {
                     Text = "Aid 'Em - Earthquake",
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.HelpOthersNow, difficulty))
                 }},
                 { "mb8", new MenuButton("mb", SceneManager)
                 {
-                    SpriteBatch = this.SpriteBatch,
                     Tint = Color.Transparent
                 }},
                 { "mb9", new MenuButton("mb", SceneManager)
                 {
                     Text = "Random Game",
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene())
                 }},
             };

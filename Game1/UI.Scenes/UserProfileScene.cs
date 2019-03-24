@@ -26,37 +26,31 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "lb1", new Label("lb")
                 {
                     Text = String.Format("Are you {0}?", UserGlobal.UserName),
                     Font = Fonts["o-default_l"],
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "lb2", new Label("lb")
                 {
                     Text = String.Format("You currently have {0} points!", UserGlobal.Score),
                     Font = Fonts["default_m"],
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "lb3", new Label("lb")
                 {
                     Text = "If no, type your name at the box\n below and confirm.",
                     Font = Fonts["default_m"],
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "tb1", new TextBox("tb", SceneManager)
                 {
-                    SpriteBatch = this.SpriteBatch,
                     OnInput = () => Objects["lb4"].Tint = Color.Transparent,
                 }},
                 { "mb2", new MenuButton("mb", SceneManager)
                 {
                     Tooltip = "Clicking here will clear your points\n and change the active user.",
                     Text = "Confirm and change user",
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () =>
                     {
                         TextBox textbox = (TextBox)Objects["tb1"];
@@ -77,7 +71,6 @@ namespace Maquina.UI.Scenes
                     Text = "Leaving the name field blank is bad.",
                     Font = Fonts["default"],
                     Tint = Color.Transparent,
-                    SpriteBatch = this.SpriteBatch
                 }},
             };
         }

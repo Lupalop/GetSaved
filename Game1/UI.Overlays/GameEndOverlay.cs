@@ -29,17 +29,14 @@ namespace Maquina.UI.Scenes
                     OnUpdate = () => {
                         Objects["Background"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "TimesUp", new Image("TimesUp")
                 {
                     Graphic = Game.Content.Load<Texture2D>("timesUp"),
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "NextRoundBtn", new MenuButton("NextRoundBtn", SceneManager)
                 {
                     Tooltip = "Proceed to the next game",
-                    SpriteBatch = this.SpriteBatch,
                     Text = "Next Round",
                     Font = Fonts["default_m"],
                     LeftClickAction = () =>
@@ -51,7 +48,6 @@ namespace Maquina.UI.Scenes
                 { "TryAgainBtn", new MenuButton("TryAgainBtn", SceneManager)
                 {
                     Tooltip = "Having a hard time? Try this game again!",
-                    SpriteBatch = this.SpriteBatch,
                     Text = "Try Again",
                     Font = Fonts["default_m"],
                     LeftClickAction = () =>
@@ -65,7 +61,6 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5, 5),
-                    SpriteBatch = this.SpriteBatch,
                     ControlAlignment = ControlAlignment.Fixed,
                     Font = Fonts["default_m"],
                     LeftClickAction = () =>
@@ -198,13 +193,11 @@ namespace Maquina.UI.Scenes
 
             Objects.Add("CorrectItem", new Label("CorrectItem")
             {
-                SpriteBatch = this.SpriteBatch,
                 Text = "Correct items: " + correctItems,
                 Font = Fonts["default_m"]
             });
             Objects.Add("IncorrectItem", new Label("IncorrectItem")
             {
-                SpriteBatch = this.SpriteBatch,
                 Text = "Incorrect items: " + incorrectItems,
                 Font = Fonts["default_m"]
             });
@@ -241,13 +234,11 @@ namespace Maquina.UI.Scenes
 
             Objects.Add("CorrectCrap", new Label("CorrectCrap")
             {
-                SpriteBatch = this.SpriteBatch,
                 Text = "People Saved: " + peopleSaved,
                 Font = Fonts["default_m"]
             });
             Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
             {
-                SpriteBatch = this.SpriteBatch,
                 Text = "People Died: " + peopleDied,
                 Font = Fonts["default_m"]
             });
@@ -260,13 +251,11 @@ namespace Maquina.UI.Scenes
             UserGlobal.Score += points;
             Objects.Add("PointsEarned", new Label("points")
             {
-                SpriteBatch = this.SpriteBatch,
                 Text = String.Format("You earned {0} points!", points),
                 Font = Fonts["o-default_m"]
             });
             Objects.Add("TotalPointsEarned", new Label("points")
             {
-                SpriteBatch = this.SpriteBatch,
                 Text = String.Format("{0}, you have {1} points in total.", UserGlobal.UserName, UserGlobal.Score),
                 Font = Fonts["o-default"]
             });

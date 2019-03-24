@@ -92,7 +92,6 @@ namespace Maquina.UI.Scenes
                     // Random X, constant Y initial value
                     Location = new Vector2(
                         (float)RandNum.Next(5, Game.GraphicsDevice.Viewport.Width - 5), 30),
-                    SpriteBatch = this.SpriteBatch
                 };
 
                 string givenName = AvailableItems[RandNum.Next(0, AvailableItems.Count)];
@@ -124,13 +123,11 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Game.Content.Load<Texture2D>("game-bg/1"),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height)
                 }},
                 { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         var a = (ProgressBar)Objects["ProgressBar"];
                         a.value = (float)TimeLeft;
@@ -142,7 +139,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
@@ -151,12 +147,10 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("falling-object/briefcase"),
                     Location = new Vector2(5, Game.GraphicsDevice.Viewport.Height - 70),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                 }},
                 { "Timer", new Label("o-timer")
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     Font = Fonts["o-default_l"],
                     LayerDepth = 0.1f,
                     OnUpdate = () => {

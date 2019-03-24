@@ -31,7 +31,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("htp/dice"),
                     Location = ScreenCenter,
                     Tint = new Color(Color.White, 0),
-                    SpriteBatch = this.SpriteBatch,
                     OnUpdate = () => {
                         GenericElement Dice = Objects["Dice"];
                         Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
@@ -41,13 +40,11 @@ namespace Maquina.UI.Scenes
                 { "GameName", new Label("GameName")
                 {
                     Text = NewGameScene.SceneName.Substring(14),
-                    SpriteBatch = this.SpriteBatch, 
                     Font = Fonts["default_l"]
                 }},
                 { "GameDifficulty", new Label("GameDifficulty")
                 {
                     Text = String.Format("Difficulty: {0}", GameDifficulty.ToString()),
-                    SpriteBatch = this.SpriteBatch, 
                     Font = Fonts["default_m"]
                 }},
                 { "SkipBtn", new MenuButton("skipBtn", SceneManager)
@@ -55,7 +52,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("overlayBG"),
                     Tint = Color.Transparent,
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     SpriteType = SpriteType.None,
                     OnUpdate = () => {
                         Rectangle SrcRectSkipBtn = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
@@ -69,7 +65,6 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = HelpImage,
                     Location = ScreenCenter,
-                    SpriteBatch = this.SpriteBatch
                 }}
             };
 

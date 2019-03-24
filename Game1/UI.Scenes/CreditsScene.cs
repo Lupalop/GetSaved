@@ -28,7 +28,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5, 5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }}
             };
@@ -46,7 +45,6 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("image" + i, new Image("image")
                     {
                         Graphic = Game.Content.Load<Texture2D>(CreditsText[i].Substring(1)),
-                        SpriteBatch = this.SpriteBatch
                     });
                     continue;
                 }
@@ -58,7 +56,6 @@ namespace Maquina.UI.Scenes
                     {
                         Text = CreditsText[i].Substring(1),
                         ControlAlignment = ControlAlignment.Fixed,
-                        SpriteBatch = this.SpriteBatch,
                         Font = Fonts["o-default_l"]
                     });
                     continue;
@@ -71,7 +68,6 @@ namespace Maquina.UI.Scenes
                     {
                         Text = CreditsText[i].Substring(1),
                         ControlAlignment = ControlAlignment.Fixed,
-                        SpriteBatch = this.SpriteBatch,
                         Font = Fonts["o-default_m"]
                     });
                     continue;
@@ -84,7 +80,6 @@ namespace Maquina.UI.Scenes
                     {
                         Text = CreditsText[i].Substring(1),
                         ControlAlignment = ControlAlignment.Fixed,
-                        SpriteBatch = this.SpriteBatch,
                         Font = Fonts["default_l"]
                     });
                     continue;
@@ -97,7 +92,6 @@ namespace Maquina.UI.Scenes
                     {
                         Text = CreditsText[i].Substring(1),
                         ControlAlignment = ControlAlignment.Fixed,
-                        SpriteBatch = this.SpriteBatch,
                         Font = Fonts["default_m"]
                     });
                     continue;
@@ -110,7 +104,6 @@ namespace Maquina.UI.Scenes
                     {
                         Text = CreditsText[i],
                         ControlAlignment = ControlAlignment.Fixed,
-                        SpriteBatch = this.SpriteBatch,
                         Font = Fonts["default"]
                     });
                     continue;
@@ -121,7 +114,6 @@ namespace Maquina.UI.Scenes
                 {
                     Text = CreditsText[i],
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     Font = Fonts["default"]
                 });
             }

@@ -87,7 +87,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("dino/fire"),
                     Location = new Vector2((float)RandNum.Next(StartingXPos - 100, StartingXPos), MaxYPos),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch
                 };
                 GameObjects.Add(nwBtn);
             }
@@ -105,7 +104,6 @@ namespace Maquina.UI.Scenes
                     OnUpdate = () => {
                         Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "BackButton", new MenuButton("mb", SceneManager)
                 {
@@ -113,7 +111,6 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
@@ -123,13 +120,11 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(5, Game.GraphicsDevice.Viewport.Height - 70),
                     ControlAlignment = ControlAlignment.Fixed,
                     GraphicEffects = SpriteEffects.FlipHorizontally,
-                    SpriteBatch = this.SpriteBatch
                 }},
                 { "ScoreCounter", new Label("timer")
                 {
                     Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LayerDepth = 0.1f,
                     OnUpdate = () => {
                         Label a = (Label)Objects["ScoreCounter"];

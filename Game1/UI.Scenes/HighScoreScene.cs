@@ -39,7 +39,6 @@ namespace Maquina.UI.Scenes
                             String.Format("game.highscore.user-{0}", i)),
                         Global.PreferencesManager.GetIntPref(
                             String.Format("game.highscore.score-{0}", i))),
-                    SpriteBatch = this.SpriteBatch,
                     Font = Fonts["default_m"]
                 });
             }
@@ -51,13 +50,11 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5, 5),
                     ControlAlignment = ControlAlignment.Fixed,
-                    SpriteBatch = this.SpriteBatch,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "header", new Label("lb")
                 {
                     Text = "High Scores",
-                    SpriteBatch = this.SpriteBatch,
                     Font = Fonts["o-default_l"]
                 }},
                 { "container", elementContainer }

@@ -39,7 +39,6 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "Background", new Image("Background")
                 {
-                    SpriteBatch = this.SpriteBatch,
                     ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = () => {
                         Image BG = (Image)Objects["Background"];
