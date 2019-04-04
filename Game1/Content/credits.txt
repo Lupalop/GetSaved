@@ -22,14 +22,16 @@ Michael Joseph Moreno
 
 +Graphics
 
+-Graphic Artist
+Larissa Nadine Naputo
+
 -Emoji set, potentially non-free
 Microsoft Corporation
 
--Images from DuckDuckGo Search
-https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/
-nWJ1xCb/pov-running-through-high-school-hallway-60fps_h09ooieg__F0000.png
-https://cdn.wallpapersafari.com/15/28/a05csx.png
-
+-Icons
+Sergey Demushkin for 'Sewing Colored'
+www.iconfinder.com/icons/1098050/needle_
+needlework_prick_sewing_stitching_tailoring_thread_icon
 
 +Music and SFX
 
@@ -45,11 +47,13 @@ www.soundimage.org
 
 +Special Thanks
 
+~monogame
 -MonoGame Framework
 A free C# framework used by game developers to make
 games for multiple platforms and other systems.
 www.monogame.net
 
+~maquina
 -Maquina Game Engine
 Copyright 2019, Lupalop Productions
 Licensed under the GNU General Public License, version 3

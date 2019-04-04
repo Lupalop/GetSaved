@@ -228,53 +228,41 @@ namespace Maquina.UI.Scenes
                 }},
                 { "Controller-Bandage", new MenuButton("controller-x")
                 {
-                    Text = "Bandage (X)",
-                    //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
-                    SpriteType = SpriteType.Static,
+                    Tooltip = "Bandage (X)",
+                    Graphic = Game.Content.Load<Texture2D>("aid-em/bandage"),
+                    SpriteType = SpriteType.None,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(80,460),
-                    Font = Fonts["default_m"],
-                    Columns = 3,
-                    Rows = 1,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Bandage)
                 }},
                 { "Controller-Stitch", new MenuButton("controller-a")
                 {
-                    Text = "Stitch (A)",
-                    //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
-                    SpriteType = SpriteType.Static,
+                    Tooltip = "Stitch (A)",
+                    Graphic = Game.Content.Load<Texture2D>("aid-em/stitch"),
+                    SpriteType = SpriteType.None,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(150, 530),
-                    Font = Fonts["default_m"],
-                    Columns = 3,
-                    Rows = 1,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Stitch)
                 }},
                 { "Controller-Medicine", new MenuButton("controller-s")
                 {
-                    Text = "Medicine (S)",
-                    //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
-                    SpriteType = SpriteType.Static,
+                    Tooltip = "Medicine (S)",
+                    Graphic = Game.Content.Load<Texture2D>("aid-em/medicine"),
+                    SpriteType = SpriteType.None,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(730,460),
-                    Font = Fonts["default_m"],
-                    Columns = 3,
-                    Rows = 1,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Medicine)
                 }},
                 { "Controller-CPR", new MenuButton("controller-o")
                 {
-                    Text = "CPR (O)",
-                    //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
-                    SpriteType = SpriteType.Static,
+                    Tooltip = "CPR (O)",
+                    Graphic = Game.Content.Load<Texture2D>("aid-em/cpr"),
+                    SpriteType = SpriteType.None,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(650, 550),
-                    Font = Fonts["default_m"],
-                    Columns = 3,
-                    Rows = 1,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.CPR)
                 }},
