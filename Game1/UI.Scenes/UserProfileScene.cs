@@ -20,7 +20,7 @@ namespace Maquina.UI.Scenes
             base.LoadContent();
 
             Objects = new Dictionary<string, GenericElement> {
-                { "mb1", new MenuButton("mb", SceneManager)
+                { "mb1", new MenuButton("mb")
                 {
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
@@ -43,11 +43,11 @@ namespace Maquina.UI.Scenes
                     Text = "If no, type your name at the box\n below and confirm.",
                     Font = Fonts["default_m"],
                 }},
-                { "tb1", new TextBox("tb", SceneManager)
+                { "tb1", new TextBox("tb")
                 {
                     OnInput = () => Objects["lb4"].Tint = Color.Transparent,
                 }},
-                { "mb2", new MenuButton("mb", SceneManager)
+                { "mb2", new MenuButton("mb")
                 {
                     Tooltip = "Clicking here will clear your points\n and change the active user.",
                     Text = "Confirm and change user",

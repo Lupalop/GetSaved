@@ -34,7 +34,7 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Game.Content.Load<Texture2D>("timesUp"),
                 }},
-                { "NextRoundBtn", new MenuButton("NextRoundBtn", SceneManager)
+                { "NextRoundBtn", new MenuButton("NextRoundBtn")
                 {
                     Tooltip = "Proceed to the next game",
                     Text = "Next Round",
@@ -45,7 +45,7 @@ namespace Maquina.UI.Scenes
                         SceneManager.Overlays.Remove("GameEnd");
                     }
                 }},
-                { "TryAgainBtn", new MenuButton("TryAgainBtn", SceneManager)
+                { "TryAgainBtn", new MenuButton("TryAgainBtn")
                 {
                     Tooltip = "Having a hard time? Try this game again!",
                     Text = "Try Again",
@@ -56,7 +56,7 @@ namespace Maquina.UI.Scenes
                         SceneManager.Overlays.Remove("GameEnd");
                     }
                 }},
-                { "MainMenuBtn", new MenuButton("MainMenuBtn", SceneManager)
+                { "MainMenuBtn", new MenuButton("MainMenuBtn")
                 {
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),

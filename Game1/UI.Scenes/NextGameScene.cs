@@ -47,7 +47,7 @@ namespace Maquina.UI.Scenes
                     Text = String.Format("Difficulty: {0}", GameDifficulty.ToString()),
                     Font = Fonts["default_m"]
                 }},
-                { "SkipBtn", new MenuButton("skipBtn", SceneManager)
+                { "SkipBtn", new MenuButton("skipBtn")
                 {
                     Graphic = Game.Content.Load<Texture2D>("overlayBG"),
                     Tint = Color.Transparent,

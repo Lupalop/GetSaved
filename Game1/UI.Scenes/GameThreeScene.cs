@@ -105,7 +105,7 @@ namespace Maquina.UI.Scenes
                         Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
                 }},
-                { "BackButton", new MenuButton("mb", SceneManager)
+                { "BackButton", new MenuButton("mb")
                 {
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),

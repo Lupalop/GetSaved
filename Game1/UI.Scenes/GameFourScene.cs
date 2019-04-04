@@ -189,7 +189,7 @@ namespace Maquina.UI.Scenes
                         a.value = (float)TimeLeft;
                     }
                 }},
-                { "BackButton", new MenuButton("mb", SceneManager)
+                { "BackButton", new MenuButton("mb")
                 {
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
@@ -226,7 +226,7 @@ namespace Maquina.UI.Scenes
                     Columns = 2,
                     Rows = 1
                 }},
-                { "Controller-Bandage", new MenuButton("controller-x", SceneManager)
+                { "Controller-Bandage", new MenuButton("controller-x")
                 {
                     Text = "Bandage (X)",
                     //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
@@ -239,7 +239,7 @@ namespace Maquina.UI.Scenes
                     LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Bandage)
                 }},
-                { "Controller-Stitch", new MenuButton("controller-a", SceneManager)
+                { "Controller-Stitch", new MenuButton("controller-a")
                 {
                     Text = "Stitch (A)",
                     //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
@@ -252,7 +252,7 @@ namespace Maquina.UI.Scenes
                     LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Stitch)
                 }},
-                { "Controller-Medicine", new MenuButton("controller-s", SceneManager)
+                { "Controller-Medicine", new MenuButton("controller-s")
                 {
                     Text = "Medicine (S)",
                     //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),
@@ -265,7 +265,7 @@ namespace Maquina.UI.Scenes
                     LayerDepth = 0.1f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Medicine)
                 }},
-                { "Controller-CPR", new MenuButton("controller-o", SceneManager)
+                { "Controller-CPR", new MenuButton("controller-o")
                 {
                     Text = "CPR (O)",
                     //Graphic = Game.Content.Load<Texture2D>("controllerBtn"),

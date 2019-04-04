@@ -133,7 +133,7 @@ namespace Maquina.UI.Scenes
                         a.value = (float)TimeLeft;
                     }
                 }},
-                { "BackButton", new MenuButton("mb", SceneManager)
+                { "BackButton", new MenuButton("mb")
                 {
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),

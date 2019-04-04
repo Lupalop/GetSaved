@@ -44,7 +44,7 @@ namespace Maquina.UI.Scenes
             }
 
             Objects = new Dictionary<string, GenericElement> {
-                { "mb1", new MenuButton("mb", SceneManager)
+                { "mb1", new MenuButton("mb")
                 {
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),

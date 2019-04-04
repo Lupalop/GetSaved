@@ -20,7 +20,7 @@ namespace Maquina.UI.Scenes
             base.LoadContent();
 
             Objects = new Dictionary<string, GenericElement> {
-                { "mb1", new MenuButton("mb", SceneManager)
+                { "mb1", new MenuButton("mb")
                 {
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
@@ -28,7 +28,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
-                { "mb2", new MenuButton("mb", SceneManager)
+                { "mb2", new MenuButton("mb")
                 {
                     Tooltip = "Change the difficulty of the game",
                     Text = String.Format("Difficulty: {0}", difficulty),
@@ -40,36 +40,36 @@ namespace Maquina.UI.Scenes
                     },
                     LeftClickAction = () => ModifyDifficulty()
                 }},
-                { "mb3", new MenuButton("mb", SceneManager)
+                { "mb3", new MenuButton("mb")
                 {
                     Text = "The Safety Kit",
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.FallingObjects, difficulty))
                 }},
-                { "mb4", new MenuButton("mb", SceneManager)
+                { "mb4", new MenuButton("mb")
                 {
                     Text = "Earthquake Escape",
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.EscapeEarthquake, difficulty))
                 }},
-                { "mb5", new MenuButton("mb", SceneManager)
+                { "mb5", new MenuButton("mb")
                 {
                     Text = "Fire Escape",
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.EscapeFire, difficulty))
                 }},
-                { "mb6", new MenuButton("mb", SceneManager)
+                { "mb6", new MenuButton("mb")
                 {
                     Text = "Safety Jump - Fire",
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.RunningForTheirLives, difficulty))
                 }},
-                { "mb7", new MenuButton("mb", SceneManager)
+                { "mb7", new MenuButton("mb")
                 {
                     Text = "Aid 'Em - Earthquake",
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.HelpOthersNow, difficulty))
                 }},
-                { "mb8", new MenuButton("mb", SceneManager)
+                { "mb8", new MenuButton("mb")
                 {
                     Tint = Color.Transparent
                 }},
-                { "mb9", new MenuButton("mb", SceneManager)
+                { "mb9", new MenuButton("mb")
                 {
                     Text = "Random Game",
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene())

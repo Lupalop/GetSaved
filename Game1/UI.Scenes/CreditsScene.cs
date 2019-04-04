@@ -22,7 +22,7 @@ namespace Maquina.UI.Scenes
         {
             base.LoadContent();
             Objects = new Dictionary<string, GenericElement> {
-                { "BackButton", new MenuButton("mb", SceneManager)
+                { "BackButton", new MenuButton("mb")
                 {
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),

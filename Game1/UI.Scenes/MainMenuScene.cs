@@ -28,7 +28,7 @@ namespace Maquina.UI.Scenes
                     Text = "Disaster Preparedness for Everyone!",
                     Font = Fonts["default_m"]
                 }},
-                { "mb1", new MenuButton("mb", SceneManager)
+                { "mb1", new MenuButton("mb")
                 {
                     Tooltip = "Play Game!",
                     Graphic = Game.Content.Load<Texture2D>("playBtn"), 
@@ -45,7 +45,7 @@ namespace Maquina.UI.Scenes
                     ElementSpacing = 5,
                     ContainerAlignment = ContainerAlignment.Horizontal,
                     Children = new Dictionary<string, GenericElement> {
-                        { "mb2", new MenuButton("mb", SceneManager)
+                        { "mb2", new MenuButton("mb")
                         {
                             Tooltip = "Credits",
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
@@ -53,7 +53,7 @@ namespace Maquina.UI.Scenes
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene())
                         }},
-                        { "mb3", new MenuButton("mb", SceneManager)
+                        { "mb3", new MenuButton("mb")
                         {
                             Tooltip = "Mute Audio",
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
@@ -61,7 +61,7 @@ namespace Maquina.UI.Scenes
                             Font = Fonts["default"],
                             LeftClickAction = () => Global.AudioManager.ToggleMute()
                         }},
-                        { "mb4", new MenuButton("mb", SceneManager)
+                        { "mb4", new MenuButton("mb")
                         {
                             Tooltip = "View High Scores",
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
@@ -69,7 +69,7 @@ namespace Maquina.UI.Scenes
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new HighScoreScene())
                         }},
-                        { "mb5", new MenuButton("mb", SceneManager)
+                        { "mb5", new MenuButton("mb")
                         {
                             Tooltip = "Change User",
                             Graphic = Game.Content.Load<Texture2D>("circle-btn"),
