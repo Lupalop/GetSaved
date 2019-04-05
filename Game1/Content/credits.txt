@@ -5,19 +5,26 @@ _Disaster Preparedness for Everyone!
 This app was created by
 _Get Saved
 Life Labs Group
-Grade 9AM-1, APEC Schools - Muntinlupa
+Grade 9AM-1
+APEC Schools - Muntinlupa
 
 
-+Key People
++Members
 
--Lead Programmer
-Francis Dominic Fajardo
-
--Concept Ideas
-Jake Baria
+-Facilitator
 Shannen Gabrielle Esporlas
+
+-Spokesperson
+Jake Baria
+
+-Scribe
 Lara Nicole Meneses
+
+-Researcher
 Michael Joseph Moreno
+
+-Lead Programmer and Researcher
+Francis Dominic Fajardo
 
 
 +Graphics
@@ -25,13 +32,14 @@ Michael Joseph Moreno
 -Graphic Artist
 Larissa Nadine Naputo
 
--Emoji set, potentially non-free
+-Emoji icon set
 Microsoft Corporation
 
--Icons
+-Stitch Icon
 Sergey Demushkin for 'Sewing Colored'
 www.iconfinder.com/icons/1098050/needle_
 needlework_prick_sewing_stitching_tailoring_thread_icon
+
 
 +Music and SFX
 
@@ -47,18 +55,6 @@ www.soundimage.org
 
 +Special Thanks
 
-~monogame
--MonoGame Framework
-A free C# framework used by game developers to make
-games for multiple platforms and other systems.
-www.monogame.net
-
-~maquina
--Maquina Game Engine
-Copyright 2019, Lupalop Productions
-Licensed under the GNU General Public License, version 3
-www.github.com/FranklinDM/Maquina
-
 -Zilla Slab
 Copyright 2017, The Mozilla Foundation
 Licensed under the SIL Open Font License 1.1
@@ -67,3 +63,16 @@ http://scripts.sil.org/OFL
 -ProgressBar code
 Copyright 2009 Luke Rymarz
 www.lukerymarz.com
+
+
++Framework and Engine
+
+~monogame
+A free C# framework used by game developers to make
+games for multiple platforms and other systems.
+www.monogame.net
+
+~maquina
+Copyright 2019, Lupalop Productions
+Licensed under the GNU General Public License, version 3
+www.github.com/FranklinDM/Maquina
