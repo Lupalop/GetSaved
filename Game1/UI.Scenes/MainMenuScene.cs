@@ -32,8 +32,7 @@ namespace Maquina.UI.Scenes
                 {
                     Tooltip = "Play Game!",
                     Graphic = Game.Content.Load<Texture2D>("playBtn"), 
-                    LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene()),
-                    RightClickAction = () => SceneManager.SwitchToScene(new WorldSelectionScene())
+                    LeftClickAction = () => SceneManager.SwitchToScene(new WorldSelectionScene())
                 }},
                 { "lb1", new Label("lb")
                 {
