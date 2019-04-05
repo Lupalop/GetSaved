@@ -16,7 +16,7 @@ namespace Maquina.UI.Scenes
     public class GameEndOverlay : OverlayBase
     {
         public GameEndOverlay(Games currentGame,
-            Collection<GenericElement> passedMessage, SceneBase parentScene)
+            Collection<GenericElement> passedMessage, SceneBase parentScene, Difficulty gameDifficulty)
             : base("Game End Overlay", parentScene)
         {
             CurrentGame = currentGame;
@@ -47,12 +47,12 @@ namespace Maquina.UI.Scenes
                 }},
                 { "TryAgainBtn", new MenuButton("TryAgainBtn")
                 {
-                    Tooltip = "Having a hard time? Try this game again!",
+                    Tooltip = "Having a hard time?\nTry this game again!",
                     Text = "Try Again",
                     Font = Fonts["default_m"],
                     LeftClickAction = () =>
                     {
-                        SceneManager.SwitchToScene(new NextGameScene(CurrentGame));
+                        SceneManager.SwitchToScene(new NextGameScene(CurrentGame, gameDifficulty));
                         SceneManager.Overlays.Remove("GameEnd");
                     }
                 }},

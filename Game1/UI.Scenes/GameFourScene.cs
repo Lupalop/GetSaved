@@ -73,7 +73,7 @@ namespace Maquina.UI.Scenes
                 ProjectileGenerator.Close();
                 AttemptRemoveHelpman();
 
-                SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.HelpOthersNow, CollectedObjects, this));
+                SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.HelpOthersNow, CollectedObjects, this, GameDifficulty));
                 GameTimer.Enabled = false;
             };
         }

@@ -141,7 +141,7 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this));
+            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this, GameDifficulty));
         }
 
         private void ResetPlayerPosition()

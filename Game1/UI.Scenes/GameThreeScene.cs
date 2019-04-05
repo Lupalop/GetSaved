@@ -65,7 +65,7 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.RunningForTheirLives, null, this));
+            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.RunningForTheirLives, null, this, GameDifficulty));
         }
 
         private void UpdateMinMaxY()

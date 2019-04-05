@@ -79,7 +79,7 @@ namespace Maquina.UI.Scenes
             {
                 IsGameEnd = true;
                 SceneManager.Overlays.Add("GameEnd",
-                    new GameEndOverlay(Games.FallingObjects, CollectedObjects, this));
+                    new GameEndOverlay(Games.FallingObjects, CollectedObjects, this, GameDifficulty));
             };
         }
 
