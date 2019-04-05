@@ -123,13 +123,15 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Game.Content.Load<Texture2D>("game-bg/1"),
                     ControlAlignment = ControlAlignment.Fixed,
-                    OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height)
+                    OnUpdate = (element) => {
+                        element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
+                    }
                 }},
                 { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    OnUpdate = () => {
-                        var a = (ProgressBar)Objects["ProgressBar"];
+                    OnUpdate = (element) => {
+                        ProgressBar a = (ProgressBar)element;
                         a.value = (float)TimeLeft;
                     }
                 }},
@@ -153,8 +155,8 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     Font = Fonts["o-default_l"],
                     LayerDepth = 0.1f,
-                    OnUpdate = () => {
-                        Label Timer = (Label)Objects["Timer"];
+                    OnUpdate = (element) => {
+                        Label Timer = (Label)element;
                         Timer.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Timer.Dimensions.X, 5);
                         Timer.Text = MathHelper.Clamp((int)TimeLeft, 0, 100).ToString();
                     }

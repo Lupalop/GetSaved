@@ -26,8 +26,8 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Game.Content.Load<Texture2D>("overlayBG"),
                     ControlAlignment = ControlAlignment.Fixed,
-                    OnUpdate = () => {
-                        Objects["Background"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
+                    OnUpdate = (element) => {
+                        element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
                 }},
                 { "TimesUp", new Image("TimesUp")

@@ -84,9 +84,9 @@ namespace Maquina.UI.Scenes
             GameObjects.Add("helpman", new Helpman("helpman")
             {
                 Graphic = Game.Content.Load<Texture2D>("aid-em/helpman"),
-                OnUpdate = () =>
+                OnUpdate = (element) =>
                 {
-                    Helpman helpman = (Helpman)GameObjects["helpman"];
+                    Helpman helpman = (Helpman)element;
                     helpman.Location = new Vector2(ScreenCenter.X - helpman.Dimensions.X / 2, ScreenCenter.Y - helpman.Dimensions.Y / 2);
                 },
                 HitsBeforeBreak = HitsBeforeSaved
@@ -179,13 +179,15 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Game.Content.Load<Texture2D>("game-bg/2"),
                     ControlAlignment = ControlAlignment.Fixed,
-                    OnUpdate = () => Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height),
+                    OnUpdate = (element) => {
+                        element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
+                    }
                 }},
                 { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    OnUpdate = () => {
-                        var a = (ProgressBar)Objects["ProgressBar"];
+                    OnUpdate = (element) => {
+                        var a = (ProgressBar)element;
                         a.value = (float)TimeLeft;
                     }
                 }},
@@ -201,8 +203,8 @@ namespace Maquina.UI.Scenes
                 { "Timer", new Label("timer")
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    OnUpdate = () => {
-                        Label a = (Label)Objects["Timer"];
+                    OnUpdate = (element) => {
+                        Label a = (Label)element;
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
                         a.Text = TimeLeft.ToString();
                     },

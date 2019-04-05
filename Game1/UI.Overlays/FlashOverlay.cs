@@ -40,13 +40,12 @@ namespace Maquina.UI.Scenes
                 { "Background", new Image("Background")
                 {
                     ControlAlignment = ControlAlignment.Fixed,
-                    OnUpdate = () => {
-                        Image BG = (Image)Objects["Background"];
-                        BG.Graphic = FadeBackground;
-                        BG.Tint = Color.White * Opacity;
-                        BG.Location = new Vector2(
-                            ScreenCenter.X - (BG.Bounds.Width / 2),
-                            ScreenCenter.Y - (BG.Bounds.Height / 2));
+                    OnUpdate = (element) => {
+                        element.Graphic = FadeBackground;
+                        element.Tint = Color.White * Opacity;
+                        element.Location = new Vector2(
+                            ScreenCenter.X - (element.Bounds.Width / 2),
+                            ScreenCenter.Y - (element.Bounds.Height / 2));
                     },
                     Scale = this.Scale
                 }}

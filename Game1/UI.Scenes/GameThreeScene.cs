@@ -101,8 +101,8 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Game.Content.Load<Texture2D>("game-bg/3"),
                     ControlAlignment = ControlAlignment.Fixed,
-                    OnUpdate = () => {
-                        Objects["GameBG"].DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
+                    OnUpdate = (element) => {
+                        element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
                 }},
                 { "BackButton", new MenuButton("mb")
@@ -126,8 +126,8 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5),
                     ControlAlignment = ControlAlignment.Fixed,
                     LayerDepth = 0.1f,
-                    OnUpdate = () => {
-                        Label a = (Label)Objects["ScoreCounter"];
+                    OnUpdate = (element) => {
+                        Label a = (Label)element;
                         a.Text = String.Format("Score: {0}", Score);
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
                     },

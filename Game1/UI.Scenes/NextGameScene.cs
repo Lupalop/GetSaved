@@ -31,8 +31,7 @@ namespace Maquina.UI.Scenes
                     Graphic = Game.Content.Load<Texture2D>("htp/dice"),
                     Location = ScreenCenter,
                     Tint = new Color(Color.White, 0),
-                    OnUpdate = () => {
-                        GenericElement Dice = Objects["Dice"];
+                    OnUpdate = (Dice) => {
                         Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
                         Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));
                     }
@@ -53,10 +52,10 @@ namespace Maquina.UI.Scenes
                     Tint = Color.Transparent,
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteType = SpriteType.None,
-                    OnUpdate = () => {
+                    OnUpdate = (element) => {
                         Rectangle SrcRectSkipBtn = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
-                        Objects["SkipBtn"].DestinationRectangle = SrcRectSkipBtn;
-                        Objects["SkipBtn"].SourceRectangle = SrcRectSkipBtn;
+                        element.DestinationRectangle = SrcRectSkipBtn;
+                        element.SourceRectangle = SrcRectSkipBtn;
                     },
                     LeftClickAction = () => SceneManager.SwitchToScene(NewGameScene),
                     RightClickAction = () => SceneManager.SwitchToScene(NewGameScene)

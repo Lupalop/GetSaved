@@ -32,9 +32,9 @@ namespace Maquina.UI.Scenes
                 {
                     Tooltip = "Change the game's difficulty",
                     Text = String.Format("Difficulty: {0}", difficulty),
-                    OnUpdate = () => {
-                        MenuButton dfBtn = (MenuButton)Objects["mb2"];
-                        dfBtn.Text = String.Format("Difficulty: {0}", difficulty);
+                    OnUpdate = (element) => {
+                        MenuButton mb = (MenuButton)element;
+                        mb.Text = String.Format("Difficulty: {0}", difficulty);
                     },
                     LeftClickAction = () => ModifyDifficulty()
                 }},
