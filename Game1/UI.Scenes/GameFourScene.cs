@@ -236,6 +236,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(80,460),
                     LayerDepth = 0.1f,
+                    Scale = 1.3f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Bandage)
                 }},
                 { "Controller-Stitch", new MenuButton("controller-a")
@@ -246,6 +247,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(150, 530),
                     LayerDepth = 0.1f,
+                    Scale = 1.3f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Stitch)
                 }},
                 { "Controller-Medicine", new MenuButton("controller-s")
@@ -256,6 +258,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(730,460),
                     LayerDepth = 0.1f,
+                    Scale = 1.3f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Medicine)
                 }},
                 { "Controller-CPR", new MenuButton("controller-o")
@@ -266,6 +269,7 @@ namespace Maquina.UI.Scenes
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(650, 550),
                     LayerDepth = 0.1f,
+                    Scale = 1.3f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.CPR)
                 }},
                 { "PressLabel", new Label("press-label")
@@ -286,18 +290,18 @@ namespace Maquina.UI.Scenes
             switch (GameDifficulty)
             {
                 case Difficulty.Easy:
-                    InitialTimeLeft = 24.0;
-                    ProjectileInterval = 6000;
+                    InitialTimeLeft = 60.0;
+                    ProjectileInterval = 10000;
                     HitsBeforeSaved = 5;
                     break;
                 case Difficulty.Medium:
-                    InitialTimeLeft = 15.0;
-                    ProjectileInterval = 5000;
+                    InitialTimeLeft = 30.0;
+                    ProjectileInterval = 8000;
                     HitsBeforeSaved = 5;
                     break;
                 case Difficulty.Hard:
-                    InitialTimeLeft = 12.0;
-                    ProjectileInterval = 4000;
+                    InitialTimeLeft = 20.0;
+                    ProjectileInterval = 6000;
                     HitsBeforeSaved = 5;
                     break;
                 case Difficulty.EpicFail:
@@ -357,13 +361,13 @@ namespace Maquina.UI.Scenes
             Objects["Hand1"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - (Objects["Hand1"].Bounds.Width / 2) - 100, Game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height + 100);
             Objects["Hand2"].Location = new Vector2(-100, Game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height + 100);
             // Align controllers
-            Objects["Controller-Bandage"].Location = new Vector2(60,
+            Objects["Controller-Bandage"].Location = new Vector2(80,
                 Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
-            Objects["Controller-Stitch"].Location = new Vector2(100,
+            Objects["Controller-Stitch"].Location = new Vector2(250,
                 Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
-            Objects["Controller-Medicine"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 60,
+            Objects["Controller-Medicine"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 80,
                 Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
-            Objects["Controller-CPR"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 100,
+            Objects["Controller-CPR"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 250,
                 Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
             // Current Controller
             DetermineCurrentController();
