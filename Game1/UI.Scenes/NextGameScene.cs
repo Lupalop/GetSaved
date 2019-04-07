@@ -26,26 +26,6 @@ namespace Maquina.UI.Scenes
             NewGameScene = DetermineNewGame();
 
             Objects = new Dictionary<string, GenericElement> {
-                { "Dice", new Image("dice")
-                {
-                    Graphic = Game.Content.Load<Texture2D>("htp/dice"),
-                    Location = ScreenCenter,
-                    Tint = new Color(Color.White, 0),
-                    OnUpdate = (Dice) => {
-                        Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
-                        Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));
-                    }
-                }},
-                { "GameName", new Label("GameName")
-                {
-                    Text = NewGameScene.SceneName.Substring(14),
-                    Font = Fonts["default_l"]
-                }},
-                { "GameDifficulty", new Label("GameDifficulty")
-                {
-                    Text = String.Format("Difficulty: {0}", GameDifficulty.ToString()),
-                    Font = Fonts["default_m"]
-                }},
                 { "SkipBtn", new MenuButton("skipBtn")
                 {
                     Graphic = Game.Content.Load<Texture2D>("overlayBG"),
@@ -60,22 +40,50 @@ namespace Maquina.UI.Scenes
                     LeftClickAction = () => SceneManager.SwitchToScene(NewGameScene),
                     RightClickAction = () => SceneManager.SwitchToScene(NewGameScene)
                 }},
-                { "HelpImage", new Image("htp")
+                { "main-container", new ElementContainer("cr")
                 {
-                    Graphic = HelpImage,
-                    Location = ScreenCenter,
-                }}
+                    ControlAlignment = ControlAlignment.Center,
+                    ContainerAlignment = ContainerAlignment.Horizontal,
+                    Children = {
+                        { "Egs", new Image("egs")
+                        {
+                            Graphic = EgsImage,
+                            Scale = 0.8f
+                        }},
+                        { "container2", new ElementContainer("cr")
+                        {
+                            ControlAlignment = Elements.ControlAlignment.Center,
+                            ContainerAlignment = Elements.ContainerAlignment.Vertical,
+                            Children = {
+                                { "GameName", new Label("GameName")
+                                {
+                                    Text = NewGameScene.SceneName.Substring(14),
+                                    Font = Fonts["default_l"]
+                                }},
+                                { "GameDifficulty", new Label("GameDifficulty")
+                                {
+                                    Text = String.Format("Difficulty: {0}", GameDifficulty.ToString()),
+                                    Font = Fonts["default_m"]
+                                }},
+                                { "HelpImage", new Image("htp")
+                                {
+                                    Graphic = HelpImage,
+                                    Location = ScreenCenter,
+                                }},
+                                { "ContinueMsg", new Label("label")
+                                {
+                                    Text = "Click or tap anywhere to continue.",
+                                    Font = Fonts["o-default_m"],
+                                }},
+                            }
+                        }},
+                    }
+                }},
             };
-
-            DiceSpinner.Elapsed += delegate { Objects["Dice"].Rotation += .05f; };
-            SceneChanger.Elapsed += delegate { SceneManager.SwitchToScene(NewGameScene); };
         }
 
         private Texture2D HelpImage;
-        // Dice spinner runs every 1ms;
-        private Timer DiceSpinner = new Timer(1) { AutoReset = true, Enabled = true };
-        // Switch to new Game scene will happen in 3 seconds (3000ms)
-        private Timer SceneChanger = new Timer(3000) { AutoReset = false, Enabled = true };
+        private Texture2D EgsImage;
 
         public Games NextGame { get; set; }
         public SceneBase NewGameScene { get; set; }
@@ -98,26 +106,32 @@ namespace Maquina.UI.Scenes
             {
                 // The Safety Kit
                 case Games.FallingObjects:
+                    EgsImage = Game.Content.Load<Texture2D>("egs1");
                     HelpImage = Game.Content.Load<Texture2D>("htp/fallingobject");
                     return new GameOneScene(GameDifficulty);
                 // Earthquake Escape
                 case Games.EscapeEarthquake:
+                    EgsImage = Game.Content.Load<Texture2D>("egs1");
                     HelpImage = Game.Content.Load<Texture2D>("htp/esc");
                     return new GameTwoScene(GameDifficulty, Games.EscapeEarthquake);
                 // Fire Escape
                 case Games.EscapeFire:
+                    EgsImage = Game.Content.Load<Texture2D>("egs2");
                     HelpImage = Game.Content.Load<Texture2D>("htp/esc");
                     return new GameTwoScene(GameDifficulty, Games.EscapeFire);
                 // Safety Jump
                 case Games.RunningForTheirLives:
+                    EgsImage = Game.Content.Load<Texture2D>("egs2");
                     HelpImage = Game.Content.Load<Texture2D>("htp/dino");
                     return new GameThreeScene(GameDifficulty);
                 // Aid 'Em
                 case Games.HelpOthersNow:
+                    EgsImage = Game.Content.Load<Texture2D>("egs1");
                     HelpImage = Game.Content.Load<Texture2D>("htp/aidem");
                     return new GameFourScene(GameDifficulty);
                 // If the randomizer item failed, simply throw the world selection screen...
                 default:
+                    EgsImage = new Texture2D(Game.GraphicsDevice, 0, 0);
                     HelpImage = new Texture2D(Game.GraphicsDevice, 0, 0);
                     return new WorldSelectionScene();
             }
@@ -126,8 +140,6 @@ namespace Maquina.UI.Scenes
         public override void Unload()
         {
             base.Unload();
-            DiceSpinner.Close();
-            SceneChanger.Close();
         }
 
         public override void Draw(GameTime GameTime)
