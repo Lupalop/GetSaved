@@ -33,6 +33,7 @@ namespace Maquina.UI.Scenes
 
                 elementContainer.Children.Add(String.Format("score-{0}", i), new Label("lb")
                 {
+                    ControlAlignment = ControlAlignment.Left,
                     Text = String.Format("{0}. {1} earned {2} points!",
                         i,
                         Global.PreferencesManager.GetCharPref(
