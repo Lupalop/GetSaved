@@ -105,5 +105,11 @@ namespace Maquina.UI.Scenes
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
         }
+
+        public override void Unload()
+        {
+            base.Unload();
+            BackgroundGameScene.Unload();
+        }
     }
 }

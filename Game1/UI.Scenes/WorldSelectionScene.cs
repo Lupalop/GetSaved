@@ -102,6 +102,11 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Random Game",
                     SpriteType = SpriteType.None,
                     Graphic = Game.Content.Load<Texture2D>("htp/dice"),
+                    OnUpdate = (Dice) => {
+                        Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
+                        Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));
+                        Dice.Rotation += .05f;
+                    },
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene())
                 }},
             };
@@ -151,6 +156,12 @@ namespace Maquina.UI.Scenes
             BackgroundGameScene.Update(gameTime);
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
+        }
+
+        public override void Unload()
+        {
+            base.Unload();
+            BackgroundGameScene.Unload();
         }
     }
 }
