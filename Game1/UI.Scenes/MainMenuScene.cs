@@ -82,11 +82,17 @@ namespace Maquina.UI.Scenes
             Global.AudioManager.PlaySong("flying-high");
             // Layout stuff
             ObjectSpacing = 12;
+            BackgroundGameScene = new GameOneScene(Difficulty.Demo);
+            BackgroundGameScene.LoadContent();
+            BackgroundGameScene.DelayLoadContent();
         }
+
+        private GameOneScene BackgroundGameScene;
 
         public override void Draw(GameTime gameTime)
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
+            BackgroundGameScene.Draw(gameTime);
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
             base.DrawObjects(gameTime, Objects);
@@ -95,6 +101,7 @@ namespace Maquina.UI.Scenes
 
         public override void Update(GameTime gameTime)
         {
+            BackgroundGameScene.Update(gameTime);
             base.Update(gameTime);
             base.UpdateObjects(gameTime, Objects);
         }

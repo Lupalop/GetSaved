@@ -45,17 +45,29 @@ namespace Maquina.UI.Scenes
                     Children = new Dictionary<string,GenericElement>() {
                         { "mb3", new MenuButton("mb")
                         {
-                            Text = "The Safety Kit",
+                            Graphic = Game.Content.Load<Texture2D>("worldselection/one"),
+                            Rows = 1,
+                            Columns = 2,
+                            Tooltip = "The Safety Kit",
+                            Scale = 0.7f,
                             LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.FallingObjects, difficulty))
                         }},
                         { "mb4", new MenuButton("mb")
                         {
-                            Text = "Earthquake Escape",
+                            Graphic = Game.Content.Load<Texture2D>("worldselection/two"),
+                            Rows = 1,
+                            Columns = 2,
+                            Tooltip = "Earthquake Escape",
+                            Scale = 0.7f,
                             LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.EscapeEarthquake, difficulty))
                         }},
                         { "mb5", new MenuButton("mb")
                         {
-                            Text = "Fire Escape",
+                            Graphic = Game.Content.Load<Texture2D>("worldselection/three"),
+                            Rows = 1,
+                            Columns = 2,
+                            Tooltip = "Fire Escape",
+                            Scale = 0.7f,
                             LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.EscapeFire, difficulty))
                         }},
                     }
@@ -67,12 +79,20 @@ namespace Maquina.UI.Scenes
                     Children = new Dictionary<string,GenericElement>() {
                         { "mb6", new MenuButton("mb")
                         {
-                            Text = "Safety Jump - Fire",
+                            Graphic = Game.Content.Load<Texture2D>("worldselection/four"),
+                            Rows = 1,
+                            Columns = 2,
+                            Tooltip = "Safety Jump - Fire",
+                            Scale = 0.7f,
                             LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.RunningForTheirLives, difficulty))
                         }},
                         { "mb7", new MenuButton("mb")
                         {
-                            Text = "Aid 'Em - Earthquake",
+                            Graphic = Game.Content.Load<Texture2D>("worldselection/five"),
+                            Rows = 1,
+                            Columns = 2,
+                            Tooltip = "Aid 'Em - Earthquake",
+                            Scale = 0.7f,
                             LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene(Games.HelpOthersNow, difficulty))
                         }},
                     }
@@ -85,9 +105,16 @@ namespace Maquina.UI.Scenes
                     LeftClickAction = () => SceneManager.SwitchToScene(new NextGameScene())
                 }},
             };
+
+            BackgroundGameScene = new GameOneScene(Difficulty.Demo);
+            BackgroundGameScene.LoadContent();
+            BackgroundGameScene.DelayLoadContent();
+
+            difficulty = Difficulty.Easy;
         }
 
-        private Difficulty difficulty = Difficulty.Easy;
+        private GameOneScene BackgroundGameScene;
+        private Difficulty difficulty;
 
         private void ModifyDifficulty()
         {
@@ -109,19 +136,21 @@ namespace Maquina.UI.Scenes
             Console.WriteLine(String.Format("Difficulty changed to: {0}", difficulty));
         }
 
-        public override void Draw(GameTime GameTime)
+        public override void Draw(GameTime gameTime)
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
+            BackgroundGameScene.Draw(gameTime);
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            base.Draw(GameTime);
-            base.DrawObjects(GameTime, Objects);
+            base.Draw(gameTime);
+            base.DrawObjects(gameTime, Objects);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime GameTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(GameTime);
-            base.UpdateObjects(GameTime, Objects);
+            BackgroundGameScene.Update(gameTime);
+            base.Update(gameTime);
+            base.UpdateObjects(gameTime, Objects);
         }
     }
 }

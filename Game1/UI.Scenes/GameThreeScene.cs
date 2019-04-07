@@ -26,7 +26,7 @@ namespace Maquina.UI.Scenes
 
         public double Score { private set; get; }
         private int ProjectileInterval;
-        private float FallingSpeed;
+        private float ObjectMovementSpeed;
         private int DistanceFromBottom;
         private float JumpHeight;
         private int ScoreMultiplier;
@@ -38,12 +38,16 @@ namespace Maquina.UI.Scenes
 
         private Difficulty GameDifficulty;
         private Vector2 PlayerPosition;
-        private int MaxYPos;
+        private int PlayerInitialY;
+        private int FireInitialY;
         private int StartingXPos;
         private float JumpSpeed = 0;
         private bool IsJumping = false;
         private bool IsGameEnd = false;
         private Random RandNum = new Random();
+
+        private Texture2D FireGraphic;
+        private Texture2D CharacterGraphic;
 
         private void InitializeTimer()
         {
@@ -58,7 +62,10 @@ namespace Maquina.UI.Scenes
             TimeLeftController.Elapsed += delegate
             {
                 if (!IsGameEnd)
+                {
                     Score += ScoreMultiplier;
+                    ObjectMovementSpeed += 0.01f;
+                }
             };
         }
 
@@ -70,10 +77,11 @@ namespace Maquina.UI.Scenes
 
         private void UpdateMinMaxY()
         {
-            if (Objects.ContainsKey("ObjectCatcher"))
+            if (Objects.ContainsKey("Player"))
             {
-                MaxYPos = Game.GraphicsDevice.Viewport.Height - Objects["ObjectCatcher"].Bounds.Height - DistanceFromBottom - 100;
-                StartingXPos = Game.GraphicsDevice.Viewport.Width - Objects["ObjectCatcher"].Bounds.Width - 10;
+                PlayerInitialY = Game.GraphicsDevice.Viewport.Height - CharacterGraphic.Height - DistanceFromBottom - 100;
+                FireInitialY = Game.GraphicsDevice.Viewport.Height - FireGraphic.Height - DistanceFromBottom - 100;
+                StartingXPos = Game.GraphicsDevice.Viewport.Width - CharacterGraphic.Width - 10;
             }
         }
 
@@ -84,8 +92,11 @@ namespace Maquina.UI.Scenes
                 // create new button object
                 Image nwBtn = new Image("item")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("dino/fire"),
-                    Location = new Vector2((float)RandNum.Next(StartingXPos - 100, StartingXPos), MaxYPos),
+                    Graphic = FireGraphic,
+                    Columns = 3,
+                    Rows = 1,
+                    SpriteType = SpriteType.Animated,
+                    Location = new Vector2((float)RandNum.Next(StartingXPos - 100, StartingXPos), FireInitialY),
                     ControlAlignment = ControlAlignment.Fixed,
                 };
                 GameObjects.Add(nwBtn);
@@ -95,6 +106,11 @@ namespace Maquina.UI.Scenes
         public override void LoadContent()
         {
             base.LoadContent();
+
+            FireGraphic = Game.Content.Load<Texture2D>("dino/fire");
+            CharacterGraphic = Game.Content.Load<Texture2D>("dino/character");
+            JumpEffect = Game.Content.Load<SoundEffect>("sfx/caught");
+            Global.AudioManager.PlaySong("shenanigans");
 
             Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
@@ -114,12 +130,13 @@ namespace Maquina.UI.Scenes
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
-                { "ObjectCatcher", new Image("ObjectCatcher")
+                { "Player", new Image("Player")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("human"),
-                    Location = new Vector2(5, Game.GraphicsDevice.Viewport.Height - 70),
+                    Graphic = CharacterGraphic,
+                    Columns = 3,
+                    Rows = 1,
+                    SpriteType = SpriteType.Animated,
                     ControlAlignment = ControlAlignment.Fixed,
-                    GraphicEffects = SpriteEffects.FlipHorizontally,
                 }},
                 { "ScoreCounter", new Label("timer")
                 {
@@ -135,8 +152,6 @@ namespace Maquina.UI.Scenes
                 }}
             };
 
-            JumpEffect = Game.Content.Load<SoundEffect>("sfx/caught");
-            Global.AudioManager.PlaySong("shenanigans");
             DistanceFromBottom = -30;
         }
 
@@ -148,34 +163,32 @@ namespace Maquina.UI.Scenes
             {
                 case Difficulty.Easy:
                     ProjectileInterval = 1500;
-                    FallingSpeed = 3;
+                    ObjectMovementSpeed = 3;
                     JumpHeight = -15;
                     ScoreMultiplier = 1;
                     break;
                 case Difficulty.Medium:
                     ProjectileInterval = 1000;
-                    FallingSpeed = 3;
+                    ObjectMovementSpeed = 3;
                     JumpHeight = -15;
                     ScoreMultiplier = 2;
                     break;
                 case Difficulty.Hard:
                     ProjectileInterval = 800;
-                    FallingSpeed = 5;
+                    ObjectMovementSpeed = 5;
                     JumpHeight = -10;
                     ScoreMultiplier = 3;
                     break;
                 case Difficulty.EpicFail:
                     ProjectileInterval = 700;
-                    FallingSpeed = 10;
-                    JumpHeight = -20;
+                    ObjectMovementSpeed = 10;
+                    JumpHeight = -10;
                     ScoreMultiplier = 3;
                     break;
             }
 
             InitializeTimer();
-            UpdateMinMaxY();
-            GenerateFire();
-            PlayerPosition = new Vector2(100, MaxYPos - 100);
+            PlayerPosition.X = 150;
         }
 
         public override void Unload()
@@ -206,15 +219,15 @@ namespace Maquina.UI.Scenes
             {
                 PlayerPosition.Y += JumpSpeed;
                 JumpSpeed += 0.5f;
-                if (PlayerPosition.Y >= MaxYPos)
+                if (PlayerPosition.Y >= PlayerInitialY)
                 {
-                    PlayerPosition.Y = MaxYPos;
+                    PlayerPosition.Y = PlayerInitialY;
                     IsJumping = false;
                 }
             }
             else
             {
-                if (InputManager.KeyboardState.IsKeyDown(Keys.Space) ||
+                if (InputManager.KeyPressed(Keys.Space) ||
                     InputManager.MousePressed(MouseButton.Left) ||
                     InputManager.MousePressed(MouseButton.Right) ||
                     InputManager.MousePressed(MouseButton.Middle))
@@ -223,23 +236,28 @@ namespace Maquina.UI.Scenes
                     JumpEffect.Play();
                     JumpSpeed = JumpHeight;
                 }
+                PlayerPosition.Y = PlayerInitialY;
             }
 
-            if (Objects.ContainsKey("ObjectCatcher"))
+            if (Objects.ContainsKey("Player"))
             {
                 if (IsGameEnd)
-                    Objects.Remove("ObjectCatcher");
+                {
+                    Objects.Remove("Player");
+                }
                 else
-                    Objects["ObjectCatcher"].Location = PlayerPosition;
+                {
+                    Objects["Player"].Location = PlayerPosition;
+                }
             }
 
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 // Moves Game object
-                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X - FallingSpeed, GameObjects[i].Location.Y);
+                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X - ObjectMovementSpeed, GameObjects[i].Location.Y);
 
                 // Check if Game object collides/intersects with catcher
-                if (Objects.ContainsKey("ObjectCatcher") && Objects["ObjectCatcher"].Bounds.Contains(GameObjects[i].Bounds.Center))
+                if (Objects.ContainsKey("Player") && Objects["Player"].Bounds.Contains(GameObjects[i].Bounds.Center))
                 {
                     CallEndOverlay();
                     GameObjects.Remove(GameObjects[i]);
@@ -247,8 +265,10 @@ namespace Maquina.UI.Scenes
                 }
 
                 // Remove objects once it exceeds the object catcher, this also removes all objects when time's up
-                if ((Objects.ContainsKey("ObjectCatcher") && (GameObjects[i].Location.X < Objects["ObjectCatcher"].Location.X - 50)) || IsGameEnd)
+                if (GameObjects[i].Location.X < -100 || IsGameEnd)
+                {
                     GameObjects.Remove(GameObjects[i]);
+                }
             }
         }
     }

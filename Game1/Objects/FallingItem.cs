@@ -12,7 +12,9 @@ namespace Maquina.Elements
         {
             // Always assume that the item is used in emergencies.
             IsEmergencyItem = true;
+            ItemID = 0;
         }
         public bool IsEmergencyItem { get; set; }
+        public int ItemID { get; set; }
     }
 }

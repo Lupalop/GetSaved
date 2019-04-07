@@ -146,9 +146,9 @@ namespace Maquina.UI.Scenes
 
         private void ResetPlayerPosition()
         {
-            if (Objects.ContainsKey("ObjectCatcher"))
+            if (Objects.ContainsKey("Player"))
             {
-                GenericElement Catchr = Objects["ObjectCatcher"];
+                GenericElement Catchr = Objects["Player"];
                 Catchr.Location = PosA;
             }
         }
@@ -239,10 +239,14 @@ namespace Maquina.UI.Scenes
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
-                { "ObjectCatcher", new Image("ObjectCatcher")
+                { "Player", new Image("Player")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("human"),
+                    Graphic = Game.Content.Load<Texture2D>("dino/character"),
+                    Columns = 3,
+                    Rows = 1,
+                    SpriteType = SpriteType.Animated,
                     Location = PosA,
+                    GraphicEffects = SpriteEffects.FlipHorizontally,
                     ControlAlignment = ControlAlignment.Fixed,
                 }},
                 { "Timer", new Label("timer")
@@ -355,11 +359,13 @@ namespace Maquina.UI.Scenes
             base.UpdateObjects(gameTime, Objects);
             base.UpdateObjects(gameTime, GameObjects);
             // If person is in object
-            if (Objects.ContainsKey("ObjectCatcher"))
+            if (Objects.ContainsKey("Player"))
             {
-                GenericElement Catchr = Objects["ObjectCatcher"];
-                if (CurrentStage == 3 && Catchr.Graphic.Name != "human-line")
-                    Catchr.Graphic = Game.Content.Load<Texture2D>("human-line");
+                GenericElement Catchr = Objects["Player"];
+                if (CurrentStage == 3 && Catchr.Graphic.Name != "character-line")
+                {
+                    Catchr.Graphic = Game.Content.Load<Texture2D>("character-line");
+                }
                 
                 if (InputManager.MousePressed(MouseButton.Left) ||
                     InputManager.MousePressed(MouseButton.Right) ||
@@ -411,7 +417,7 @@ namespace Maquina.UI.Scenes
                 }
 
                 if (IsGameEnd)
-                    Objects.Remove("ObjectCatcher");
+                    Objects.Remove("Player");
             }
         }
 

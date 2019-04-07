@@ -12,7 +12,8 @@ namespace Maquina
         Medium,
         Hard,
         EpicFail,
-        Random
+        Random,
+        Demo
     }
     public enum Games
     {

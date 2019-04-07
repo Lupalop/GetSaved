@@ -85,22 +85,48 @@ namespace Maquina.UI.Scenes
 
         private void CreateFallingItem(object sender, EventArgs eventArgs)
         {
+            if (GameDifficulty == Difficulty.Demo) {
+                ElementContainer container = new ElementContainer("container")
+                {
+                    ContainerAlignment = ContainerAlignment.Horizontal,
+                    ControlAlignment = ControlAlignment.Fixed,
+                    Location = new Vector2(5, -64),
+                };
+                int ColumnCount = Game.GraphicsDevice.Viewport.Width / 64;
+
+                for (int i = 0; i < ColumnCount; i++)
+                {
+                    FallingItem fallingItem = new FallingItem("falling-item");
+                    string givenName = AvailableItems[RandNum.Next(0, AvailableItems.Count)];
+                    if (givenName.Contains('!'))
+                    {
+                        givenName = givenName.Remove(0, 1);
+                    }
+                    fallingItem.Graphic = Images[givenName.ToLower()];
+                    container.Children.Add(i.ToString(), fallingItem);
+                }
+
+                GameObjects.Add(container);
+                return;
+            }
             if (!IsGameEnd)
             {
                 FallingItem fallingItem = new FallingItem("falling-item")
                 {
                     // Random X, constant Y initial value
                     Location = new Vector2(
-                        (float)RandNum.Next(5, Game.GraphicsDevice.Viewport.Width - 5), 30),
+                        (float)RandNum.Next(5, Game.GraphicsDevice.Viewport.Width - 5), 0),
                 };
 
-                string givenName = AvailableItems[RandNum.Next(0, AvailableItems.Count)];
+                int itemID = RandNum.Next(0, AvailableItems.Count);
+                string givenName = AvailableItems[itemID];
                 if (givenName.Contains('!'))
                 {
                     fallingItem.IsEmergencyItem = false;
                     givenName = givenName.Remove(0, 1);
                 }
 
+                fallingItem.ItemID = itemID;
                 fallingItem.Graphic = Images[givenName.ToLower()];
                 GameObjects.Add(fallingItem);
             }
@@ -114,7 +140,9 @@ namespace Maquina.UI.Scenes
             {
                 string it = item;
                 if (it.Contains('!'))
+                {
                     it = it.Remove(0, 1);
+                }
                 Images.Add(it.ToLower(), Game.Content.Load<Texture2D>("falling-object/" + it));
             }
 
@@ -195,9 +223,22 @@ namespace Maquina.UI.Scenes
                     GenerationInterval = 50;
                     FallingSpeed = 10;
                     break;
+                case Difficulty.Demo:
+                    InitialTimeLeft = 10.0;
+                    GenerationInterval = 400;
+                    FallingSpeed = 3;
+                    break;
             }
 
             InitializeTimer();
+
+            // Remove UI and timers
+            if (GameDifficulty == Difficulty.Demo)
+            {
+                TimeLeftController.Close();
+                GameTimer.Close();
+                Objects = new Dictionary<string, GenericElement>();
+            }
         }
 
         public override void Unload()
@@ -215,6 +256,8 @@ namespace Maquina.UI.Scenes
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
             base.DrawObjects(GameTime, Objects);
+            SpriteBatch.End();
+            SpriteBatch.Begin(SpriteSortMode.Deferred);
             base.DrawObjects(GameTime, GameObjects);
             SpriteBatch.End();
         }
@@ -238,7 +281,6 @@ namespace Maquina.UI.Scenes
                 // Positions the falling object
                 GameObjects[i].Location = new Vector2(GameObjects[i].Location.X,
                     GameObjects[i].Location.Y + FallingSpeed);
-
                 // Check if game object intersects with emergency kit
                 if (Objects.ContainsKey("ObjectCatcher") &&
                     Objects["ObjectCatcher"].Bounds.Intersects(GameObjects[i].Bounds))
@@ -251,9 +293,10 @@ namespace Maquina.UI.Scenes
 
                 // Remove the object once it reaches the bottom-most part of the window
                 // This also removes all the objects when the time is up
-                if ((Objects.ContainsKey("ObjectCatcher") &&
-                    (GameObjects[i].Location.Y > Objects["ObjectCatcher"].Location.Y + 50)) || IsGameEnd)
+                if (GameObjects[i].Location.Y > Game.GraphicsDevice.Viewport.Height + 64 || IsGameEnd)
+                {
                     GameObjects.Remove(GameObjects[i]);
+                }
             }
 
             base.Update(GameTime);

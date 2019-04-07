@@ -163,7 +163,6 @@ namespace Maquina.UI.Scenes
             SetPointsEarned((int)scene.Score);
         }
 
-        // TODO: Merge Game1 with Game4
         public void Game1End(Collection<GenericElement> CollectedObjects)
         {
             int correctItems = 0;
@@ -191,16 +190,64 @@ namespace Maquina.UI.Scenes
                 SetGameEndGraphic(GameEndStates.TimesUp);
             }
 
-            Objects.Add("CorrectItem", new Label("CorrectItem")
-            {
-                Text = "Correct items: " + correctItems,
-                Font = Fonts["default_m"]
-            });
             Objects.Add("IncorrectItem", new Label("IncorrectItem")
             {
                 Text = "Incorrect items: " + incorrectItems,
                 Font = Fonts["default_m"]
             });
+            Objects.Add("CorrectItem", new Label("CorrectItem")
+            {
+                Text = "Correct items: " + correctItems,
+                Font = Fonts["default_m"]
+            });
+            Objects.Add("container-items", new ElementContainer("cr")
+            {
+                ContainerAlignment = ContainerAlignment.Horizontal
+            });
+
+            ElementContainer itemContainer = Objects["container-items"] as ElementContainer;
+
+            int[] IncorrectItemIDs = new int[100];
+
+            foreach (FallingItem item in CollectedObjects)
+            {
+                if (item.IsEmergencyItem)
+                {
+                    continue;
+                }
+
+                IncorrectItemIDs[item.ItemID] += 1;
+            }
+
+            Collection<string> AvailableItems = new Collection<string> {
+			    "Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "Car",
+			    "Donut", "Shoes", "Jewelry", "Ball", "Wall Clock", "Chair", "Bomb"
+			};
+
+            for (int i = 0; i < IncorrectItemIDs.Length; i++)
+            {
+                if (IncorrectItemIDs[i] == 0)
+                {
+                    continue;
+                }
+
+                itemContainer.Children.Add("elemContainer" + i, new ElementContainer("cr")
+                {
+                    ContainerAlignment = ContainerAlignment.Vertical,
+                    Children = new Dictionary<string,GenericElement>() {
+                        {"icon", new MenuButton("icon")
+                        {
+                            SpriteType = SpriteType.None,
+                            Tooltip = AvailableItems[i],
+                            Graphic = Game.Content.Load<Texture2D>("falling-object/" + AvailableItems[i])
+                        }},
+                        {"count", new Label("lb")
+                        {
+                            Text = String.Format("x{0}", IncorrectItemIDs[i])
+                        }}
+                    }
+                });
+            }
 
             SetPointsEarned(50 * MathHelper.Clamp(totalItems, 0, int.MaxValue));
         }
@@ -231,16 +278,26 @@ namespace Maquina.UI.Scenes
             {
                 SetGameEndGraphic(GameEndStates.TimesUp);
             }
-
-            Objects.Add("CorrectCrap", new Label("CorrectCrap")
+            Objects.Add("container-main", new ElementContainer("cr")
             {
-                Text = "People Saved: " + peopleSaved,
-                Font = Fonts["default_m"]
-            });
-            Objects.Add("IncorrectCrap", new Label("InCorrectCrap")
-            {
-                Text = "People Died: " + peopleDied,
-                Font = Fonts["default_m"]
+                ContainerAlignment = ContainerAlignment.Horizontal,
+                Children = new Dictionary<string,GenericElement>() {
+                    { "container-list", new ElementContainer("cr")
+                    {
+                        Children = new Dictionary<string,GenericElement>() {
+                            { "IncorrectCrap", new Label("InCorrectCrap")
+                            {
+                                Text = "People Died: " + peopleDied,
+                                Font = Fonts["default_m"]
+                            }},
+                            { "CorrectCrap", new Label("CorrectCrap")
+                            {
+                                Text = "People Saved: " + peopleSaved,
+                                Font = Fonts["default_m"]
+                            }}
+                        }
+                    }},
+                }
             });
 
             SetPointsEarned(50 * MathHelper.Clamp(peopleTotal, 0, int.MaxValue));
