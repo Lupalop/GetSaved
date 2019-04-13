@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -23,7 +22,7 @@ namespace Maquina.UI.Scenes
         }
 
         private Collection<string> AvailableItems = new Collection<string> {
-			"Medkit", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
+			"Medicine", "Can", "Bottle", "Money", "Clothing", "Flashlight", "Whistle", "!Car",
 			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
 			};
 
@@ -64,9 +63,25 @@ namespace Maquina.UI.Scenes
         private void InitializeTimer()
         {
             // Initiailize timers
-            ProjectileGenerator = new Timer(GenerationInterval) { AutoReset = true, Enabled = true };
-            TimeLeftController = new Timer(1000)                { AutoReset = true, Enabled = true };
-            GameTimer = new Timer(TimeLeft * 1000)              { AutoReset = false, Enabled = true };
+            ProjectileGenerator = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = GenerationInterval
+            };
+            TimeLeftController = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = 1000
+            };
+            GameTimer = new Timer()
+            {
+                AutoReset = false,
+                Enabled = true,
+                Interval = TimeLeft * 1000
+            };
+
             // Add the event handler to the timer object
             ProjectileGenerator.Elapsed += CreateFallingItem;
             TimeLeftController.Elapsed += delegate
@@ -101,7 +116,7 @@ namespace Maquina.UI.Scenes
                     {
                         givenName = givenName.Remove(0, 1);
                     }
-                    fallingItem.Graphic = Global.Textures[String.Format("item-{0}", givenName)];
+                    fallingItem.Graphic = Global.Textures["item-" + givenName];
                     container.Children.Add(i.ToString(), fallingItem);
                 }
                 GameObjects.Add(container);

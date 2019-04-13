@@ -206,6 +206,7 @@ namespace Maquina
             }
 
             SceneManager.Update(gameTime);
+            TimerManager.Update(gameTime);
 
             base.Update(gameTime);
         }

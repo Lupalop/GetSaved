@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -132,7 +131,7 @@ namespace Maquina.UI.Scenes
             GameTimer.Enabled = true;
         }
 
-        private void OnGameTimerEnd(Object source, ElapsedEventArgs e)
+        private void OnGameTimerEnd(Object source, EventArgs e)
         {
             CallEndOverlay();
             GameTimer.Enabled = false;

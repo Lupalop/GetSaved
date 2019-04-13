@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -78,7 +77,7 @@ namespace Maquina.UI.Scenes
             };
         }
 
-        private void ProjectileGenerator_Elapsed(object sender, ElapsedEventArgs e)
+        private void ProjectileGenerator_Elapsed(object sender, EventArgs e)
         {
             AttemptRemoveHelpman();
             GameObjects.Add("helpman", new Helpman("helpman")
