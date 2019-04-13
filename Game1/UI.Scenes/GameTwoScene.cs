@@ -83,9 +83,24 @@ namespace Maquina.UI.Scenes
         private void InitializeTimer()
         {
             // Initiailize timers
-            TimeLeftController = new Timer(1000);
-            DeathTimeLeftController = new Timer(1000);
-            GameTimer = new Timer(TimeLeft * 1000);
+            TimeLeftController = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = 1000
+            };
+            DeathTimeLeftController = new Timer()
+            {
+                AutoReset = true,
+                Enabled = false,
+                Interval = 1000
+            };
+            GameTimer = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = TimeLeft * 1000
+            };
 
             TimeLeftController.Elapsed += delegate
             {
@@ -108,8 +123,6 @@ namespace Maquina.UI.Scenes
                     DeathTimeLeftController.Enabled = true;
                 }
             };
-            TimeLeftController.AutoReset = true;
-            TimeLeftController.Enabled = true;
 
             DeathTimeLeftController.Elapsed += delegate
             {
@@ -123,18 +136,12 @@ namespace Maquina.UI.Scenes
                     CallEndOverlay();
                 }
             };
-            DeathTimeLeftController.AutoReset = true;
-            DeathTimeLeftController.Enabled = false;
 
-            GameTimer.Elapsed += OnGameTimerEnd;
-            GameTimer.AutoReset = false;
-            GameTimer.Enabled = true;
-        }
-
-        private void OnGameTimerEnd(Object source, EventArgs e)
-        {
-            CallEndOverlay();
-            GameTimer.Enabled = false;
+            GameTimer.Elapsed += delegate
+            {
+                CallEndOverlay();
+                GameTimer.Enabled = false;
+            };
         }
 
         private void CallEndOverlay()

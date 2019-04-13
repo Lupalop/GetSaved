@@ -33,7 +33,7 @@ namespace Maquina.UI.Scenes
         private SoundEffect JumpEffect;
 
         private Timer ProjectileGenerator;
-        private Timer TimeLeftController;
+        private Timer ScoreTimer;
 
         private Difficulty GameDifficulty;
         private Vector2 PlayerPosition;
@@ -51,14 +51,24 @@ namespace Maquina.UI.Scenes
         private void InitializeTimer()
         {
             // Initiailize timers
-            ProjectileGenerator = new Timer(ProjectileInterval) { AutoReset = true, Enabled = true };
-            TimeLeftController = new Timer(100) { AutoReset = true, Enabled = true };
+            ProjectileGenerator = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = ProjectileInterval
+            };
+            ScoreTimer = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = 100
+            };
             // Add the event handler to the timer object
             ProjectileGenerator.Elapsed += delegate
             {
                 GenerateFire();
             };
-            TimeLeftController.Elapsed += delegate
+            ScoreTimer.Elapsed += delegate
             {
                 if (!IsGameEnd)
                 {
@@ -194,7 +204,7 @@ namespace Maquina.UI.Scenes
         {
             // Close all timers
             ProjectileGenerator.Close();
-            TimeLeftController.Close();
+            ScoreTimer.Close();
 
             base.Unload();
         }

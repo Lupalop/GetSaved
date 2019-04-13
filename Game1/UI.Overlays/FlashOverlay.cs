@@ -51,7 +51,12 @@ namespace Maquina.UI.Scenes
             };
             if (Delay > 0)
             {
-                DelayTimer = new Timer(Delay) { AutoReset = false, Enabled = true };
+                DelayTimer = new Timer()
+                {
+                    AutoReset = false,
+                    Enabled = true,
+                    Interval = Delay
+                };
                 DelayTimer.Elapsed += delegate
                 {
                     IsReady = true;

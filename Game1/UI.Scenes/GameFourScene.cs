@@ -55,9 +55,24 @@ namespace Maquina.UI.Scenes
         private void InitializeTimer()
         {
             // Initiailize timers
-            ProjectileGenerator = new Timer(ProjectileInterval) { AutoReset = true, Enabled = true };
-            TimeLeftController = new Timer(1000) { AutoReset = true, Enabled = true };
-            GameTimer = new Timer(TimeLeft * 1000) { AutoReset = false, Enabled = true };
+            ProjectileGenerator = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = ProjectileInterval
+            };
+            TimeLeftController = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = 1000
+            };
+            GameTimer = new Timer()
+            {
+                AutoReset = false,
+                Enabled = true,
+                Interval = TimeLeft * 1000
+            };
 
             // Add the event handler to the timer object
             ProjectileGenerator.Elapsed += ProjectileGenerator_Elapsed;
