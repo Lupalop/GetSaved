@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
 using Maquina.Elements;
+using System.Threading;
 
 namespace Maquina.UI.Scenes
 {
@@ -18,31 +19,6 @@ namespace Maquina.UI.Scenes
         public override void LoadContent()
         {
             base.LoadContent();
-
-            ElementContainer elementContainer = new ElementContainer("cr")
-            {
-                ElementSpacing = 5
-            };
-
-            for (int i = 1; i <= 10; i++)
-            {
-                if (Global.PreferencesManager.GetCharPref(String.Format("game.highscore.user-{0}", i)).Trim() == "")
-                {
-                    continue;
-                }
-
-                elementContainer.Children.Add(String.Format("score-{0}", i), new Label("lb")
-                {
-                    ControlAlignment = ControlAlignment.Left,
-                    Text = String.Format("{0}. {1} earned {2} points!",
-                        i,
-                        Global.PreferencesManager.GetCharPref(
-                            String.Format("game.highscore.user-{0}", i)),
-                        Global.PreferencesManager.GetIntPref(
-                            String.Format("game.highscore.score-{0}", i))),
-                    Font = Fonts["default_m"]
-                });
-            }
 
             Objects = new Dictionary<string, GenericElement> {
                 { "mb1", new MenuButton("mb")
@@ -58,8 +34,41 @@ namespace Maquina.UI.Scenes
                     Text = "High Scores",
                     Font = Fonts["o-default_l"]
                 }},
-                { "container", elementContainer }
+                { "throbber", new Throbber("tb")
+                },
             };
+
+            Thread loader = new Thread(() =>
+            {
+                ElementContainer elementContainer = new ElementContainer("cr")
+                {
+                    ElementSpacing = 5
+                };
+
+                for (int i = 1; i <= 10; i++)
+                {
+                    if (Global.PreferencesManager.GetCharPref(String.Format("game.highscore.user-{0}", i)).Trim() == "")
+                    {
+                        continue;
+                    }
+
+                    elementContainer.Children.Add(String.Format("score-{0}", i), new Label("lb")
+                    {
+                        ControlAlignment = ControlAlignment.Left,
+                        Text = String.Format("{0}. {1} earned {2} points!",
+                            i,
+                            Global.PreferencesManager.GetCharPref(
+                                String.Format("game.highscore.user-{0}", i)),
+                            Global.PreferencesManager.GetIntPref(
+                                String.Format("game.highscore.score-{0}", i))),
+                        Font = Fonts["default_m"]
+                    });
+                }
+                Objects.Remove("throbber");
+                Objects.Add("container", elementContainer);
+            });
+
+            loader.Start();
         }
 
         public override void Draw(GameTime GameTime)
