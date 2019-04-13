@@ -51,6 +51,8 @@
     <ResourceParameters Name="character" Location="dino/character" />
     <ResourceParameters Name="character-line" Location="character-line" />
     <ResourceParameters Name="fire" Location="dino/fire" />
+    <ResourceParameters Name="check" Location="aid-em/check" />
+    <ResourceParameters Name="cross" Location="aid-em/cross" />
     <!-- Game: One -->
     <ResourceParameters Name="game-bg-1" Location="game-bg/1" />
     <ResourceParameters Name="object-catcher" Location="falling-object/briefcase" />

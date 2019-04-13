@@ -147,11 +147,11 @@ namespace Maquina.UI.Scenes
                 if (CurrentController == cKey)
                 {
                     helpman.HitsBeforeBreak--;
-                    CreateFlash("aid-em/check", 1f, 500);
+                    CreateFlash("check", 1f, 500);
                 }
                 else
                 {
-                    CreateFlash("aid-em/cross", 1f, 500);
+                    CreateFlash("cross", 1f, 500);
                 }
                 ChangeControllerKeyNow = true;
                 if (helpman.HitsBeforeBreak <= 0)
