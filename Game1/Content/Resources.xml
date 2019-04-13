@@ -26,6 +26,7 @@
     <ResourceParameters Name="circle-btn" Location="circle-btn" />
     <ResourceParameters Name="button-default" Location="menuBG" />
     <ResourceParameters Name="textbox-default" Location="textbox" />
+    <ResourceParameters Name="throbber-default" Location="falling-object/wall clock" />
     <!-- Main Menu -->
     <ResourceParameters Name="gameLogo" Location="gameLogo" />
     <ResourceParameters Name="playBtn" Location="playBtn" />
