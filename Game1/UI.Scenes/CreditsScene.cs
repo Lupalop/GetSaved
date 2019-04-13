@@ -25,7 +25,7 @@ namespace Maquina.UI.Scenes
                 { "BackButton", new MenuButton("mb")
                 {
                     Tooltip = "Back",
-                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5, 5),
                     ControlAlignment = ControlAlignment.Fixed,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
@@ -42,9 +42,18 @@ namespace Maquina.UI.Scenes
                 // Image
                 if (CreditsText[i].StartsWith("~"))
                 {
+                    // Try to check if graphic is already loaded
+                    Texture2D graphic = null;
+                    string graphicName = CreditsText[i].Substring(1);
+                    if (!Global.Textures.ContainsKey(graphicName))
+                    {
+                        Global.Textures.Add(graphicName, Game.Content.Load<Texture2D>(graphicName));
+                    }
+                    graphic = Global.Textures[graphicName];
+
                     ScrollingElements.Add("image" + i, new Image("image")
                     {
-                        Graphic = Game.Content.Load<Texture2D>(CreditsText[i].Substring(1)),
+                        Graphic = graphic,
                     });
                     continue;
                 }

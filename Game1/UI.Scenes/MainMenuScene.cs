@@ -21,7 +21,7 @@ namespace Maquina.UI.Scenes
 
             Objects = new Dictionary<string, GenericElement> {
                 { "logo", new Image("logo") {
-                    Graphic = Game.Content.Load<Texture2D>("gameLogo"),
+                    Graphic = Global.Textures["gameLogo"],
                 }},
                 { "tagline", new Label("tagline")
                 {
@@ -31,7 +31,7 @@ namespace Maquina.UI.Scenes
                 { "mb1", new MenuButton("mb")
                 {
                     Tooltip = "Play Game!",
-                    Graphic = Game.Content.Load<Texture2D>("playBtn"), 
+                    Graphic = Global.Textures["playBtn"],
                     LeftClickAction = () => SceneManager.SwitchToScene(new WorldSelectionScene())
                 }},
                 { "lb1", new Label("lb")
@@ -47,32 +47,32 @@ namespace Maquina.UI.Scenes
                         { "mb2", new MenuButton("mb")
                         {
                             Tooltip = "Credits",
-                            Graphic = Game.Content.Load<Texture2D>("circle-btn"),
-                            Icon = Game.Content.Load<Texture2D>("credits-btn"),
+                            Graphic = Global.Textures["circle-btn"],
+                            Icon = Global.Textures["credits-btn"],
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new CreditsScene())
                         }},
                         { "mb3", new MenuButton("mb")
                         {
                             Tooltip = "Mute Audio",
-                            Graphic = Game.Content.Load<Texture2D>("circle-btn"),
-                            Icon = Game.Content.Load<Texture2D>("sound-btn"),
+                            Graphic = Global.Textures["circle-btn"],
+                            Icon = Global.Textures["sound-btn"],
                             Font = Fonts["default"],
                             LeftClickAction = () => Global.AudioManager.ToggleMute()
                         }},
                         { "mb4", new MenuButton("mb")
                         {
                             Tooltip = "View High Scores",
-                            Graphic = Game.Content.Load<Texture2D>("circle-btn"),
-                            Icon = Game.Content.Load<Texture2D>("highscore-btn"),
+                            Graphic = Global.Textures["circle-btn"],
+                            Icon = Global.Textures["highscore-btn"],
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new HighScoreScene())
                         }},
                         { "mb5", new MenuButton("mb")
                         {
                             Tooltip = "Change User",
-                            Graphic = Game.Content.Load<Texture2D>("circle-btn"),
-                            Icon = Game.Content.Load<Texture2D>("user-btn"),
+                            Graphic = Global.Textures["circle-btn"],
+                            Icon = Global.Textures["user-btn"],
                             Font = Fonts["default"],
                             LeftClickAction = () => SceneManager.SwitchToScene(new UserProfileScene())
                         }}

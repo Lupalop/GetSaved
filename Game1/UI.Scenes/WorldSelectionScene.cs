@@ -23,7 +23,7 @@ namespace Maquina.UI.Scenes
                 { "mb1", new MenuButton("mb")
                 {
                     Tooltip = "Back",
-                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
@@ -45,7 +45,7 @@ namespace Maquina.UI.Scenes
                     Children = new Dictionary<string,GenericElement>() {
                         { "mb3", new MenuButton("mb")
                         {
-                            Graphic = Game.Content.Load<Texture2D>("worldselection/one"),
+                            Graphic = Global.Textures["worldselection-one"],
                             Rows = 1,
                             Columns = 2,
                             Tooltip = "The Safety Kit",
@@ -54,7 +54,7 @@ namespace Maquina.UI.Scenes
                         }},
                         { "mb4", new MenuButton("mb")
                         {
-                            Graphic = Game.Content.Load<Texture2D>("worldselection/two"),
+                            Graphic = Global.Textures["worldselection-two"],
                             Rows = 1,
                             Columns = 2,
                             Tooltip = "Earthquake Escape",
@@ -63,7 +63,7 @@ namespace Maquina.UI.Scenes
                         }},
                         { "mb5", new MenuButton("mb")
                         {
-                            Graphic = Game.Content.Load<Texture2D>("worldselection/three"),
+                            Graphic = Global.Textures["worldselection-three"],
                             Rows = 1,
                             Columns = 2,
                             Tooltip = "Fire Escape",
@@ -79,7 +79,7 @@ namespace Maquina.UI.Scenes
                     Children = new Dictionary<string,GenericElement>() {
                         { "mb6", new MenuButton("mb")
                         {
-                            Graphic = Game.Content.Load<Texture2D>("worldselection/four"),
+                            Graphic = Global.Textures["worldselection-four"],
                             Rows = 1,
                             Columns = 2,
                             Tooltip = "Safety Jump - Fire",
@@ -88,7 +88,7 @@ namespace Maquina.UI.Scenes
                         }},
                         { "mb7", new MenuButton("mb")
                         {
-                            Graphic = Game.Content.Load<Texture2D>("worldselection/five"),
+                            Graphic = Global.Textures["worldselection-five"],
                             Rows = 1,
                             Columns = 2,
                             Tooltip = "Aid 'Em - Earthquake",
@@ -101,7 +101,7 @@ namespace Maquina.UI.Scenes
                 {
                     Tooltip = "Random Game",
                     SpriteType = SpriteType.None,
-                    Graphic = Game.Content.Load<Texture2D>("htp/dice"),
+                    Graphic = Global.Textures["htp-dice"],
                     OnUpdate = (Dice) => {
                         Dice.RotationOrigin = new Vector2(Dice.Graphic.Width / 2, Dice.Graphic.Height / 2);
                         Dice.Location = new Vector2(Dice.Location.X + (Dice.Bounds.Width / 2), Dice.Location.Y + (Dice.Bounds.Height / 2));

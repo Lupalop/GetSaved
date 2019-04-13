@@ -15,6 +15,81 @@
     <ResourceParameters Name="hide-seek" Location="bgm/Hide Seek" />
     <ResourceParameters Name="shenanigans" Location="bgm/Shenanigans" />
   </BGM>
-  <SFX />
-  <Textures />
+  <SFX>
+    <ResourceParameters Name="click_default" Location="sfx/click" />
+    <ResourceParameters Name="caught" Location="sfx/caught" />
+  </SFX>
+  <Textures>
+    <!-- General -->
+    <ResourceParameters Name="overlayBG" Location="overlayBG" />
+    <ResourceParameters Name="back-btn" Location="back-btn" />
+    <ResourceParameters Name="circle-btn" Location="circle-btn" />
+    <ResourceParameters Name="button-default" Location="menuBG" />
+    <ResourceParameters Name="textbox-default" Location="textbox" />
+    <!-- Main Menu -->
+    <ResourceParameters Name="gameLogo" Location="gameLogo" />
+    <ResourceParameters Name="playBtn" Location="playBtn" />
+    <ResourceParameters Name="credits-btn" Location="credits-btn" />
+    <ResourceParameters Name="sound-btn" Location="sound-btn" />
+    <ResourceParameters Name="highscore-btn" Location="highscore-btn" />
+    <ResourceParameters Name="user-btn" Location="user-btn" />
+    <!-- Next Game -->
+    <ResourceParameters Name="egs1" Location="egs1" />
+    <ResourceParameters Name="egs2" Location="egs2" />
+    <ResourceParameters Name="htp-dice" Location="htp/dice" />
+    <ResourceParameters Name="htp-esc" Location="htp/esc" />
+    <ResourceParameters Name="htp-fallingobject" Location="htp/fallingobject" />
+    <ResourceParameters Name="htp-dino" Location="htp/dino" />
+    <ResourceParameters Name="htp-aidem" Location="htp/aidem" />
+    <!-- World Selection -->
+    <ResourceParameters Name="worldselection-one" Location="worldselection/one" />
+    <ResourceParameters Name="worldselection-two" Location="worldselection/two" />
+    <ResourceParameters Name="worldselection-three" Location="worldselection/three" />
+    <ResourceParameters Name="worldselection-four" Location="worldselection/four" />
+    <ResourceParameters Name="worldselection-five" Location="worldselection/five" />
+    <!-- Game: Shared -->
+    <ResourceParameters Name="character" Location="dino/character" />
+    <ResourceParameters Name="character-line" Location="character-line" />
+    <ResourceParameters Name="fire" Location="dino/fire" />
+    <!-- Game: One -->
+    <ResourceParameters Name="game-bg-1" Location="game-bg/1" />
+    <ResourceParameters Name="object-catcher" Location="falling-object/briefcase" />
+    <!-- Keep in sync with item list -->
+    <ResourceParameters Name="item-Ball" Location="falling-object/ball" />
+    <ResourceParameters Name="item-Bomb" Location="falling-object/bomb" />
+    <ResourceParameters Name="item-Bottle" Location="falling-object/bottle" />
+    <ResourceParameters Name="item-Can" Location="falling-object/can" />
+    <ResourceParameters Name="item-Car" Location="falling-object/car" />
+    <ResourceParameters Name="item-Chair" Location="falling-object/chair" />
+    <ResourceParameters Name="item-Clothing" Location="falling-object/clothing" />
+    <ResourceParameters Name="item-Donut" Location="falling-object/donut" />
+    <ResourceParameters Name="item-Flashlight" Location="falling-object/flashlight" />
+    <ResourceParameters Name="item-Jewelry" Location="falling-object/jewelry" />
+    <ResourceParameters Name="item-Medicine" Location="falling-object/medkit" />
+    <ResourceParameters Name="item-Money" Location="falling-object/money" />
+    <ResourceParameters Name="item-Shoes" Location="falling-object/shoes" />
+    <ResourceParameters Name="item-Wall Clock" Location="falling-object/wall clock" />
+    <ResourceParameters Name="item-Whistle" Location="falling-object/whistle" />
+    <!-- Game: Two -->
+    <ResourceParameters Name="game-bg-4_1" Location="game-bg/4_1" />
+    <ResourceParameters Name="game-bg-4_2" Location="game-bg/4_2" />
+    <ResourceParameters Name="game-bg-4_3" Location="game-bg/4_3" />
+    <ResourceParameters Name="starting-point" Location="point" />
+    <ResourceParameters Name="exit-label" Location="htp" />
+    <!-- Game: Three -->
+    <ResourceParameters Name="game-bg-3" Location="game-bg/3" />
+    <!-- Game: Four -->
+    <ResourceParameters Name="game-bg-2" Location="game-bg/2" />
+    <ResourceParameters Name="helpman" Location="aid-em/helpman" />
+    <ResourceParameters Name="hand" Location="aid-em/Hand" />
+    <ResourceParameters Name="bandage" Location="aid-em/bandage" />
+    <ResourceParameters Name="stitch" Location="aid-em/stitch" />
+    <ResourceParameters Name="medicine" Location="aid-em/medicine" />
+    <ResourceParameters Name="cpr" Location="aid-em/cpr" />
+    <ResourceParameters Name="dead" Location="aid-em/dead" />
+    <ResourceParameters Name="saved" Location="aid-em/saved" />
+    <!-- Credits -->
+    <ResourceParameters Name="monogame" Location="monogame" />
+    <ResourceParameters Name="maquina" Location="maquina" />
+  </Textures>
 </Content>

@@ -29,7 +29,6 @@ namespace Maquina.UI.Scenes
 
         private Collection<GenericElement> GameObjects = new Collection<GenericElement>();
         private Collection<GenericElement> CollectedObjects = new Collection<GenericElement>();
-        private Dictionary<string, Texture2D> Images = new Dictionary<string, Texture2D>();
 
         private double _InitialTimeLeft;
         private double InitialTimeLeft
@@ -102,10 +101,9 @@ namespace Maquina.UI.Scenes
                     {
                         givenName = givenName.Remove(0, 1);
                     }
-                    fallingItem.Graphic = Images[givenName.ToLower()];
+                    fallingItem.Graphic = Global.Textures[String.Format("item-{0}", givenName)];
                     container.Children.Add(i.ToString(), fallingItem);
                 }
-
                 GameObjects.Add(container);
                 return;
             }
@@ -127,7 +125,7 @@ namespace Maquina.UI.Scenes
                 }
 
                 fallingItem.ItemID = itemID;
-                fallingItem.Graphic = Images[givenName.ToLower()];
+                fallingItem.Graphic = Global.Textures[String.Format("item-{0}", givenName)];
                 GameObjects.Add(fallingItem);
             }
         }
@@ -136,20 +134,10 @@ namespace Maquina.UI.Scenes
         {
             base.LoadContent();
 
-            foreach (var item in AvailableItems)
-            {
-                string it = item;
-                if (it.Contains('!'))
-                {
-                    it = it.Remove(0, 1);
-                }
-                Images.Add(it.ToLower(), Game.Content.Load<Texture2D>("falling-object/" + it));
-            }
-
             Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("game-bg/1"),
+                    Graphic = Global.Textures["game-bg-1"],
                     ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = (element) => {
                         element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
@@ -166,7 +154,7 @@ namespace Maquina.UI.Scenes
                 { "BackButton", new MenuButton("mb")
                 {
                     Tooltip = "Back",
-                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     LayerDepth = 0.1f,
@@ -174,7 +162,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "ObjectCatcher", new Image("ObjectCatcher")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("falling-object/briefcase"),
+                    Graphic = Global.Textures["object-catcher"],
                     Location = new Vector2(5, Game.GraphicsDevice.Viewport.Height - 70),
                     ControlAlignment = ControlAlignment.Fixed,
                 }},
@@ -191,7 +179,7 @@ namespace Maquina.UI.Scenes
                 }}
             };
 
-            ObjectCaught = Game.Content.Load<SoundEffect>("sfx/caught");
+            ObjectCaught = Global.SFX["caught"];
 
             Global.AudioManager.PlaySong("hide-seek");
             DistanceFromBottom = -30;

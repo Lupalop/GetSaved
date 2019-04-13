@@ -23,7 +23,7 @@ namespace Maquina.UI.Scenes
                 { "mb1", new MenuButton("mb")
                 {
                     Tooltip = "Back",
-                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())

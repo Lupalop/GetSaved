@@ -28,7 +28,7 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "SkipBtn", new MenuButton("skipBtn")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("overlayBG"),
+                    Graphic = Global.Textures["overlayBG"],
                     Tint = Color.Transparent,
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteType = SpriteType.None,
@@ -106,33 +106,33 @@ namespace Maquina.UI.Scenes
             {
                 // The Safety Kit
                 case Games.FallingObjects:
-                    EgsImage = Game.Content.Load<Texture2D>("egs1");
-                    HelpImage = Game.Content.Load<Texture2D>("htp/fallingobject");
+                    EgsImage = Global.Textures["egs1"];
+                    HelpImage = Global.Textures["htp-fallingobject"];
                     return new GameOneScene(GameDifficulty);
                 // Earthquake Escape
                 case Games.EscapeEarthquake:
-                    EgsImage = Game.Content.Load<Texture2D>("egs1");
-                    HelpImage = Game.Content.Load<Texture2D>("htp/esc");
+                    EgsImage = Global.Textures["egs1"];
+                    HelpImage = Global.Textures["htp-esc"];
                     return new GameTwoScene(GameDifficulty, Games.EscapeEarthquake);
                 // Fire Escape
                 case Games.EscapeFire:
-                    EgsImage = Game.Content.Load<Texture2D>("egs2");
-                    HelpImage = Game.Content.Load<Texture2D>("htp/esc");
+                    EgsImage = Global.Textures["egs2"];
+                    HelpImage = Global.Textures["htp-esc"];
                     return new GameTwoScene(GameDifficulty, Games.EscapeFire);
                 // Safety Jump
                 case Games.RunningForTheirLives:
-                    EgsImage = Game.Content.Load<Texture2D>("egs2");
-                    HelpImage = Game.Content.Load<Texture2D>("htp/dino");
+                    EgsImage = Global.Textures["egs2"];
+                    HelpImage = Global.Textures["htp-dino"];
                     return new GameThreeScene(GameDifficulty);
                 // Aid 'Em
                 case Games.HelpOthersNow:
-                    EgsImage = Game.Content.Load<Texture2D>("egs1");
-                    HelpImage = Game.Content.Load<Texture2D>("htp/aidem");
+                    EgsImage = Global.Textures["egs1"];
+                    HelpImage = Global.Textures["htp-aidem"];
                     return new GameFourScene(GameDifficulty);
                 // If the randomizer item failed, simply throw the world selection screen...
                 default:
-                    EgsImage = new Texture2D(Game.GraphicsDevice, 0, 0);
-                    HelpImage = new Texture2D(Game.GraphicsDevice, 0, 0);
+                    EgsImage = new Texture2D(Game.GraphicsDevice, 1, 1);
+                    HelpImage = new Texture2D(Game.GraphicsDevice, 1, 1);
                     return new WorldSelectionScene();
             }
         }

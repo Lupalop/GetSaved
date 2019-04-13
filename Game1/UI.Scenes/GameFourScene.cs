@@ -83,7 +83,7 @@ namespace Maquina.UI.Scenes
             AttemptRemoveHelpman();
             GameObjects.Add("helpman", new Helpman("helpman")
             {
-                Graphic = Game.Content.Load<Texture2D>("aid-em/helpman"),
+                Graphic = Global.Textures["helpman"],
                 OnUpdate = (element) =>
                 {
                     Helpman helpman = (Helpman)element;
@@ -101,13 +101,13 @@ namespace Maquina.UI.Scenes
                 if (helpman.HitsBeforeBreak > 0)
                 {
                     CreateFade(Color.Red);
-                    CreateFlash("aid-em/dead", 1.4f, 1000);
+                    CreateFlash("dead", 1.4f, 1000);
                     helpman.IsAlive = false;
                 }
                 else
                 {
                     CreateFade(Color.Green);
-                    CreateFlash("aid-em/saved", 1.4f, 1000);
+                    CreateFlash("saved", 1.4f, 1000);
                 }
                 CollectedObjects.Add(helpman);
                 GameObjects.Remove("helpman");
@@ -124,7 +124,7 @@ namespace Maquina.UI.Scenes
             {
                 SceneManager.Overlays.Add(overlayName,
                     new FlashOverlay(overlayName,
-                        Game.Content.Load<Texture2D>(resource), scale,
+                        Global.Textures[resource], scale,
                         delay) { FadeSpeed = 0.1f });
             }
             catch (Exception ex) { Console.WriteLine(ex); }
@@ -177,7 +177,7 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("game-bg/2"),
+                    Graphic = Global.Textures["game-bg-2"],
                     ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = (element) => {
                         element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
@@ -194,7 +194,7 @@ namespace Maquina.UI.Scenes
                 { "BackButton", new MenuButton("mb")
                 {
                     Tooltip = "Back",
-                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     LayerDepth = 0.1f,
@@ -213,7 +213,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "Hand1", new Image("hand1")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("aid-em/Hand"),
+                    Graphic = Global.Textures["hand"],
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteType = SpriteType.Static,
                     Columns = 2,
@@ -221,7 +221,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "Hand2", new Image("hand2")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("aid-em/Hand"),
+                    Graphic = Global.Textures["hand"],
                     ControlAlignment = ControlAlignment.Fixed,
                     SpriteType = SpriteType.Static,
                     CurrentFrame = 1,
@@ -231,7 +231,7 @@ namespace Maquina.UI.Scenes
                 { "Controller-Bandage", new MenuButton("controller-x")
                 {
                     Tooltip = "Bandage (X)",
-                    Graphic = Game.Content.Load<Texture2D>("aid-em/bandage"),
+                    Graphic = Global.Textures["bandage"],
                     SpriteType = SpriteType.None,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(80,460),
@@ -242,7 +242,7 @@ namespace Maquina.UI.Scenes
                 { "Controller-Stitch", new MenuButton("controller-a")
                 {
                     Tooltip = "Stitch (A)",
-                    Graphic = Game.Content.Load<Texture2D>("aid-em/stitch"),
+                    Graphic = Global.Textures["stitch"],
                     SpriteType = SpriteType.None,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(150, 530),
@@ -253,7 +253,7 @@ namespace Maquina.UI.Scenes
                 { "Controller-Medicine", new MenuButton("controller-s")
                 {
                     Tooltip = "Medicine (S)",
-                    Graphic = Game.Content.Load<Texture2D>("aid-em/medicine"),
+                    Graphic = Global.Textures["medicine"],
                     SpriteType = SpriteType.None,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(730,460),
@@ -264,7 +264,7 @@ namespace Maquina.UI.Scenes
                 { "Controller-CPR", new MenuButton("controller-o")
                 {
                     Tooltip = "CPR (O)",
-                    Graphic = Game.Content.Load<Texture2D>("aid-em/cpr"),
+                    Graphic = Global.Textures["cpr"],
                     SpriteType = SpriteType.None,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(650, 550),

@@ -107,15 +107,15 @@ namespace Maquina.UI.Scenes
         {
             base.LoadContent();
 
-            FireGraphic = Game.Content.Load<Texture2D>("dino/fire");
-            CharacterGraphic = Game.Content.Load<Texture2D>("dino/character");
-            JumpEffect = Game.Content.Load<SoundEffect>("sfx/caught");
+            FireGraphic = Global.Textures["fire"];
+            CharacterGraphic = Global.Textures["character"];
+            JumpEffect = Global.SFX["caught"];
             Global.AudioManager.PlaySong("shenanigans");
 
             Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = Game.Content.Load<Texture2D>("game-bg/3"),
+                    Graphic = Global.Textures["game-bg-3"],
                     ControlAlignment = ControlAlignment.Fixed,
                     OnUpdate = (element) => {
                         element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
@@ -124,7 +124,7 @@ namespace Maquina.UI.Scenes
                 { "BackButton", new MenuButton("mb")
                 {
                     Tooltip = "Back",
-                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
+                    Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
                     ControlAlignment = ControlAlignment.Fixed,
                     LayerDepth = 0.1f,

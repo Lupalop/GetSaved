@@ -9,6 +9,7 @@ using Maquina.UI;
 using Maquina.UI.Scenes;
 using Maquina.Resources;
 using System.IO;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Maquina
 {
@@ -34,6 +35,7 @@ namespace Maquina
             Graphics = new GraphicsDeviceManager(this);
             // Set root directory where content files will be loaded
             Content.RootDirectory = Global.ContentRootDirectory;
+            Global.Game = this;
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace Maquina
             // Create instance
             PreferencesManager = new PreferencesManager();
             LocaleManager = new LocaleManager(PreferencesManager.GetCharPref("app.locale", Global.DefaultLocale));
-            InputManager = new InputManager(this);
+            InputManager = new InputManager();
             AudioManager = new AudioManager();
             SceneManager = new SceneManager();
 
@@ -56,7 +58,6 @@ namespace Maquina
             Global.InputManager = InputManager;
             Global.AudioManager = AudioManager;
             Global.SceneManager = SceneManager;
-            Global.Game = this;
 
             // Window
             IsMouseVisible = PreferencesManager.GetBoolPref("app.window.useNativeCursor", false);
@@ -113,16 +114,18 @@ namespace Maquina
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             // Create instance of the content loader
             ContentLoader<ResourceContent> resources = new ContentLoader<ResourceContent>();
-            resources.Content = resources.Initialize(Path.Combine(
-                Global.ContentRootDirectory, Global.ResourceXml));
+            resources.Content = resources.Initialize(
+                Path.Combine(Global.ContentRootDirectory, Global.ResourceXml));
             // Load resources
-            Dictionary<string, SpriteFont> Fonts =
-                resources.Content.Load(ResourceType.Fonts, this) as Dictionary<string, SpriteFont>;
-            AudioManager.Songs =
-                resources.Content.Load(ResourceType.BGM, this) as Dictionary<string, Song>;
-            //
+            Global.Fonts =
+                resources.Content.Load(ResourceType.Fonts) as Dictionary<string, SpriteFont>;
+            Global.BGM =
+                resources.Content.Load(ResourceType.BGM) as Dictionary<string, Song>;
+            Global.SFX =
+                resources.Content.Load(ResourceType.SFX) as Dictionary<string, SoundEffect>;
+            Global.Textures =
+                resources.Content.Load(ResourceType.Textures) as Dictionary<string, Texture2D>;
             Global.SpriteBatch = SpriteBatch;
-            Global.Fonts = Fonts;
             // Register Overlays in the scene manager
             if (!IsMouseVisible)
             {
