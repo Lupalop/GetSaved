@@ -193,6 +193,9 @@
 /processorParam:TextureFormat=Color
 /build:circle-btn.png
 
+#begin credits.txt
+/copy:credits.txt
+
 #begin credits-btn.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -773,6 +776,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:point.png
+
+#begin Resources.xml
+/copy:Resources.xml
 
 #begin sfx/caught.mp3
 /importer:Mp3Importer
