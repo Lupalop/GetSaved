@@ -12,10 +12,10 @@ using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
 {
-    public class GameEndOverlay : OverlayBase
+    public class GameEndOverlay : Overlay
     {
         public GameEndOverlay(Games currentGame,
-            Collection<GenericElement> passedMessage, SceneBase parentScene, Difficulty gameDifficulty)
+            Collection<GenericElement> passedMessage, Scene parentScene, Difficulty gameDifficulty)
             : base("Game End Overlay", parentScene)
         {
             CurrentGame = currentGame;
@@ -199,12 +199,12 @@ namespace Maquina.UI.Scenes
                 Text = "Correct items: " + correctItems,
                 Font = Fonts["default_m"]
             });
-            Objects.Add("container-items", new ElementContainer("cr")
+            Objects.Add("container-items", new StackPanel("cr")
             {
-                ContainerAlignment = ContainerAlignment.Horizontal
+                Orientation = Orientation.Horizontal
             });
 
-            ElementContainer itemContainer = Objects["container-items"] as ElementContainer;
+            StackPanel itemContainer = Objects["container-items"] as StackPanel;
 
             int[] IncorrectItemIDs = new int[100];
 
@@ -230,10 +230,10 @@ namespace Maquina.UI.Scenes
                     continue;
                 }
 
-                itemContainer.Children.Add("elemContainer" + i, new ElementContainer("cr")
+                itemContainer.Children.Add("elemContainer" + i, new StackPanel("cr")
                 {
-                    ContainerAlignment = ContainerAlignment.Vertical,
-                    Children = new Dictionary<string,GenericElement>() {
+                    Orientation = Orientation.Vertical,
+                    Children = {
                         {"icon", new MenuButton("icon")
                         {
                             SpriteType = SpriteType.None,
@@ -277,13 +277,13 @@ namespace Maquina.UI.Scenes
             {
                 SetGameEndGraphic(GameEndStates.TimesUp);
             }
-            Objects.Add("container-main", new ElementContainer("cr")
+            Objects.Add("container-main", new StackPanel("cr")
             {
-                ContainerAlignment = ContainerAlignment.Horizontal,
-                Children = new Dictionary<string,GenericElement>() {
-                    { "container-list", new ElementContainer("cr")
+                Orientation = Orientation.Horizontal,
+                Children = {
+                    { "container-list", new StackPanel("cr")
                     {
-                        Children = new Dictionary<string,GenericElement>() {
+                        Children = {
                             { "IncorrectCrap", new Label("InCorrectCrap")
                             {
                                 Text = "People Died: " + peopleDied,

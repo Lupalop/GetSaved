@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
 {
-    public class GameTwoScene : SceneBase
+    public class GameTwoScene : Scene
     {
         public GameTwoScene(Difficulty Difficulty, Games cgame)
             : base("Game 2 Scene: " + GetGameName(cgame))

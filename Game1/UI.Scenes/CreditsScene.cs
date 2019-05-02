@@ -11,7 +11,7 @@ using System.IO;
 
 namespace Maquina.UI.Scenes
 {
-    public class CreditsScene : SceneBase
+    public class CreditsScene : Scene
     {
         public CreditsScene() : base("Credits") {}
 

@@ -10,7 +10,7 @@ using Maquina.Elements;
 
 namespace Maquina.UI.Scenes
 {
-    public class FlashOverlay : OverlayBase, IDisposable
+    public class FlashOverlay : Overlay, IDisposable
     {
         public FlashOverlay(string overlayKey, Texture2D image,
             float scale, int delay = 0)

@@ -11,7 +11,7 @@ using Maquina.Elements;
 
 namespace Maquina.UI.Scenes
 {
-    public class UserProfileScene : SceneBase
+    public class UserProfileScene : Scene
     {
         public UserProfileScene() : base("User Profile") {}
 

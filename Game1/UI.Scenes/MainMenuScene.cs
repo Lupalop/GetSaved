@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Maquina.UI.Scenes
 {
-    public class MainMenuScene : SceneBase
+    public class MainMenuScene : Scene
     {
         public MainMenuScene() : base("Main Menu") {}
 
@@ -39,11 +39,11 @@ namespace Maquina.UI.Scenes
                     Text = "Prototype Version",
                     Font = Fonts["o-default"]
                 }},
-                { "container1", new ElementContainer("cr")
+                { "container1", new StackPanel("cr")
                 {
-                    ElementSpacing = 5,
-                    ContainerAlignment = ContainerAlignment.Horizontal,
-                    Children = new Dictionary<string, GenericElement> {
+                    ElementMargin = new Region(0, 5, 0, 0),
+                    Orientation = Orientation.Horizontal,
+                    Children = {
                         { "mb2", new MenuButton("mb")
                         {
                             Tooltip = "Credits",

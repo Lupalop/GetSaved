@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace Maquina.UI.Scenes
 {
-    public class HighScoreScene : SceneBase
+    public class HighScoreScene : Scene
     {
         public HighScoreScene() : base("High Scores") {}
 
@@ -40,9 +40,9 @@ namespace Maquina.UI.Scenes
 
             Thread loader = new Thread(() =>
             {
-                ElementContainer elementContainer = new ElementContainer("cr")
+                StackPanel elementContainer = new StackPanel("cr")
                 {
-                    ElementSpacing = 5
+                    ElementMargin = new Region(10, 0, 15, 0),
                 };
 
                 for (int i = 1; i <= 10; i++)

@@ -10,7 +10,7 @@ using Maquina.Elements;
 
 namespace Maquina.UI.Scenes
 {
-    public class NextGameScene : SceneBase
+    public class NextGameScene : Scene
     {
         public NextGameScene(Games passedGame = Games.Random, Difficulty passedDifficulty = Difficulty.Random)
             : base("Next Game Scene")
@@ -39,20 +39,20 @@ namespace Maquina.UI.Scenes
                     LeftClickAction = () => SceneManager.SwitchToScene(NewGameScene),
                     RightClickAction = () => SceneManager.SwitchToScene(NewGameScene)
                 }},
-                { "main-container", new ElementContainer("cr")
+                { "main-container", new StackPanel("cr")
                 {
                     ControlAlignment = ControlAlignment.Center,
-                    ContainerAlignment = ContainerAlignment.Horizontal,
+                    Orientation = Orientation.Horizontal,
                     Children = {
                         { "Egs", new Image("egs")
                         {
                             Graphic = EgsImage,
                             Scale = 0.8f
                         }},
-                        { "container2", new ElementContainer("cr")
+                        { "container2", new StackPanel("cr")
                         {
                             ControlAlignment = Elements.ControlAlignment.Center,
-                            ContainerAlignment = Elements.ContainerAlignment.Vertical,
+                            Orientation = Elements.Orientation.Vertical,
                             Children = {
                                 { "GameName", new Label("GameName")
                                 {
@@ -85,10 +85,10 @@ namespace Maquina.UI.Scenes
         private Texture2D EgsImage;
 
         public Games NextGame { get; set; }
-        public SceneBase NewGameScene { get; set; }
+        public Scene NewGameScene { get; set; }
         public Difficulty GameDifficulty { get; set; }
 
-        public SceneBase DetermineNewGame()
+        public Scene DetermineNewGame()
         {
             Random rand = new Random();
             if (GameDifficulty == Difficulty.Random)

@@ -11,7 +11,7 @@ using Maquina.Elements;
 
 namespace Maquina.UI.Scenes
 {
-    public class WorldSelectionScene : SceneBase
+    public class WorldSelectionScene : Scene
     {
         public WorldSelectionScene() : base("Game Selection") {}
 
@@ -38,11 +38,11 @@ namespace Maquina.UI.Scenes
                     },
                     LeftClickAction = () => ModifyDifficulty()
                 }},
-                { "container1", new ElementContainer("cr")
+                { "container1", new StackPanel("cr")
                 {
-                    ElementSpacing = 5,
-                    ContainerAlignment = ContainerAlignment.Horizontal,
-                    Children = new Dictionary<string,GenericElement>() {
+                    ElementMargin = new Region(0, 5, 0, 0),
+                    Orientation = Orientation.Horizontal,
+                    Children = {
                         { "mb3", new MenuButton("mb")
                         {
                             Graphic = Global.Textures["worldselection-one"],
@@ -72,11 +72,11 @@ namespace Maquina.UI.Scenes
                         }},
                     }
                 }},
-                { "container2", new ElementContainer("cr")
+                { "container2", new StackPanel("cr")
                 {
-                    ElementSpacing = 5,
-                    ContainerAlignment = ContainerAlignment.Horizontal,
-                    Children = new Dictionary<string,GenericElement>() {
+                    ElementMargin = new Region(0, 5, 0, 0),
+                    Orientation = Orientation.Horizontal,
+                    Children = {
                         { "mb6", new MenuButton("mb")
                         {
                             Graphic = Global.Textures["worldselection-four"],

@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
 {
-    public class GameOneScene : SceneBase
+    public class GameOneScene : Scene
     {
         public GameOneScene(Difficulty Difficulty)
             : base("Game 1 Scene: The Safety Kit")
@@ -100,9 +100,9 @@ namespace Maquina.UI.Scenes
         private void CreateFallingItem(object sender, EventArgs eventArgs)
         {
             if (GameDifficulty == Difficulty.Demo) {
-                ElementContainer container = new ElementContainer("container")
+                StackPanel container = new StackPanel("container")
                 {
-                    ContainerAlignment = ContainerAlignment.Horizontal,
+                    Orientation = Orientation.Horizontal,
                     ControlAlignment = ControlAlignment.Fixed,
                     Location = new Vector2(5, -64),
                 };
@@ -126,7 +126,7 @@ namespace Maquina.UI.Scenes
             {
                 FallingItem fallingItem = new FallingItem("falling-item")
                 {
-                    // Random X, constant Y initial value
+                    // Random X, constant TValue initial value
                     Location = new Vector2(
                         (float)RandNum.Next(5, Game.GraphicsDevice.Viewport.Width - 5), 0),
                 };

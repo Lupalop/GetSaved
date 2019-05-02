@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
 {
-    public class GameFourScene : SceneBase
+    public class GameFourScene : Scene
     {
         public GameFourScene(Difficulty Difficulty) : base("Game 4 Scene: Aid 'em")
         {
