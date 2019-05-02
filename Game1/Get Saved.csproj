@@ -87,7 +87,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Elements\Throbber.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Elements\FallingItem.cs" />
     <Compile Include="Elements\Helpman.cs" />
