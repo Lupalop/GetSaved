@@ -10,6 +10,7 @@ using Maquina.UI.Scenes;
 using Maquina.Resources;
 using System.IO;
 using Microsoft.Xna.Framework.Audio;
+using System.Threading.Tasks;
 
 namespace Maquina
 {
@@ -108,34 +109,36 @@ namespace Maquina
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
+        protected override async void LoadContent()
         {
             // Create instance of SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-            // Create instance of the content loader
-            ContentLoader<ResourceContent> resources = new ContentLoader<ResourceContent>();
-            resources.Content = resources.Initialize(
-                Path.Combine(Global.ContentRootDirectory, Global.ResourceXml));
-            // Load resources
-            Global.Fonts =
-                resources.Content.Load(ResourceType.Fonts) as Dictionary<string, SpriteFont>;
-            Global.BGM =
-                resources.Content.Load(ResourceType.BGM) as Dictionary<string, Song>;
-            Global.SFX =
-                resources.Content.Load(ResourceType.SFX) as Dictionary<string, SoundEffect>;
-            Global.Textures =
-                resources.Content.Load(ResourceType.Textures) as Dictionary<string, Texture2D>;
             Global.SpriteBatch = SpriteBatch;
-            // Register Overlays in the scene manager
             if (!IsMouseVisible)
             {
                 SceneManager.Overlays.Add("mouse", new MouseOverlay(Content.Load<Texture2D>("mouseCur")));
             }
+            await Task.Run(() =>
+            {
+                // Create instance of the content loader
+                ContentLoader<ResourceContent> resources = new ContentLoader<ResourceContent>();
+                resources.Content = resources.Initialize(
+                    Path.Combine(Global.ContentRootDirectory, Global.ResourceXml));
+                // Load resources
+                Global.Fonts =
+                    resources.Content.Load(ResourceType.Fonts) as Dictionary<string, SpriteFont>;
+                Global.BGM =
+                    resources.Content.Load(ResourceType.BGM) as Dictionary<string, Song>;
+                Global.SFX =
+                    resources.Content.Load(ResourceType.SFX) as Dictionary<string, SoundEffect>;
+                Global.Textures =
+                    resources.Content.Load(ResourceType.Textures) as Dictionary<string, Texture2D>;
 #if DEBUG
-            SceneManager.Overlays.Add("debug", new DebugOverlay());
+                SceneManager.Overlays.Add("debug", new DebugOverlay());
 #endif
-            // Setup first scene (Main Menu)
-            SceneManager.SwitchToScene(new MainMenuScene(), true);
+                // Setup first scene (Main Menu)
+                SceneManager.SwitchToScene(new MainMenuScene(), true);
+            });
         }
 
         /// <summary>
