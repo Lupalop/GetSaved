@@ -17,26 +17,10 @@ namespace Maquina
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class MainGame : Game
+    public class MainGame : MaquinaGame
     {
-        public GraphicsDeviceManager Graphics;
-        private SpriteBatch SpriteBatch;
-        private SceneManager SceneManager;
-        private LocaleManager LocaleManager;
-        private InputManager InputManager;
-        private PreferencesManager PreferencesManager;
-        private AudioManager AudioManager;
-
-        private int LastWindowWidth;
-        private int LastWindowHeight;
-
         public MainGame()
         {
-            // Initialize graphics manager
-            Graphics = new GraphicsDeviceManager(this);
-            // Set root directory where content files will be loaded
-            Content.RootDirectory = Global.ContentRootDirectory;
-            Global.Game = this;
         }
 
         /// <summary>
@@ -47,62 +31,13 @@ namespace Maquina
         /// </summary>
         protected override void Initialize()
         {
-            // Create instance
-            PreferencesManager = new PreferencesManager();
-            LocaleManager = new LocaleManager(PreferencesManager.GetCharPref("app.locale", Global.DefaultLocale));
-            InputManager = new InputManager();
-            AudioManager = new AudioManager();
-            SceneManager = new SceneManager();
-
-            Global.PreferencesManager = PreferencesManager;
-            Global.LocaleManager = LocaleManager;
-            Global.InputManager = InputManager;
-            Global.AudioManager = AudioManager;
-            Global.SceneManager = SceneManager;
-
-            // Window
-            IsMouseVisible = PreferencesManager.GetBoolPref("app.window.useNativeCursor", false);
-            LastWindowWidth = PreferencesManager.GetIntPref("app.window.width", 800);
-            LastWindowHeight = PreferencesManager.GetIntPref("app.window.height", 600);
-            Window.AllowUserResizing = PreferencesManager.GetBoolPref("app.window.allowUserResizing", false);
-
-            // Audio
-            float soundVolume;
-            float.TryParse(PreferencesManager.GetCharPref("app.audio.sound", "1f"), out soundVolume);
-            AudioManager.SoundVolume = soundVolume;
-            AudioManager.MusicVolume = PreferencesManager.GetIntPref("app.audio.music", 255);
-            AudioManager.IsMuted = PreferencesManager.GetBoolPref("app.audio.mastermuted", false);
-
-#if DEBUG
-            Graphics.HardwareModeSwitch = !PreferencesManager.GetBoolPref("app.window.fullscreen.borderless", true);
-#else
-            Graphics.HardwareModeSwitch = !PreferencesManager.GetBoolPref("app.window.fullscreen.borderless", false);
-#endif
-
-            // Identify if we should go fullscreen
-            if (PreferencesManager.GetBoolPref("app.window.fullscreen", false))
-            {
-                Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-                Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-
-                Graphics.ToggleFullScreen();
-            }
-            else
-            {
-                Graphics.PreferredBackBufferWidth = LastWindowWidth;
-                Graphics.PreferredBackBufferHeight = LastWindowHeight;
-            }
-            Graphics.ApplyChanges();
+            base.Initialize();
 
             // Set window title
             Window.Title = "Get Saved";
 
-            #region Game-specific
             UserGlobal.UserName = PreferencesManager.GetCharPref("game.username", "Guest");
             UserGlobal.Score = 0;
-            #endregion
-
-            base.Initialize();
         }
 
         /// <summary>
@@ -111,22 +46,7 @@ namespace Maquina
         /// </summary>
         protected override async void LoadContent()
         {
-            // Create instance of SpriteBatch, which can be used to draw textures.
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
-            Global.SpriteBatch = SpriteBatch;
-            // Create instance of the content loader
-            ContentLoader<ResourceContent> resources = new ContentLoader<ResourceContent>();
-            // Load platform resources synchronously
-            resources.Content = resources.Initialize(
-                    Path.Combine(Global.ContentRootDirectory, Global.ResourceXml));
-            Global.Fonts =
-                resources.Content.Load(ResourceType.Fonts) as Dictionary<string, SpriteFont>;
-            Global.BGM =
-                resources.Content.Load(ResourceType.BGM) as Dictionary<string, Song>;
-            Global.SFX =
-                resources.Content.Load(ResourceType.SFX) as Dictionary<string, SoundEffect>;
-            Global.Textures =
-                resources.Content.Load(ResourceType.Textures) as Dictionary<string, Texture2D>;
+            base.LoadContent();
 
             if (!IsMouseVisible)
             {
@@ -135,6 +55,7 @@ namespace Maquina
 
             await Task.Run(() =>
             {
+                ContentLoader<ResourceContent> resources = new ContentLoader<ResourceContent>();
                 // Load game-specific resources
                 resources.Content = resources.Initialize(
                     Path.Combine(Global.ContentRootDirectory, "gameresources.xml"));
@@ -161,11 +82,6 @@ namespace Maquina
         /// </summary>
         protected override void UnloadContent()
         {
-#if HAS_CONSOLE && LOG_GENERAL
-            Console.WriteLine("Unloading game content");
-#endif
-
-            #region Game-specific
             if (UserGlobal.UserName != "Guest")
             {
 #if HAS_CONSOLE && LOG_GENERAL
@@ -174,23 +90,8 @@ namespace Maquina
                 UserGlobal.SaveCurrentUser();
                 UserGlobal.SetNewHighscore();
             }
-            #endregion
-
-            PreferencesManager.SetBoolPref("app.window.fullscreen", Graphics.IsFullScreen);
-            // Save window dimensions if not in fullscreen
-            if (!Graphics.IsFullScreen)
-            {
-                PreferencesManager.SetIntPref("app.window.width", Graphics.PreferredBackBufferWidth);
-                PreferencesManager.SetIntPref("app.window.height", Graphics.PreferredBackBufferHeight);
-            }
-            PreferencesManager.SetBoolPref("app.audio.mastermuted", AudioManager.IsMuted);
-            PreferencesManager.SetCharPref("app.audio.sound", AudioManager.SoundVolume.ToString());
-            PreferencesManager.SetIntPref("app.audio.music", AudioManager.MusicVolume);
-
-            // Dispose content
-            SceneManager.Dispose();
-            SpriteBatch.Dispose();
-            Graphics.Dispose();
+            
+            base.UnloadContent();
         }
 
         /// <summary>
@@ -222,9 +123,6 @@ namespace Maquina
                 Graphics.ToggleFullScreen();
             }
 
-            SceneManager.Update(gameTime);
-            TimerManager.Update(gameTime);
-
             base.Update(gameTime);
         }
 
@@ -234,7 +132,6 @@ namespace Maquina
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            SceneManager.Draw(gameTime);
             base.Draw(gameTime);
         }
     }
