@@ -597,6 +597,9 @@
 /processorParam:TextureFormat=Color
 /build:gameOver.png
 
+#begin GameResources.xml
+/copy:GameResources.xml
+
 #begin gameWin.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -753,6 +756,9 @@
 /processorParam:TextureFormat=Color
 /build:overlayBG.png
 
+#begin PlatformResources.xml
+/copy:PlatformResources.xml
+
 #begin playBtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -776,9 +782,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:point.png
-
-#begin Resources.xml
-/copy:Resources.xml
 
 #begin sfx/caught.mp3
 /importer:Mp3Importer

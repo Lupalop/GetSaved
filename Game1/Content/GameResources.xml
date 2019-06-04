@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Game Resources file (GameResources.xml)
+    NOTE: Can be divided into multiple files if necessary.
+-->
 <Content xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Fonts>
-    <FontParameters Name="default" Location="fonts/ZillaSlab_small" LineSpacing="19" Spacing="0" />
-    <FontParameters Name="default_m" Location="fonts/ZillaSlab_medium" LineSpacing="29" Spacing="0" />
-    <FontParameters Name="default_l" Location="fonts/ZillaSlab_large" LineSpacing="51" Spacing="0" />
-    <FontParameters Name="o-default" Location="fonts/o-ZillaSlab_small" LineSpacing="12" Spacing="-6.0" />
-    <FontParameters Name="o-default_m" Location="fonts/o-ZillaSlab_medium" LineSpacing="18" Spacing="-6.0" />
-    <FontParameters Name="o-default_l" Location="fonts/o-ZillaSlab_large" LineSpacing="32" Spacing="-6.0" />
-    <FontParameters Name="o-default_xl" Location="fonts/o-ZillaSlab_xl" LineSpacing="60" Spacing="-6.0" />
-  </Fonts>
+  <Fonts/>
   <BGM>
     <ResourceParameters Name="flying-high" Location="bgm/Flying High" />
     <ResourceParameters Name="in-pursuit" Location="bgm/In Pursuit" />
@@ -16,7 +12,6 @@
     <ResourceParameters Name="shenanigans" Location="bgm/Shenanigans" />
   </BGM>
   <SFX>
-    <ResourceParameters Name="click_default" Location="sfx/click" />
     <ResourceParameters Name="caught" Location="sfx/caught" />
   </SFX>
   <Textures>
@@ -24,9 +19,6 @@
     <ResourceParameters Name="overlayBG" Location="overlayBG" />
     <ResourceParameters Name="back-btn" Location="back-btn" />
     <ResourceParameters Name="circle-btn" Location="circle-btn" />
-    <ResourceParameters Name="button-default" Location="menuBG" />
-    <ResourceParameters Name="textbox-default" Location="textbox" />
-    <ResourceParameters Name="throbber-default" Location="falling-object/wall clock" />
     <!-- Main Menu -->
     <ResourceParameters Name="gameLogo" Location="gameLogo" />
     <ResourceParameters Name="playBtn" Location="playBtn" />
