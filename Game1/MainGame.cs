@@ -68,12 +68,13 @@ namespace Maquina
                     resources.Content.Load(ResourceType.SFX) as Dictionary<string, SoundEffect>);
                 Global.Textures = Global.Textures.MergeWith(
                     resources.Content.Load(ResourceType.Textures) as Dictionary<string, Texture2D>);
-#if DEBUG
-                SceneManager.Overlays.Add("debug", new DebugOverlay());
-#endif
-                // Setup first scene (Main Menu)
-                SceneManager.SwitchToScene(new MainMenuScene());
             });
+
+#if DEBUG
+            SceneManager.Overlays.Add("debug", new DebugOverlay());
+#endif
+            // Setup first scene (Main Menu)
+            SceneManager.SwitchToScene(new MainMenuScene());
         }
 
         /// <summary>
