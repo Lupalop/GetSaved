@@ -103,7 +103,7 @@ namespace Maquina.UI.Scenes
                 StackPanel container = new StackPanel("container")
                 {
                     Orientation = Orientation.Horizontal,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(5, -64),
                 };
                 int ColumnCount = Game.GraphicsDevice.Viewport.Width / 64;
@@ -153,14 +153,14 @@ namespace Maquina.UI.Scenes
                 { "GameBG", new Image("GameBG")
                 {
                     Graphic = Global.Textures["game-bg-1"],
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     }
                 }},
                 { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         ProgressBar a = (ProgressBar)element;
                         a.value = (float)TimeLeft;
@@ -171,7 +171,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
@@ -179,11 +179,11 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Global.Textures["object-catcher"],
                     Location = new Vector2(5, Game.GraphicsDevice.Viewport.Height - 70),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                 }},
                 { "Timer", new Label("o-timer")
                 {
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Font = Fonts["o-default_l"],
                     LayerDepth = 0.1f,
                     OnUpdate = (element) => {

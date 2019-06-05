@@ -26,7 +26,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5, 5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "header", new Label("lb")
@@ -54,7 +54,7 @@ namespace Maquina.UI.Scenes
 
                     elementContainer.Children.Add(String.Format("score-{0}", i), new Label("lb")
                     {
-                        ControlAlignment = ControlAlignment.Left,
+                        ControlAlignment = Alignment.Left,
                         Text = String.Format("{0}. {1} earned {2} points!",
                             i,
                             Global.PreferencesManager.GetCharPref(

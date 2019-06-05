@@ -24,7 +24,7 @@ namespace Maquina.UI.Scenes
                 { "Background", new Image("Background")
                 {
                     Graphic = Game.Content.Load<Texture2D>("overlayBG"),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
@@ -60,7 +60,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Game.Content.Load<Texture2D>("back-btn"),
                     Location = new Vector2(5, 5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Font = Fonts["default_m"],
                     LeftClickAction = () =>
                     {

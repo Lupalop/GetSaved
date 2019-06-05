@@ -106,7 +106,7 @@ namespace Maquina.UI.Scenes
                     Rows = 1,
                     SpriteType = SpriteType.Animated,
                     Location = new Vector2((float)RandNum.Next(StartingXPos - 100, StartingXPos), FireInitialY),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                 };
                 GameObjects.Add(nwBtn);
             }
@@ -125,7 +125,7 @@ namespace Maquina.UI.Scenes
                 { "GameBG", new Image("GameBG")
                 {
                     Graphic = Global.Textures["game-bg-3"],
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     },
@@ -135,7 +135,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
@@ -145,12 +145,12 @@ namespace Maquina.UI.Scenes
                     Columns = 3,
                     Rows = 1,
                     SpriteType = SpriteType.Animated,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                 }},
                 { "ScoreCounter", new Label("timer")
                 {
                     Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
                     OnUpdate = (element) => {
                         Label a = (Label)element;

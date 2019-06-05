@@ -27,7 +27,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5, 5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }}
             };
@@ -64,7 +64,7 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("label_l_s" + i, new Label("label_l_s")
                     {
                         Text = CreditsText[i].Substring(1),
-                        ControlAlignment = ControlAlignment.Fixed,
+                        ControlAlignment = Alignment.Fixed,
                         Font = Fonts["o-default_l"]
                     });
                     continue;
@@ -76,7 +76,7 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("label_m_s" + i, new Label("label_m_s")
                     {
                         Text = CreditsText[i].Substring(1),
-                        ControlAlignment = ControlAlignment.Fixed,
+                        ControlAlignment = Alignment.Fixed,
                         Font = Fonts["o-default_m"]
                     });
                     continue;
@@ -88,7 +88,7 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("label_l" + i, new Label("label_l")
                     {
                         Text = CreditsText[i].Substring(1),
-                        ControlAlignment = ControlAlignment.Fixed,
+                        ControlAlignment = Alignment.Fixed,
                         Font = Fonts["default_l"]
                     });
                     continue;
@@ -100,7 +100,7 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("label_m" + i, new Label("label_m")
                     {
                         Text = CreditsText[i].Substring(1),
-                        ControlAlignment = ControlAlignment.Fixed,
+                        ControlAlignment = Alignment.Fixed,
                         Font = Fonts["default_m"]
                     });
                     continue;
@@ -112,7 +112,7 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("spacer" + i, new Label("spacer")
                     {
                         Text = CreditsText[i],
-                        ControlAlignment = ControlAlignment.Fixed,
+                        ControlAlignment = Alignment.Fixed,
                         Font = Fonts["default"]
                     });
                     continue;
@@ -122,7 +122,7 @@ namespace Maquina.UI.Scenes
                 ScrollingElements.Add("label" + i, new Label("label")
                 {
                     Text = CreditsText[i],
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Font = Fonts["default"]
                 });
             }

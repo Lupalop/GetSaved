@@ -25,7 +25,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "mb2", new MenuButton("mb")

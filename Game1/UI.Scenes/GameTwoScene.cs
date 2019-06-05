@@ -204,7 +204,7 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Global.Textures["game-bg-4_1"],
                     DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         if (CurrentStage != 3 && CurrentGame == Games.EscapeEarthquake)
                         {
@@ -230,7 +230,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         var a = (ProgressBar)element;
                         a.value = (float)TimeLeft;
@@ -241,7 +241,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
@@ -253,11 +253,11 @@ namespace Maquina.UI.Scenes
                     SpriteType = SpriteType.Animated,
                     Location = PosA,
                     GraphicEffects = SpriteEffects.FlipHorizontally,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                 }},
                 { "Timer", new Label("timer")
                 {
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         Label a = (Label)element;
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
@@ -277,7 +277,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "HelpLabel", new Label("helplabel")
                 {
-                    ControlAlignment = ControlAlignment.Center,
+                    ControlAlignment = Alignment.Center,
                     Font = Fonts["o-default_l"]
                 }}
             };
@@ -287,7 +287,7 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Global.Textures["starting-point"],
                     Location = PosA,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         element.Location = PosA;
                     }
@@ -296,7 +296,7 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Global.Textures["exit-label"],
                     Location = PosB,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         element.Location = PosB;
                     }

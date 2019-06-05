@@ -29,7 +29,7 @@ namespace Maquina.UI.Scenes
                 {
                     Graphic = Global.Textures["overlayBG"],
                     Tint = Color.Transparent,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     SpriteType = SpriteType.None,
                     OnUpdate = (element) => {
                         Rectangle SrcRectSkipBtn = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
@@ -41,7 +41,7 @@ namespace Maquina.UI.Scenes
                 }},
                 { "main-container", new StackPanel("cr")
                 {
-                    ControlAlignment = ControlAlignment.Center,
+                    ControlAlignment = Alignment.Center,
                     Orientation = Orientation.Horizontal,
                     Children = {
                         { "Egs", new Image("egs")
@@ -51,7 +51,7 @@ namespace Maquina.UI.Scenes
                         }},
                         { "container2", new StackPanel("cr")
                         {
-                            ControlAlignment = Elements.ControlAlignment.Center,
+                            ControlAlignment = Elements.Alignment.Center,
                             Orientation = Elements.Orientation.Vertical,
                             Children = {
                                 { "GameName", new Label("GameName")

@@ -192,14 +192,14 @@ namespace Maquina.UI.Scenes
                 { "GameBG", new Image("GameBG")
                 {
                     Graphic = Global.Textures["game-bg-2"],
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
                     }
                 }},
                 { "ProgressBar", new ProgressBar("ProgressBar", new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, 32))
                 {
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         var a = (ProgressBar)element;
                         a.value = (float)TimeLeft;
@@ -210,13 +210,13 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Back",
                     Graphic = Global.Textures["back-btn"],
                     Location = new Vector2(5,5),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
                     LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
                 }},
                 { "Timer", new Label("timer")
                 {
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         Label a = (Label)element;
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
@@ -228,7 +228,7 @@ namespace Maquina.UI.Scenes
                 { "Hand1", new Image("hand1")
                 {
                     Graphic = Global.Textures["hand"],
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     SpriteType = SpriteType.Static,
                     Columns = 2,
                     Rows = 1
@@ -236,7 +236,7 @@ namespace Maquina.UI.Scenes
                 { "Hand2", new Image("hand2")
                 {
                     Graphic = Global.Textures["hand"],
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     SpriteType = SpriteType.Static,
                     CurrentFrame = 1,
                     Columns = 2,
@@ -247,7 +247,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Bandage (X)",
                     Graphic = Global.Textures["bandage"],
                     SpriteType = SpriteType.None,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(80,460),
                     LayerDepth = 0.1f,
                     Scale = 1.3f,
@@ -258,7 +258,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Stitch (A)",
                     Graphic = Global.Textures["stitch"],
                     SpriteType = SpriteType.None,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(150, 530),
                     LayerDepth = 0.1f,
                     Scale = 1.3f,
@@ -269,7 +269,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "Medicine (S)",
                     Graphic = Global.Textures["medicine"],
                     SpriteType = SpriteType.None,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(730,460),
                     LayerDepth = 0.1f,
                     Scale = 1.3f,
@@ -280,7 +280,7 @@ namespace Maquina.UI.Scenes
                     Tooltip = "CPR (O)",
                     Graphic = Global.Textures["cpr"],
                     SpriteType = SpriteType.None,
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(650, 550),
                     LayerDepth = 0.1f,
                     Scale = 1.3f,
@@ -289,7 +289,7 @@ namespace Maquina.UI.Scenes
                 { "PressLabel", new Label("press-label")
                 {
                     Text = String.Format("Use {0}!", CurrentController.ToString()),
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     Font = Fonts["default_l"]
                 }}
             };

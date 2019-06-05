@@ -38,7 +38,7 @@ namespace Maquina.UI.Scenes
             Objects = new Dictionary<string, GenericElement> {
                 { "Background", new Image("Background")
                 {
-                    ControlAlignment = ControlAlignment.Fixed,
+                    ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         element.Graphic = FadeBackground;
                         element.Tint = Color.White * Opacity;
