@@ -205,6 +205,7 @@ namespace Maquina.UI.Scenes
             // Close all timers
             ProjectileGenerator.Close();
             ScoreTimer.Close();
+            DisposeObjects(GameObjects);
 
             base.Unload();
         }

@@ -168,5 +168,10 @@ namespace Maquina.UI.Scenes
             if (ScrollPosition <= -distanceFromTop)
                 ScrollPosition = 400;
         }
+        public override void Unload()
+        {
+            base.Unload();
+            DisposeObjects(ScrollingElements);
+        }
     }
 }

@@ -345,6 +345,7 @@ namespace Maquina.UI.Scenes
             TimeLeftController.Close();
             GameTimer.Close();
             DeathTimeLeftController.Close();
+            DisposeObjects(GameObjects);
 
             base.Unload();
         }
