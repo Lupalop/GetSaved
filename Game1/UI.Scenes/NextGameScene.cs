@@ -67,7 +67,6 @@ namespace Maquina.UI.Scenes
                                 { "HelpImage", new Image("htp")
                                 {
                                     Graphic = HelpImage,
-                                    Location = ScreenCenter,
                                 }},
                                 { "ContinueMsg", new Label("label")
                                 {
