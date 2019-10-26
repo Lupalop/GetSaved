@@ -56,16 +56,16 @@ namespace Maquina.UI.Scenes
         }
 
         Games CurrentGame;
-        public override void Draw(GameTime gameTime)
+        public override void Draw()
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            GuiUtils.DrawElements(gameTime, Elements);
+            GuiUtils.DrawElements(Elements);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            GuiUtils.UpdateElements(gameTime, Elements);
+            GuiUtils.UpdateElements(Elements);
         }
 
         public void SetGameEndGraphic(GameEndStates endState)

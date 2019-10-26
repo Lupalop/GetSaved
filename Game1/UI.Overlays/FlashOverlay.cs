@@ -66,21 +66,21 @@ namespace Maquina.UI.Scenes
             base.LoadContent();
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw()
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            GuiUtils.DrawElements(gameTime, Elements);
+            GuiUtils.DrawElements(Elements);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             if (IsReady)
             {
                 Opacity -= FadeSpeed;
             }
 
-            GuiUtils.UpdateElements(gameTime, Elements);
+            GuiUtils.UpdateElements(Elements);
 
             // Remove overlay when opacity below 0
             if (Opacity <= 0f)

@@ -50,19 +50,19 @@ namespace Maquina.UI.Scenes
             LogManager.Info(1, string.Format("Difficulty changed to: {0}", difficulty));
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw()
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             //BackgroundGameScene.Draw(gameTime);
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            GuiUtils.DrawElements(gameTime, Elements);
+            GuiUtils.DrawElements(Elements);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             //BackgroundGameScene.Update(gameTime);
-            GuiUtils.UpdateElements(gameTime, Elements);
+            GuiUtils.UpdateElements(Elements);
         }
 
         protected override void Dispose(bool disposing)

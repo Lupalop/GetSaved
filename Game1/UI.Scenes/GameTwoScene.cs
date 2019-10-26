@@ -350,21 +350,21 @@ namespace Maquina.UI.Scenes
             base.Unload();
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw()
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
-            GuiUtils.DrawElements(gameTime, Elements);
-            GuiUtils.DrawElements(gameTime, GameElements);
+            GuiUtils.DrawElements(Elements);
+            GuiUtils.DrawElements(GameElements);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             UpdatePoints();
             base.Update(gameTime);
-            GuiUtils.UpdateElements(gameTime, Elements);
-            GuiUtils.UpdateElements(gameTime, GameElements);
+            GuiUtils.UpdateElements(Elements);
+            GuiUtils.UpdateElements(GameElements);
             // If person is in object
             if (Elements.ContainsKey("Player"))
             {

@@ -340,18 +340,18 @@ namespace Maquina.UI.Scenes
             base.Unload();
         }
 
-        public override void Draw(GameTime GameTime)
+        public override void Draw()
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
             Label a = (Label)Elements["Timer"];
             a.Text = String.Format("{0} second(s) left", TimeLeft);
-            GuiUtils.DrawElements(GameTime, Elements);
-            GuiUtils.DrawElements(GameTime, GameElements);
+            GuiUtils.DrawElements(Elements);
+            GuiUtils.DrawElements(GameElements);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime GameTime)
+        public override void Update()
         {
             base.Update(GameTime);
             // Allow keyboard hits
@@ -392,8 +392,8 @@ namespace Maquina.UI.Scenes
             pressLabel.Location = new Vector2(
                 ScreenCenter.X -(Global.Fonts["default_l"].MeasureString(pressLabel.Text).X / 2), 80);
             // base
-            GuiUtils.UpdateElements(GameTime, Elements);
-            GuiUtils.UpdateElements(GameTime, GameElements);
+            GuiUtils.UpdateElements(Elements);
+            GuiUtils.UpdateElements(GameElements);
         }
     }
 }

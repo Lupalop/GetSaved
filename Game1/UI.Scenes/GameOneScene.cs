@@ -218,14 +218,14 @@ namespace Maquina.UI.Scenes
             base.Dispose(disposing);
         }
 
-        public override void Draw(GameTime GameTime)
+        public override void Draw()
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            GuiUtils.DrawElements(GameTime, Elements);
+            GuiUtils.DrawElements(Elements);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime GameTime)
+        public override void Update()
         {
             for (int i = 0; i < GameCanvas.Children.Count; i++)
             {
@@ -251,7 +251,7 @@ namespace Maquina.UI.Scenes
                 }
             }
 
-            GuiUtils.UpdateElements(GameTime, Elements);
+            GuiUtils.UpdateElements(Elements);
         }
     }
 }

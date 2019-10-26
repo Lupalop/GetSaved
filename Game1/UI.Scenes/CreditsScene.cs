@@ -116,20 +116,20 @@ namespace Maquina.UI.Scenes
             base.LoadContent();
         }
 
-        public override void Draw(GameTime GameTime)
+        public override void Draw()
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            GuiUtils.DrawElements(GameTime, Elements);
-            GuiUtils.DrawElements(GameTime, ScrollingElements);
+            GuiUtils.DrawElements(Elements);
+            GuiUtils.DrawElements(ScrollingElements);
             SpriteBatch.End();
         }
 
         private float ScrollPosition;
-        public override void Update(GameTime GameTime)
+        public override void Update()
         {
-            GuiUtils.UpdateElements(GameTime, Elements);
-            GuiUtils.UpdateElements(GameTime, ScrollingElements);
+            GuiUtils.UpdateElements(Elements);
+            GuiUtils.UpdateElements(ScrollingElements);
 
             ScrollContainer.Location = new Point(
                 ScrollContainer.Location.X,

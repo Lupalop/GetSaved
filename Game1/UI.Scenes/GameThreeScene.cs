@@ -210,20 +210,20 @@ namespace Maquina.UI.Scenes
             base.Unload();
         }
 
-        public override void Draw(GameTime GameTime)
+        public override void Draw()
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
-            GuiUtils.DrawElements(GameTime, Elements);
-            GuiUtils.DrawElements(GameTime, GameElements);
+            GuiUtils.DrawElements(Elements);
+            GuiUtils.DrawElements(GameElements);
             SpriteBatch.End();
         }
 
-        public override void Update(GameTime GameTime)
+        public override void Update()
         {
             base.Update(GameTime);
-            GuiUtils.UpdateElements(GameTime, Elements);
-            GuiUtils.UpdateElements(GameTime, GameElements);
+            GuiUtils.UpdateElements(Elements);
+            GuiUtils.UpdateElements(GameElements);
             UpdateMinMaxY();
             if (IsJumping)
             {
