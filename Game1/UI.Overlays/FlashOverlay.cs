@@ -69,8 +69,7 @@ namespace Maquina.UI.Scenes
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            base.Draw(gameTime);
-            base.DrawElements(gameTime, Elements);
+            GuiUtils.DrawElements(gameTime, Elements);
             SpriteBatch.End();
         }
 
@@ -81,8 +80,7 @@ namespace Maquina.UI.Scenes
                 Opacity -= FadeSpeed;
             }
 
-            base.Update(gameTime);
-            base.UpdateElements(gameTime, Elements);
+            GuiUtils.UpdateElements(gameTime, Elements);
 
             // Remove overlay when opacity below 0
             if (Opacity <= 0f)
@@ -91,18 +89,13 @@ namespace Maquina.UI.Scenes
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 FadeBackground.Dispose();
             }
+            base.Dispose(disposing);
         }
     }
 }

@@ -204,23 +204,24 @@ namespace Maquina.UI.Scenes
             base.LoadContent();
         }
 
-        public override void Unload()
+        protected override void Dispose(bool disposing)
         {
-            // Close all timers
-            ProjectileGenerator.Close();
-            TimeLeftController.Close();
-            GameTimer.Close();
+            if (disposing)
+            {
+                // Close all timers
+                ProjectileGenerator.Close();
+                TimeLeftController.Close();
+                GameTimer.Close();
 
-            DisposeElements(CollectedElements);
-
-            base.Unload();
+                GuiUtils.DisposeElements(CollectedElements);
+            }
+            base.Dispose(disposing);
         }
 
         public override void Draw(GameTime GameTime)
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            base.Draw(GameTime);
-            base.DrawElements(GameTime, Elements);
+            GuiUtils.DrawElements(GameTime, Elements);
             SpriteBatch.End();
         }
 
@@ -250,8 +251,7 @@ namespace Maquina.UI.Scenes
                 }
             }
 
-            base.Update(GameTime);
-            base.UpdateElements(GameTime, Elements);
+            GuiUtils.UpdateElements(GameTime, Elements);
         }
     }
 }

@@ -214,16 +214,16 @@ namespace Maquina.UI.Scenes
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
-            base.DrawElements(GameTime, Elements);
-            base.DrawElements(GameTime, GameElements);
+            GuiUtils.DrawElements(GameTime, Elements);
+            GuiUtils.DrawElements(GameTime, GameElements);
             SpriteBatch.End();
         }
 
         public override void Update(GameTime GameTime)
         {
             base.Update(GameTime);
-            base.UpdateElements(GameTime, Elements);
-            base.UpdateElements(GameTime, GameElements);
+            GuiUtils.UpdateElements(GameTime, Elements);
+            GuiUtils.UpdateElements(GameTime, GameElements);
             UpdateMinMaxY();
             if (IsJumping)
             {

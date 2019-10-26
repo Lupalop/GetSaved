@@ -346,8 +346,8 @@ namespace Maquina.UI.Scenes
             base.Draw(GameTime);
             Label a = (Label)Elements["Timer"];
             a.Text = String.Format("{0} second(s) left", TimeLeft);
-            base.DrawElements(GameTime, Elements);
-            base.DrawElements(GameTime, GameElements);
+            GuiUtils.DrawElements(GameTime, Elements);
+            GuiUtils.DrawElements(GameTime, GameElements);
             SpriteBatch.End();
         }
 
@@ -392,8 +392,8 @@ namespace Maquina.UI.Scenes
             pressLabel.Location = new Vector2(
                 ScreenCenter.X -(Global.Fonts["default_l"].MeasureString(pressLabel.Text).X / 2), 80);
             // base
-            base.UpdateElements(GameTime, Elements);
-            base.UpdateElements(GameTime, GameElements);
+            GuiUtils.UpdateElements(GameTime, Elements);
+            GuiUtils.UpdateElements(GameTime, GameElements);
         }
     }
 }

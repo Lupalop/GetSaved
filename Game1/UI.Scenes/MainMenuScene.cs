@@ -35,22 +35,23 @@ namespace Maquina.UI.Scenes
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             //BackgroundGameScene.Draw(gameTime);
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            base.Draw(gameTime);
-            base.DrawElements(gameTime, Elements);
+            GuiUtils.DrawElements(gameTime, Elements);
             SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
             //BackgroundGameScene.Update(gameTime);
-            base.Update(gameTime);
-            base.UpdateElements(gameTime, Elements);
+            GuiUtils.UpdateElements(gameTime, Elements);
         }
 
-        public override void Unload()
+        protected override void Dispose(bool disposing)
         {
-            base.Unload();
-            BackgroundGameScene.Unload();
+            if (disposing)
+            {
+                BackgroundGameScene.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -26,15 +26,13 @@ namespace Maquina.UI.Scenes
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            base.Draw(GameTime);
-            base.DrawElements(GameTime, Elements);
+            GuiUtils.DrawElements(GameTime, Elements);
             SpriteBatch.End();
         }
 
         public override void Update(GameTime GameTime)
         {
-            base.Update(GameTime);
-            base.UpdateElements(GameTime, Elements);
+            GuiUtils.UpdateElements(GameTime, Elements);
         }
     }
 }

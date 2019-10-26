@@ -354,8 +354,8 @@ namespace Maquina.UI.Scenes
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
-            base.DrawElements(gameTime, Elements);
-            base.DrawElements(gameTime, GameElements);
+            GuiUtils.DrawElements(gameTime, Elements);
+            GuiUtils.DrawElements(gameTime, GameElements);
             SpriteBatch.End();
         }
 
@@ -363,8 +363,8 @@ namespace Maquina.UI.Scenes
         {
             UpdatePoints();
             base.Update(gameTime);
-            base.UpdateElements(gameTime, Elements);
-            base.UpdateElements(gameTime, GameElements);
+            GuiUtils.UpdateElements(gameTime, Elements);
+            GuiUtils.UpdateElements(gameTime, GameElements);
             // If person is in object
             if (Elements.ContainsKey("Player"))
             {

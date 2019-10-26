@@ -59,15 +59,13 @@ namespace Maquina.UI.Scenes
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            base.Draw(gameTime);
-            base.DrawElements(gameTime, Elements);
+            GuiUtils.DrawElements(gameTime, Elements);
             SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-            base.UpdateElements(gameTime, Elements);
+            GuiUtils.UpdateElements(gameTime, Elements);
         }
 
         public void SetGameEndGraphic(GameEndStates endState)

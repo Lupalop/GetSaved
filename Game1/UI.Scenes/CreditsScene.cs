@@ -120,18 +120,16 @@ namespace Maquina.UI.Scenes
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            base.Draw(GameTime);
-            base.DrawElements(GameTime, Elements);
-            base.DrawElements(GameTime, ScrollingElements);
+            GuiUtils.DrawElements(GameTime, Elements);
+            GuiUtils.DrawElements(GameTime, ScrollingElements);
             SpriteBatch.End();
         }
 
         private float ScrollPosition;
         public override void Update(GameTime GameTime)
         {
-            base.Update(GameTime);
-            base.UpdateElements(GameTime, Elements);
-            base.UpdateElements(GameTime, ScrollingElements);
+            GuiUtils.UpdateElements(GameTime, Elements);
+            GuiUtils.UpdateElements(GameTime, ScrollingElements);
 
             ScrollContainer.Location = new Point(
                 ScrollContainer.Location.X,
@@ -144,13 +142,6 @@ namespace Maquina.UI.Scenes
             {
                 ScrollPosition = WindowBounds.Height;
             }
-        }
-
-        public override void Unload()
-        {
-            base.Unload();
-            DisposeElements(Elements);
-            DisposeElements(ScrollingElements);
         }
     }
 }
