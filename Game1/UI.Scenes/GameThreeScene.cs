@@ -21,7 +21,7 @@ namespace Maquina.UI.Scenes
             GameDifficulty = Difficulty;
         }
 
-        private Collection<GenericElement> GameObjects = new Collection<GenericElement>();
+        private Collection<BaseElement> GameElements = new Collection<BaseElement>();
 
         public double Score { private set; get; }
         private int ProjectileInterval;
@@ -81,12 +81,12 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.RunningForTheirLives, null, this, GameDifficulty));
+            Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.RunningForTheirLives, null, this, GameDifficulty));
         }
 
         private void UpdateMinMaxY()
         {
-            if (Objects.ContainsKey("Player"))
+            if (Elements.ContainsKey("Player"))
             {
                 PlayerInitialY = Game.GraphicsDevice.Viewport.Height - CharacterGraphic.Height - DistanceFromBottom - 100;
                 FireInitialY = Game.GraphicsDevice.Viewport.Height - FireGraphic.Height - DistanceFromBottom - 100;
@@ -108,7 +108,7 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2((float)RandNum.Next(StartingXPos - 100, StartingXPos), FireInitialY),
                     ControlAlignment = Alignment.Fixed,
                 };
-                GameObjects.Add(nwBtn);
+                GameElements.Add(nwBtn);
             }
         }
 
@@ -121,7 +121,7 @@ namespace Maquina.UI.Scenes
             JumpEffect = Global.SFX["caught"];
             Global.AudioManager.PlaySong("shenanigans");
 
-            Objects = new Dictionary<string, GenericElement> {
+            Elements = new Dictionary<string, BaseElement> {
                 { "GameBG", new Image("GameBG")
                 {
                     Graphic = Global.Textures["game-bg-3"],
@@ -137,7 +137,7 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(5,5),
                     ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
+                    LeftClickAction = () => Global.Scenes.SwitchToScene(new MainMenuScene())
                 }},
                 { "Player", new Image("Player")
                 {
@@ -157,7 +157,7 @@ namespace Maquina.UI.Scenes
                         a.Text = String.Format("Score: {0}", Score);
                         a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
                     },
-                    Font = Fonts["o-default_l"]
+                    Font = Global.Fonts["o-default_l"]
                 }}
             };
 
@@ -205,7 +205,7 @@ namespace Maquina.UI.Scenes
             // Close all timers
             ProjectileGenerator.Close();
             ScoreTimer.Close();
-            DisposeObjects(GameObjects);
+            DisposeElements(GameElements);
 
             base.Unload();
         }
@@ -214,16 +214,16 @@ namespace Maquina.UI.Scenes
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
-            base.DrawObjects(GameTime, Objects);
-            base.DrawObjects(GameTime, GameObjects);
+            base.DrawElements(GameTime, Elements);
+            base.DrawElements(GameTime, GameElements);
             SpriteBatch.End();
         }
 
         public override void Update(GameTime GameTime)
         {
             base.Update(GameTime);
-            base.UpdateObjects(GameTime, Objects);
-            base.UpdateObjects(GameTime, GameObjects);
+            base.UpdateElements(GameTime, Elements);
+            base.UpdateElements(GameTime, GameElements);
             UpdateMinMaxY();
             if (IsJumping)
             {
@@ -249,35 +249,35 @@ namespace Maquina.UI.Scenes
                 PlayerPosition.Y = PlayerInitialY;
             }
 
-            if (Objects.ContainsKey("Player"))
+            if (Elements.ContainsKey("Player"))
             {
                 if (IsGameEnd)
                 {
-                    Objects.Remove("Player");
+                    Elements.Remove("Player");
                 }
                 else
                 {
-                    Objects["Player"].Location = PlayerPosition;
+                    Elements["Player"].Location = PlayerPosition;
                 }
             }
 
-            for (int i = 0; i < GameObjects.Count; i++)
+            for (int i = 0; i < GameElements.Count; i++)
             {
                 // Moves Game object
-                GameObjects[i].Location = new Vector2(GameObjects[i].Location.X - ObjectMovementSpeed, GameObjects[i].Location.Y);
+                GameElements[i].Location = new Vector2(GameElements[i].Location.X - ObjectMovementSpeed, GameElements[i].Location.Y);
 
                 // Check if Game object collides/intersects with catcher
-                if (Objects.ContainsKey("Player") && Objects["Player"].Bounds.Contains(GameObjects[i].Bounds.Center))
+                if (Elements.ContainsKey("Player") && Elements["Player"].Bounds.Contains(GameElements[i].Bounds.Center))
                 {
                     CallEndOverlay();
-                    GameObjects.Remove(GameObjects[i]);
+                    GameElements.Remove(GameElements[i]);
                     return;
                 }
 
-                // Remove objects once it exceeds the object catcher, this also removes all objects when time's up
-                if (GameObjects[i].Location.X < -100 || IsGameEnd)
+                // Remove Elements once it exceeds the object catcher, this also removes all Elements when time's up
+                if (GameElements[i].Location.X < -100 || IsGameEnd)
                 {
-                    GameObjects.Remove(GameObjects[i]);
+                    GameElements.Remove(GameElements[i]);
                 }
             }
         }

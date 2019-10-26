@@ -15,14 +15,11 @@ namespace Maquina
         [STAThread]
         private static void Main(string[] args)
         {
-            Startup.GameAction = RunGame;
-            Startup.Run(args);
-        }
-
-        private static void RunGame()
-        {
-            using (var Game = new MainGame())
-                Game.Run();
+            CommandParser.Start();
+            using (var game = new MainGame())
+            {
+                game.Run();
+            }
         }
     }
 #endif

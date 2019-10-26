@@ -33,22 +33,23 @@ namespace Maquina.UI.Scenes
         private Timer DelayTimer;
         private bool IsReady = false;
 
+        private Image Background;
+
         public override void LoadContent()
         {
-            Objects = new Dictionary<string, GenericElement> {
-                { "Background", new Image("Background")
-                {
-                    ControlAlignment = Alignment.Fixed,
-                    OnUpdate = (element) => {
-                        element.Graphic = FadeBackground;
-                        element.Tint = Color.White * Opacity;
-                        element.Location = new Vector2(
-                            ScreenCenter.X - (element.Bounds.Width / 2),
-                            ScreenCenter.Y - (element.Bounds.Height / 2));
-                    },
-                    Scale = this.Scale
-                }}
+            Background = new Image("Background")
+            {
+                Scale = this.Scale
             };
+            Background.ElementUpdated += (sender, e) =>
+            {
+                Background.Graphic = FadeBackground;
+                Background.Tint = Color.White * Opacity;
+                Background.Location = new Point(
+                    WindowBounds.Center.X - (Background.Bounds.Width / 2),
+                    WindowBounds.Center.Y - (Background.Bounds.Height / 2));
+            };
+
             if (Delay > 0)
             {
                 DelayTimer = new Timer()
@@ -69,7 +70,7 @@ namespace Maquina.UI.Scenes
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
-            base.DrawObjects(gameTime, Objects);
+            base.DrawElements(gameTime, Elements);
             SpriteBatch.End();
         }
 
@@ -81,12 +82,12 @@ namespace Maquina.UI.Scenes
             }
 
             base.Update(gameTime);
-            base.UpdateObjects(gameTime, Objects);
+            base.UpdateElements(gameTime, Elements);
 
             // Remove overlay when opacity below 0
             if (Opacity <= 0f)
             {
-                SceneManager.Overlays.Remove(OverlayKey);
+                Global.Scenes.Overlays.Remove(OverlayKey);
             }
         }
 

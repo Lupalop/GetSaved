@@ -12,89 +12,47 @@ using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
 {
-    public class GameEndOverlay : Overlay
+    public partial class GameEndOverlay : Overlay
     {
         public GameEndOverlay(Games currentGame,
-            Collection<GenericElement> passedMessage, Scene parentScene, Difficulty gameDifficulty)
+            Collection<BaseElement> passedMessage, Scene parentScene, Difficulty currentDifficulty)
             : base("Game End Overlay", parentScene)
         {
             CurrentGame = currentGame;
             ParentScene = parentScene;
-            Objects = new Dictionary<string, GenericElement> {
-                { "Background", new Image("Background")
-                {
-                    Graphic = Game.Content.Load<Texture2D>("overlayBG"),
-                    ControlAlignment = Alignment.Fixed,
-                    OnUpdate = (element) => {
-                        element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
-                    },
-                }},
-                { "TimesUp", new Image("TimesUp")
-                {
-                    Graphic = Game.Content.Load<Texture2D>("timesUp"),
-                }},
-                { "NextRoundBtn", new MenuButton("NextRoundBtn")
-                {
-                    Tooltip = "Proceed to the next game",
-                    Text = "Next Round",
-                    Font = Fonts["default_m"],
-                    LeftClickAction = () =>
-                    {
-                        SceneManager.SwitchToScene(new NextGameScene());
-                        SceneManager.Overlays.Remove("GameEnd");
-                    }
-                }},
-                { "TryAgainBtn", new MenuButton("TryAgainBtn")
-                {
-                    Tooltip = "Having a hard time?\nTry this game again!",
-                    Text = "Try Again",
-                    Font = Fonts["default_m"],
-                    LeftClickAction = () =>
-                    {
-                        SceneManager.SwitchToScene(new NextGameScene(CurrentGame, gameDifficulty));
-                        SceneManager.Overlays.Remove("GameEnd");
-                    }
-                }},
-                { "MainMenuBtn", new MenuButton("MainMenuBtn")
-                {
-                    Tooltip = "Back",
-                    Graphic = Game.Content.Load<Texture2D>("back-btn"),
-                    Location = new Vector2(5, 5),
-                    ControlAlignment = Alignment.Fixed,
-                    Font = Fonts["default_m"],
-                    LeftClickAction = () =>
-                    {
-                        SceneManager.SwitchToScene(new MainMenuScene());
-                        SceneManager.Overlays.Remove("GameEnd");
-                    }
-                }}
-            };
+            CurrentDifficulty = currentDifficulty;
+            PassedMessage = passedMessage;
+            DisableParentSceneGui = true;
+        }
+
+        Difficulty CurrentDifficulty { get; set; }
+        Collection<BaseElement> PassedMessage { get; set; }
+
+        public override void LoadContent()
+        {
+            InitializeComponent();
 
             switch (CurrentGame)
             {
                 case Games.FallingObjects:
-                    Game1End(passedMessage);
+                    Game1End(PassedMessage);
                     break;
                 case Games.EscapeEarthquake:
                 case Games.EscapeFire:
-                    Game2End();
+                    //Game2End();
                     break;
                 case Games.RunningForTheirLives:
-                    Game3End();
+                    //Game3End();
                     break;
                 case Games.HelpOthersNow:
-                    Game4End(passedMessage);
+                    Game4End(PassedMessage);
                     break;
             }
-        }
-
-        public override void DelayLoadContent()
-        {
-            base.DelayLoadContent();
 
             // Show a fade effect in order for this overlay's appearance to be not abrupt
-            if (!SceneManager.Overlays.ContainsKey("fade-gameEnd"))
-                SceneManager.Overlays.Add("fade-gameEnd", new FadeOverlay("fade-gameEnd"));
+            if (!Global.Scenes.Overlays.ContainsKey("fade-gameEnd"))
+                Global.Scenes.Overlays.Add("fade-gameEnd", new FadeOverlay("fade-gameEnd"));
+            base.LoadContent();
         }
 
         Games CurrentGame;
@@ -102,35 +60,33 @@ namespace Maquina.UI.Scenes
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
-            base.DrawObjects(gameTime, Objects);
+            base.DrawElements(gameTime, Elements);
             SpriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            base.UpdateObjects(gameTime, Objects);
+            base.UpdateElements(gameTime, Elements);
         }
 
         public void SetGameEndGraphic(GameEndStates endState)
         {
-            Image TmUp = (Image)Objects["TimesUp"];
-
             switch (endState)
             {
                 case GameEndStates.TimesUp:
                 default:
-                    TmUp.Graphic = Game.Content.Load<Texture2D>("timesUp");
+                    TimesUp.Graphic = Global.Textures["game-end-time"];
                     break;
                 case GameEndStates.GameOver:
-                    TmUp.Graphic = Game.Content.Load<Texture2D>("gameOver");
+                    TimesUp.Graphic = Global.Textures["game-end-lose"];
                     break;
                 case GameEndStates.GameWon:
-                    TmUp.Graphic = Game.Content.Load<Texture2D>("gameWin");
+                    TimesUp.Graphic = Global.Textures["game-end-win"];
                     break;
             }
         }
-
+        /*
         public void Game2End()
         {
             // Cast
@@ -161,14 +117,14 @@ namespace Maquina.UI.Scenes
             SetGameEndGraphic(GameEndStates.GameOver);
             SetPointsEarned((int)scene.Score);
         }
-
-        public void Game1End(Collection<GenericElement> CollectedObjects)
+        */
+        public void Game1End(Collection<BaseElement> CollectedElements)
         {
             int correctItems = 0;
             int incorrectItems = 0;
             int totalItems = 0;
             // Count correct item
-            foreach (FallingItem item in CollectedObjects)
+            foreach (FallingItem item in CollectedElements)
             {
                 if (!item.IsEmergencyItem)
                 {
@@ -189,26 +145,13 @@ namespace Maquina.UI.Scenes
                 SetGameEndGraphic(GameEndStates.TimesUp);
             }
 
-            Objects.Add("IncorrectItem", new Label("IncorrectItem")
-            {
-                Text = "Incorrect items: " + incorrectItems,
-                Font = Fonts["default_m"]
-            });
-            Objects.Add("CorrectItem", new Label("CorrectItem")
-            {
-                Text = "Correct items: " + correctItems,
-                Font = Fonts["default_m"]
-            });
-            Objects.Add("container-items", new StackPanel("cr")
+            //
+            StackPanel itemContainer = new StackPanel("container-items")
             {
                 Orientation = Orientation.Horizontal
-            });
-
-            StackPanel itemContainer = Objects["container-items"] as StackPanel;
-
+            };
             int[] IncorrectItemIDs = new int[100];
-
-            foreach (FallingItem item in CollectedObjects)
+            foreach (FallingItem item in CollectedElements)
             {
                 if (item.IsEmergencyItem)
                 {
@@ -236,28 +179,40 @@ namespace Maquina.UI.Scenes
                     Children = {
                         {"icon", new MenuButton("icon")
                         {
-                            SpriteType = SpriteType.None,
-                            Tooltip = AvailableItems[i],
-                            Graphic = Game.Content.Load<Texture2D>("falling-object/" + AvailableItems[i])
+                            MenuBackgroundSpriteType = SpriteType.None,
+                            TooltipText = AvailableItems[i],
+                            MenuBackground = Game.Content.Load<Texture2D>("falling-object/" + AvailableItems[i])
                         }},
                         {"count", new Label("lb")
                         {
-                            Text = String.Format("x{0}", IncorrectItemIDs[i])
+                            Text = string.Format("x{0}", IncorrectItemIDs[i])
                         }}
                     }
                 });
             }
 
+            InfoContainer.Children.Add("IncorrectItem", new Label("IncorrectItem")
+            {
+                Text = "Incorrect items: " + incorrectItems,
+                Font = Global.Fonts["default_m"]
+            });
+            InfoContainer.Children.Add("CorrectItem", new Label("CorrectItem")
+            {
+                Text = "Correct items: " + correctItems,
+                Font = Global.Fonts["default_m"]
+            });
+            InfoContainer.Children.Add(itemContainer.Name, itemContainer);
+
             SetPointsEarned(50 * MathHelper.Clamp(totalItems, 0, int.MaxValue));
         }
 
-        public void Game4End(Collection<GenericElement> CollectedObjects)
+        public void Game4End(Collection<BaseElement> CollectedElements)
         {
             int peopleSaved = 0;
             int peopleDied = 0;
             int peopleTotal = 0;
             // Count item
-            foreach (Helpman crap in CollectedObjects)
+            foreach (Helpman crap in CollectedElements)
             {
                 if (!crap.IsAlive)
                 {
@@ -277,7 +232,7 @@ namespace Maquina.UI.Scenes
             {
                 SetGameEndGraphic(GameEndStates.TimesUp);
             }
-            Objects.Add("container-main", new StackPanel("cr")
+            InfoContainer.Children.Add("container-main", new StackPanel("cr")
             {
                 Orientation = Orientation.Horizontal,
                 Children = {
@@ -287,12 +242,12 @@ namespace Maquina.UI.Scenes
                             { "IncorrectCrap", new Label("InCorrectCrap")
                             {
                                 Text = "People Died: " + peopleDied,
-                                Font = Fonts["default_m"]
+                                Font = Global.Fonts["default_m"]
                             }},
                             { "CorrectCrap", new Label("CorrectCrap")
                             {
                                 Text = "People Saved: " + peopleSaved,
-                                Font = Fonts["default_m"]
+                                Font = Global.Fonts["default_m"]
                             }}
                         }
                     }},
@@ -305,15 +260,15 @@ namespace Maquina.UI.Scenes
         public void SetPointsEarned(int points)
         {
             UserGlobal.Score += points;
-            Objects.Add("PointsEarned", new Label("points")
+            InfoContainer.Children.Add("PointsEarned", new Label("points")
             {
                 Text = String.Format("You earned {0} points!", points),
-                Font = Fonts["o-default_m"]
+                Font = Global.Fonts["o-default_m"]
             });
-            Objects.Add("TotalPointsEarned", new Label("points")
+            InfoContainer.Children.Add("TotalPointsEarned", new Label("points")
             {
                 Text = String.Format("{0}, you have {1} points in total.", UserGlobal.UserName, UserGlobal.Score),
-                Font = Fonts["o-default"]
+                Font = Global.Fonts["o-default"]
             });
         }
     }

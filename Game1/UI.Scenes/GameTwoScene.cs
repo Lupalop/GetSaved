@@ -22,7 +22,7 @@ namespace Maquina.UI.Scenes
             CurrentGame = cgame;
         }
 
-        private Dictionary<string, GenericElement> GameObjects = new Dictionary<string, GenericElement>();
+        private Dictionary<string, BaseElement> GameElements = new Dictionary<string, BaseElement>();
 
         private double _InitialTimeLeft;
         private double InitialTimeLeft
@@ -35,7 +35,7 @@ namespace Maquina.UI.Scenes
             {
                 _InitialTimeLeft = value;
                 TimeLeft = value;
-                var a = (ProgressBar)Objects["ProgressBar"];
+                var a = (ProgressBar)Elements["ProgressBar"];
                 a.maximum = (float)value;
             }
         }
@@ -109,7 +109,7 @@ namespace Maquina.UI.Scenes
                 if (CurrentGame == Games.EscapeFire)
                 {
                     string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    SceneManager.Overlays.Add(overlayName, new FadeOverlay(overlayName, Color.Red) { FadeSpeed = 0.1f });
+                    Global.Scenes.Overlays.Add(overlayName, new FadeOverlay(overlayName, Color.Red) { FadeSpeed = 0.1f });
                 }
                 if ((InputManager.MouseUp(MouseButton.Left) ||
                      InputManager.MouseUp(MouseButton.Right) ||
@@ -117,7 +117,7 @@ namespace Maquina.UI.Scenes
                      InputManager.KeyUp(Keys.Space)) &&
                     !DeathTimeLeftController.Enabled)
                 {
-                    Label b = (Label)Objects["DeathTimer"];
+                    Label b = (Label)Elements["DeathTimer"];
                     b.Tint = Color.Red;
                     DeathTimeLeft = 2;
                     DeathTimeLeftController.Enabled = true;
@@ -147,21 +147,21 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this, GameDifficulty));
+            Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this, GameDifficulty));
         }
 
         private void ResetPlayerPosition()
         {
-            if (Objects.ContainsKey("Player"))
+            if (Elements.ContainsKey("Player"))
             {
-                GenericElement Catchr = Objects["Player"];
+                BaseElement Catchr = Elements["Player"];
                 Catchr.Location = PosA;
             }
         }
 
         private void SetHelpMessage(int StageWhich)
         {
-            Label label = (Label)Objects["HelpLabel"];
+            Label label = (Label)Elements["HelpLabel"];
             if (StageWhich == 0)
                 label.Text = String.Empty;
             switch (CurrentGame)
@@ -199,7 +199,7 @@ namespace Maquina.UI.Scenes
         public override void LoadContent()
         {
             base.LoadContent();
-            Objects = new Dictionary<string, GenericElement> {
+            Elements = new Dictionary<string, BaseElement> {
                 { "GameBG", new Image("GameBG")
                 {
                     Graphic = Global.Textures["game-bg-4_1"],
@@ -243,7 +243,7 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(5,5),
                     ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
+                    LeftClickAction = () => Global.Scenes.SwitchToScene(new MainMenuScene())
                 }},
                 { "Player", new Image("Player")
                 {
@@ -264,7 +264,7 @@ namespace Maquina.UI.Scenes
                         a.Text = TimeLeft.ToString();
                     },
                     LayerDepth = 0.1f,
-                    Font = Fonts["o-default_l"]
+                    Font = Global.Fonts["o-default_l"]
                 }},
                 { "DeathTimer", new Label("timer")
                 {
@@ -273,16 +273,16 @@ namespace Maquina.UI.Scenes
                         Label b = (Label)element;
                         b.Text = DeathTimeLeft.ToString();
                     },
-                    Font = Fonts["o-default_xl"]
+                    Font = Global.Fonts["o-default_xl"]
                 }},
                 { "HelpLabel", new Label("helplabel")
                 {
                     ControlAlignment = Alignment.Center,
-                    Font = Fonts["o-default_l"]
+                    Font = Global.Fonts["o-default_l"]
                 }}
             };
 
-            GameObjects = new Dictionary<string, GenericElement>() {
+            GameElements = new Dictionary<string, BaseElement>() {
                 { "PointA", new Image("PointA")
                 {
                     Graphic = Global.Textures["starting-point"],
@@ -345,7 +345,7 @@ namespace Maquina.UI.Scenes
             TimeLeftController.Close();
             GameTimer.Close();
             DeathTimeLeftController.Close();
-            DisposeObjects(GameObjects);
+            DisposeElements(GameElements);
 
             base.Unload();
         }
@@ -354,8 +354,8 @@ namespace Maquina.UI.Scenes
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(gameTime);
-            base.DrawObjects(gameTime, Objects);
-            base.DrawObjects(gameTime, GameObjects);
+            base.DrawElements(gameTime, Elements);
+            base.DrawElements(gameTime, GameElements);
             SpriteBatch.End();
         }
 
@@ -363,12 +363,12 @@ namespace Maquina.UI.Scenes
         {
             UpdatePoints();
             base.Update(gameTime);
-            base.UpdateObjects(gameTime, Objects);
-            base.UpdateObjects(gameTime, GameObjects);
+            base.UpdateElements(gameTime, Elements);
+            base.UpdateElements(gameTime, GameElements);
             // If person is in object
-            if (Objects.ContainsKey("Player"))
+            if (Elements.ContainsKey("Player"))
             {
-                GenericElement Catchr = Objects["Player"];
+                BaseElement Catchr = Elements["Player"];
                 if (CurrentStage == 3 && Catchr.Graphic.Name != "character-line")
                 {
                     Catchr.Graphic = Global.Textures["character-line"];
@@ -379,7 +379,7 @@ namespace Maquina.UI.Scenes
                     InputManager.MousePressed(MouseButton.Middle) ||
                     InputManager.KeyPressed(Keys.Space))
                 {
-                    Label b = (Label)Objects["DeathTimer"];
+                    Label b = (Label)Elements["DeathTimer"];
                     b.Tint = Color.Transparent;
                     DeathTimeLeftController.Enabled = false;
                     // Keep in sync with human height
@@ -393,12 +393,12 @@ namespace Maquina.UI.Scenes
                             case 1:
                                 SetHelpMessage(2);
                                 CurrentStage = 2;
-                                Objects["GameBG"].Graphic = Global.Textures["game-bg-4_2"];
+                                Elements["GameBG"].Graphic = Global.Textures["game-bg-4_2"];
                                 return;
                             case 2:
                                 SetHelpMessage(3);
                                 CurrentStage = 3;
-                                Objects["GameBG"].Graphic = Global.Textures["game-bg-4_3"];
+                                Elements["GameBG"].Graphic = Global.Textures["game-bg-4_3"];
                                 return;
                             case 3:
                                 SetHelpMessage(0);
@@ -424,7 +424,7 @@ namespace Maquina.UI.Scenes
                 }
 
                 if (IsGameEnd)
-                    Objects.Remove("Player");
+                    Elements.Remove("Player");
             }
         }
 

@@ -12,63 +12,42 @@ using System.Threading;
 
 namespace Maquina.UI.Scenes
 {
-    public class HighScoreScene : Scene
+    public partial class HighScoreScene : Scene
     {
         public HighScoreScene() : base("High Scores") {}
 
         public override void LoadContent()
         {
-            base.LoadContent();
-
-            Objects = new Dictionary<string, GenericElement> {
-                { "mb1", new MenuButton("mb")
-                {
-                    Tooltip = "Back",
-                    Graphic = Global.Textures["back-btn"],
-                    Location = new Vector2(5, 5),
-                    ControlAlignment = Alignment.Fixed,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
-                }},
-                { "header", new Label("lb")
-                {
-                    Text = "High Scores",
-                    Font = Fonts["o-default_l"]
-                }},
-                { "throbber", new Throbber("tb")
-                },
-            };
+            InitializeComponent();
 
             Thread loader = new Thread(() =>
             {
-                StackPanel elementContainer = new StackPanel("cr")
-                {
-                    ElementMargin = new Region(10, 0, 15, 0),
-                };
-
                 for (int i = 1; i <= 10; i++)
                 {
-                    if (Global.PreferencesManager.GetCharPref(String.Format("game.highscore.user-{0}", i)).Trim() == "")
+                    if (Global.Preferences.GetStringPreference(
+                        string.Format("game.highscore.user-{0}", i)).Trim() == "")
                     {
                         continue;
                     }
 
-                    elementContainer.Children.Add(String.Format("score-{0}", i), new Label("lb")
+                    ScoreContainer.Children.Add(string.Format("score-{0}", i), new Label("lb")
                     {
-                        ControlAlignment = Alignment.Left,
-                        Text = String.Format("{0}. {1} earned {2} points!",
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Text = string.Format("{0}. {1} earned {2} points!",
                             i,
-                            Global.PreferencesManager.GetCharPref(
-                                String.Format("game.highscore.user-{0}", i)),
-                            Global.PreferencesManager.GetIntPref(
-                                String.Format("game.highscore.score-{0}", i))),
-                        Font = Fonts["default_m"]
+                            Global.Preferences.GetStringPreference(
+                                string.Format("game.highscore.user-{0}", i)),
+                            Global.Preferences.GetIntPreference(
+                                string.Format("game.highscore.score-{0}", i))),
+                        Font = Global.Fonts["default_m"]
                     });
                 }
-                Objects.Remove("throbber");
-                Objects.Add("container", elementContainer);
+                MainContainer.Children.Remove(Throbber1.Name);
+                MainContainer.Children.Add("container", ScoreContainer);
             });
-
             loader.Start();
+
+            base.LoadContent();
         }
 
         public override void Draw(GameTime GameTime)
@@ -76,14 +55,14 @@ namespace Maquina.UI.Scenes
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
-            base.DrawObjects(GameTime, Objects);
+            base.DrawElements(GameTime, Elements);
             SpriteBatch.End();
         }
 
         public override void Update(GameTime GameTime)
         {
             base.Update(GameTime);
-            base.UpdateObjects(GameTime, Objects);
+            base.UpdateElements(GameTime, Elements);
         }
     }
 }

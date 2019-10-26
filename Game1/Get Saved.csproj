@@ -12,12 +12,13 @@
     <AssemblyName>game</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputType>Exe</OutputType>
@@ -91,21 +92,28 @@
     <Compile Include="Elements\FallingItem.cs" />
     <Compile Include="Elements\Helpman.cs" />
     <Compile Include="UI.Overlays\FlashOverlay.cs" />
+    <Compile Include="UI.Overlays\GameEndOverlay.UIDefinition.cs" />
+    <Compile Include="UI.Scenes\CreditsScene.UIDefinition.cs" />
+    <Compile Include="UI.Scenes\GameOneScene.UIDefinition.cs" />
+    <Compile Include="UI.Scenes\MainMenuScene.UIDefinition.cs" />
+    <Compile Include="UI.Scenes\NextGameScene.UIDefinition.cs" />
     <Compile Include="UI.Scenes\UserProfileScene.cs" />
     <Compile Include="UI.Scenes\HighScoreScene.cs" />
     <Compile Include="UI.Scenes\CreditsScene.cs" />
-    <Compile Include="UI.Scenes\GameTwoScene.cs" />
-    <Compile Include="UI.Scenes\GameFourScene.cs" />
-    <Compile Include="UI.Scenes\GameThreeScene.cs" />
+    <None Include="UI.Scenes\GameTwoScene.cs" />
+    <None Include="UI.Scenes\GameFourScene.cs" />
+    <None Include="UI.Scenes\GameThreeScene.cs" />
     <Compile Include="UI.Overlays\GameEndOverlay.cs" />
     <Compile Include="UI.Scenes\GameOneScene.cs" />
     <Compile Include="UI.Scenes\MainMenuScene.cs" />
     <Compile Include="UI.Scenes\NextGameScene.cs" />
+    <Compile Include="UI.Scenes\UserProfileScene.UIDefinition.cs" />
     <Compile Include="UI.Scenes\WorldSelectionScene.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="Elements\GameElement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI.Scenes\WorldSelectionScene.UIDefinition.cs" />
     <Compile Include="UserGlobal.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +127,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <Content Include="Icon.ico" />
+    <Compile Include="UI.Scenes\HighScoreScene.UIDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

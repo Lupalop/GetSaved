@@ -11,30 +11,18 @@ using System.IO;
 
 namespace Maquina.UI.Scenes
 {
-    public class CreditsScene : Scene
+    public partial class CreditsScene : Scene
     {
         public CreditsScene() : base("Credits") {}
 
-        private Dictionary<string, GenericElement> ScrollingElements;
-        private float ScrollPosition = 0;
-
         public override void LoadContent()
         {
-            base.LoadContent();
-            Objects = new Dictionary<string, GenericElement> {
-                { "BackButton", new MenuButton("mb")
-                {
-                    Tooltip = "Back",
-                    Graphic = Global.Textures["back-btn"],
-                    Location = new Vector2(5, 5),
-                    ControlAlignment = Alignment.Fixed,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
-                }}
-            };
+            InitializeComponent();
 
-            ScrollingElements = new Dictionary<string, GenericElement>();
+            ScrollPosition = WindowBounds.Height;
+
             string[] CreditsText = File.ReadAllLines(Path.Combine(
-                Global.ContentRootDirectory, "credits.txt"));
+                Global.Content.RootDirectory, "credits.txt"));
 
             // Loop to parse contents of credits file
             for (int i = 0; i < CreditsText.Length; i++)
@@ -64,8 +52,8 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("label_l_s" + i, new Label("label_l_s")
                     {
                         Text = CreditsText[i].Substring(1),
-                        ControlAlignment = Alignment.Fixed,
-                        Font = Fonts["o-default_l"]
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Font = Global.Fonts["o-default_l"]
                     });
                     continue;
                 }
@@ -76,8 +64,8 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("label_m_s" + i, new Label("label_m_s")
                     {
                         Text = CreditsText[i].Substring(1),
-                        ControlAlignment = Alignment.Fixed,
-                        Font = Fonts["o-default_m"]
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Font = Global.Fonts["o-default_m"]
                     });
                     continue;
                 }
@@ -88,8 +76,8 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("label_l" + i, new Label("label_l")
                     {
                         Text = CreditsText[i].Substring(1),
-                        ControlAlignment = Alignment.Fixed,
-                        Font = Fonts["default_l"]
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Font = Global.Fonts["default_l"]
                     });
                     continue;
                 }
@@ -100,8 +88,8 @@ namespace Maquina.UI.Scenes
                     ScrollingElements.Add("label_m" + i, new Label("label_m")
                     {
                         Text = CreditsText[i].Substring(1),
-                        ControlAlignment = Alignment.Fixed,
-                        Font = Fonts["default_m"]
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Font = Global.Fonts["default_m"]
                     });
                     continue;
                 }
@@ -109,11 +97,9 @@ namespace Maquina.UI.Scenes
                 // Spacers (empty lines)
                 if (CreditsText[i].Trim() == "")
                 {
-                    ScrollingElements.Add("spacer" + i, new Label("spacer")
+                    ScrollingElements.Add("spacer" + i, new Image("spacer" + i)
                     {
-                        Text = CreditsText[i],
-                        ControlAlignment = Alignment.Fixed,
-                        Font = Fonts["default"]
+                        Size = new Point(10)
                     });
                     continue;
                 }
@@ -122,10 +108,12 @@ namespace Maquina.UI.Scenes
                 ScrollingElements.Add("label" + i, new Label("label")
                 {
                     Text = CreditsText[i],
-                    ControlAlignment = Alignment.Fixed,
-                    Font = Fonts["default"]
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Font = Global.Fonts["default"]
                 });
             }
+
+            base.LoadContent();
         }
 
         public override void Draw(GameTime GameTime)
@@ -133,45 +121,36 @@ namespace Maquina.UI.Scenes
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
-            base.DrawObjects(GameTime, Objects);
-            base.DrawObjects(GameTime, ScrollingElements);
+            base.DrawElements(GameTime, Elements);
+            base.DrawElements(GameTime, ScrollingElements);
             SpriteBatch.End();
         }
 
+        private float ScrollPosition;
         public override void Update(GameTime GameTime)
         {
             base.Update(GameTime);
-            base.UpdateObjects(GameTime, Objects);
-            base.UpdateObjects(GameTime, ScrollingElements);
+            base.UpdateElements(GameTime, Elements);
+            base.UpdateElements(GameTime, ScrollingElements);
 
-            int distanceFromTop = (int)(ScreenCenter.Y - (GetAllObjectsHeight(Objects) / 2));
-            int padding = 0;
+            ScrollContainer.Location = new Point(
+                ScrollContainer.Location.X,
+                (int)ScrollPosition);
 
-            foreach (var item in ScrollingElements.Values)
+            if (!Global.Input.MouseDown(MouseButton.Left))
+                ScrollPosition -= 1.5f;
+
+            if (ScrollPosition <= -ScrollContainer.ActualSize.Y)
             {
-                if (item.Name == "spacer")
-                {
-                    padding = 10;
-                }
-
-                ScrollPosition -= 0.02f;
-                distanceFromTop += padding;
-
-                item.Location = new Vector2(ScreenCenter.X - (item.Bounds.Width / 2),
-                    distanceFromTop + ScrollPosition);
-
-                distanceFromTop += item.Bounds.Height;
-                distanceFromTop += padding;
-                padding = 0;
+                ScrollPosition = WindowBounds.Height;
             }
-
-            if (ScrollPosition <= -distanceFromTop)
-                ScrollPosition = 400;
         }
+
         public override void Unload()
         {
             base.Unload();
-            DisposeObjects(ScrollingElements);
+            DisposeElements(Elements);
+            DisposeElements(ScrollingElements);
         }
     }
 }

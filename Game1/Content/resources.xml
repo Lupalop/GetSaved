@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Resources Manifest file (resources.xml)
+-->
+<resourcemanifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <resources id="platform">
+    <!-- Fonts -->
+    <font id="default" path="fonts/ZillaSlab_small" linespacing="19" spacing="0" />
+    <font id="default_m" path="fonts/ZillaSlab_medium" linespacing="29" spacing="0" />
+    <font id="default_l" path="fonts/ZillaSlab_large" linespacing="51" spacing="0" />
+    <font id="o-default" path="fonts/o-ZillaSlab_small" linespacing="12" spacing="-6.0" />
+    <font id="o-default_m" path="fonts/o-ZillaSlab_medium" linespacing="18" spacing="-6.0" />
+    <font id="o-default_l" path="fonts/o-ZillaSlab_large" linespacing="32" spacing="-6.0" />
+    <font id="o-default_xl" path="fonts/o-ZillaSlab_xl" linespacing="60" spacing="-6.0" />
+    <!-- SFX -->
+    <sfx id="click_default" path="sfx/click" />
+    <!-- Textures -->
+    <texture id="cursor-default" path="mouseCur" />
+    <texture id="button-default" path="menuBG" />
+    <texture id="textbox-default" path="textbox" />
+    <texture id="throbber-default" path="falling-object/wall clock" />
+  </resources>
+  
+  <resources id="general">
+    <!-- BGM -->
+    <music id="flying-high" path="bgm/Flying High" />
+    <music id="in-pursuit" path="bgm/In Pursuit" />
+    <music id="hide-seek" path="bgm/Hide Seek" />
+    <music id="shenanigans" path="bgm/Shenanigans" />
+    
+    <!-- SFX -->
+    <sfx id="caught" path="sfx/caught" />
+    
+    <!-- Textures -->
+    <!-- General -->
+    <texture id="overlayBG" path="overlayBG" />
+    <texture id="back-btn" path="back-btn" />
+    <texture id="circle-btn" path="circle-btn" />
+    <!-- Main Menu -->
+    <texture id="gameLogo" path="gameLogo" />
+    <texture id="playBtn" path="playBtn" />
+    <texture id="credits-btn" path="credits-btn" />
+    <texture id="sound-btn" path="sound-btn" />
+    <texture id="highscore-btn" path="highscore-btn" />
+    <texture id="user-btn" path="user-btn" />
+    <!-- Next Game -->
+    <texture id="egs1" path="egs1" />
+    <texture id="egs2" path="egs2" />
+    <texture id="htp-dice" path="htp/dice" />
+    <texture id="htp-esc" path="htp/esc" />
+    <texture id="htp-fallingobject" path="htp/fallingobject" />
+    <texture id="htp-dino" path="htp/dino" />
+    <texture id="htp-aidem" path="htp/aidem" />
+    <!-- World Selection -->
+    <texture id="worldselection-one" path="worldselection/one" />
+    <texture id="worldselection-two" path="worldselection/two" />
+    <texture id="worldselection-three" path="worldselection/three" />
+    <texture id="worldselection-four" path="worldselection/four" />
+    <texture id="worldselection-five" path="worldselection/five" />
+    <!-- Game Over -->
+    <texture id="game-end-time" path="timesUp" />
+    <texture id="game-end-win" path="gameOver" />
+    <texture id="game-end-lose" path="gameWin" />
+    <!-- Game: Shared -->
+    <texture id="character" path="dino/character" />
+    <texture id="character-line" path="character-line" />
+    <texture id="fire" path="dino/fire" />
+    <texture id="check" path="aid-em/check" />
+    <texture id="cross" path="aid-em/cross" />
+    <!-- Game: One -->
+    <texture id="game-bg-1" path="game-bg/1" />
+    <texture id="object-catcher" path="falling-object/briefcase" />
+    <!-- Keep in sync with item list -->
+    <texture id="item-Ball" path="falling-object/ball" />
+    <texture id="item-Bomb" path="falling-object/bomb" />
+    <texture id="item-Bottle" path="falling-object/bottle" />
+    <texture id="item-Can" path="falling-object/can" />
+    <texture id="item-Car" path="falling-object/car" />
+    <texture id="item-Chair" path="falling-object/chair" />
+    <texture id="item-Clothing" path="falling-object/clothing" />
+    <texture id="item-Donut" path="falling-object/donut" />
+    <texture id="item-Flashlight" path="falling-object/flashlight" />
+    <texture id="item-Jewelry" path="falling-object/jewelry" />
+    <texture id="item-Medicine" path="falling-object/medkit" />
+    <texture id="item-Money" path="falling-object/money" />
+    <texture id="item-Shoes" path="falling-object/shoes" />
+    <texture id="item-Wall Clock" path="falling-object/wall clock" />
+    <texture id="item-Whistle" path="falling-object/whistle" />
+    <!-- Game: Two -->
+    <texture id="game-bg-4_1" path="game-bg/4_1" />
+    <texture id="game-bg-4_2" path="game-bg/4_2" />
+    <texture id="game-bg-4_3" path="game-bg/4_3" />
+    <texture id="starting-point" path="point" />
+    <texture id="exit-label" path="htp" />
+    <!-- Game: Three -->
+    <texture id="game-bg-3" path="game-bg/3" />
+    <!-- Game: Four -->
+    <texture id="game-bg-2" path="game-bg/2" />
+    <texture id="helpman" path="aid-em/helpman" />
+    <texture id="hand" path="aid-em/Hand" />
+    <texture id="bandage" path="aid-em/bandage" />
+    <texture id="stitch" path="aid-em/stitch" />
+    <texture id="medicine" path="aid-em/medicine" />
+    <texture id="cpr" path="aid-em/cpr" />
+    <texture id="dead" path="aid-em/dead" />
+    <texture id="saved" path="aid-em/saved" />
+    <!-- Credits -->
+    <texture id="monogame" path="monogame" />
+    <texture id="maquina" path="maquina" />
+  </resources>
+</resourcemanifest>

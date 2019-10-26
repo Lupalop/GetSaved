@@ -15,7 +15,7 @@ namespace Maquina
         // Methods
         public static void SaveCurrentUser()
         {
-            Global.PreferencesManager.SetCharPref("game.username", UserName);
+            Global.Preferences.SetStringPreference("game.username", UserName);
         }
         public static void SetNewHighscore()
         {
@@ -24,7 +24,7 @@ namespace Maquina
             int NoOfScoresToStore = 10;
             for (int i = 1; i <= NoOfScoresToStore; i++)
             {
-                if (Score > Global.PreferencesManager.GetIntPref(String.Format("game.highscore.score-{0}", i)))
+                if (Score > Global.Preferences.GetIntPreference(string.Format("game.highscore.score-{0}", i)))
                 {
                     ScoreIndex = i;
                     break;
@@ -36,19 +36,19 @@ namespace Maquina
                 for (int i = NoOfScoresToStore - 1; i > ScoreIndex; i--)
                 {
                     int userID = i--;
-                    Global.PreferencesManager.SetCharPref(
-                        String.Format("game.highscore.user-{0}", userID),
-                        Global.PreferencesManager.GetCharPref(String.Format("game.highscore.user-{0}", i)));
-                    Global.PreferencesManager.SetIntPref(
-                        String.Format("game.highscore.score-{0}", userID),
-                        Global.PreferencesManager.GetIntPref(String.Format("game.highscore.score-{0}", i)));
+                    Global.Preferences.SetStringPreference(
+                        string.Format("game.highscore.user-{0}", userID),
+                        Global.Preferences.GetStringPreference(string.Format("game.highscore.user-{0}", i)));
+                    Global.Preferences.SetIntPreference(
+                        string.Format("game.highscore.score-{0}", userID),
+                        Global.Preferences.GetIntPreference(string.Format("game.highscore.score-{0}", i)));
                 }
 
-                Global.PreferencesManager.SetCharPref(
-                    String.Format("game.highscore.user-{0}", ScoreIndex),
+                Global.Preferences.SetStringPreference(
+                    string.Format("game.highscore.user-{0}", ScoreIndex),
                     UserName);
-                Global.PreferencesManager.SetIntPref(
-                    String.Format("game.highscore.score-{0}", ScoreIndex),
+                Global.Preferences.SetIntPreference(
+                    string.Format("game.highscore.score-{0}", ScoreIndex),
                     Score);
             }
         }

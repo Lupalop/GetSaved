@@ -19,8 +19,8 @@ namespace Maquina.UI.Scenes
             GameDifficulty = Difficulty;
         }
 
-        private Dictionary<string, GenericElement> GameObjects = new Dictionary<string, GenericElement>();
-        private Collection<GenericElement> CollectedObjects = new Collection<GenericElement>();
+        private Dictionary<string, BaseElement> GameElements = new Dictionary<string, BaseElement>();
+        private Collection<BaseElement> CollectedElements = new Collection<BaseElement>();
 
         private double _InitialTimeLeft;
         private double InitialTimeLeft
@@ -33,7 +33,7 @@ namespace Maquina.UI.Scenes
             {
                 _InitialTimeLeft = value;
                 TimeLeft = value;
-                var a = (ProgressBar)Objects["ProgressBar"];
+                var a = (ProgressBar)Elements["ProgressBar"];
                 a.maximum = (float)value;
             }
         }
@@ -87,7 +87,7 @@ namespace Maquina.UI.Scenes
                 ProjectileGenerator.Close();
                 AttemptRemoveHelpman();
 
-                SceneManager.Overlays.Add("GameEnd", new GameEndOverlay(Games.HelpOthersNow, CollectedObjects, this, GameDifficulty));
+                Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.HelpOthersNow, CollectedElements, this, GameDifficulty));
                 GameTimer.Enabled = false;
             };
         }
@@ -95,13 +95,13 @@ namespace Maquina.UI.Scenes
         private void ProjectileGenerator_Elapsed(object sender, EventArgs e)
         {
             AttemptRemoveHelpman();
-            GameObjects.Add("helpman", new Helpman("helpman")
+            GameElements.Add("helpman", new Helpman("helpman")
             {
                 Graphic = Global.Textures["helpman"],
                 OnUpdate = (element) =>
                 {
                     Helpman helpman = (Helpman)element;
-                    helpman.Location = new Vector2(ScreenCenter.X - helpman.Dimensions.X / 2, ScreenCenter.Y - helpman.Dimensions.Y / 2);
+                    helpman.Location = new Vector2(ScreenCenter.X - helpman.Size.X / 2, ScreenCenter.Y - helpman.Size.Y / 2);
                 },
                 HitsBeforeBreak = HitsBeforeSaved
             });
@@ -109,9 +109,9 @@ namespace Maquina.UI.Scenes
 
         private void AttemptRemoveHelpman()
         {
-            if (GameObjects.ContainsKey("helpman"))
+            if (GameElements.ContainsKey("helpman"))
             {
-                Helpman helpman = (Helpman)GameObjects["helpman"];
+                Helpman helpman = (Helpman)GameElements["helpman"];
                 if (helpman.HitsBeforeBreak > 0)
                 {
                     CreateFade(Color.Red);
@@ -123,8 +123,8 @@ namespace Maquina.UI.Scenes
                     CreateFade(Color.Green);
                     CreateFlash("saved", 1.4f, 1000);
                 }
-                CollectedObjects.Add(helpman);
-                GameObjects.Remove("helpman");
+                CollectedElements.Add(helpman);
+                GameElements.Remove("helpman");
             }
         }
 
@@ -136,7 +136,7 @@ namespace Maquina.UI.Scenes
             string overlayName = String.Format("flash-{0}-{1}{2}", DateTime.Now, new Random().Next(0, 1000), resource);
             try
             {
-                SceneManager.Overlays.Add(overlayName,
+                Global.Scenes.Overlays.Add(overlayName,
                     new FlashOverlay(overlayName,
                         Global.Textures[resource], scale,
                         delay) { FadeSpeed = 0.1f });
@@ -148,7 +148,7 @@ namespace Maquina.UI.Scenes
             string overlayName = String.Format("fade-{0}-{1}", DateTime.Now, new Random().Next(0, 1000));
             try
             {
-                SceneManager.Overlays.Add(overlayName,
+                Global.Scenes.Overlays.Add(overlayName,
                     new FadeOverlay(overlayName, color) { FadeSpeed = 0.01f });
             }
             catch (Exception ex) { Console.WriteLine(ex); }
@@ -156,9 +156,9 @@ namespace Maquina.UI.Scenes
 
         private void AddSubtractBrickHit(ControllerKeys cKey)
         {
-            if (GameObjects.ContainsKey("helpman"))
+            if (GameElements.ContainsKey("helpman"))
             {
-                Helpman helpman = (Helpman)GameObjects["helpman"];
+                Helpman helpman = (Helpman)GameElements["helpman"];
                 if (CurrentController == cKey)
                 {
                     helpman.HitsBeforeBreak--;
@@ -188,7 +188,7 @@ namespace Maquina.UI.Scenes
         {
             base.LoadContent();
 
-            Objects = new Dictionary<string, GenericElement> {
+            Elements = new Dictionary<string, BaseElement> {
                 { "GameBG", new Image("GameBG")
                 {
                     Graphic = Global.Textures["game-bg-2"],
@@ -212,7 +212,7 @@ namespace Maquina.UI.Scenes
                     Location = new Vector2(5,5),
                     ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
-                    LeftClickAction = () => SceneManager.SwitchToScene(new MainMenuScene())
+                    LeftClickAction = () => Global.Scenes.SwitchToScene(new MainMenuScene())
                 }},
                 { "Timer", new Label("timer")
                 {
@@ -223,7 +223,7 @@ namespace Maquina.UI.Scenes
                         a.Text = TimeLeft.ToString();
                     },
                     LayerDepth = 0.1f,
-                    Font = Fonts["o-default_l"]
+                    Font = Global.Fonts["o-default_l"]
                 }},
                 { "Hand1", new Image("hand1")
                 {
@@ -290,7 +290,7 @@ namespace Maquina.UI.Scenes
                 {
                     Text = String.Format("Use {0}!", CurrentController.ToString()),
                     ControlAlignment = Alignment.Fixed,
-                    Font = Fonts["default_l"]
+                    Font = Global.Fonts["default_l"]
                 }}
             };
 
@@ -334,8 +334,8 @@ namespace Maquina.UI.Scenes
             ProjectileGenerator.Close();
             TimeLeftController.Close();
             GameTimer.Close();
-            DisposeObjects(GameObjects);
-            DisposeObjects(CollectedObjects);
+            DisposeElements(GameElements);
+            DisposeElements(CollectedElements);
 
             base.Unload();
         }
@@ -344,10 +344,10 @@ namespace Maquina.UI.Scenes
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             base.Draw(GameTime);
-            Label a = (Label)Objects["Timer"];
+            Label a = (Label)Elements["Timer"];
             a.Text = String.Format("{0} second(s) left", TimeLeft);
-            base.DrawObjects(GameTime, Objects);
-            base.DrawObjects(GameTime, GameObjects);
+            base.DrawElements(GameTime, Elements);
+            base.DrawElements(GameTime, GameElements);
             SpriteBatch.End();
         }
 
@@ -372,28 +372,28 @@ namespace Maquina.UI.Scenes
                 AddSubtractBrickHit(ControllerKeys.CPR);
             }
             // Update object location on viewport change
-            Label Timer = (Label)Objects["Timer"];
+            Label Timer = (Label)Elements["Timer"];
             Timer.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Timer.Font.MeasureString(Timer.Text).X, 5);
-            Objects["Hand1"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - (Objects["Hand1"].Bounds.Width / 2) - 100, Game.GraphicsDevice.Viewport.Height - Objects["Hand1"].Bounds.Height + 100);
-            Objects["Hand2"].Location = new Vector2(-100, Game.GraphicsDevice.Viewport.Height - Objects["Hand2"].Bounds.Height + 100);
+            Elements["Hand1"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - (Elements["Hand1"].Bounds.Width / 2) - 100, Game.GraphicsDevice.Viewport.Height - Elements["Hand1"].Bounds.Height + 100);
+            Elements["Hand2"].Location = new Vector2(-100, Game.GraphicsDevice.Viewport.Height - Elements["Hand2"].Bounds.Height + 100);
             // Align controllers
-            Objects["Controller-Bandage"].Location = new Vector2(80,
-                Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
-            Objects["Controller-Stitch"].Location = new Vector2(250,
-                Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
-            Objects["Controller-Medicine"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 80,
-                Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 100);
-            Objects["Controller-CPR"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Objects["Controller-Bandage"].Bounds.Width - 250,
-                Game.GraphicsDevice.Viewport.Height - Objects["Controller-Bandage"].Bounds.Height - 30);
+            Elements["Controller-Bandage"].Location = new Vector2(80,
+                Game.GraphicsDevice.Viewport.Height - Elements["Controller-Bandage"].Bounds.Height - 100);
+            Elements["Controller-Stitch"].Location = new Vector2(250,
+                Game.GraphicsDevice.Viewport.Height - Elements["Controller-Bandage"].Bounds.Height - 30);
+            Elements["Controller-Medicine"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Elements["Controller-Bandage"].Bounds.Width - 80,
+                Game.GraphicsDevice.Viewport.Height - Elements["Controller-Bandage"].Bounds.Height - 100);
+            Elements["Controller-CPR"].Location = new Vector2(Game.GraphicsDevice.Viewport.Width - Elements["Controller-Bandage"].Bounds.Width - 250,
+                Game.GraphicsDevice.Viewport.Height - Elements["Controller-Bandage"].Bounds.Height - 30);
             // Current Controller
             DetermineCurrentController();
-            Label pressLabel = (Label)Objects["PressLabel"];
+            Label pressLabel = (Label)Elements["PressLabel"];
             pressLabel.Text = String.Format("Use {0}!", CurrentController.ToString());
             pressLabel.Location = new Vector2(
-                ScreenCenter.X -(Fonts["default_l"].MeasureString(pressLabel.Text).X / 2), 80);
+                ScreenCenter.X -(Global.Fonts["default_l"].MeasureString(pressLabel.Text).X / 2), 80);
             // base
-            base.UpdateObjects(GameTime, Objects);
-            base.UpdateObjects(GameTime, GameObjects);
+            base.UpdateElements(GameTime, Elements);
+            base.UpdateElements(GameTime, GameElements);
         }
     }
 }

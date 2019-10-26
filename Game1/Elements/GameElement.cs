@@ -4,14 +4,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Maquina.UI;
 
 namespace Maquina.Elements
 {
-    public abstract class GameElement : GenericElement
+    public abstract class GameElement : Image
     {
         // Constructor
-        public GameElement(string name)
-            : base(name) {
+        public GameElement(string name) : base(name) {
             Breakable = true;
         }
 

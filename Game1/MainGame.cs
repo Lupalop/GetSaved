@@ -21,6 +21,7 @@ namespace Maquina
     {
         public MainGame()
         {
+            Content.RootDirectory = "Content";
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace Maquina
             // Set window title
             Window.Title = "Get Saved";
 
-            UserGlobal.UserName = PreferencesManager.GetCharPref("game.username", "Guest");
+            UserGlobal.UserName = PreferencesManager.GetStringPreference("game.username", "Guest");
             UserGlobal.Score = 0;
         }
 
@@ -50,31 +51,31 @@ namespace Maquina
 
             if (!IsMouseVisible)
             {
-                SceneManager.Overlays.Add("mouse", new MouseOverlay(Global.Textures["cursor-default"]));
+                SoftwareMouse.MouseSprite = Global.Textures["cursor-default"];
             }
 
             await Task.Run(() =>
             {
-                ContentLoader<ResourceContent> resources = new ContentLoader<ResourceContent>();
                 // Load game-specific resources
-                resources.Content = resources.Initialize(
-                    Path.Combine(Global.ContentRootDirectory, "gameresources.xml"));
+                ResourceManifest resources = XmlHelper.Load<ResourceManifest>(
+                    Path.Combine(Content.RootDirectory, Global.ResourceXml));
+                ResourceGroup group = resources.Load("general");
                 // Load resources
                 Global.Fonts = Global.Fonts.MergeWith(
-                    resources.Content.Load(ResourceType.Fonts) as Dictionary<string, SpriteFont>);
+                    group.FontDictionary as Dictionary<string, SpriteFont>);
                 Global.BGM = Global.BGM.MergeWith(
-                    resources.Content.Load(ResourceType.BGM) as Dictionary<string, Song>);
+                    group.BGMDictionary as Dictionary<string, Song>);
                 Global.SFX = Global.SFX.MergeWith(
-                    resources.Content.Load(ResourceType.SFX) as Dictionary<string, SoundEffect>);
+                    group.SFXDictionary as Dictionary<string, SoundEffect>);
                 Global.Textures = Global.Textures.MergeWith(
-                    resources.Content.Load(ResourceType.Textures) as Dictionary<string, Texture2D>);
+                    group.TextureDictionary as Dictionary<string, Texture2D>);
             });
 
 #if DEBUG
-            SceneManager.Overlays.Add("debug", new DebugOverlay());
+            Global.Scenes.Overlays.Add("debug", new DebugOverlay());
 #endif
             // Setup first scene (Main Menu)
-            SceneManager.SwitchToScene(new MainMenuScene());
+            Global.Scenes.SwitchToScene(new MainMenuScene());
         }
 
         /// <summary>
@@ -107,21 +108,10 @@ namespace Maquina
                 Exit();
 
             // Alt + Enter
-            if ((InputManager.KeyDown(Keys.RightAlt) || InputManager.KeyDown(Keys.LeftAlt)) && InputManager.KeyPressed(Keys.Enter))
+            if ((InputManager.KeyDown(Keys.RightAlt) ||
+                InputManager.KeyDown(Keys.LeftAlt)) && InputManager.KeyPressed(Keys.Enter))
             {
-                if (Graphics.IsFullScreen)
-                {
-                    Graphics.PreferredBackBufferHeight = LastWindowHeight;
-                    Graphics.PreferredBackBufferWidth = LastWindowWidth;
-                }
-                else
-                {
-                    LastWindowWidth = Graphics.PreferredBackBufferWidth;
-                    LastWindowHeight = Graphics.PreferredBackBufferHeight;
-                    Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-                    Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-                }
-                Graphics.ToggleFullScreen();
+                DisplayManager.ToggleFullScreen();
             }
 
             base.Update(gameTime);
