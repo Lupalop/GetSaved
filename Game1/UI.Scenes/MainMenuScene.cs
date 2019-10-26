@@ -33,7 +33,7 @@ namespace Maquina.UI.Scenes
         public override void Draw()
         {
             Game.GraphicsDevice.Clear(Color.FromNonPremultiplied(244, 157, 0, 255));
-            //BackgroundGameScene.Draw(gameTime);
+            BackgroundGameScene.Draw();
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
             GuiUtils.DrawElements(Elements);
             SpriteBatch.End();
@@ -41,7 +41,7 @@ namespace Maquina.UI.Scenes
 
         public override void Update()
         {
-            //BackgroundGameScene.Update(gameTime);
+            BackgroundGameScene.Update();
             GuiUtils.UpdateElements(Elements);
         }
 

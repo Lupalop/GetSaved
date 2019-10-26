@@ -135,12 +135,12 @@ namespace Maquina.UI.Scenes
         private void CreateFallingItem(object sender, EventArgs eventArgs)
         {
             if (GameDifficulty == Difficulty.Demo) {
-                StackPanel container = new StackPanel("container")
+                StackPanel container = new StackPanel("container" + RandNum.Next(0, 9999))
                 {
                     Orientation = Orientation.Horizontal,
                     Location = new Point(5, -64),
                 };
-                int ColumnCount = Game.GraphicsDevice.Viewport.Width / 64;
+                int ColumnCount = WindowBounds.Width / 64;
 
                 for (int i = 0; i < ColumnCount; i++)
                 {
@@ -157,6 +157,7 @@ namespace Maquina.UI.Scenes
                 GameCanvas.Children.Add(container.Name, container);
                 return;
             }
+
             if (!IsGameEnd)
             {
                 FallingItem fallingItem = new FallingItem("falling-item" + DateTime.Now.ToBinary())
@@ -234,7 +235,7 @@ namespace Maquina.UI.Scenes
                     GameCanvas.Children.Values.ElementAt(i).Location.X,
                     GameCanvas.Children.Values.ElementAt(i).Location.Y + FallingSpeed);
                 // Check if game object intersects with emergency kit
-                if (ObjectCatcher.ActualBounds.Intersects(GameCanvas.Children.Values.ElementAt(i).ActualBounds))
+                if (ObjectCatcher.ActualBounds.Intersects(GameCanvas.Children.Values.ElementAt(i).ActualBounds) && GameDifficulty != Difficulty.Demo)
                 {
                     ObjectCaught.Play();
                     CollectedElements.Add(GameCanvas.Children.Values.ElementAt(i));
