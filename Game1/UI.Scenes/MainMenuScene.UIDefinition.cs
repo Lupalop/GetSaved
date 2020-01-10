@@ -64,10 +64,10 @@ namespace Maquina.UI.Scenes
             MuteAudioButton.OnLeftClick += (sender, e) => Global.Audio.ToggleMute();
 
             HighScoresButton = new MenuButton("mb4");
-            MuteAudioButton.Tooltip.Text = "View High Scores";
-            MuteAudioButton.Background.Graphic = Global.Textures["circle-btn"];
-            MuteAudioButton.Icon.Graphic = Global.Textures["highscore-btn"];
-            MuteAudioButton.Label.Font = Global.Fonts["default"];
+            HighScoresButton.Tooltip.Text = "View High Scores";
+            HighScoresButton.Background.Graphic = Global.Textures["circle-btn"];
+            HighScoresButton.Icon.Graphic = Global.Textures["highscore-btn"];
+            HighScoresButton.Label.Font = Global.Fonts["default"];
             HighScoresButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new HighScoreScene());
 
             UserProfileButton = new MenuButton("mb5");
