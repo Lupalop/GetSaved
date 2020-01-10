@@ -21,12 +21,10 @@ namespace Maquina.UI.Scenes
 
         private void InitializeComponent()
         {
-            OverlayBG = new Image("Background")
-            {
-                Graphic = Global.Textures["overlayBG"],
-                IgnoreGlobalScale = true,
-            };
-            OverlayBG.Background.DestinationRectangle = WindowBounds;
+            OverlayBG = new Image("Background");
+            OverlayBG.Sprite.Graphic = Global.Textures["overlayBG"];
+            OverlayBG.IgnoreGlobalScale = true;
+            OverlayBG.Sprite.DestinationRectangle = WindowBounds;
 
             // Action Container
             NextRoundButton = new MenuButton("NextRoundBtn")
@@ -70,10 +68,8 @@ namespace Maquina.UI.Scenes
             InfoContainer = new StackPanel("InfoContainer");
 
             // Main Container
-            TimesUp = new Image("TimesUp")
-            {
-                Graphic = Game.Content.Load<Texture2D>("timesUp"),
-            };
+            TimesUp = new Image("TimesUp");
+            TimesUp.Sprite.Graphic = Game.Content.Load<Texture2D>("timesUp");
 
             MainContainer = new StackPanel("mainContainer")
             {
@@ -96,7 +92,7 @@ namespace Maquina.UI.Scenes
 
         private void Display_ResolutionChanged(object sender, EventArgs e)
         {
-            OverlayBG.Background.DestinationRectangle = ((DisplayManager)sender).WindowBounds;
+            OverlayBG.Sprite.DestinationRectangle = ((DisplayManager)sender).WindowBounds;
         }
     }
 }

@@ -150,7 +150,7 @@ namespace Maquina.UI.Scenes
                     {
                         givenName = givenName.Remove(0, 1);
                     }
-                    fallingItem.Graphic = Global.Textures["item-" + givenName];
+                    fallingItem.Sprite.Graphic = Global.Textures["item-" + givenName];
                     fallingItem.Size = new Point(64);
                     container.Children.Add(i.ToString(), fallingItem);
                 }
@@ -176,7 +176,7 @@ namespace Maquina.UI.Scenes
                 }
 
                 fallingItem.ItemID = itemID;
-                fallingItem.Graphic = Global.Textures[string.Format("item-{0}", givenName)];
+                fallingItem.Sprite.Graphic = Global.Textures[string.Format("item-{0}", givenName)];
                 GameCanvas.Children.Add(fallingItem.Name, fallingItem);
             }
         }

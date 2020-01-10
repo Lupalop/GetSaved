@@ -47,42 +47,42 @@ namespace Maquina.UI.Scenes
                 // FIXME: Other game scenes temporarily disabled
                 // The Safety Kit
                 case Games.FallingObjects:
-                    EgsImage.Graphic = Global.Textures["egs1"];
-                    HelpImage.Graphic = Global.Textures["htp-fallingobject"];
-                    GameNameLabel.Text = "The Safety Kit";
+                    EgsImage.Sprite.Graphic = Global.Textures["egs1"];
+                    HelpImage.Sprite.Graphic = Global.Textures["htp-fallingobject"];
+                    GameNameLabel.Sprite.Text = "The Safety Kit";
                     return new GameOneScene(GameDifficulty);
                 // Earthquake Escape
                 case Games.EscapeEarthquake:
-                    EgsImage.Graphic = Global.Textures["egs1"];
-                    HelpImage.Graphic = Global.Textures["htp-esc"];
-                    GameNameLabel.Text = "Earthquake Escape";
+                    EgsImage.Sprite.Graphic = Global.Textures["egs1"];
+                    HelpImage.Sprite.Graphic = Global.Textures["htp-esc"];
+                    GameNameLabel.Sprite.Text = "Earthquake Escape";
                     return new GameOneScene(GameDifficulty);
                     //return new GameTwoScene(GameDifficulty, Games.EscapeEarthquake);
                 // Fire Escape
                 case Games.EscapeFire:
-                    EgsImage.Graphic = Global.Textures["egs2"];
-                    HelpImage.Graphic = Global.Textures["htp-esc"];
-                    GameNameLabel.Text = "Fire Escape";
+                    EgsImage.Sprite.Graphic = Global.Textures["egs2"];
+                    HelpImage.Sprite.Graphic = Global.Textures["htp-esc"];
+                    GameNameLabel.Sprite.Text = "Fire Escape";
                     return new GameOneScene(GameDifficulty);
                     //return new GameTwoScene(GameDifficulty, Games.EscapeFire);
                 // Safety Jump
                 case Games.RunningForTheirLives:
-                    EgsImage.Graphic = Global.Textures["egs2"];
-                    HelpImage.Graphic = Global.Textures["htp-dino"];
-                    GameNameLabel.Text = "Safety Jump";
+                    EgsImage.Sprite.Graphic = Global.Textures["egs2"];
+                    HelpImage.Sprite.Graphic = Global.Textures["htp-dino"];
+                    GameNameLabel.Sprite.Text = "Safety Jump";
                     return new GameOneScene(GameDifficulty);
                     //return new GameThreeScene(GameDifficulty);
                 // Aid 'Em
                 case Games.HelpOthersNow:
-                    EgsImage.Graphic = Global.Textures["egs1"];
-                    HelpImage.Graphic = Global.Textures["htp-aidem"];
-                    GameNameLabel.Text = "Aid 'Em";
+                    EgsImage.Sprite.Graphic = Global.Textures["egs1"];
+                    HelpImage.Sprite.Graphic = Global.Textures["htp-aidem"];
+                    GameNameLabel.Sprite.Text = "Aid 'Em";
                     return new GameOneScene(GameDifficulty);
                     //return new GameFourScene(GameDifficulty);
                 // If the randomizer item failed, simply throw the world selection screen...
                 default:
-                    EgsImage.Graphic = new Texture2D(Game.GraphicsDevice, 1, 1);
-                    HelpImage.Graphic = new Texture2D(Game.GraphicsDevice, 1, 1);
+                    EgsImage.Sprite.Graphic = new Texture2D(Game.GraphicsDevice, 1, 1);
+                    HelpImage.Sprite.Graphic = new Texture2D(Game.GraphicsDevice, 1, 1);
                     return new WorldSelectionScene();
             }
         }

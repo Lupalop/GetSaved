@@ -29,26 +29,20 @@ namespace Maquina.UI.Scenes
             };
             mb1.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
 
-            lb1 = new Label("lb1")
-            {
-                Text = string.Format("Are you {0}?", UserGlobal.UserName),
-                Font = Global.Fonts["o-default_l"],
-            };
+            lb1 = new Label("lb1");
+            lb1.Sprite.Text = string.Format("Are you {0}?", UserGlobal.UserName);
+            lb1.Sprite.Font = Global.Fonts["o-default_l"];
 
-            lb2 = new Label("lb2")
-            {
-                Text = string.Format("You currently have {0} points!", UserGlobal.Score),
-                Font = Global.Fonts["default_m"],
-            };
+            lb2 = new Label("lb2");
+            lb2.Sprite.Text = string.Format("You currently have {0} points!", UserGlobal.Score);
+            lb2.Sprite.Font = Global.Fonts["default_m"];
 
-            lb3 = new Label("lb3")
-            {
-                Text = "If no, type your name at the box\n below and confirm.",
-                Font = Global.Fonts["default_m"],
-            };
+            lb3 = new Label("lb3");
+            lb3.Sprite.Text = "If no, type your name at the box\n below and confirm.";
+            lb3.Sprite.Font = Global.Fonts["default_m"];
 
             tb1 = new TextBox("tb1");
-            tb1.OnInput += (sender, e) => lb4.Tint = Color.Transparent;
+            tb1.OnInput += (sender, e) => lb4.Sprite.Tint = Color.Transparent;
 
             mb2 = new MenuButton("mb2")
             {
@@ -60,7 +54,7 @@ namespace Maquina.UI.Scenes
                 // Show the validation warning when textbox is left blank.
                 if (tb1.MenuLabel.Trim() == "")
                 {
-                    lb4.Tint = Color.White;
+                    lb4.Sprite.Tint = Color.White;
                     return;
                 }
                 UserGlobal.UserName = tb1.MenuLabel;
@@ -69,12 +63,10 @@ namespace Maquina.UI.Scenes
                 Global.Scenes.SwitchToScene(new MainMenuScene());
             };
 
-            lb4 = new Label("lb4")
-            {
-                Text = "Leaving the name field blank is bad.",
-                Font = Global.Fonts["default"],
-                Tint = Color.Transparent,
-            };
+            lb4 = new Label("lb4");
+            lb4.Sprite.Text = "Leaving the name field blank is bad.";
+            lb4.Sprite.Font = Global.Fonts["default"];
+            lb4.Sprite.Tint = Color.Transparent;
 
             mainContainer = new StackPanel("mainContainer")
             {

@@ -22,15 +22,12 @@ namespace Maquina.UI.Scenes
 
         private void InitializeComponent()
         {
-            GameLogo = new Image("logo") {
-                Graphic = Global.Textures["gameLogo"],
-            };
+            GameLogo = new Image("logo");
+            GameLogo.Sprite.Graphic = Global.Textures["gameLogo"];
 
-            GameTagline = new Label("tagline")
-            {
-                Text = "Disaster Preparedness for Everyone!",
-                Font = Global.Fonts["default_m"]
-            };
+            GameTagline = new Label("tagline");
+            GameTagline.Sprite.Text = "Disaster Preparedness for Everyone!";
+            GameTagline.Sprite.Font = Global.Fonts["default_m"];
 
             PlayButton = new MenuButton("mb1")
             {
@@ -39,11 +36,9 @@ namespace Maquina.UI.Scenes
             };
             PlayButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new WorldSelectionScene());
 
-            VersionLabel = new Label("lb1")
-            {
-                Text = "Prototype Version",
-                Font = Global.Fonts["o-default"]
-            };
+            VersionLabel = new Label("lb1");
+            VersionLabel.Sprite.Text = "Prototype Version";
+            VersionLabel.Sprite.Font = Global.Fonts["o-default"];
 
             //
             CreditsButton = new MenuButton("mb2")

@@ -30,17 +30,16 @@ namespace Maquina.UI.Scenes
                         continue;
                     }
 
-                    ScoreContainer.Children.Add(string.Format("score-{0}", i), new Label("lb")
-                    {
-                        HorizontalAlignment = HorizontalAlignment.Left,
-                        Text = string.Format("{0}. {1} earned {2} points!",
+                    Label scoreLabel = new Label("lb");
+                    scoreLabel.HorizontalAlignment = HorizontalAlignment.Left;
+                    scoreLabel.Sprite.Text = string.Format("{0}. {1} earned {2} points!",
                             i,
                             Global.Preferences.GetStringPreference(
                                 string.Format("game.highscore.user-{0}", i)),
                             Global.Preferences.GetIntPreference(
-                                string.Format("game.highscore.score-{0}", i))),
-                        Font = Global.Fonts["default_m"]
-                    });
+                                string.Format("game.highscore.score-{0}", i)));
+                    scoreLabel.Sprite.Font = Global.Fonts["default_m"];
+                    ScoreContainer.Children.Add(string.Format("score-{0}", i), scoreLabel);
                 }
                 MainContainer.Children.Remove(Throbber1.Name);
                 MainContainer.Children.Add("container", ScoreContainer);

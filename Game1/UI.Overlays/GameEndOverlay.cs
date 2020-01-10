@@ -74,13 +74,13 @@ namespace Maquina.UI.Scenes
             {
                 case GameEndStates.TimesUp:
                 default:
-                    TimesUp.Graphic = Global.Textures["game-end-time"];
+                    TimesUp.Sprite.Graphic = Global.Textures["game-end-time"];
                     break;
                 case GameEndStates.GameOver:
-                    TimesUp.Graphic = Global.Textures["game-end-lose"];
+                    TimesUp.Sprite.Graphic = Global.Textures["game-end-lose"];
                     break;
                 case GameEndStates.GameWon:
-                    TimesUp.Graphic = Global.Textures["game-end-win"];
+                    TimesUp.Sprite.Graphic = Global.Textures["game-end-win"];
                     break;
             }
         }
@@ -171,34 +171,37 @@ namespace Maquina.UI.Scenes
                     continue;
                 }
 
+                MenuButton itemIcon = new MenuButton("icon")
+                {
+                    MenuBackgroundSpriteType = SpriteType.None,
+                    TooltipText = AvailableItems[i],
+                    MenuBackground = Game.Content.Load<Texture2D>("falling-object/" + AvailableItems[i])
+                };
+
+                Label itemCountLabel = new Label("lb");
+                itemCountLabel.Sprite.Text = string.Format("x{0}", IncorrectItemIDs[i]);
+
                 itemContainer.Children.Add("elemContainer" + i, new StackPanel("cr")
                 {
                     Orientation = Orientation.Vertical,
-                    Children = {
-                        {"icon", new MenuButton("icon")
-                        {
-                            MenuBackgroundSpriteType = SpriteType.None,
-                            TooltipText = AvailableItems[i],
-                            MenuBackground = Game.Content.Load<Texture2D>("falling-object/" + AvailableItems[i])
-                        }},
-                        {"count", new Label("lb")
-                        {
-                            Text = string.Format("x{0}", IncorrectItemIDs[i])
-                        }}
-                    }
+                    Children =
+                    {
+                        { "icon", itemIcon },
+                        { "count", itemCountLabel },
+                    },
                 });
             }
 
-            InfoContainer.Children.Add("IncorrectItem", new Label("IncorrectItem")
-            {
-                Text = "Incorrect items: " + incorrectItems,
-                Font = Global.Fonts["default_m"]
-            });
-            InfoContainer.Children.Add("CorrectItem", new Label("CorrectItem")
-            {
-                Text = "Correct items: " + correctItems,
-                Font = Global.Fonts["default_m"]
-            });
+            Label incorrectItemCount = new Label("IncorrectItem");
+            incorrectItemCount.Sprite.Text = "Incorrect items: " + incorrectItems;
+            incorrectItemCount.Sprite.Font = Global.Fonts["default_m"];
+
+            Label correctItemCount = new Label("CorrectItem");
+            correctItemCount.Sprite.Text = "Correct items: " + correctItems;
+            correctItemCount.Sprite.Font = Global.Fonts["default_m"];
+
+            InfoContainer.Children.Add("IncorrectItem", incorrectItemCount);
+            InfoContainer.Children.Add("CorrectItem", correctItemCount);
             InfoContainer.Children.Add(itemContainer.Name, itemContainer);
 
             SetPointsEarned(50 * MathHelper.Clamp(totalItems, 0, int.MaxValue));
@@ -230,23 +233,25 @@ namespace Maquina.UI.Scenes
             {
                 SetGameEndGraphic(GameEndStates.TimesUp);
             }
+
+            Label incorrectItemCount = new Label("IncorrectItem");
+            incorrectItemCount.Sprite.Text = "People Died: " + peopleDied;
+            incorrectItemCount.Sprite.Font = Global.Fonts["default_m"];
+
+            Label correctItemCount = new Label("CorrectItem");
+            correctItemCount.Sprite.Text = "People Saved: " + peopleSaved;
+            correctItemCount.Sprite.Font = Global.Fonts["default_m"];
+
             InfoContainer.Children.Add("container-main", new StackPanel("cr")
             {
                 Orientation = Orientation.Horizontal,
                 Children = {
                     { "container-list", new StackPanel("cr")
                     {
-                        Children = {
-                            { "IncorrectCrap", new Label("InCorrectCrap")
-                            {
-                                Text = "People Died: " + peopleDied,
-                                Font = Global.Fonts["default_m"]
-                            }},
-                            { "CorrectCrap", new Label("CorrectCrap")
-                            {
-                                Text = "People Saved: " + peopleSaved,
-                                Font = Global.Fonts["default_m"]
-                            }}
+                        Children =
+                        {
+                            { "IncorrectCrap", incorrectItemCount },
+                            { "CorrectCrap", correctItemCount },
                         }
                     }},
                 }
@@ -258,16 +263,17 @@ namespace Maquina.UI.Scenes
         public void SetPointsEarned(int points)
         {
             UserGlobal.Score += points;
-            InfoContainer.Children.Add("PointsEarned", new Label("points")
-            {
-                Text = String.Format("You earned {0} points!", points),
-                Font = Global.Fonts["o-default_m"]
-            });
-            InfoContainer.Children.Add("TotalPointsEarned", new Label("points")
-            {
-                Text = String.Format("{0}, you have {1} points in total.", UserGlobal.UserName, UserGlobal.Score),
-                Font = Global.Fonts["o-default"]
-            });
+
+            Label pointsEarnedLabel = new Label("points");
+            pointsEarnedLabel.Sprite.Text = String.Format("You earned {0} points!", points);
+            pointsEarnedLabel.Sprite.Font = Global.Fonts["o-default_m"];
+
+            Label pointsTotalLabel = new Label("points");
+            pointsTotalLabel.Sprite.Text = String.Format("{0}, you have {1} points in total.", UserGlobal.UserName, UserGlobal.Score);
+            pointsTotalLabel.Sprite.Font = Global.Fonts["o-default"];
+
+            InfoContainer.Children.Add("PointsEarned", pointsEarnedLabel);
+            InfoContainer.Children.Add("TotalPointsEarned", pointsTotalLabel);
         }
     }
 }

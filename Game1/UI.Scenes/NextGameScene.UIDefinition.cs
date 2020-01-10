@@ -37,24 +37,18 @@ namespace Maquina.UI.Scenes
                 Scale = 0.8f
             };
 
-            GameNameLabel = new Label("GameName")
-            {
-                Font = Global.Fonts["default_l"]
-            };
+            GameNameLabel = new Label("GameName");
+            GameNameLabel.Sprite.Font = Global.Fonts["default_l"];
 
-            GameDifficultyLabel = new Label("GameDifficulty")
-            {
-                Text = string.Format("Difficulty: {0}", GameDifficulty.ToString()),
-                Font = Global.Fonts["default_m"]
-            };
+            GameDifficultyLabel = new Label("GameDifficulty");
+            GameDifficultyLabel.Sprite.Text = string.Format("Difficulty: {0}", GameDifficulty.ToString());
+            GameDifficultyLabel.Sprite.Font = Global.Fonts["default_m"];
 
             HelpImage = new Image("htp");
 
-            ContinueTipLabel = new Label("label")
-            {
-                Text = "Click or tap anywhere to continue.",
-                Font = Global.Fonts["o-default_m"],
-            };
+            ContinueTipLabel = new Label("label");
+            ContinueTipLabel.Sprite.Text = "Click or tap anywhere to continue.";
+            ContinueTipLabel.Sprite.Font = Global.Fonts["o-default_m"];
 
             InfoContainer = new StackPanel("infoContainer")
             {

@@ -20,12 +20,10 @@ namespace Maquina.UI.Scenes
 
         private void InitializeComponent()
         {
-            GameBG = new Image("GameBG")
-            {
-                Graphic = Global.Textures["game-bg-1"],
-                IgnoreGlobalScale = true,
-            };
-            GameBG.Background.DestinationRectangle = WindowBounds;
+            GameBG = new Image("GameBG");
+            GameBG.Sprite.Graphic = Global.Textures["game-bg-1"];
+            GameBG.IgnoreGlobalScale = true;
+            GameBG.Sprite.DestinationRectangle = WindowBounds;
 
             /*
             // TODO: Restore once we get progress bar reimplemented in platform
@@ -49,11 +47,9 @@ namespace Maquina.UI.Scenes
             };
             BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
 
-            ObjectCatcher = new Image("ObjectCatcher")
-            {
-                Graphic = Global.Textures["object-catcher"],
-                Location = new Point(5, Game.GraphicsDevice.Viewport.Height - 70),
-            };
+            ObjectCatcher = new Image("ObjectCatcher");
+            ObjectCatcher.Sprite.Graphic = Global.Textures["object-catcher"];
+            ObjectCatcher.Location = new Point(5, Game.GraphicsDevice.Viewport.Height - 70);
             ObjectCatcher.ElementUpdated += ObjectCatcher_ElementUpdated;
 
             TimerLabel = new Label("o-timer")
@@ -61,12 +57,13 @@ namespace Maquina.UI.Scenes
                 AutoPosition = true,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Right,
-                Font = Global.Fonts["o-default_l"],
-                LayerDepth = 0.1f,
             };
+            TimerLabel.Sprite.Font = Global.Fonts["o-default_l"];
+            TimerLabel.Sprite.LayerDepth = 0.1f;
+
             TimerLabel.ElementUpdated += (sender, e) =>
             {
-                TimerLabel.Text = MathHelper.Clamp((int)TimeLeft, 0, 100).ToString();
+                TimerLabel.Sprite.Text = MathHelper.Clamp((int)TimeLeft, 0, 100).ToString();
             };
 
             UICanvas = new Canvas("mainContainer")
@@ -97,7 +94,7 @@ namespace Maquina.UI.Scenes
             }
             else
             {
-                int mouseX = Global.Input.MousePosition.X - (ObjectCatcher.Graphic.Width / 2);
+                int mouseX = Global.Input.MousePosition.X - (ObjectCatcher.Sprite.Graphic.Width / 2);
                 int distance = WindowBounds.Bottom - (ObjectCatcher.ActualSize.Y * 2);
                 ObjectCatcher.Location = new Point(mouseX, distance);
             }
@@ -106,7 +103,7 @@ namespace Maquina.UI.Scenes
         private void Display_ResolutionChanged(object sender, EventArgs e)
         {
             Rectangle screenRectangle = ((DisplayManager)sender).WindowBounds;
-            GameBG.Background.DestinationRectangle = screenRectangle;
+            GameBG.Sprite.DestinationRectangle = screenRectangle;
             GameCanvas.Bounds = screenRectangle;
             UICanvas.Bounds = screenRectangle;
         }

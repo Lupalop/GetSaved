@@ -26,11 +26,9 @@ namespace Maquina.UI.Scenes
             };
             BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
 
-            HeaderLabel = new Label("lb1")
-            {
-                Text = "High Scores",
-                Font = Global.Fonts["o-default_l"]
-            };
+            HeaderLabel = new Label("lb1");
+            HeaderLabel.Sprite.Text = "High Scores";
+            HeaderLabel.Sprite.Font = Global.Fonts["o-default_l"];
 
             Throbber1 = new Throbber("tb1");
 

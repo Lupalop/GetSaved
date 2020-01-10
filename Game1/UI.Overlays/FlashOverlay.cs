@@ -43,8 +43,8 @@ namespace Maquina.UI.Scenes
             };
             Background.ElementUpdated += (sender, e) =>
             {
-                Background.Graphic = FadeBackground;
-                Background.Tint = Color.White * Opacity;
+                Background.Sprite.Graphic = FadeBackground;
+                Background.Sprite.Tint = Color.White * Opacity;
                 Background.Location = new Point(
                     WindowBounds.Center.X - (Background.Bounds.Width / 2),
                     WindowBounds.Center.Y - (Background.Bounds.Height / 2));

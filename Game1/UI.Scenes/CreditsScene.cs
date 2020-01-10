@@ -27,6 +27,16 @@ namespace Maquina.UI.Scenes
             // Loop to parse contents of credits file
             for (int i = 0; i < CreditsText.Length; i++)
             {
+                // Spacers (empty lines)
+                if (CreditsText[i].Trim() == "")
+                {
+                    ScrollingElements.Add("spacer" + i, new Image("spacer" + i)
+                    {
+                        Size = new Point(10)
+                    });
+                    continue;
+                }
+
                 // Image
                 if (CreditsText[i].StartsWith("~"))
                 {
@@ -39,78 +49,50 @@ namespace Maquina.UI.Scenes
                     }
                     graphic = Global.Textures[graphicName];
 
-                    ScrollingElements.Add("image" + i, new Image("image")
-                    {
-                        Graphic = graphic,
-                    });
+                    Image elementImage = new Image("image");
+                    elementImage.Sprite.Graphic = graphic;
+
+                    ScrollingElements.Add("image" + i, elementImage);
                     continue;
                 }
+
+                Label elementLabel = new Label("label")
+                {
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                };
 
                 // Large text (with shadow)
                 if (CreditsText[i].StartsWith("+"))
                 {
-                    ScrollingElements.Add("label_l_s" + i, new Label("label_l_s")
-                    {
-                        Text = CreditsText[i].Substring(1),
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        Font = Global.Fonts["o-default_l"]
-                    });
-                    continue;
+                    elementLabel.Sprite.Text = CreditsText[i].Substring(1);
+                    elementLabel.Sprite.Font = Global.Fonts["o-default_l"];
                 }
-
                 // Medium text (with shadow)
-                if (CreditsText[i].StartsWith("-"))
+                else if (CreditsText[i].StartsWith("-"))
                 {
-                    ScrollingElements.Add("label_m_s" + i, new Label("label_m_s")
-                    {
-                        Text = CreditsText[i].Substring(1),
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        Font = Global.Fonts["o-default_m"]
-                    });
-                    continue;
+                    elementLabel.Sprite.Text = CreditsText[i].Substring(1);
+                    elementLabel.Sprite.Font = Global.Fonts["o-default_m"];
                 }
-
                 // Large text (no shadow)
-                if (CreditsText[i].StartsWith("="))
+                else if (CreditsText[i].StartsWith("="))
                 {
-                    ScrollingElements.Add("label_l" + i, new Label("label_l")
-                    {
-                        Text = CreditsText[i].Substring(1),
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        Font = Global.Fonts["default_l"]
-                    });
-                    continue;
+                    elementLabel.Sprite.Text = CreditsText[i].Substring(1);
+                    elementLabel.Sprite.Font = Global.Fonts["default_l"];
                 }
-
                 // Medium text (no shadow)
-                if (CreditsText[i].StartsWith("_"))
+                else if (CreditsText[i].StartsWith("_"))
                 {
-                    ScrollingElements.Add("label_m" + i, new Label("label_m")
-                    {
-                        Text = CreditsText[i].Substring(1),
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        Font = Global.Fonts["default_m"]
-                    });
-                    continue;
+                    elementLabel.Sprite.Text = CreditsText[i].Substring(1);
+                    elementLabel.Sprite.Font = Global.Fonts["default_m"];
                 }
-
-                // Spacers (empty lines)
-                if (CreditsText[i].Trim() == "")
-                {
-                    ScrollingElements.Add("spacer" + i, new Image("spacer" + i)
-                    {
-                        Size = new Point(10)
-                    });
-                    continue;
-                }
-
                 // Regular text
-                ScrollingElements.Add("label" + i, new Label("label")
+                else
                 {
-                    Text = CreditsText[i],
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    Font = Global.Fonts["default"]
-                });
+                    elementLabel.Sprite.Text = CreditsText[i];
+                    elementLabel.Sprite.Font = Global.Fonts["default"];
+                }
+
+                ScrollingElements.Add("label" + i, elementLabel);
             }
 
             base.LoadContent();
