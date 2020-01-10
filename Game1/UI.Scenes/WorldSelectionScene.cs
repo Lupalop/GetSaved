@@ -47,7 +47,6 @@ namespace Maquina.UI.Scenes
                     break;
             }
             DifficultyButton.MenuLabel = string.Format("Difficulty: {0}", difficulty);
-            LogManager.Info(1, string.Format("Difficulty changed to: {0}", difficulty));
         }
 
         public override void Draw()
