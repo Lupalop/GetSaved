@@ -28,59 +28,47 @@ namespace Maquina.UI.Scenes
         private void InitializeComponent()
         {
             // Outer elements (no container)
-            BackButton = new MenuButton("mb1")
-            {
-                TooltipText = "Back",
-                MenuBackground = Global.Textures["back-btn"],
-                Location = new Point(5, 5),
-            };
+            BackButton = new MenuButton("mb1");
+            BackButton.Tooltip.Text = "Back";
+            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Location = new Point(5, 5);
             BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
 
             // Main container elements
-            DifficultyButton = new MenuButton("mb2")
-            {
-                TooltipText = "Change the game's difficulty",
-                MenuLabel = string.Format("Difficulty: {0}", difficulty),
-            };
+            DifficultyButton = new MenuButton("mb2");
+            DifficultyButton.Tooltip.Text = "Change the game's difficulty";
+            DifficultyButton.Label.Text = string.Format("Difficulty: {0}", difficulty);
             DifficultyButton.OnLeftClick += (sender, e) => ModifyDifficulty();
 
-            RandomGameButton = new MenuButton("mb9")
-            {
-                TooltipText = "Random Game",
-                MenuBackgroundSpriteType = SpriteType.None,
-                MenuBackground = Global.Textures["htp-dice"],
-            };
+            RandomGameButton = new MenuButton("mb9");
+            RandomGameButton.Tooltip.Text = "Random Game";
+            RandomGameButton.Background.SpriteType = SpriteType.None;
+            RandomGameButton.Background.Graphic = Global.Textures["htp-dice"];
             RandomGameButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new NextGameScene());
 
             // Row1 container elements
-            Game1Button = new MenuButton("mb3")
-            {
-                MenuBackground = Global.Textures["worldselection-one"],
-                MenuBackgroundColumns = 2,
-                MenuBackgroundRows = 1,
-                TooltipText = "The Safety Kit",
-                Scale = 0.7f,
-            };
+            Game1Button = new MenuButton("mb3");
+            Game1Button.Background.Graphic = Global.Textures["worldselection-one"];
+            Game1Button.Background.Columns = 2;
+            Game1Button.Background.Rows = 1;
+            Game1Button.Tooltip.Text = "The Safety Kit";
+            Game1Button.Scale = 0.7f;
             Game1Button.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new NextGameScene(Games.FallingObjects, difficulty));
 
-            Game2AButton = new MenuButton("mb4")
-            {
-                MenuBackground = Global.Textures["worldselection-two"],
-                MenuBackgroundColumns = 2,
-                MenuBackgroundRows = 1,
-                TooltipText = "Earthquake Escape",
-                Scale = 0.7f,
-            };
+            Game2AButton = new MenuButton("mb4");
+            Game2AButton.Background.Graphic = Global.Textures["worldselection-two"];
+            Game2AButton.Background.Columns = 2;
+            Game2AButton.Background.Rows = 1;
+            Game2AButton.Tooltip.Text = "Earthquake Escape";
+            Game2AButton.Scale = 0.7f;
             Game2AButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new NextGameScene(Games.EscapeEarthquake, difficulty));
 
-            Game2BButton = new MenuButton("mb5")
-            {
-                MenuBackground = Global.Textures["worldselection-three"],
-                MenuBackgroundColumns = 2,
-                MenuBackgroundRows = 1,
-                TooltipText = "Fire Escape",
-                Scale = 0.7f,
-            };
+            Game2BButton = new MenuButton("mb5");
+            Game2BButton.Background.Graphic = Global.Textures["worldselection-three"];
+            Game2BButton.Background.Columns = 2;
+            Game2BButton.Background.Rows = 1;
+            Game2BButton.Tooltip.Text = "Fire Escape";
+            Game2BButton.Scale = 0.7f;
             Game2BButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new NextGameScene(Games.EscapeFire, difficulty));
 
             Row1Container = new StackPanel("cr1")
@@ -96,24 +84,20 @@ namespace Maquina.UI.Scenes
             };
 
             // Row2 container elements
-            Game3Button = new MenuButton("mb6")
-            {
-                MenuBackground = Global.Textures["worldselection-four"],
-                MenuBackgroundColumns = 2,
-                MenuBackgroundRows = 1,
-                TooltipText = "Safety Jump - Fire",
-                Scale = 0.7f,
-            };
+            Game3Button = new MenuButton("mb6");
+            Game3Button.Background.Graphic = Global.Textures["worldselection-four"];
+            Game3Button.Background.Columns = 2;
+            Game3Button.Background.Rows = 1;
+            Game3Button.Tooltip.Text = "Safety Jump - Fire";
+            Game3Button.Scale = 0.7f;
             Game3Button.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new NextGameScene(Games.RunningForTheirLives, difficulty));
 
-            Game4Button = new MenuButton("mb7")
-            {
-                MenuBackground = Global.Textures["worldselection-five"],
-                MenuBackgroundColumns = 2,
-                MenuBackgroundRows = 1,
-                TooltipText = "Aid 'Em - Earthquake",
-                Scale = 0.7f,
-            };
+            Game4Button = new MenuButton("mb7");
+            Game4Button.Background.Graphic = Global.Textures["worldselection-five"];
+            Game4Button.Background.Columns = 2;
+            Game4Button.Background.Rows = 1;
+            Game4Button.Tooltip.Text = "Aid 'Em - Earthquake";
+            Game4Button.Scale = 0.7f;
             Game4Button.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new NextGameScene(Games.HelpOthersNow, difficulty));
 
             Row2Container = new StackPanel("cr2")

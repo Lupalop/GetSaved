@@ -38,13 +38,11 @@ namespace Maquina.UI.Scenes
             };
             */
 
-            BackButton = new MenuButton("BackButton")
-            {
-                TooltipText = "Back",
-                MenuBackground = Global.Textures["back-btn"],
-                Location = new Point(5, 5),
-                LayerDepth = 0.1f,
-            };
+            BackButton = new MenuButton("BackButton");
+            BackButton.Tooltip.Text = "Back";
+            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Location = new Point(5, 5);
+            BackButton.LayerDepth = 0.1f;
             BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
 
             ObjectCatcher = new Image("ObjectCatcher");

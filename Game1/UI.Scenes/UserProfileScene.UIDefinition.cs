@@ -21,12 +21,10 @@ namespace Maquina.UI.Scenes
 
         private void InitializeComponent()
         {
-            mb1 = new MenuButton("mb1")
-            {
-                TooltipText = "Back",
-                MenuBackground = Global.Textures["back-btn"],
-                Location = new Point(5, 5),
-            };
+            mb1 = new MenuButton("mb1");
+            mb1.Tooltip.Text = "Back";
+            mb1.Background.Graphic = Global.Textures["back-btn"];
+            mb1.Location = new Point(5, 5);
             mb1.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
 
             lb1 = new Label("lb1");
@@ -44,20 +42,18 @@ namespace Maquina.UI.Scenes
             tb1 = new TextBox("tb1");
             tb1.OnInput += (sender, e) => lb4.Sprite.Tint = Color.Transparent;
 
-            mb2 = new MenuButton("mb2")
-            {
-                TooltipText = "Clicking here will clear your points\n and change the active user.",
-                MenuLabel = "Confirm and change user",
-            };
+            mb2 = new MenuButton("mb2");
+            mb2.Tooltip.Text = "Clicking here will clear your points\n and change the active user.";
+            mb2.Label.Text = "Confirm and change user";
             mb2.OnLeftClick += (sender, e) =>
             {
                 // Show the validation warning when textbox is left blank.
-                if (tb1.MenuLabel.Trim() == "")
+                if (tb1.Label.Text.Trim() == "")
                 {
                     lb4.Sprite.Tint = Color.White;
                     return;
                 }
-                UserGlobal.UserName = tb1.MenuLabel;
+                UserGlobal.UserName = tb1.Label.Text;
                 UserGlobal.Score = 0;
 
                 Global.Scenes.SwitchToScene(new MainMenuScene());

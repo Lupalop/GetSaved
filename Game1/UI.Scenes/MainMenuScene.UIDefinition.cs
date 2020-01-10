@@ -29,11 +29,9 @@ namespace Maquina.UI.Scenes
             GameTagline.Sprite.Text = "Disaster Preparedness for Everyone!";
             GameTagline.Sprite.Font = Global.Fonts["default_m"];
 
-            PlayButton = new MenuButton("mb1")
-            {
-                TooltipText = "Play Game!",
-                MenuBackground = Global.Textures["playBtn"],
-            };
+            PlayButton = new MenuButton("mb1");
+            PlayButton.Tooltip.Text = "Play Game!";
+            PlayButton.Background.Graphic = Global.Textures["playBtn"];
             PlayButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new WorldSelectionScene());
 
             VersionLabel = new Label("lb1");
@@ -41,13 +39,11 @@ namespace Maquina.UI.Scenes
             VersionLabel.Sprite.Font = Global.Fonts["o-default"];
 
             //
-            CreditsButton = new MenuButton("mb2")
-            {
-                TooltipText = "Credits",
-                MenuBackground = Global.Textures["circle-btn"],
-                MenuIcon = Global.Textures["credits-btn"],
-                MenuFont = Global.Fonts["default"],
-            };
+            CreditsButton = new MenuButton("mb2");
+            CreditsButton.Tooltip.Text = "Credits";
+            CreditsButton.Background.Graphic = Global.Textures["circle-btn"];
+            CreditsButton.Icon.Graphic = Global.Textures["credits-btn"];
+            CreditsButton.Label.Font = Global.Fonts["default"];
             CreditsButton.OnRightClick += (sender, e) => {
                 /*
                 Global.WindowManager.Windows.Add("testwin",
@@ -60,31 +56,25 @@ namespace Maquina.UI.Scenes
             };
             CreditsButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new CreditsScene());
 
-            MuteAudioButton = new MenuButton("mb3")
-            {
-                TooltipText = "Mute Audio",
-                MenuBackground = Global.Textures["circle-btn"],
-                MenuIcon = Global.Textures["sound-btn"],
-                MenuFont = Global.Fonts["default"],
-            };
+            MuteAudioButton = new MenuButton("mb3");
+            MuteAudioButton.Tooltip.Text = "Mute Audio";
+            MuteAudioButton.Background.Graphic = Global.Textures["circle-btn"];
+            MuteAudioButton.Icon.Graphic = Global.Textures["sound-btn"];
+            MuteAudioButton.Label.Font = Global.Fonts["default"];
             MuteAudioButton.OnLeftClick += (sender, e) => Global.Audio.ToggleMute();
 
-            HighScoresButton = new MenuButton("mb4")
-            {
-                TooltipText = "View High Scores",
-                MenuBackground = Global.Textures["circle-btn"],
-                MenuIcon = Global.Textures["highscore-btn"],
-                MenuFont = Global.Fonts["default"],
-            };
+            HighScoresButton = new MenuButton("mb4");
+            MuteAudioButton.Tooltip.Text = "View High Scores";
+            MuteAudioButton.Background.Graphic = Global.Textures["circle-btn"];
+            MuteAudioButton.Icon.Graphic = Global.Textures["highscore-btn"];
+            MuteAudioButton.Label.Font = Global.Fonts["default"];
             HighScoresButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new HighScoreScene());
 
-            UserProfileButton = new MenuButton("mb5")
-            {
-                TooltipText = "Change User",
-                MenuBackground = Global.Textures["circle-btn"],
-                MenuIcon = Global.Textures["user-btn"],
-                MenuFont = Global.Fonts["default"],
-            };
+            UserProfileButton = new MenuButton("mb5");
+            UserProfileButton.Tooltip.Text = "Change User";
+            UserProfileButton.Background.Graphic = Global.Textures["circle-btn"];
+            UserProfileButton.Icon.Graphic = Global.Textures["user-btn"];
+            UserProfileButton.Label.Font = Global.Fonts["default"];
             UserProfileButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new UserProfileScene());
 
             ActionContainer = new StackPanel("actionContainer")

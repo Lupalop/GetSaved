@@ -21,14 +21,12 @@ namespace Maquina.UI.Scenes
 
         private void InitializeComponent()
         {
-            SkipTriggerArea = new MenuButton("skipBtn")
-            {
-                MenuBackground = Global.Textures["overlayBG"],
-                Tint = Color.Transparent,
-                MenuBackgroundSpriteType = SpriteType.None,
-                Bounds = WindowBounds,
-                IgnoreGlobalScale = true,
-            };
+            SkipTriggerArea = new MenuButton("skipBtn");
+            SkipTriggerArea.Background.Graphic = Global.Textures["overlayBG"];
+            SkipTriggerArea.Tint = Color.Transparent;
+            SkipTriggerArea.Background.SpriteType = SpriteType.None;
+            SkipTriggerArea.Bounds = WindowBounds;
+            SkipTriggerArea.IgnoreGlobalScale = true;
             SkipTriggerArea.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(NewGameScene);
             SkipTriggerArea.OnRightClick += (sender, e) => Global.Scenes.SwitchToScene(NewGameScene);
 

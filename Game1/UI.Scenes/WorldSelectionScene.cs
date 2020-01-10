@@ -46,7 +46,7 @@ namespace Maquina.UI.Scenes
                     difficulty = Difficulty.Easy;
                     break;
             }
-            DifficultyButton.MenuLabel = string.Format("Difficulty: {0}", difficulty);
+            DifficultyButton.Label.Text = string.Format("Difficulty: {0}", difficulty);
         }
 
         public override void Draw()

@@ -19,12 +19,10 @@ namespace Maquina.UI.Scenes
 
         private void InitializeComponent()
         {
-            BackButton = new MenuButton("mb1")
-            {
-                TooltipText = "Back",
-                MenuBackground = Global.Textures["back-btn"],
-                Location = new Point(5, 5),
-            };
+            BackButton = new MenuButton("mb1");
+            BackButton.Tooltip.Text = "Back";
+            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Location = new Point(5, 5);
             BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
 
             ScrollContainer = new StackPanel("container1")

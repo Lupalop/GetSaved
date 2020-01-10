@@ -27,37 +27,31 @@ namespace Maquina.UI.Scenes
             OverlayBG.Sprite.DestinationRectangle = WindowBounds;
 
             // Action Container
-            NextRoundButton = new MenuButton("NextRoundBtn")
-            {
-                TooltipText = "Proceed to the next game",
-                MenuLabel = "Next Round",
-                MenuFont = Global.Fonts["default_m"],
-            };
+            NextRoundButton = new MenuButton("NextRoundBtn");
+            NextRoundButton.Tooltip.Text = "Proceed to the next game";
+            NextRoundButton.Label.Text = "Next Round";
+            NextRoundButton.Label.Font = Global.Fonts["default_m"];
             NextRoundButton.OnLeftClick += (sender, e) =>
             {
                 Global.Scenes.SwitchToScene(new NextGameScene());
                 Global.Scenes.Overlays.Remove("GameEnd");
             };
 
-            TryAgainButton = new MenuButton("TryAgainBtn")
-            {
-                TooltipText = "Having a hard time?\nTry this game again!",
-                MenuLabel = "Try Again",
-                MenuFont = Global.Fonts["default_m"],
-            };
+            TryAgainButton = new MenuButton("TryAgainBtn");
+            TryAgainButton.Tooltip.Text = "Having a hard time?\nTry this game again!";
+            TryAgainButton.Label.Text = "Try Again";
+            TryAgainButton.Label.Font = Global.Fonts["default_m"];
             TryAgainButton.OnLeftClick += (sender, e) =>
             {
                 Global.Scenes.SwitchToScene(new NextGameScene(CurrentGame, CurrentDifficulty));
                 Global.Scenes.Overlays.Remove("GameEnd");
             };
 
-            BackButton = new MenuButton("MainMenuBtn")
-            {
-                TooltipText = "Back",
-                MenuBackground = Global.Textures["back-btn"],
-                Location = new Point(5, 5),
-                MenuFont = Global.Fonts["default_m"],
-            };
+            BackButton = new MenuButton("MainMenuBtn");
+            BackButton.Tooltip.Text = "Back";
+            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Location = new Point(5, 5);
+            BackButton.Label.Font = Global.Fonts["default_m"];
             BackButton.OnLeftClick += (sender, e) =>
             {
                 Global.Scenes.SwitchToScene(new MainMenuScene());

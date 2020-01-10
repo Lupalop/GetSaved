@@ -171,12 +171,10 @@ namespace Maquina.UI.Scenes
                     continue;
                 }
 
-                MenuButton itemIcon = new MenuButton("icon")
-                {
-                    MenuBackgroundSpriteType = SpriteType.None,
-                    TooltipText = AvailableItems[i],
-                    MenuBackground = Game.Content.Load<Texture2D>("falling-object/" + AvailableItems[i])
-                };
+                MenuButton itemIcon = new MenuButton("icon");
+                itemIcon.Background.SpriteType = SpriteType.None;
+                itemIcon.Tooltip.Text = AvailableItems[i];
+                itemIcon.Background.Graphic = Game.Content.Load<Texture2D>("falling-object/" + AvailableItems[i]);
 
                 Label itemCountLabel = new Label("lb");
                 itemCountLabel.Sprite.Text = string.Format("x{0}", IncorrectItemIDs[i]);
