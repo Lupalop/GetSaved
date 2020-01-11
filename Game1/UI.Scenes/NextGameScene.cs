@@ -56,15 +56,13 @@ namespace Maquina.UI.Scenes
                     EgsImage.Sprite.Graphic = Global.Textures["egs1"];
                     HelpImage.Sprite.Graphic = Global.Textures["htp-esc"];
                     GameNameLabel.Sprite.Text = "Earthquake Escape";
-                    return new GameOneScene(GameDifficulty);
-                    //return new GameTwoScene(GameDifficulty, Games.EscapeEarthquake);
+                    return new GameTwoScene(GameDifficulty, Games.EscapeEarthquake);
                 // Fire Escape
                 case Games.EscapeFire:
                     EgsImage.Sprite.Graphic = Global.Textures["egs2"];
                     HelpImage.Sprite.Graphic = Global.Textures["htp-esc"];
                     GameNameLabel.Sprite.Text = "Fire Escape";
-                    return new GameOneScene(GameDifficulty);
-                    //return new GameTwoScene(GameDifficulty, Games.EscapeFire);
+                    return new GameTwoScene(GameDifficulty, Games.EscapeFire);
                 // Safety Jump
                 case Games.RunningForTheirLives:
                     EgsImage.Sprite.Graphic = Global.Textures["egs2"];

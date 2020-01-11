@@ -39,7 +39,7 @@ namespace Maquina.UI.Scenes
                     break;
                 case Games.EscapeEarthquake:
                 case Games.EscapeFire:
-                    //Game2End();
+                    Game2End();
                     break;
                 case Games.RunningForTheirLives:
                     //Game3End();
@@ -84,7 +84,7 @@ namespace Maquina.UI.Scenes
                     break;
             }
         }
-        /*
+
         public void Game2End()
         {
             // Cast
@@ -106,7 +106,7 @@ namespace Maquina.UI.Scenes
             SetGameEndGraphic(GameEndStates.GameWon);
             SetPointsEarned(100 * MathHelper.Clamp((int)scene.TimeLeft, 1, int.MaxValue));
         }
-
+        /*
         public void Game3End()
         {
             // Cast

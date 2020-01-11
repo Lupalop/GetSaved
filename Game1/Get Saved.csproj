@@ -95,12 +95,13 @@
     <Compile Include="UI.Overlays\GameEndOverlay.UIDefinition.cs" />
     <Compile Include="UI.Scenes\CreditsScene.UIDefinition.cs" />
     <Compile Include="UI.Scenes\GameOneScene.UIDefinition.cs" />
+    <Compile Include="UI.Scenes\GameTwoScene.UIDefinition.cs" />
     <Compile Include="UI.Scenes\MainMenuScene.UIDefinition.cs" />
     <Compile Include="UI.Scenes\NextGameScene.UIDefinition.cs" />
     <Compile Include="UI.Scenes\UserProfileScene.cs" />
     <Compile Include="UI.Scenes\HighScoreScene.cs" />
     <Compile Include="UI.Scenes\CreditsScene.cs" />
-    <None Include="UI.Scenes\GameTwoScene.cs" />
+    <Compile Include="UI.Scenes\GameTwoScene.cs" />
     <None Include="UI.Scenes\GameFourScene.cs" />
     <None Include="UI.Scenes\GameThreeScene.cs" />
     <Compile Include="UI.Overlays\GameEndOverlay.cs" />
