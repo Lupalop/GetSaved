@@ -50,12 +50,10 @@ namespace Maquina.UI.Scenes
             ObjectCatcher.Location = new Point(5, Game.GraphicsDevice.Viewport.Height - 70);
             ObjectCatcher.ElementUpdated += ObjectCatcher_ElementUpdated;
 
-            TimerLabel = new Label("o-timer")
-            {
-                AutoPosition = true,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Right,
-            };
+            TimerLabel = new Label("o-timer");
+            TimerLabel.AutoPosition = true;
+            TimerLabel.VerticalAlignment = VerticalAlignment.Top;
+            TimerLabel.HorizontalAlignment = HorizontalAlignment.Right;
             TimerLabel.Sprite.Font = Global.Fonts["o-default_l"];
             TimerLabel.Sprite.LayerDepth = 0.1f;
 
