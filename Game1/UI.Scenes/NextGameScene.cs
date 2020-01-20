@@ -68,8 +68,7 @@ namespace Maquina.UI.Scenes
                     EgsImage.Sprite.Graphic = Global.Textures["egs2"];
                     HelpImage.Sprite.Graphic = Global.Textures["htp-dino"];
                     GameNameLabel.Sprite.Text = "Safety Jump";
-                    return new GameOneScene(GameDifficulty);
-                    //return new GameThreeScene(GameDifficulty);
+                    return new GameThreeScene(GameDifficulty);
                 // Aid 'Em
                 case Games.HelpOthersNow:
                     EgsImage.Sprite.Graphic = Global.Textures["egs1"];

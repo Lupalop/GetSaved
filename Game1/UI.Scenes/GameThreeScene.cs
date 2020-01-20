@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.UI;
 using Maquina.Elements;
 using Microsoft.Xna.Framework.Audio;
-using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
 {
-    public class GameThreeScene : Scene
+    public partial class GameThreeScene : Scene
     {
         public GameThreeScene(Difficulty Difficulty)
             : base("Game 3 Scene: Safety Jump")
@@ -21,12 +16,9 @@ namespace Maquina.UI.Scenes
             GameDifficulty = Difficulty;
         }
 
-        private Collection<BaseElement> GameElements = new Collection<BaseElement>();
-
         public double Score { private set; get; }
         private int ProjectileInterval;
         private float ObjectMovementSpeed;
-        private int DistanceFromBottom;
         private float JumpHeight;
         private int ScoreMultiplier;
 
@@ -35,8 +27,43 @@ namespace Maquina.UI.Scenes
         private Timer ProjectileGenerator;
         private Timer ScoreTimer;
 
-        private Difficulty GameDifficulty;
-        private Vector2 PlayerPosition;
+        private Difficulty gameDifficulty;
+        public Difficulty GameDifficulty
+        {
+            get { return gameDifficulty; }
+            set
+            {
+                gameDifficulty = value;
+                switch (GameDifficulty)
+                {
+                    case Difficulty.Easy:
+                        ProjectileInterval = 1500;
+                        ObjectMovementSpeed = 3;
+                        JumpHeight = -15;
+                        ScoreMultiplier = 1;
+                        break;
+                    case Difficulty.Medium:
+                        ProjectileInterval = 1000;
+                        ObjectMovementSpeed = 3;
+                        JumpHeight = -15;
+                        ScoreMultiplier = 2;
+                        break;
+                    case Difficulty.Hard:
+                        ProjectileInterval = 800;
+                        ObjectMovementSpeed = 5;
+                        JumpHeight = -10;
+                        ScoreMultiplier = 3;
+                        break;
+                    case Difficulty.EpicFail:
+                        ProjectileInterval = 700;
+                        ObjectMovementSpeed = 10;
+                        JumpHeight = -10;
+                        ScoreMultiplier = 3;
+                        break;
+                }
+            }
+        }
+        private Point PlayerPosition;
         private int PlayerInitialY;
         private int FireInitialY;
         private int StartingXPos;
@@ -45,12 +72,8 @@ namespace Maquina.UI.Scenes
         private bool IsGameEnd = false;
         private Random RandNum = new Random();
 
-        private Texture2D FireGraphic;
-        private Texture2D CharacterGraphic;
-
         private void InitializeTimer()
         {
-            // Initiailize timers
             ProjectileGenerator = new Timer()
             {
                 AutoReset = true,
@@ -63,10 +86,9 @@ namespace Maquina.UI.Scenes
                 Enabled = true,
                 Interval = 100
             };
-            // Add the event handler to the timer object
             ProjectileGenerator.Elapsed += delegate
             {
-                GenerateFire();
+                CreateObstacle();
             };
             ScoreTimer.Elapsed += delegate
             {
@@ -84,150 +106,75 @@ namespace Maquina.UI.Scenes
             Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.RunningForTheirLives, null, this, GameDifficulty));
         }
 
-        private void UpdateMinMaxY()
-        {
-            if (Elements.ContainsKey("Player"))
-            {
-                PlayerInitialY = Game.GraphicsDevice.Viewport.Height - CharacterGraphic.Height - DistanceFromBottom - 100;
-                FireInitialY = Game.GraphicsDevice.Viewport.Height - FireGraphic.Height - DistanceFromBottom - 100;
-                StartingXPos = Game.GraphicsDevice.Viewport.Width - CharacterGraphic.Width - 10;
-            }
-        }
-
-        private void GenerateFire()
+        private void CreateObstacle()
         {
             if (!IsGameEnd)
             {
-                // create new button object
-                Image nwBtn = new Image("item")
-                {
-                    Graphic = FireGraphic,
-                    Columns = 3,
-                    Rows = 1,
-                    SpriteType = SpriteType.Animated,
-                    Location = new Vector2((float)RandNum.Next(StartingXPos - 100, StartingXPos), FireInitialY),
-                    ControlAlignment = Alignment.Fixed,
-                };
-                GameElements.Add(nwBtn);
+                Image obstacle = new Image("item" + DateTime.Now.ToBinary());
+                obstacle.Sprite.Graphic = Global.Textures["fire"];
+                obstacle.Sprite.Columns = 3;
+                obstacle.Sprite.Rows = 1;
+                obstacle.Sprite.SpriteType = SpriteType.Animated;
+                obstacle.Location = new Point(RandNum.Next(StartingXPos - 100, StartingXPos), FireInitialY);
+                GameCanvas.Children.Add(obstacle.Name, obstacle);
             }
+        }
+
+        private void UpdateInitialPosition()
+        {
+            PlayerInitialY = WindowBounds.Height - PlayerElement.Bounds.Height - 130;
+            FireInitialY = WindowBounds.Height - Global.Textures["fire"].Height - 130;
+            StartingXPos = WindowBounds.Width - PlayerElement.Bounds.Width - 10;
         }
 
         public override void LoadContent()
         {
-            base.LoadContent();
+            InitializeComponent();
 
-            FireGraphic = Global.Textures["fire"];
-            CharacterGraphic = Global.Textures["character"];
             JumpEffect = Global.SFX["caught"];
-            Global.AudioManager.PlaySong("shenanigans");
-
-            Elements = new Dictionary<string, BaseElement> {
-                { "GameBG", new Image("GameBG")
-                {
-                    Graphic = Global.Textures["game-bg-3"],
-                    ControlAlignment = Alignment.Fixed,
-                    OnUpdate = (element) => {
-                        element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
-                    },
-                }},
-                { "BackButton", new MenuButton("mb")
-                {
-                    Tooltip = "Back",
-                    Graphic = Global.Textures["back-btn"],
-                    Location = new Vector2(5,5),
-                    ControlAlignment = Alignment.Fixed,
-                    LayerDepth = 0.1f,
-                    LeftClickAction = () => Global.Scenes.SwitchToScene(new MainMenuScene())
-                }},
-                { "Player", new Image("Player")
-                {
-                    Graphic = CharacterGraphic,
-                    Columns = 3,
-                    Rows = 1,
-                    SpriteType = SpriteType.Animated,
-                    ControlAlignment = Alignment.Fixed,
-                }},
-                { "ScoreCounter", new Label("timer")
-                {
-                    Location = new Vector2(Game.GraphicsDevice.Viewport.Width - 305, 5),
-                    ControlAlignment = Alignment.Fixed,
-                    LayerDepth = 0.1f,
-                    OnUpdate = (element) => {
-                        Label a = (Label)element;
-                        a.Text = String.Format("Score: {0}", Score);
-                        a.Location = new Vector2(Game.GraphicsDevice.Viewport.Width - a.Dimensions.X, 5);
-                    },
-                    Font = Global.Fonts["o-default_l"]
-                }}
-            };
-
-            DistanceFromBottom = -30;
-        }
-
-        public override void DelayLoadContent()
-        {
-            base.DelayLoadContent();
-
-            switch (GameDifficulty)
-            {
-                case Difficulty.Easy:
-                    ProjectileInterval = 1500;
-                    ObjectMovementSpeed = 3;
-                    JumpHeight = -15;
-                    ScoreMultiplier = 1;
-                    break;
-                case Difficulty.Medium:
-                    ProjectileInterval = 1000;
-                    ObjectMovementSpeed = 3;
-                    JumpHeight = -15;
-                    ScoreMultiplier = 2;
-                    break;
-                case Difficulty.Hard:
-                    ProjectileInterval = 800;
-                    ObjectMovementSpeed = 5;
-                    JumpHeight = -10;
-                    ScoreMultiplier = 3;
-                    break;
-                case Difficulty.EpicFail:
-                    ProjectileInterval = 700;
-                    ObjectMovementSpeed = 10;
-                    JumpHeight = -10;
-                    ScoreMultiplier = 3;
-                    break;
-            }
-
+            Global.Audio.PlaySong("shenanigans");
+            UpdateInitialPosition();
             InitializeTimer();
             PlayerPosition.X = 150;
+
+            base.LoadContent();
         }
 
-        public override void Unload()
+        protected override void Dispose(bool disposing)
         {
-            // Close all timers
-            ProjectileGenerator.Close();
-            ScoreTimer.Close();
-            DisposeElements(GameElements);
-
-            base.Unload();
+            if (disposing)
+            {
+                // Close all timers
+                ProjectileGenerator.Close();
+                ScoreTimer.Close();
+                GuiUtils.DisposeElements(Elements);
+            }
+            base.Dispose(disposing);
         }
 
         public override void Draw()
         {
             SpriteBatch.Begin(SpriteSortMode.BackToFront);
-            base.Draw(GameTime);
             GuiUtils.DrawElements(Elements);
-            GuiUtils.DrawElements(GameElements);
             SpriteBatch.End();
         }
 
         public override void Update()
         {
-            base.Update(GameTime);
             GuiUtils.UpdateElements(Elements);
-            GuiUtils.UpdateElements(GameElements);
-            UpdateMinMaxY();
+
+            if (IsGameEnd)
+            {
+                if (GameCanvas.Children.Count > 0)
+                {
+                    GameCanvas.Children.Clear();
+                }
+                return;
+            }
+            
             if (IsJumping)
             {
-                PlayerPosition.Y += JumpSpeed;
+                PlayerPosition.Y += (int)JumpSpeed;
                 JumpSpeed += 0.5f;
                 if (PlayerPosition.Y >= PlayerInitialY)
                 {
@@ -237,10 +184,10 @@ namespace Maquina.UI.Scenes
             }
             else
             {
-                if (InputManager.KeyPressed(Keys.Space) ||
-                    InputManager.MousePressed(MouseButton.Left) ||
-                    InputManager.MousePressed(MouseButton.Right) ||
-                    InputManager.MousePressed(MouseButton.Middle))
+                if (Global.Input.KeyPressed(Keys.Space) ||
+                    Global.Input.MousePressed(MouseButton.Left) ||
+                    Global.Input.MousePressed(MouseButton.Right) ||
+                    Global.Input.MousePressed(MouseButton.Middle))
                 {
                     IsJumping = true;
                     JumpEffect.Play();
@@ -249,35 +196,28 @@ namespace Maquina.UI.Scenes
                 PlayerPosition.Y = PlayerInitialY;
             }
 
-            if (Elements.ContainsKey("Player"))
-            {
-                if (IsGameEnd)
-                {
-                    Elements.Remove("Player");
-                }
-                else
-                {
-                    Elements["Player"].Location = PlayerPosition;
-                }
-            }
+            PlayerElement.Location = PlayerPosition;
 
-            for (int i = 0; i < GameElements.Count; i++)
+            for (int i = 0; i < GameCanvas.Children.Count; i++)
             {
+                string elementKey = GameCanvas.Children.Keys.ElementAt(i);
+                BaseElement gameElement = GameCanvas.Children[elementKey];
                 // Moves Game object
-                GameElements[i].Location = new Vector2(GameElements[i].Location.X - ObjectMovementSpeed, GameElements[i].Location.Y);
+                gameElement.Location =
+                    new Point(gameElement.Location.X - (int)ObjectMovementSpeed, gameElement.Location.Y);
 
                 // Check if Game object collides/intersects with catcher
-                if (Elements.ContainsKey("Player") && Elements["Player"].Bounds.Contains(GameElements[i].Bounds.Center))
+                if (PlayerElement.Bounds.Contains(gameElement.Bounds.Center))
                 {
                     CallEndOverlay();
-                    GameElements.Remove(GameElements[i]);
+                    GameCanvas.Children.Remove(elementKey);
                     return;
                 }
 
-                // Remove Elements once it exceeds the object catcher, this also removes all Elements when time's up
-                if (GameElements[i].Location.X < -100 || IsGameEnd)
+                // Remove Elements once it exceeds the object catcher
+                if (gameElement.Location.X < -100)
                 {
-                    GameElements.Remove(GameElements[i]);
+                    GameCanvas.Children.Remove(elementKey);
                 }
             }
         }

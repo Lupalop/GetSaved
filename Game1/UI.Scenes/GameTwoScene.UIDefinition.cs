@@ -28,9 +28,9 @@ namespace Maquina.UI.Scenes
             /* UI Elements */
 
             GameBG = new Image("GameBG");
+            GameBG.IgnoreGlobalScale = true;
             GameBG.Sprite.Graphic = Global.Textures["game-bg-4_1"];
-            GameBG.Sprite.DestinationRectangle = new Rectangle(0, 0,
-                Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
+            GameBG.Sprite.DestinationRectangle = Global.Display.WindowBounds;
             GameBG.ElementUpdated += GameBG_ElementUpdated;
 
             /*

@@ -42,7 +42,7 @@ namespace Maquina.UI.Scenes
                     Game2End();
                     break;
                 case Games.RunningForTheirLives:
-                    //Game3End();
+                    Game3End();
                     break;
                 case Games.HelpOthersNow:
                     Game4End(PassedMessage);
@@ -106,7 +106,7 @@ namespace Maquina.UI.Scenes
             SetGameEndGraphic(GameEndStates.GameWon);
             SetPointsEarned(100 * MathHelper.Clamp((int)scene.TimeLeft, 1, int.MaxValue));
         }
-        /*
+
         public void Game3End()
         {
             // Cast
@@ -115,7 +115,7 @@ namespace Maquina.UI.Scenes
             SetGameEndGraphic(GameEndStates.GameOver);
             SetPointsEarned((int)scene.Score);
         }
-        */
+
         public void Game1End(Collection<BaseElement> CollectedElements)
         {
             int correctItems = 0;

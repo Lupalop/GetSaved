@@ -103,7 +103,7 @@
     <Compile Include="UI.Scenes\CreditsScene.cs" />
     <Compile Include="UI.Scenes\GameTwoScene.cs" />
     <None Include="UI.Scenes\GameFourScene.cs" />
-    <None Include="UI.Scenes\GameThreeScene.cs" />
+    <Compile Include="UI.Scenes\GameThreeScene.cs" />
     <Compile Include="UI.Overlays\GameEndOverlay.cs" />
     <Compile Include="UI.Scenes\GameOneScene.cs" />
     <Compile Include="UI.Scenes\MainMenuScene.cs" />
@@ -116,6 +116,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI.Scenes\WorldSelectionScene.UIDefinition.cs" />
     <Compile Include="UserGlobal.cs" />
+    <Compile Include="UI.Scenes\GameThreeScene.UIDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
