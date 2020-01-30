@@ -72,34 +72,6 @@ namespace Maquina.UI.Scenes
         private bool IsGameEnd = false;
         private Random RandNum = new Random();
 
-        private void InitializeTimer()
-        {
-            ProjectileGenerator = new Timer()
-            {
-                AutoReset = true,
-                Enabled = true,
-                Interval = ProjectileInterval
-            };
-            ScoreTimer = new Timer()
-            {
-                AutoReset = true,
-                Enabled = true,
-                Interval = 100
-            };
-            ProjectileGenerator.Elapsed += delegate
-            {
-                CreateObstacle();
-            };
-            ScoreTimer.Elapsed += delegate
-            {
-                if (!IsGameEnd)
-                {
-                    Score += ScoreMultiplier;
-                    ObjectMovementSpeed += 0.01f;
-                }
-            };
-        }
-
         private void CallEndOverlay()
         {
             IsGameEnd = true;
@@ -134,7 +106,33 @@ namespace Maquina.UI.Scenes
             JumpEffect = Global.SFX["caught"];
             Global.Audio.PlaySong("shenanigans");
             UpdateInitialPosition();
-            InitializeTimer();
+
+            // Initialize timers
+            ProjectileGenerator = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = ProjectileInterval
+            };
+            ScoreTimer = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = 100
+            };
+            ProjectileGenerator.Elapsed += delegate
+            {
+                CreateObstacle();
+            };
+            ScoreTimer.Elapsed += delegate
+            {
+                if (!IsGameEnd)
+                {
+                    Score += ScoreMultiplier;
+                    ObjectMovementSpeed += 0.01f;
+                }
+            };
+
             PlayerPosition.X = 150;
 
             base.LoadContent();

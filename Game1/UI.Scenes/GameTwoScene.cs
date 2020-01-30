@@ -102,9 +102,58 @@ namespace Maquina.UI.Scenes
         private Timer DeathTimeLeftController;
         private Timer GameTimer;
 
-        private void InitializeTimer()
+        private void CallEndOverlay()
         {
-            // Initiailize timers
+            IsGameEnd = true;
+            Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this, GameDifficulty));
+        }
+
+        private void ResetPlayerPosition()
+        {
+            if (PlayerElement != null)
+            {
+                PlayerElement.Location = PointA.Location;
+            }
+        }
+
+        private void SetHelpMessage(int StageWhich)
+        {
+            if (StageWhich == 0)
+                HelpLabel.Sprite.Text = String.Empty;
+            switch (CurrentGame)
+            {
+                case Games.EscapeEarthquake:
+                    if (StageWhich == 1)
+                        HelpLabel.Sprite.Text = "Duck, cover, and Hold!";
+                    if (StageWhich == 2)
+                        HelpLabel.Sprite.Text = "Stand up and check surrounding area.";
+                    if (StageWhich == 3)
+                        HelpLabel.Sprite.Text = "Line up properly and go outside the\nbuilding or towards to safety!";
+                    break;
+                case Games.EscapeFire:
+                    if (StageWhich == 1)
+                        HelpLabel.Sprite.Text = "Raise alarm! Indicate that there is fire!";
+                    if (StageWhich == 2)
+                        HelpLabel.Sprite.Text = "Make sure to exit the room or stay away\n from the fire.";
+                    if (StageWhich == 3)
+                        HelpLabel.Sprite.Text = "Use the fire emergency staircases \nand exit the building immediately!";
+                    break;
+                default:
+                    // Do nothing
+                    break;
+            }
+        }
+
+        public override void LoadContent()
+        {
+            InitializeComponent();
+
+            // Init level
+            UpdatePoints();
+            SetHelpMessage(1);
+            CurrentStage = 1;
+
+            // Initialize timer
             TimeLeftController = new Timer()
             {
                 AutoReset = true,
@@ -163,60 +212,6 @@ namespace Maquina.UI.Scenes
                 CallEndOverlay();
                 GameTimer.Enabled = false;
             };
-        }
-
-        private void CallEndOverlay()
-        {
-            IsGameEnd = true;
-            Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this, GameDifficulty));
-        }
-
-        private void ResetPlayerPosition()
-        {
-            if (PlayerElement != null)
-            {
-                PlayerElement.Location = PointA.Location;
-            }
-        }
-
-        private void SetHelpMessage(int StageWhich)
-        {
-            if (StageWhich == 0)
-                HelpLabel.Sprite.Text = String.Empty;
-            switch (CurrentGame)
-            {
-                case Games.EscapeEarthquake:
-                    if (StageWhich == 1)
-                        HelpLabel.Sprite.Text = "Duck, cover, and Hold!";
-                    if (StageWhich == 2)
-                        HelpLabel.Sprite.Text = "Stand up and check surrounding area.";
-                    if (StageWhich == 3)
-                        HelpLabel.Sprite.Text = "Line up properly and go outside the\nbuilding or towards to safety!";
-                    break;
-                case Games.EscapeFire:
-                    if (StageWhich == 1)
-                        HelpLabel.Sprite.Text = "Raise alarm! Indicate that there is fire!";
-                    if (StageWhich == 2)
-                        HelpLabel.Sprite.Text = "Make sure to exit the room or stay away\n from the fire.";
-                    if (StageWhich == 3)
-                        HelpLabel.Sprite.Text = "Use the fire emergency staircases \nand exit the building immediately!";
-                    break;
-                default:
-                    // Do nothing
-                    break;
-            }
-        }
-
-        public override void LoadContent()
-        {
-            InitializeComponent();
-
-            // Init level
-            UpdatePoints();
-            SetHelpMessage(1);
-            CurrentStage = 1;
-
-            InitializeTimer();
 
             PointReached = Global.SFX["caught"];
             Global.Audio.PlaySong("in-pursuit");

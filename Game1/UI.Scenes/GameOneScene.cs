@@ -95,43 +95,6 @@ namespace Maquina.UI.Scenes
         private Timer TimeLeftController;
         private Timer GameTimer;
 
-        private void InitializeTimer()
-        {
-            // Initialize timers
-            ProjectileGenerator = new Timer()
-            {
-                AutoReset = true,
-                Enabled = true,
-                Interval = GenerationInterval
-            };
-            TimeLeftController = new Timer()
-            {
-                AutoReset = true,
-                Enabled = true,
-                Interval = 1000
-            };
-            GameTimer = new Timer()
-            {
-                AutoReset = false,
-                Enabled = true,
-                Interval = TimeLeft * 1000
-            };
-
-            // Add the event handler to the timer object
-            ProjectileGenerator.Elapsed += CreateFallingItem;
-            TimeLeftController.Elapsed += delegate
-            {
-                if (TimeLeft > 0)
-                    TimeLeft--;
-            };
-            GameTimer.Elapsed += delegate
-            {
-                IsGameEnd = true;
-                Global.Scenes.Overlays.Add("GameEnd",
-                    new GameEndOverlay(Games.FallingObjects, CollectedElements, this, GameDifficulty));
-            };
-        }
-
         private void CreateFallingItem(object sender, EventArgs eventArgs)
         {
             if (GameDifficulty == Difficulty.Demo) {
@@ -192,7 +155,39 @@ namespace Maquina.UI.Scenes
                 Global.Audio.PlaySong("hide-seek");
             }
 
-            InitializeTimer();
+            // Initialize timers
+            ProjectileGenerator = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = GenerationInterval
+            };
+            TimeLeftController = new Timer()
+            {
+                AutoReset = true,
+                Enabled = true,
+                Interval = 1000
+            };
+            GameTimer = new Timer()
+            {
+                AutoReset = false,
+                Enabled = true,
+                Interval = TimeLeft * 1000
+            };
+
+            // Add the event handler to the timer object
+            ProjectileGenerator.Elapsed += CreateFallingItem;
+            TimeLeftController.Elapsed += delegate
+            {
+                if (TimeLeft > 0)
+                    TimeLeft--;
+            };
+            GameTimer.Elapsed += delegate
+            {
+                IsGameEnd = true;
+                Global.Scenes.Overlays.Add("GameEnd",
+                    new GameEndOverlay(Games.FallingObjects, CollectedElements, this, GameDifficulty));
+            };
 
             // Remove UI and timers
             if (GameDifficulty == Difficulty.Demo)
@@ -214,6 +209,7 @@ namespace Maquina.UI.Scenes
                 TimeLeftController.Close();
                 GameTimer.Close();
 
+                GuiUtils.DisposeElements(Elements);
                 GuiUtils.DisposeElements(CollectedElements);
             }
             base.Dispose(disposing);
