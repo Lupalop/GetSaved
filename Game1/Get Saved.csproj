@@ -125,7 +125,7 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Maquina\src\Maquina.csproj">
+    <ProjectReference Include="..\platform\src\Maquina.csproj">
       <Project>{4d111415-ba1c-4eaa-a41c-4e2a012fa3c9}</Project>
       <Name>Maquina</Name>
     </ProjectReference>
