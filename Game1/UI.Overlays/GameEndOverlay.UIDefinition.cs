@@ -1,4 +1,4 @@
-﻿using Maquina.Elements;
+﻿using Maquina.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -13,49 +13,49 @@ namespace Maquina.UI.Scenes
     {
         private Image OverlayBG;
         private Image TimesUp;
-        private MenuButton NextRoundButton;
-        private MenuButton TryAgainButton;
-        private MenuButton BackButton;
+        private Button NextRoundButton;
+        private Button TryAgainButton;
+        private Button BackButton;
         private StackPanel MainContainer;
         private StackPanel InfoContainer;
 
         private void InitializeComponent()
         {
             OverlayBG = new Image("Background");
-            OverlayBG.Sprite.Graphic = Global.Textures["overlayBG"];
-            OverlayBG.IgnoreGlobalScale = true;
+            OverlayBG.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("overlayBG"];
+            OverlayBG.IgnoreApplicationScale = true;
             OverlayBG.Sprite.DestinationRectangle = WindowBounds;
 
             // Action Container
-            NextRoundButton = new MenuButton("NextRoundBtn");
+            NextRoundButton = new Button("NextRoundBtn");
             NextRoundButton.Tooltip.Text = "Proceed to the next game";
             NextRoundButton.Label.Text = "Next Round";
-            NextRoundButton.Label.Font = Global.Fonts["default_m"];
+            NextRoundButton.Label.Font = Application.Fonts["default_m"];
             NextRoundButton.OnLeftClick += (sender, e) =>
             {
-                Global.Scenes.SwitchToScene(new NextGameScene());
-                Global.Scenes.Overlays.Remove("GameEnd");
+                Application.Scenes.SwitchToScene(new NextGameScene());
+                Application.Scenes.Overlays.Remove("GameEnd");
             };
 
-            TryAgainButton = new MenuButton("TryAgainBtn");
+            TryAgainButton = new Button("TryAgainBtn");
             TryAgainButton.Tooltip.Text = "Having a hard time?\nTry this game again!";
             TryAgainButton.Label.Text = "Try Again";
-            TryAgainButton.Label.Font = Global.Fonts["default_m"];
+            TryAgainButton.Label.Font = Application.Fonts["default_m"];
             TryAgainButton.OnLeftClick += (sender, e) =>
             {
-                Global.Scenes.SwitchToScene(new NextGameScene(CurrentGame, CurrentDifficulty));
-                Global.Scenes.Overlays.Remove("GameEnd");
+                Application.Scenes.SwitchToScene(new NextGameScene(CurrentGame, CurrentDifficulty));
+                Application.Scenes.Overlays.Remove("GameEnd");
             };
 
-            BackButton = new MenuButton("MainMenuBtn");
+            BackButton = new Button("MainMenuBtn");
             BackButton.Tooltip.Text = "Back";
-            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("back-btn"];
             BackButton.Location = new Point(5, 5);
-            BackButton.Label.Font = Global.Fonts["default_m"];
+            BackButton.Label.Font = Application.Fonts["default_m"];
             BackButton.OnLeftClick += (sender, e) =>
             {
-                Global.Scenes.SwitchToScene(new MainMenuScene());
-                Global.Scenes.Overlays.Remove("GameEnd");
+                Application.Scenes.SwitchToScene(new MainMenuScene());
+                Application.Scenes.Overlays.Remove("GameEnd");
             };
 
             // Info Container
@@ -78,10 +78,10 @@ namespace Maquina.UI.Scenes
                 }
             };
 
-            Elements.Add(OverlayBG.Name, OverlayBG);
-            Elements.Add(MainContainer.Name, MainContainer);
+            Entities.Add(OverlayBG.Name, OverlayBG);
+            Entities.Add(MainContainer.Name, MainContainer);
 
-            Global.Display.ResolutionChanged += Display_ResolutionChanged; ;
+            Application.Display.ResolutionChanged += Display_ResolutionChanged; ;
         }
 
         private void Display_ResolutionChanged(object sender, EventArgs e)

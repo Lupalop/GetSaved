@@ -1,4 +1,4 @@
-﻿using Maquina.Elements;
+﻿using Maquina.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,19 +11,19 @@ namespace Maquina.UI.Scenes
     public partial class CreditsScene
     {
         private StackPanel ScrollContainer;
-        private ObservableDictionary<string, BaseElement> ScrollingElements
+        private ObservableDictionary<string, Entity> ScrollingElements
         {
             get { return ScrollContainer.Children; }
         }
-        private MenuButton BackButton;
+        private Button BackButton;
 
         private void InitializeComponent()
         {
-            BackButton = new MenuButton("mb1");
+            BackButton = new Button("mb1");
             BackButton.Tooltip.Text = "Back";
-            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("back-btn"];
             BackButton.Location = new Point(5, 5);
-            BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
+            BackButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new MainMenuScene());
 
             ScrollContainer = new StackPanel("container1")
             {
@@ -31,8 +31,8 @@ namespace Maquina.UI.Scenes
                 HorizontalAlignment = HorizontalAlignment.Center
             };
 
-            Elements.Add(BackButton.Name, BackButton);
-            Elements.Add(ScrollContainer.Name, ScrollContainer);
+            Entities.Add(BackButton.Name, BackButton);
+            Entities.Add(ScrollContainer.Name, ScrollContainer);
         }
     }
 }

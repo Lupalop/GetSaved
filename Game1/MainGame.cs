@@ -7,10 +7,11 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using Maquina.UI;
 using Maquina.UI.Scenes;
-using Maquina.Resources;
+using Maquina.Content;
 using System.IO;
 using Microsoft.Xna.Framework.Audio;
 using System.Threading.Tasks;
+using Maquina.Entities;
 
 namespace Maquina
 {
@@ -37,8 +38,8 @@ namespace Maquina
             // Set window title
             Window.Title = "Get Saved";
 
-            UserGlobal.UserName = PreferencesManager.GetStringPreference("game.username", "Guest");
-            UserGlobal.Score = 0;
+            UserApplication.UserName = Application.Preferences.GetString("game.username", "Guest");
+            UserApplication.Score = 0;
         }
 
         /// <summary>
@@ -51,31 +52,22 @@ namespace Maquina
 
             if (!IsMouseVisible)
             {
-                SoftwareMouse.MouseSprite = Global.Textures["cursor-default"];
+                Texture2D defaultTexture = (Texture2D)ContentFactory.TryGetResource("cursor-default");
+                Application.SoftwareMouse.Sprite = new TextureAtlasSprite(defaultTexture, 2, 1);
             }
 
             await Task.Run(() =>
             {
                 // Load game-specific resources
-                ResourceManifest resources = XmlHelper.Load<ResourceManifest>(
-                    Path.Combine(Content.RootDirectory, Global.ResourceXml));
-                ResourceGroup group = resources.Load("general");
-                // Load resources
-                Global.Fonts = Global.Fonts.MergeWith(
-                    group.FontDictionary as Dictionary<string, SpriteFont>);
-                Global.BGM = Global.BGM.MergeWith(
-                    group.BGMDictionary as Dictionary<string, Song>);
-                Global.SFX = Global.SFX.MergeWith(
-                    group.SFXDictionary as Dictionary<string, SoundEffect>);
-                Global.Textures = Global.Textures.MergeWith(
-                    group.TextureDictionary as Dictionary<string, Texture2D>);
-            });
-
+                string resourcePath = Path.Combine(Content.RootDirectory, ResourceXml);
+                ContentManifest resources = XmlHelper.Load<ContentManifest>(resourcePath);
+                ContentFactory.Source.Add("application-startup", resources.Load("general"));
 #if DEBUG
-            Global.Scenes.Overlays.Add("debug", new DebugOverlay());
+                Application.Scenes.Overlays.Add(new DebugOverlay());
 #endif
-            // Setup first scene (Main Menu)
-            Global.Scenes.SwitchToScene(new MainMenuScene());
+                // Setup first scene (Main Menu)
+                Application.Scenes.SwitchToScene(new MainMenuScene());
+            });
         }
 
         /// <summary>
@@ -84,13 +76,13 @@ namespace Maquina
         /// </summary>
         protected override void UnloadContent()
         {
-            if (UserGlobal.UserName != "Guest")
+            if (UserApplication.UserName != "Guest")
             {
 #if HAS_CONSOLE && LOG_GENERAL
                 Console.WriteLine("Saving user information");
 #endif
-                UserGlobal.SaveCurrentUser();
-                UserGlobal.SetNewHighscore();
+                UserApplication.SaveCurrentUser();
+                UserApplication.SetNewHighscore();
             }
             
             base.UnloadContent();
@@ -103,15 +95,17 @@ namespace Maquina
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Back/Esc.
-            if (InputManager.GamepadState.Buttons.Back == ButtonState.Pressed)
+            // Gamepad Back
+            if (Application.Input.GamepadState.Buttons.Back == ButtonState.Pressed)
+            {
                 Exit();
+            }
 
             // Alt + Enter
-            if ((InputManager.KeyDown(Keys.RightAlt) ||
-                InputManager.KeyDown(Keys.LeftAlt)) && InputManager.KeyPressed(Keys.Enter))
+            if ((Application.Input.KeyDown(Keys.RightAlt) ||
+                Application.Input.KeyDown(Keys.LeftAlt)) && Application.Input.KeyPressed(Keys.Enter))
             {
-                DisplayManager.ToggleFullScreen();
+                Application.Display.ToggleFullScreen();
             }
 
             base.Update(gameTime);

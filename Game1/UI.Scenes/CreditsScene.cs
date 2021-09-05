@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Elements;
+using Maquina.Entities;
 using System.IO;
 
 namespace Maquina.UI.Scenes
@@ -22,7 +22,7 @@ namespace Maquina.UI.Scenes
             ScrollPosition = WindowBounds.Height;
 
             string[] CreditsText = File.ReadAllLines(Path.Combine(
-                Global.Content.RootDirectory, "credits.txt"));
+                Application.Content.RootDirectory, "credits.txt"));
 
             // Loop to parse contents of credits file
             for (int i = 0; i < CreditsText.Length; i++)
@@ -43,11 +43,11 @@ namespace Maquina.UI.Scenes
                     // Try to check if graphic is already loaded
                     Texture2D graphic = null;
                     string graphicName = CreditsText[i].Substring(1);
-                    if (!Global.Textures.ContainsKey(graphicName))
+                    if (!Application.Textures.ContainsKey(graphicName))
                     {
-                        Global.Textures.Add(graphicName, Game.Content.Load<Texture2D>(graphicName));
+                        Application.Textures.Add(graphicName, Game.Content.Load<Texture2D>(graphicName));
                     }
-                    graphic = Global.Textures[graphicName];
+                    graphic = (TextureSprite)ContentFactory.TryGetResource(graphicName];
 
                     Image elementImage = new Image("image");
                     elementImage.Sprite.Graphic = graphic;
@@ -65,31 +65,31 @@ namespace Maquina.UI.Scenes
                 if (CreditsText[i].StartsWith("+"))
                 {
                     elementLabel.Sprite.Text = CreditsText[i].Substring(1);
-                    elementLabel.Sprite.Font = Global.Fonts["o-default_l"];
+                    elementLabel.Sprite.Font = Application.Fonts["o-default_l"];
                 }
                 // Medium text (with shadow)
                 else if (CreditsText[i].StartsWith("-"))
                 {
                     elementLabel.Sprite.Text = CreditsText[i].Substring(1);
-                    elementLabel.Sprite.Font = Global.Fonts["o-default_m"];
+                    elementLabel.Sprite.Font = Application.Fonts["o-default_m"];
                 }
                 // Large text (no shadow)
                 else if (CreditsText[i].StartsWith("="))
                 {
                     elementLabel.Sprite.Text = CreditsText[i].Substring(1);
-                    elementLabel.Sprite.Font = Global.Fonts["default_l"];
+                    elementLabel.Sprite.Font = Application.Fonts["default_l"];
                 }
                 // Medium text (no shadow)
                 else if (CreditsText[i].StartsWith("_"))
                 {
                     elementLabel.Sprite.Text = CreditsText[i].Substring(1);
-                    elementLabel.Sprite.Font = Global.Fonts["default_m"];
+                    elementLabel.Sprite.Font = Application.Fonts["default_m"];
                 }
                 // Regular text
                 else
                 {
                     elementLabel.Sprite.Text = CreditsText[i];
-                    elementLabel.Sprite.Font = Global.Fonts["default"];
+                    elementLabel.Sprite.Font = Application.Fonts["default"];
                 }
 
                 ScrollingElements.Add("label" + i, elementLabel);
@@ -117,7 +117,7 @@ namespace Maquina.UI.Scenes
                 ScrollContainer.Location.X,
                 (int)ScrollPosition);
 
-            if (!Global.Input.MouseDown(MouseButton.Left))
+            if (!Application.Input.MouseDown(MouseButton.Left))
                 ScrollPosition -= 1.5f;
 
             if (ScrollPosition <= -ScrollContainer.ActualSize.Y)

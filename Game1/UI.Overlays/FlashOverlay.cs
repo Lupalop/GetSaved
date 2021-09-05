@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Elements;
+using Maquina.Entities;
 
 namespace Maquina.UI.Scenes
 {
@@ -85,7 +85,7 @@ namespace Maquina.UI.Scenes
             // Remove overlay when opacity below 0
             if (Opacity <= 0f)
             {
-                Global.Scenes.Overlays.Remove(OverlayKey);
+                Application.Scenes.Overlays.Remove(OverlayKey);
             }
         }
 

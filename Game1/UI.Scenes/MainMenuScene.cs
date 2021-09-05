@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Elements;
+using Maquina.Entities;
 using Microsoft.Xna.Framework.Media;
 
 namespace Maquina.UI.Scenes
@@ -19,7 +19,7 @@ namespace Maquina.UI.Scenes
         {
             InitializeComponent();
 
-            Global.Audio.PlaySong("flying-high");
+            Application.Audio.PlaySong("flying-high");
 
             // Setup background game scene to show colorful stuff
             BackgroundGameScene = new GameOneScene(Difficulty.Demo);

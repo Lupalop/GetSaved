@@ -1,4 +1,4 @@
-﻿using Maquina.Elements;
+﻿using Maquina.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,41 +12,41 @@ namespace Maquina.UI.Scenes
         Image GameLogo;
         Label GameTagline;
         Label VersionLabel;
-        MenuButton PlayButton;
-        MenuButton CreditsButton;
-        MenuButton MuteAudioButton;
-        MenuButton HighScoresButton;
-        MenuButton UserProfileButton;
+        Button PlayButton;
+        Button CreditsButton;
+        Button MuteAudioButton;
+        Button HighScoresButton;
+        Button UserProfileButton;
         StackPanel MainContainer;
         StackPanel ActionContainer;
 
         private void InitializeComponent()
         {
             GameLogo = new Image("logo");
-            GameLogo.Sprite.Graphic = Global.Textures["gameLogo"];
+            GameLogo.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("gameLogo"];
 
             GameTagline = new Label("tagline");
             GameTagline.Sprite.Text = "Disaster Preparedness for Everyone!";
-            GameTagline.Sprite.Font = Global.Fonts["default_m"];
+            GameTagline.Sprite.Font = Application.Fonts["default_m"];
 
-            PlayButton = new MenuButton("mb1");
+            PlayButton = new Button("mb1");
             PlayButton.Tooltip.Text = "Play Game!";
-            PlayButton.Background.Graphic = Global.Textures["playBtn"];
-            PlayButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new WorldSelectionScene());
+            PlayButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("playBtn"];
+            PlayButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new WorldSelectionScene());
 
             VersionLabel = new Label("lb1");
             VersionLabel.Sprite.Text = "Prototype Version";
-            VersionLabel.Sprite.Font = Global.Fonts["o-default"];
+            VersionLabel.Sprite.Font = Application.Fonts["o-default"];
 
             //
-            CreditsButton = new MenuButton("mb2");
+            CreditsButton = new Button("mb2");
             CreditsButton.Tooltip.Text = "Credits";
-            CreditsButton.Background.Graphic = Global.Textures["circle-btn"];
-            CreditsButton.Icon.Graphic = Global.Textures["credits-btn"];
-            CreditsButton.Label.Font = Global.Fonts["default"];
+            CreditsButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("circle-btn"];
+            CreditsButton.Icon.Graphic = (TextureSprite)ContentFactory.TryGetResource("credits-btn"];
+            CreditsButton.Label.Font = Application.Fonts["default"];
             CreditsButton.OnRightClick += (sender, e) => {
                 /*
-                Global.WindowManager.Windows.Add("testwin",
+                Application.WindowManager.Windows.Add("testwin",
                     new EmptyWindow()
                     {
                         Location = ScreenCenter.ToVector2() - new Vector2(200),
@@ -54,32 +54,32 @@ namespace Maquina.UI.Scenes
                     });
                 */
             };
-            CreditsButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new CreditsScene());
+            CreditsButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new CreditsScene());
 
-            MuteAudioButton = new MenuButton("mb3");
+            MuteAudioButton = new Button("mb3");
             MuteAudioButton.Tooltip.Text = "Mute Audio";
-            MuteAudioButton.Background.Graphic = Global.Textures["circle-btn"];
-            MuteAudioButton.Icon.Graphic = Global.Textures["sound-btn"];
-            MuteAudioButton.Label.Font = Global.Fonts["default"];
-            MuteAudioButton.OnLeftClick += (sender, e) => Global.Audio.ToggleMute();
+            MuteAudioButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("circle-btn"];
+            MuteAudioButton.Icon.Graphic = (TextureSprite)ContentFactory.TryGetResource("sound-btn"];
+            MuteAudioButton.Label.Font = Application.Fonts["default"];
+            MuteAudioButton.OnLeftClick += (sender, e) => Application.Audio.ToggleMute();
 
-            HighScoresButton = new MenuButton("mb4");
+            HighScoresButton = new Button("mb4");
             HighScoresButton.Tooltip.Text = "View High Scores";
-            HighScoresButton.Background.Graphic = Global.Textures["circle-btn"];
-            HighScoresButton.Icon.Graphic = Global.Textures["highscore-btn"];
-            HighScoresButton.Label.Font = Global.Fonts["default"];
-            HighScoresButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new HighScoreScene());
+            HighScoresButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("circle-btn"];
+            HighScoresButton.Icon.Graphic = (TextureSprite)ContentFactory.TryGetResource("highscore-btn"];
+            HighScoresButton.Label.Font = Application.Fonts["default"];
+            HighScoresButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new HighScoreScene());
 
-            UserProfileButton = new MenuButton("mb5");
+            UserProfileButton = new Button("mb5");
             UserProfileButton.Tooltip.Text = "Change User";
-            UserProfileButton.Background.Graphic = Global.Textures["circle-btn"];
-            UserProfileButton.Icon.Graphic = Global.Textures["user-btn"];
-            UserProfileButton.Label.Font = Global.Fonts["default"];
-            UserProfileButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new UserProfileScene());
+            UserProfileButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("circle-btn"];
+            UserProfileButton.Icon.Graphic = (TextureSprite)ContentFactory.TryGetResource("user-btn"];
+            UserProfileButton.Label.Font = Application.Fonts["default"];
+            UserProfileButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new UserProfileScene());
 
             ActionContainer = new StackPanel("actionContainer")
             {
-                ElementMargin = new Region(0, 5, 0, 0),
+                ControlMargin = new Margin(0, 5, 0, 0),
                 Orientation = Orientation.Horizontal,
                 Children =
                 {
@@ -94,7 +94,7 @@ namespace Maquina.UI.Scenes
             MainContainer = new StackPanel("mainContainer")
             {
                 AutoPosition = true,
-                ElementMargin = new Region(0, 0, 12, 0),
+                ControlMargin = new Margin(0, 0, 12, 0),
                 Children =
                 {
                     { GameLogo.Name, GameLogo },
@@ -105,7 +105,7 @@ namespace Maquina.UI.Scenes
                 }
             };
 
-            Elements.Add(MainContainer.Name, MainContainer);
+            Entities.Add(MainContainer.Name, MainContainer);
         }
     }
 }

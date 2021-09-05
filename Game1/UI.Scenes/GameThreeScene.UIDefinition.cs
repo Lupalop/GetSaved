@@ -1,4 +1,4 @@
-﻿using Maquina.Elements;
+﻿using Maquina.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Maquina.UI.Scenes
         private Image GameBG;
         private Image PlayerElement;
         //private ProgressBar ProgressBar;
-        private MenuButton BackButton;
+        private Button BackButton;
         private Label ScoreCounterLabel;
         private Canvas GameCanvas;
         private Canvas UICanvas;
@@ -23,9 +23,9 @@ namespace Maquina.UI.Scenes
             /* UI Elements */
 
             GameBG = new Image("GameBG");
-            GameBG.IgnoreGlobalScale = true;
-            GameBG.Sprite.Graphic = Global.Textures["game-bg-3"];
-            GameBG.Sprite.DestinationRectangle = Global.Display.WindowBounds;
+            GameBG.IgnoreApplicationScale = true;
+            GameBG.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("game-bg-3"];
+            GameBG.Sprite.DestinationRectangle = Application.Display.WindowBounds;
 
             /*
             // TODO: Restore once we get progress bar reimplemented in platform
@@ -40,15 +40,15 @@ namespace Maquina.UI.Scenes
             };
             */
 
-            BackButton = new MenuButton("BackButton");
+            BackButton = new Button("BackButton");
             BackButton.Tooltip.Text = "Back";
-            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("back-btn"];
             BackButton.Location = new Point(5, 5);
             BackButton.LayerDepth = 0.1f;
-            BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
+            BackButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new MainMenuScene());
 
             PlayerElement = new Image("Player");
-            PlayerElement.Sprite.Graphic = Global.Textures["character"];
+            PlayerElement.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("character"];
             PlayerElement.Sprite.SpriteType = SpriteType.Animated;
             PlayerElement.Sprite.Columns = 3;
             PlayerElement.Sprite.Rows = 1;
@@ -57,7 +57,7 @@ namespace Maquina.UI.Scenes
             ScoreCounterLabel.AutoPosition = true;
             ScoreCounterLabel.VerticalAlignment = VerticalAlignment.Top;
             ScoreCounterLabel.HorizontalAlignment = HorizontalAlignment.Right;
-            ScoreCounterLabel.Sprite.Font = Global.Fonts["o-default_l"];
+            ScoreCounterLabel.Sprite.Font = Application.Fonts["o-default_l"];
             ScoreCounterLabel.Sprite.LayerDepth = 0.1f;
 
             ScoreCounterLabel.ElementUpdated += (sender, e) =>
@@ -79,10 +79,10 @@ namespace Maquina.UI.Scenes
 
             GameCanvas = new Canvas("gameCanvas");
 
-            Elements.Add(UICanvas.Name, UICanvas);
-            Elements.Add(GameCanvas.Name, GameCanvas);
+            Entities.Add(UICanvas.Name, UICanvas);
+            Entities.Add(GameCanvas.Name, GameCanvas);
 
-            Global.Display.ResolutionChanged += Display_ResolutionChanged;
+            Application.Display.ResolutionChanged += Display_ResolutionChanged;
         }
 
         private void Display_ResolutionChanged(object sender, EventArgs e)

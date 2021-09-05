@@ -1,4 +1,4 @@
-﻿using Maquina.Elements;
+﻿using Maquina.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace Maquina.UI.Scenes
 {
     public partial class HighScoreScene
     {
-        private MenuButton BackButton;
+        private Button BackButton;
         private Label HeaderLabel;
         private Throbber Throbber1;
         private StackPanel ScoreContainer;
@@ -18,21 +18,21 @@ namespace Maquina.UI.Scenes
 
         private void InitializeComponent()
         {
-            BackButton = new MenuButton("mb1");
+            BackButton = new Button("mb1");
             BackButton.Tooltip.Text = "Back";
-            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("back-btn"];
             BackButton.Location = new Point(5, 5);
-            BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
+            BackButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new MainMenuScene());
 
             HeaderLabel = new Label("lb1");
             HeaderLabel.Sprite.Text = "High Scores";
-            HeaderLabel.Sprite.Font = Global.Fonts["o-default_l"];
+            HeaderLabel.Sprite.Font = Application.Fonts["o-default_l"];
 
             Throbber1 = new Throbber("tb1");
 
             ScoreContainer = new StackPanel("cr")
             {
-                ElementMargin = new Region(10, 0, 15, 0),
+                ControlMargin = new Margin(10, 0, 15, 0),
             };
 
             MainContainer = new StackPanel("mainContainer")
@@ -45,8 +45,8 @@ namespace Maquina.UI.Scenes
                 }
             };
 
-            Elements.Add(MainContainer.Name, MainContainer);
-            Elements.Add(BackButton.Name, BackButton);
+            Entities.Add(MainContainer.Name, MainContainer);
+            Entities.Add(BackButton.Name, BackButton);
         }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.Elements;
+using Maquina.Entities;
 using System.Collections.ObjectModel;
 
 namespace Maquina.UI.Scenes
@@ -15,7 +15,7 @@ namespace Maquina.UI.Scenes
     public partial class GameEndOverlay : Overlay
     {
         public GameEndOverlay(Games currentGame,
-            Collection<BaseElement> passedMessage, Scene parentScene, Difficulty currentDifficulty)
+            Collection<Entity> passedMessage, Scene parentScene, Difficulty currentDifficulty)
             : base("Game End Overlay", parentScene)
         {
             CurrentGame = currentGame;
@@ -26,7 +26,7 @@ namespace Maquina.UI.Scenes
         }
 
         Difficulty CurrentDifficulty { get; set; }
-        Collection<BaseElement> PassedMessage { get; set; }
+        Collection<Entity> PassedMessage { get; set; }
 
         public override void LoadContent()
         {
@@ -50,8 +50,8 @@ namespace Maquina.UI.Scenes
             }
 
             // Show a fade effect in order for this overlay's appearance to be not abrupt
-            if (!Global.Scenes.Overlays.ContainsKey("fade-gameEnd"))
-                Global.Scenes.Overlays.Add("fade-gameEnd", new FadeOverlay("fade-gameEnd"));
+            if (!Application.Scenes.Overlays.ContainsKey("fade-gameEnd"))
+                Application.Scenes.Overlays.Add("fade-gameEnd", new FadeOverlay("fade-gameEnd"));
             base.LoadContent();
         }
 
@@ -74,13 +74,13 @@ namespace Maquina.UI.Scenes
             {
                 case GameEndStates.TimesUp:
                 default:
-                    TimesUp.Sprite.Graphic = Global.Textures["game-end-time"];
+                    TimesUp.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("game-end-time"];
                     break;
                 case GameEndStates.GameOver:
-                    TimesUp.Sprite.Graphic = Global.Textures["game-end-lose"];
+                    TimesUp.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("game-end-lose"];
                     break;
                 case GameEndStates.GameWon:
-                    TimesUp.Sprite.Graphic = Global.Textures["game-end-win"];
+                    TimesUp.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("game-end-win"];
                     break;
             }
         }
@@ -116,7 +116,7 @@ namespace Maquina.UI.Scenes
             SetPointsEarned((int)scene.Score);
         }
 
-        public void Game1End(Collection<BaseElement> CollectedElements)
+        public void Game1End(Collection<Entity> CollectedElements)
         {
             int correctItems = 0;
             int incorrectItems = 0;
@@ -171,7 +171,7 @@ namespace Maquina.UI.Scenes
                     continue;
                 }
 
-                MenuButton itemIcon = new MenuButton("icon");
+                Button itemIcon = new Button("icon");
                 itemIcon.Background.SpriteType = SpriteType.None;
                 itemIcon.Tooltip.Text = AvailableItems[i];
                 itemIcon.Background.Graphic = Game.Content.Load<Texture2D>("falling-object/" + AvailableItems[i]);
@@ -192,11 +192,11 @@ namespace Maquina.UI.Scenes
 
             Label incorrectItemCount = new Label("IncorrectItem");
             incorrectItemCount.Sprite.Text = "Incorrect items: " + incorrectItems;
-            incorrectItemCount.Sprite.Font = Global.Fonts["default_m"];
+            incorrectItemCount.Sprite.Font = Application.Fonts["default_m"];
 
             Label correctItemCount = new Label("CorrectItem");
             correctItemCount.Sprite.Text = "Correct items: " + correctItems;
-            correctItemCount.Sprite.Font = Global.Fonts["default_m"];
+            correctItemCount.Sprite.Font = Application.Fonts["default_m"];
 
             InfoContainer.Children.Add("IncorrectItem", incorrectItemCount);
             InfoContainer.Children.Add("CorrectItem", correctItemCount);
@@ -205,7 +205,7 @@ namespace Maquina.UI.Scenes
             SetPointsEarned(50 * MathHelper.Clamp(totalItems, 0, int.MaxValue));
         }
 
-        public void Game4End(Collection<BaseElement> CollectedElements)
+        public void Game4End(Collection<Entity> CollectedElements)
         {
             int peopleSaved = 0;
             int peopleDied = 0;
@@ -234,11 +234,11 @@ namespace Maquina.UI.Scenes
 
             Label incorrectItemCount = new Label("IncorrectItem");
             incorrectItemCount.Sprite.Text = "People Died: " + peopleDied;
-            incorrectItemCount.Sprite.Font = Global.Fonts["default_m"];
+            incorrectItemCount.Sprite.Font = Application.Fonts["default_m"];
 
             Label correctItemCount = new Label("CorrectItem");
             correctItemCount.Sprite.Text = "People Saved: " + peopleSaved;
-            correctItemCount.Sprite.Font = Global.Fonts["default_m"];
+            correctItemCount.Sprite.Font = Application.Fonts["default_m"];
 
             InfoContainer.Children.Add("container-main", new StackPanel("cr")
             {
@@ -260,15 +260,15 @@ namespace Maquina.UI.Scenes
 
         public void SetPointsEarned(int points)
         {
-            UserGlobal.Score += points;
+            UserApplication.Score += points;
 
             Label pointsEarnedLabel = new Label("points");
             pointsEarnedLabel.Sprite.Text = String.Format("You earned {0} points!", points);
-            pointsEarnedLabel.Sprite.Font = Global.Fonts["o-default_m"];
+            pointsEarnedLabel.Sprite.Font = Application.Fonts["o-default_m"];
 
             Label pointsTotalLabel = new Label("points");
-            pointsTotalLabel.Sprite.Text = String.Format("{0}, you have {1} points in total.", UserGlobal.UserName, UserGlobal.Score);
-            pointsTotalLabel.Sprite.Font = Global.Fonts["o-default"];
+            pointsTotalLabel.Sprite.Text = String.Format("{0}, you have {1} points in total.", UserApplication.UserName, UserApplication.Score);
+            pointsTotalLabel.Sprite.Font = Application.Fonts["o-default"];
 
             InfoContainer.Children.Add("PointsEarned", pointsEarnedLabel);
             InfoContainer.Children.Add("TotalPointsEarned", pointsTotalLabel);

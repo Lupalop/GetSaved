@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Maquina.UI;
 
-namespace Maquina.Elements
+namespace Maquina.Entities
 {
     public abstract class GameElement : Image
     {

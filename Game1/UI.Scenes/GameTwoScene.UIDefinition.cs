@@ -1,4 +1,4 @@
-﻿using Maquina.Elements;
+﻿using Maquina.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -13,7 +13,7 @@ namespace Maquina.UI.Scenes
     {
         private Image GameBG;
         //private ProgressBar ProgressBar;
-        private MenuButton BackButton;
+        private Button BackButton;
         private Image PlayerElement;
         private Label TimerLabel;
         private Label DeathTimerLabel;
@@ -28,9 +28,9 @@ namespace Maquina.UI.Scenes
             /* UI Elements */
 
             GameBG = new Image("GameBG");
-            GameBG.IgnoreGlobalScale = true;
-            GameBG.Sprite.Graphic = Global.Textures["game-bg-4_1"];
-            GameBG.Sprite.DestinationRectangle = Global.Display.WindowBounds;
+            GameBG.IgnoreApplicationScale = true;
+            GameBG.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("game-bg-4_1"];
+            GameBG.Sprite.DestinationRectangle = Application.Display.WindowBounds;
             GameBG.ElementUpdated += GameBG_ElementUpdated;
 
             /*
@@ -46,18 +46,18 @@ namespace Maquina.UI.Scenes
             };
             */
 
-            BackButton = new MenuButton("BackButton");
+            BackButton = new Button("BackButton");
             BackButton.Tooltip.Text = "Back";
-            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("back-btn"];
             BackButton.Location = new Point(5, 5);
             BackButton.LayerDepth = 0.1f;
-            BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
+            BackButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new MainMenuScene());
 
             TimerLabel = new Label("o-timer");
             TimerLabel.AutoPosition = true;
             TimerLabel.VerticalAlignment = VerticalAlignment.Top;
             TimerLabel.HorizontalAlignment = HorizontalAlignment.Right;
-            TimerLabel.Sprite.Font = Global.Fonts["o-default_l"];
+            TimerLabel.Sprite.Font = Application.Fonts["o-default_l"];
             TimerLabel.Sprite.LayerDepth = 0.1f;
 
             TimerLabel.ElementUpdated += (sender, e) =>
@@ -71,28 +71,28 @@ namespace Maquina.UI.Scenes
             DeathTimerLabel.AutoPosition = true;
             DeathTimerLabel.HorizontalAlignment = HorizontalAlignment.Center;
             DeathTimerLabel.VerticalAlignment = VerticalAlignment.Center;
-            DeathTimerLabel.Sprite.Font = Global.Fonts["o-default_xl"];
+            DeathTimerLabel.Sprite.Font = Application.Fonts["o-default_xl"];
 
             HelpLabel = new Label("helplabel");
             HelpLabel.AutoPosition = true;
             HelpLabel.HorizontalAlignment = HorizontalAlignment.Center;
             HelpLabel.VerticalAlignment = VerticalAlignment.Center;
-            HelpLabel.Sprite.Font = Global.Fonts["o-default_l"];
+            HelpLabel.Sprite.Font = Application.Fonts["o-default_l"];
 
             /* Game Elements */
 
             PlayerElement = new Image("Player");
-            PlayerElement.Sprite.Graphic = Global.Textures["character"];
+            PlayerElement.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("character"];
             PlayerElement.Sprite.Columns = 3;
             PlayerElement.Sprite.Rows = 1;
             PlayerElement.Sprite.SpriteType = SpriteType.Animated;
             PlayerElement.Sprite.SpriteEffects = SpriteEffects.FlipHorizontally;
 
             PointA = new Image("PointA");
-            PointA.Sprite.Graphic = Global.Textures["starting-point"];
+            PointA.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("starting-point"];
 
             PointB = new Image("PointB");
-            PointB.Sprite.Graphic = Global.Textures["exit-label"];
+            PointB.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("exit-label"];
             PointB.Size = PointA.Size;
 
             /* Canvas Elements */
@@ -120,10 +120,10 @@ namespace Maquina.UI.Scenes
                 },
             };
 
-            Elements.Add(UICanvas.Name, UICanvas);
-            Elements.Add(GameCanvas.Name, GameCanvas);
+            Entities.Add(UICanvas.Name, UICanvas);
+            Entities.Add(GameCanvas.Name, GameCanvas);
 
-            Global.Display.ResolutionChanged += Display_ResolutionChanged;
+            Application.Display.ResolutionChanged += Display_ResolutionChanged;
         }
 
         private void UpdatePoints()

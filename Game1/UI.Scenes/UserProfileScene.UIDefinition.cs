@@ -1,4 +1,4 @@
-﻿using Maquina.Elements;
+﻿using Maquina.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,38 +11,38 @@ namespace Maquina.UI.Scenes
     public partial class UserProfileScene
     {
         private StackPanel mainContainer;
-        private MenuButton mb1;
+        private Button mb1;
         private Label lb1;
         private Label lb2;
         private Label lb3;
         private TextBox tb1;
-        private MenuButton mb2;
+        private Button mb2;
         private Label lb4;
 
         private void InitializeComponent()
         {
-            mb1 = new MenuButton("mb1");
+            mb1 = new Button("mb1");
             mb1.Tooltip.Text = "Back";
-            mb1.Background.Graphic = Global.Textures["back-btn"];
+            mb1.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("back-btn"];
             mb1.Location = new Point(5, 5);
-            mb1.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
+            mb1.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new MainMenuScene());
 
             lb1 = new Label("lb1");
-            lb1.Sprite.Text = string.Format("Are you {0}?", UserGlobal.UserName);
-            lb1.Sprite.Font = Global.Fonts["o-default_l"];
+            lb1.Sprite.Text = string.Format("Are you {0}?", UserApplication.UserName);
+            lb1.Sprite.Font = Application.Fonts["o-default_l"];
 
             lb2 = new Label("lb2");
-            lb2.Sprite.Text = string.Format("You currently have {0} points!", UserGlobal.Score);
-            lb2.Sprite.Font = Global.Fonts["default_m"];
+            lb2.Sprite.Text = string.Format("You currently have {0} points!", UserApplication.Score);
+            lb2.Sprite.Font = Application.Fonts["default_m"];
 
             lb3 = new Label("lb3");
             lb3.Sprite.Text = "If no, type your name at the box\n below and confirm.";
-            lb3.Sprite.Font = Global.Fonts["default_m"];
+            lb3.Sprite.Font = Application.Fonts["default_m"];
 
             tb1 = new TextBox("tb1");
             tb1.OnInput += (sender, e) => lb4.Sprite.Tint = Color.Transparent;
 
-            mb2 = new MenuButton("mb2");
+            mb2 = new Button("mb2");
             mb2.Tooltip.Text = "Clicking here will clear your points\n and change the active user.";
             mb2.Label.Text = "Confirm and change user";
             mb2.OnLeftClick += (sender, e) =>
@@ -53,15 +53,15 @@ namespace Maquina.UI.Scenes
                     lb4.Sprite.Tint = Color.White;
                     return;
                 }
-                UserGlobal.UserName = tb1.Label.Text;
-                UserGlobal.Score = 0;
+                UserApplication.UserName = tb1.Label.Text;
+                UserApplication.Score = 0;
 
-                Global.Scenes.SwitchToScene(new MainMenuScene());
+                Application.Scenes.SwitchToScene(new MainMenuScene());
             };
 
             lb4 = new Label("lb4");
             lb4.Sprite.Text = "Leaving the name field blank is bad.";
-            lb4.Sprite.Font = Global.Fonts["default"];
+            lb4.Sprite.Font = Application.Fonts["default"];
             lb4.Sprite.Tint = Color.Transparent;
 
             mainContainer = new StackPanel("mainContainer")
@@ -78,8 +78,8 @@ namespace Maquina.UI.Scenes
                 }
             };
 
-            Elements.Add(mb1.Name, mb1);
-            Elements.Add(mainContainer.Name, mainContainer);
+            Entities.Add(mb1.Name, mb1);
+            Entities.Add(mainContainer.Name, mainContainer);
         }
     }
 }

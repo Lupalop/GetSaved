@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.Elements;
+using Maquina.Entities;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.ObjectModel;
 
@@ -105,7 +105,7 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this, GameDifficulty));
+            Application.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.EscapeEarthquake, null, this, GameDifficulty));
         }
 
         private void ResetPlayerPosition()
@@ -180,12 +180,12 @@ namespace Maquina.UI.Scenes
                 if (CurrentGame == Games.EscapeFire)
                 {
                     string overlayName = String.Format("fade-{0}", DateTime.Now);
-                    Global.Scenes.Overlays.Add(overlayName, new FadeOverlay(overlayName, Color.Red) { FadeSpeed = 0.1f });
+                    Application.Scenes.Overlays.Add(overlayName, new FadeOverlay(overlayName, Color.Red) { FadeSpeed = 0.1f });
                 }
-                if ((Global.Input.MouseUp(MouseButton.Left) ||
-                     Global.Input.MouseUp(MouseButton.Right) ||
-                     Global.Input.MouseUp(MouseButton.Middle) ||
-                     Global.Input.KeyUp(Keys.Space)) &&
+                if ((Application.Input.MouseUp(MouseButton.Left) ||
+                     Application.Input.MouseUp(MouseButton.Right) ||
+                     Application.Input.MouseUp(MouseButton.Middle) ||
+                     Application.Input.KeyUp(Keys.Space)) &&
                     !DeathTimeLeftController.Enabled)
                 {
                     DeathTimerLabel.Sprite.Tint = Color.Red;
@@ -213,8 +213,8 @@ namespace Maquina.UI.Scenes
                 GameTimer.Enabled = false;
             };
 
-            PointReached = Global.SFX["caught"];
-            Global.Audio.PlaySong("in-pursuit");
+            PointReached = Application.SFX["caught"];
+            Application.Audio.PlaySong("in-pursuit");
 
             base.LoadContent();
         }
@@ -246,13 +246,13 @@ namespace Maquina.UI.Scenes
             {
                 if (CurrentStage == 3 && PlayerElement.Sprite.Graphic.Name != "character-line")
                 {
-                    PlayerElement.Sprite.Graphic = Global.Textures["character-line"];
+                    PlayerElement.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("character-line"];
                 }
                 
-                if (Global.Input.MousePressed(MouseButton.Left) ||
-                    Global.Input.MousePressed(MouseButton.Right) ||
-                    Global.Input.MousePressed(MouseButton.Middle) ||
-                    Global.Input.KeyPressed(Keys.Space))
+                if (Application.Input.MousePressed(MouseButton.Left) ||
+                    Application.Input.MousePressed(MouseButton.Right) ||
+                    Application.Input.MousePressed(MouseButton.Middle) ||
+                    Application.Input.KeyPressed(Keys.Space))
                 {
                     DeathTimerLabel.Sprite.Tint = Color.Transparent;
                     DeathTimeLeftController.Enabled = false;
@@ -265,12 +265,12 @@ namespace Maquina.UI.Scenes
                             case 1:
                                 SetHelpMessage(2);
                                 CurrentStage = 2;
-                                GameBG.Sprite.Graphic = Global.Textures["game-bg-4_2"];
+                                GameBG.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("game-bg-4_2"];
                                 break;
                             case 2:
                                 SetHelpMessage(3);
                                 CurrentStage = 3;
-                                GameBG.Sprite.Graphic = Global.Textures["game-bg-4_3"];
+                                GameBG.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("game-bg-4_3"];
                                 break;
                             case 3:
                                 SetHelpMessage(0);
@@ -282,7 +282,7 @@ namespace Maquina.UI.Scenes
                             default:
                                 break;
                         }
-                        Display_ResolutionChanged(Global.Display, EventArgs.Empty);
+                        Display_ResolutionChanged(Application.Display, EventArgs.Empty);
                     }
 
                     // Get difference from pos to player
@@ -292,7 +292,7 @@ namespace Maquina.UI.Scenes
                     // Getting only the direction, with a length of one
                     differenceToPlayer.Normalize();
 
-                    differenceToPlayer = differenceToPlayer * (float)Global.GameTime.ElapsedGameTime.TotalMilliseconds * WalkSpeed;
+                    differenceToPlayer = differenceToPlayer * (float)Application.GameTime.ElapsedGameTime.TotalMilliseconds * WalkSpeed;
 
                     // Move in that direction based on elapsed time
                     PlayerElement.Location += differenceToPlayer.ToPoint();

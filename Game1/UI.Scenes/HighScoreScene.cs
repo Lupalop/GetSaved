@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.Elements;
+using Maquina.Entities;
 using System.Threading;
 
 namespace Maquina.UI.Scenes
@@ -24,7 +24,7 @@ namespace Maquina.UI.Scenes
             {
                 for (int i = 1; i <= 10; i++)
                 {
-                    if (Global.Preferences.GetStringPreference(
+                    if (Application.Preferences.GetString(
                         string.Format("game.highscore.user-{0}", i)).Trim() == "")
                     {
                         continue;
@@ -34,11 +34,11 @@ namespace Maquina.UI.Scenes
                     scoreLabel.HorizontalAlignment = HorizontalAlignment.Left;
                     scoreLabel.Sprite.Text = string.Format("{0}. {1} earned {2} points!",
                             i,
-                            Global.Preferences.GetStringPreference(
+                            Application.Preferences.GetString(
                                 string.Format("game.highscore.user-{0}", i)),
-                            Global.Preferences.GetIntPreference(
+                            Application.Preferences.GetInt32(
                                 string.Format("game.highscore.score-{0}", i)));
-                    scoreLabel.Sprite.Font = Global.Fonts["default_m"];
+                    scoreLabel.Sprite.Font = Application.Fonts["default_m"];
                     ScoreContainer.Children.Add(string.Format("score-{0}", i), scoreLabel);
                 }
                 MainContainer.Children.Remove(Throbber1.Name);

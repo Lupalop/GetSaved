@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Elements;
+using Maquina.Entities;
 
 namespace Maquina.UI.Scenes
 {
@@ -47,32 +47,32 @@ namespace Maquina.UI.Scenes
                 // FIXME: Other game scenes temporarily disabled
                 // The Safety Kit
                 case Games.FallingObjects:
-                    EgsImage.Sprite.Graphic = Global.Textures["egs1"];
-                    HelpImage.Sprite.Graphic = Global.Textures["htp-fallingobject"];
+                    EgsImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("egs1"];
+                    HelpImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("htp-fallingobject"];
                     GameNameLabel.Sprite.Text = "The Safety Kit";
                     return new GameOneScene(GameDifficulty);
                 // Earthquake Escape
                 case Games.EscapeEarthquake:
-                    EgsImage.Sprite.Graphic = Global.Textures["egs1"];
-                    HelpImage.Sprite.Graphic = Global.Textures["htp-esc"];
+                    EgsImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("egs1"];
+                    HelpImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("htp-esc"];
                     GameNameLabel.Sprite.Text = "Earthquake Escape";
                     return new GameTwoScene(GameDifficulty, Games.EscapeEarthquake);
                 // Fire Escape
                 case Games.EscapeFire:
-                    EgsImage.Sprite.Graphic = Global.Textures["egs2"];
-                    HelpImage.Sprite.Graphic = Global.Textures["htp-esc"];
+                    EgsImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("egs2"];
+                    HelpImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("htp-esc"];
                     GameNameLabel.Sprite.Text = "Fire Escape";
                     return new GameTwoScene(GameDifficulty, Games.EscapeFire);
                 // Safety Jump
                 case Games.RunningForTheirLives:
-                    EgsImage.Sprite.Graphic = Global.Textures["egs2"];
-                    HelpImage.Sprite.Graphic = Global.Textures["htp-dino"];
+                    EgsImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("egs2"];
+                    HelpImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("htp-dino"];
                     GameNameLabel.Sprite.Text = "Safety Jump";
                     return new GameThreeScene(GameDifficulty);
                 // Aid 'Em
                 case Games.HelpOthersNow:
-                    EgsImage.Sprite.Graphic = Global.Textures["egs1"];
-                    HelpImage.Sprite.Graphic = Global.Textures["htp-aidem"];
+                    EgsImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("egs1"];
+                    HelpImage.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("htp-aidem"];
                     GameNameLabel.Sprite.Text = "Aid 'Em";
                     return new GameOneScene(GameDifficulty);
                     //return new GameFourScene(GameDifficulty);

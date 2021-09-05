@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Maquina.UI;
-using Maquina.Elements;
+using Maquina.Entities;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.ObjectModel;
 
@@ -26,7 +26,7 @@ namespace Maquina.UI.Scenes
 			"!Donut", "!Shoes", "!Jewelry", "!Ball", "!Wall Clock", "!Chair", "!Bomb"
 			};
 
-        private Collection<BaseElement> CollectedElements = new Collection<BaseElement>();
+        private Collection<Entity> CollectedElements = new Collection<Entity>();
 
         private double _InitialTimeLeft;
         private double InitialTimeLeft
@@ -113,7 +113,7 @@ namespace Maquina.UI.Scenes
                     {
                         givenName = givenName.Remove(0, 1);
                     }
-                    fallingItem.Sprite.Graphic = Global.Textures["item-" + givenName];
+                    fallingItem.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("item-" + givenName];
                     fallingItem.Size = new Point(64);
                     container.Children.Add(i.ToString(), fallingItem);
                 }
@@ -139,7 +139,7 @@ namespace Maquina.UI.Scenes
                 }
 
                 fallingItem.ItemID = itemID;
-                fallingItem.Sprite.Graphic = Global.Textures[string.Format("item-{0}", givenName)];
+                fallingItem.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource(string.Format("item-{0}", givenName)];
                 GameCanvas.Children.Add(fallingItem.Name, fallingItem);
             }
         }
@@ -148,11 +148,11 @@ namespace Maquina.UI.Scenes
         {
             InitializeComponent();
 
-            ObjectCaught = Global.SFX["caught"];
+            ObjectCaught = Application.SFX["caught"];
 
             if (GameDifficulty != Difficulty.Demo)
             {
-                Global.Audio.PlaySong("hide-seek");
+                Application.Audio.PlaySong("hide-seek");
             }
 
             // Initialize timers
@@ -185,7 +185,7 @@ namespace Maquina.UI.Scenes
             GameTimer.Elapsed += delegate
             {
                 IsGameEnd = true;
-                Global.Scenes.Overlays.Add("GameEnd",
+                Application.Scenes.Overlays.Add("GameEnd",
                     new GameEndOverlay(Games.FallingObjects, CollectedElements, this, GameDifficulty));
             };
 
@@ -194,7 +194,7 @@ namespace Maquina.UI.Scenes
             {
                 TimeLeftController.Close();
                 GameTimer.Close();
-                Elements.Remove(UICanvas.Name);
+                Entities.Remove(UICanvas.Name);
             }
 
             base.LoadContent();

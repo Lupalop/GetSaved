@@ -19,8 +19,8 @@ namespace Maquina.UI.Scenes
             GameDifficulty = Difficulty;
         }
 
-        private Dictionary<string, BaseElement> GameElements = new Dictionary<string, BaseElement>();
-        private Collection<BaseElement> CollectedElements = new Collection<BaseElement>();
+        private Dictionary<string, Entity> GameElements = new Dictionary<string, Entity>();
+        private Collection<Entity> CollectedElements = new Collection<Entity>();
 
         private double _InitialTimeLeft;
         private double InitialTimeLeft
@@ -87,7 +87,7 @@ namespace Maquina.UI.Scenes
                 ProjectileGenerator.Close();
                 AttemptRemoveHelpman();
 
-                Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.HelpOthersNow, CollectedElements, this, GameDifficulty));
+                Application.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.HelpOthersNow, CollectedElements, this, GameDifficulty));
                 GameTimer.Enabled = false;
             };
         }
@@ -97,7 +97,7 @@ namespace Maquina.UI.Scenes
             AttemptRemoveHelpman();
             GameElements.Add("helpman", new Helpman("helpman")
             {
-                Graphic = Global.Textures["helpman"],
+                Graphic = (TextureSprite)ContentFactory.TryGetResource("helpman"],
                 OnUpdate = (element) =>
                 {
                     Helpman helpman = (Helpman)element;
@@ -136,9 +136,9 @@ namespace Maquina.UI.Scenes
             string overlayName = String.Format("flash-{0}-{1}{2}", DateTime.Now, new Random().Next(0, 1000), resource);
             try
             {
-                Global.Scenes.Overlays.Add(overlayName,
+                Application.Scenes.Overlays.Add(overlayName,
                     new FlashOverlay(overlayName,
-                        Global.Textures[resource], scale,
+                        ContentFactory.TryGetResource(resource], scale,
                         delay) { FadeSpeed = 0.1f });
             }
             catch (Exception ex) { Console.WriteLine(ex); }
@@ -148,7 +148,7 @@ namespace Maquina.UI.Scenes
             string overlayName = String.Format("fade-{0}-{1}", DateTime.Now, new Random().Next(0, 1000));
             try
             {
-                Global.Scenes.Overlays.Add(overlayName,
+                Application.Scenes.Overlays.Add(overlayName,
                     new FadeOverlay(overlayName, color) { FadeSpeed = 0.01f });
             }
             catch (Exception ex) { Console.WriteLine(ex); }
@@ -188,10 +188,10 @@ namespace Maquina.UI.Scenes
         {
             base.LoadContent();
 
-            Elements = new Dictionary<string, BaseElement> {
+            Elements = new Dictionary<string, Entity> {
                 { "GameBG", new Image("GameBG")
                 {
-                    Graphic = Global.Textures["game-bg-2"],
+                    Graphic = (TextureSprite)ContentFactory.TryGetResource("game-bg-2"],
                     ControlAlignment = Alignment.Fixed,
                     OnUpdate = (element) => {
                         element.DestinationRectangle = new Rectangle(0, 0, Game.GraphicsDevice.Viewport.Width, Game.GraphicsDevice.Viewport.Height);
@@ -205,14 +205,14 @@ namespace Maquina.UI.Scenes
                         a.value = (float)TimeLeft;
                     }
                 }},
-                { "BackButton", new MenuButton("mb")
+                { "BackButton", new Button("mb")
                 {
                     Tooltip = "Back",
-                    Graphic = Global.Textures["back-btn"],
+                    Graphic = (TextureSprite)ContentFactory.TryGetResource("back-btn"],
                     Location = new Vector2(5,5),
                     ControlAlignment = Alignment.Fixed,
                     LayerDepth = 0.1f,
-                    LeftClickAction = () => Global.Scenes.SwitchToScene(new MainMenuScene())
+                    LeftClickAction = () => Application.Scenes.SwitchToScene(new MainMenuScene())
                 }},
                 { "Timer", new Label("timer")
                 {
@@ -223,11 +223,11 @@ namespace Maquina.UI.Scenes
                         a.Text = TimeLeft.ToString();
                     },
                     LayerDepth = 0.1f,
-                    Font = Global.Fonts["o-default_l"]
+                    Font = Application.Fonts["o-default_l"]
                 }},
                 { "Hand1", new Image("hand1")
                 {
-                    Graphic = Global.Textures["hand"],
+                    Graphic = (TextureSprite)ContentFactory.TryGetResource("hand"],
                     ControlAlignment = Alignment.Fixed,
                     SpriteType = SpriteType.Static,
                     Columns = 2,
@@ -235,17 +235,17 @@ namespace Maquina.UI.Scenes
                 }},
                 { "Hand2", new Image("hand2")
                 {
-                    Graphic = Global.Textures["hand"],
+                    Graphic = (TextureSprite)ContentFactory.TryGetResource("hand"],
                     ControlAlignment = Alignment.Fixed,
                     SpriteType = SpriteType.Static,
                     CurrentFrame = 1,
                     Columns = 2,
                     Rows = 1
                 }},
-                { "Controller-Bandage", new MenuButton("controller-x")
+                { "Controller-Bandage", new Button("controller-x")
                 {
                     Tooltip = "Bandage (X)",
-                    Graphic = Global.Textures["bandage"],
+                    Graphic = (TextureSprite)ContentFactory.TryGetResource("bandage"],
                     SpriteType = SpriteType.None,
                     ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(80,460),
@@ -253,10 +253,10 @@ namespace Maquina.UI.Scenes
                     Scale = 1.3f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Bandage)
                 }},
-                { "Controller-Stitch", new MenuButton("controller-a")
+                { "Controller-Stitch", new Button("controller-a")
                 {
                     Tooltip = "Stitch (A)",
-                    Graphic = Global.Textures["stitch"],
+                    Graphic = (TextureSprite)ContentFactory.TryGetResource("stitch"],
                     SpriteType = SpriteType.None,
                     ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(150, 530),
@@ -264,10 +264,10 @@ namespace Maquina.UI.Scenes
                     Scale = 1.3f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Stitch)
                 }},
-                { "Controller-Medicine", new MenuButton("controller-s")
+                { "Controller-Medicine", new Button("controller-s")
                 {
                     Tooltip = "Medicine (S)",
-                    Graphic = Global.Textures["medicine"],
+                    Graphic = (TextureSprite)ContentFactory.TryGetResource("medicine"],
                     SpriteType = SpriteType.None,
                     ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(730,460),
@@ -275,10 +275,10 @@ namespace Maquina.UI.Scenes
                     Scale = 1.3f,
                     LeftClickAction = () => AddSubtractBrickHit(ControllerKeys.Medicine)
                 }},
-                { "Controller-CPR", new MenuButton("controller-o")
+                { "Controller-CPR", new Button("controller-o")
                 {
                     Tooltip = "CPR (O)",
-                    Graphic = Global.Textures["cpr"],
+                    Graphic = (TextureSprite)ContentFactory.TryGetResource("cpr"],
                     SpriteType = SpriteType.None,
                     ControlAlignment = Alignment.Fixed,
                     Location = new Vector2(650, 550),
@@ -290,11 +290,11 @@ namespace Maquina.UI.Scenes
                 {
                     Text = String.Format("Use {0}!", CurrentController.ToString()),
                     ControlAlignment = Alignment.Fixed,
-                    Font = Global.Fonts["default_l"]
+                    Font = Application.Fonts["default_l"]
                 }}
             };
 
-            Global.AudioManager.PlaySong("flying-high");
+            Application.AudioManager.PlaySong("flying-high");
         }
 
         public override void DelayLoadContent()
@@ -390,7 +390,7 @@ namespace Maquina.UI.Scenes
             Label pressLabel = (Label)Elements["PressLabel"];
             pressLabel.Text = String.Format("Use {0}!", CurrentController.ToString());
             pressLabel.Location = new Vector2(
-                ScreenCenter.X -(Global.Fonts["default_l"].MeasureString(pressLabel.Text).X / 2), 80);
+                ScreenCenter.X -(Application.Fonts["default_l"].MeasureString(pressLabel.Text).X / 2), 80);
             // base
             GuiUtils.UpdateElements(Elements);
             GuiUtils.UpdateElements(GameElements);

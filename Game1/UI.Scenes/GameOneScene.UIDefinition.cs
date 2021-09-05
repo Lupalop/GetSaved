@@ -1,4 +1,4 @@
-﻿using Maquina.Elements;
+﻿using Maquina.Entities;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace Maquina.UI.Scenes
     {
         private Image GameBG;
         //private ProgressBar ProgressBar;
-        private MenuButton BackButton;
+        private Button BackButton;
         private Image ObjectCatcher;
         private Label TimerLabel;
         private Canvas UICanvas;
@@ -21,8 +21,8 @@ namespace Maquina.UI.Scenes
         private void InitializeComponent()
         {
             GameBG = new Image("GameBG");
-            GameBG.Sprite.Graphic = Global.Textures["game-bg-1"];
-            GameBG.IgnoreGlobalScale = true;
+            GameBG.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("game-bg-1"];
+            GameBG.IgnoreApplicationScale = true;
             GameBG.Sprite.DestinationRectangle = WindowBounds;
 
             /*
@@ -38,15 +38,15 @@ namespace Maquina.UI.Scenes
             };
             */
 
-            BackButton = new MenuButton("BackButton");
+            BackButton = new Button("BackButton");
             BackButton.Tooltip.Text = "Back";
-            BackButton.Background.Graphic = Global.Textures["back-btn"];
+            BackButton.Background.Graphic = (TextureSprite)ContentFactory.TryGetResource("back-btn"];
             BackButton.Location = new Point(5, 5);
             BackButton.LayerDepth = 0.1f;
-            BackButton.OnLeftClick += (sender, e) => Global.Scenes.SwitchToScene(new MainMenuScene());
+            BackButton.OnLeftClick += (sender, e) => Application.Scenes.SwitchToScene(new MainMenuScene());
 
             ObjectCatcher = new Image("ObjectCatcher");
-            ObjectCatcher.Sprite.Graphic = Global.Textures["object-catcher"];
+            ObjectCatcher.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("object-catcher"];
             ObjectCatcher.Location = new Point(5, Game.GraphicsDevice.Viewport.Height - 70);
             ObjectCatcher.ElementUpdated += ObjectCatcher_ElementUpdated;
 
@@ -54,7 +54,7 @@ namespace Maquina.UI.Scenes
             TimerLabel.AutoPosition = true;
             TimerLabel.VerticalAlignment = VerticalAlignment.Top;
             TimerLabel.HorizontalAlignment = HorizontalAlignment.Right;
-            TimerLabel.Sprite.Font = Global.Fonts["o-default_l"];
+            TimerLabel.Sprite.Font = Application.Fonts["o-default_l"];
             TimerLabel.Sprite.LayerDepth = 0.1f;
 
             TimerLabel.ElementUpdated += (sender, e) =>
@@ -76,21 +76,21 @@ namespace Maquina.UI.Scenes
 
             GameCanvas = new Canvas("gameCanvas");
 
-            Elements.Add(UICanvas.Name, UICanvas);
-            Elements.Add(GameCanvas.Name, GameCanvas);
+            Entities.Add(UICanvas.Name, UICanvas);
+            Entities.Add(GameCanvas.Name, GameCanvas);
 
-            Global.Display.ResolutionChanged += Display_ResolutionChanged;
+            Application.Display.ResolutionChanged += Display_ResolutionChanged;
         }
 
         private void ObjectCatcher_ElementUpdated(object sender, EventArgs e)
         {
             if (IsGameEnd)
             {
-                Elements.Remove("ObjectCatcher");
+                Entities.Remove("ObjectCatcher");
             }
             else
             {
-                int mouseX = Global.Input.MousePosition.X - (ObjectCatcher.Sprite.Graphic.Width / 2);
+                int mouseX = Application.Input.MousePosition.X - (ObjectCatcher.Sprite.Graphic.Width / 2);
                 int distance = WindowBounds.Bottom - (ObjectCatcher.ActualSize.Y * 2);
                 ObjectCatcher.Location = new Point(mouseX, distance);
             }

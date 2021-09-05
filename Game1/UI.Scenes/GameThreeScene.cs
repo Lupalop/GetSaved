@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Maquina.Elements;
+using Maquina.Entities;
 using Microsoft.Xna.Framework.Audio;
 
 namespace Maquina.UI.Scenes
@@ -75,7 +75,7 @@ namespace Maquina.UI.Scenes
         private void CallEndOverlay()
         {
             IsGameEnd = true;
-            Global.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.RunningForTheirLives, null, this, GameDifficulty));
+            Application.Scenes.Overlays.Add("GameEnd", new GameEndOverlay(Games.RunningForTheirLives, null, this, GameDifficulty));
         }
 
         private void CreateObstacle()
@@ -83,7 +83,7 @@ namespace Maquina.UI.Scenes
             if (!IsGameEnd)
             {
                 Image obstacle = new Image("item" + DateTime.Now.ToBinary());
-                obstacle.Sprite.Graphic = Global.Textures["fire"];
+                obstacle.Sprite.Graphic = (TextureSprite)ContentFactory.TryGetResource("fire"];
                 obstacle.Sprite.Columns = 3;
                 obstacle.Sprite.Rows = 1;
                 obstacle.Sprite.SpriteType = SpriteType.Animated;
@@ -95,7 +95,7 @@ namespace Maquina.UI.Scenes
         private void UpdateInitialPosition()
         {
             PlayerInitialY = WindowBounds.Height - PlayerElement.Bounds.Height - 130;
-            FireInitialY = WindowBounds.Height - Global.Textures["fire"].Height - 130;
+            FireInitialY = WindowBounds.Height - ContentFactory.TryGetResource("fire"].Height - 130;
             StartingXPos = WindowBounds.Width - PlayerElement.Bounds.Width - 10;
         }
 
@@ -103,8 +103,8 @@ namespace Maquina.UI.Scenes
         {
             InitializeComponent();
 
-            JumpEffect = Global.SFX["caught"];
-            Global.Audio.PlaySong("shenanigans");
+            JumpEffect = Application.SFX["caught"];
+            Application.Audio.PlaySong("shenanigans");
             UpdateInitialPosition();
 
             // Initialize timers
@@ -182,10 +182,10 @@ namespace Maquina.UI.Scenes
             }
             else
             {
-                if (Global.Input.KeyPressed(Keys.Space) ||
-                    Global.Input.MousePressed(MouseButton.Left) ||
-                    Global.Input.MousePressed(MouseButton.Right) ||
-                    Global.Input.MousePressed(MouseButton.Middle))
+                if (Application.Input.KeyPressed(Keys.Space) ||
+                    Application.Input.MousePressed(MouseButton.Left) ||
+                    Application.Input.MousePressed(MouseButton.Right) ||
+                    Application.Input.MousePressed(MouseButton.Middle))
                 {
                     IsJumping = true;
                     JumpEffect.Play();
@@ -199,7 +199,7 @@ namespace Maquina.UI.Scenes
             for (int i = 0; i < GameCanvas.Children.Count; i++)
             {
                 string elementKey = GameCanvas.Children.Keys.ElementAt(i);
-                BaseElement gameElement = GameCanvas.Children[elementKey];
+                Entity gameElement = GameCanvas.Children[elementKey];
                 // Moves Game object
                 gameElement.Location =
                     new Point(gameElement.Location.X - (int)ObjectMovementSpeed, gameElement.Location.Y);
