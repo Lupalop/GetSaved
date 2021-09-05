@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Get Saved", "Game1\Get Saved.csproj", "{10113C2A-3986-4838-894E-36B3550B155E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Get Saved", "game\Get Saved.csproj", "{10113C2A-3986-4838-894E-36B3550B155E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maquina", "platform\src\Maquina.csproj", "{4D111415-BA1C-4EAA-A41C-4E2A012FA3C9}"
 EndProject
