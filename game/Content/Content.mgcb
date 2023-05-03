@@ -145,30 +145,6 @@
 /processorParam:TextureFormat=Color
 /build:back-btn.png
 
-#begin bgm/Flying High.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:bgm/Flying High.mp3
-
-#begin bgm/Hide Seek.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:bgm/Hide Seek.mp3
-
-#begin bgm/In Pursuit.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:bgm/In Pursuit.mp3
-
-#begin bgm/Shenanigans.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:bgm/Shenanigans.mp3
-
 #begin character-line.png
 /importer:TextureImporter
 /processor:TextureProcessor

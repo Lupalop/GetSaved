@@ -294,7 +294,7 @@ namespace Maquina.UI.Scenes
                 }}
             };
 
-            Global.AudioManager.PlaySong("flying-high");
+            //Global.AudioManager.PlaySong("flying-high");
         }
 
         public override void DelayLoadContent()

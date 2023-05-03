@@ -196,7 +196,7 @@ namespace Maquina.UI.Scenes
 
             ObjectCaught = Global.SFX["caught"];
 
-            Global.AudioManager.PlaySong("hide-seek");
+            //Global.AudioManager.PlaySong("hide-seek");
             DistanceFromBottom = -30;
         }
 

@@ -79,7 +79,7 @@ namespace Maquina.UI.Scenes
                     }
                 }}
             };
-            Global.AudioManager.PlaySong("flying-high");
+            //Global.AudioManager.PlaySong("flying-high");
             // Layout stuff
             ObjectSpacing = 12;
             BackgroundGameScene = new GameOneScene(Difficulty.Demo);

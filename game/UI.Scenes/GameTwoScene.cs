@@ -304,7 +304,7 @@ namespace Maquina.UI.Scenes
             };
 
             PointReached = Global.SFX["caught"];
-            Global.AudioManager.PlaySong("in-pursuit");
+            //Global.AudioManager.PlaySong("in-pursuit");
         }
 
         public override void DelayLoadContent()

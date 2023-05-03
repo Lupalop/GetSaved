@@ -119,7 +119,7 @@ namespace Maquina.UI.Scenes
             FireGraphic = Global.Textures["fire"];
             CharacterGraphic = Global.Textures["character"];
             JumpEffect = Global.SFX["caught"];
-            Global.AudioManager.PlaySong("shenanigans");
+            //Global.AudioManager.PlaySong("shenanigans");
 
             Objects = new Dictionary<string, GenericElement> {
                 { "GameBG", new Image("GameBG")
